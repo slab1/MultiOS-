@@ -1,0 +1,27 @@
+# Performance Visualization Tools Dependencies
+
+# Core system monitoring
+psutil>=5.9.0
+
+# Data analysis and manipulation
+pandas>=1.5.0
+numpy>=1.21.0
+
+# Data visualization
+matplotlib>=3.6.0
+seaborn>=0.12.0
+
+# Web dashboard dependencies (if using HTTP server from Python)
+# Note: Dashboard uses CDN for Chart.js, so no direct JS dependencies needed
+
+# Optional: For enhanced web server functionality
+# flask>=2.3.0  # Alternative to http.server
+# tornado>=6.2.0  # Async web server
+
+# Development and testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Note: Some visualizations may require additional system packages
+# For temperature sensors: lm-sensors (Linux)
+# For advanced power monitoring: ACPI tools (Linux)

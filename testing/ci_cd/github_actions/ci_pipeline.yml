@@ -1,0 +1,336 @@
+name: MultiOS CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run tests daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      architectures:
+        description: 'Comma-separated list of target architectures'
+        required: false
+        default: 'x86_64,arm64,riscv64'
+        type: string
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+  DOCKER_BUILDKIT: 1
+
+jobs:
+  # Code quality and security checks
+  quality-gate:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Check formatting
+        run: cargo fmt -- --check
+
+      - name: Run clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Security audit
+        run: cargo audit
+
+  # Build and test matrix for all architectures
+  build-and-test:
+    name: Build & Test ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # x86_64 targets
+          - target: x86_64-unknown-none
+            os: ubuntu-latest
+            cross: false
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            cross: false
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
+            cross: false
+          
+          # ARM64 targets
+          - target: aarch64-unknown-none
+            os: ubuntu-latest
+            cross: true
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-latest
+            cross: true
+          - target: aarch64-unknown-linux-musl
+            os: ubuntu-latest
+            cross: true
+          
+          # RISC-V targets
+          - target: riscv64gc-unknown-none-elf
+            os: ubuntu-latest
+            cross: true
+          - target: riscv64gc-unknown-linux-gnu
+            os: ubuntu-latest
+            cross: true
+          - target: riscv64gc-unknown-linux-musl
+            os: ubuntu-latest
+            cross: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo index
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo build
+        uses: actions/cache@v4
+        with:
+          path: target
+          key: ${{ runner.os }}-${{ matrix.target }}-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install cross
+        if: matrix.cross
+        run: cargo install cross --git https://github.com/cross-rs/cross
+
+      - name: Build ${{ matrix.target }}
+        run: |
+          if [ "${{ matrix.cross }}" = "true" ]; then
+            cross build --target ${{ matrix.target }} --all-features
+          else
+            cargo build --target ${{ matrix.target }} --all-features
+          fi
+
+      - name: Run unit tests
+        run: |
+          if [ "${{ matrix.cross }}" = "true" ]; then
+            cross test --target ${{ matrix.target }} --all-features --lib
+          else
+            cargo test --target ${{ matrix.target }} --all-features --lib
+          fi
+
+      - name: Run integration tests
+        run: |
+          if [ "${{ matrix.cross }}" = "true" ]; then
+            cross test --target ${{ matrix.target }} --all-features --test '*'
+          else
+            cargo test --target ${{ matrix.target }} --all-features --test '*'
+          fi
+
+      - name: Cross-compilation validation
+        run: |
+          if [ "${{ matrix.cross }}" = "true" ]; then
+            ./scripts/validate_cross_compilation.sh ${{ matrix.target }}
+          else
+            echo "Native compilation - validation skipped"
+          fi
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts-${{ matrix.target }}
+          path: target/${{ matrix.target }}/debug/
+          retention-days: 30
+
+  # Container-based testing environments
+  container-testing:
+    name: Container Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        container: [debian, ubuntu, alpine, fedora]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build test container
+        run: |
+          docker build -f containers/${{ matrix.container }}/Dockerfile \
+                       -t multios-test:${{ matrix.container }} .
+
+      - name: Run containerized tests
+        run: |
+          docker run --rm -v $(pwd):/workspace multios-test:${{ matrix.container }} \
+                     /workspace/scripts/run_container_tests.sh
+
+      - name: Upload container logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: container-logs-${{ matrix.container }}
+          path: logs/container-test-*.log
+          retention-days: 7
+
+  # Performance benchmarks
+  performance-benchmarks:
+    name: Performance Benchmarks
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Run performance benchmarks
+        run: |
+          ./scripts/run_benchmarks.sh artifacts/
+
+      - name: Upload benchmark results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: reports/benchmark_*.json
+          retention-days: 90
+
+  # Integration tests
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Setup QEMU
+        run: ./scripts/setup_qemu.sh
+
+      - name: Run integration tests
+        run: |
+          for arch in x86_64 arm64 riscv64; do
+            ./scripts/run_integration_tests.sh $arch
+          done
+
+      - name: Upload integration test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-test-results
+          path: reports/integration_*.xml
+          retention-days: 30
+
+  # Security scanning
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # Quality gates and reporting
+  quality-gates:
+    name: Quality Gates
+    runs-on: ubuntu-latest
+    needs: [quality-gate, build-and-test, container-testing, performance-benchmarks, integration-tests, security-scan]
+    if: always()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Generate quality gate report
+        run: |
+          ./scripts/generate_quality_report.sh
+
+      - name: Upload quality gate report
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-gate-report
+          path: reports/quality_gate_*.md
+          retention-days: 90
+
+      - name: Check quality gates
+        run: |
+          if [ -f "reports/quality_gate_status.txt" ]; then
+            STATUS=$(cat reports/quality_gate_status.txt)
+            if [ "$STATUS" = "FAIL" ]; then
+              echo "Quality gates failed!"
+              exit 1
+            fi
+          fi
+
+  # Deploy artifacts to registry
+  deploy-artifacts:
+    name: Deploy Artifacts
+    runs-on: ubuntu-latest
+    needs: [quality-gates]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Deploy to registry
+        run: |
+          ./scripts/deploy_artifacts.sh artifacts/
+
+      - name: Update monitoring dashboard
+        run: |
+          ./scripts/update_monitoring.sh
+
+  # Notification system
+  notify:
+    name: Notification
+    runs-on: ubuntu-latest
+    needs: [quality-gates, deploy-artifacts]
+    if: always()
+    steps:
+      - name: Send notification
+        run: |
+          ./scripts/send_notifications.sh

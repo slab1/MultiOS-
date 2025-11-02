@@ -1,0 +1,690 @@
+/* Component-specific styles for OS Debugging System */
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes highlight {
+    0% { background-color: var(--warning-color); }
+    100% { background-color: transparent; }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.3s ease-out;
+}
+
+.highlight {
+    animation: highlight 2s ease-out;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--light-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-light);
+}
+
+/* Tooltips */
+.tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--darker-bg);
+    color: white;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    z-index: 1000;
+}
+
+.tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+    bottom: calc(100% + 5px);
+}
+
+/* Syntax Highlighting */
+.syntax-keyword {
+    color: #d73a49;
+    font-weight: bold;
+}
+
+.syntax-string {
+    color: #032f62;
+}
+
+.syntax-comment {
+    color: #6a737d;
+    font-style: italic;
+}
+
+.syntax-number {
+    color: #005cc5;
+}
+
+.syntax-function {
+    color: #6f42c1;
+}
+
+.syntax-variable {
+    color: #e36209;
+}
+
+/* Call Stack */
+.call-stack {
+    background: var(--light-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+.stack-frame {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.stack-frame:hover {
+    background: white;
+}
+
+.stack-frame:last-child {
+    border-bottom: none;
+}
+
+.stack-frame.current {
+    background: var(--debug-bg);
+    border-left: 4px solid var(--warning-color);
+}
+
+.stack-function {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.stack-location {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.stack-line {
+    background: var(--info-color);
+    color: white;
+    padding: 0.1rem 0.3rem;
+    border-radius: 2px;
+    font-size: 0.7rem;
+}
+
+/* Memory Regions */
+.memory-region.heap {
+    border-left: 4px solid var(--memory-color);
+}
+
+.memory-region.stack {
+    border-left: 4px solid var(--process-color);
+}
+
+.memory-region.code {
+    border-left: 4px solid var(--danger-color);
+}
+
+.memory-region.data {
+    border-left: 4px solid var(--warning-color);
+}
+
+.memory-region.shared {
+    border-left: 4px solid var(--info-color);
+}
+
+/* Debug States */
+.debug-state-running {
+    color: var(--success-color);
+}
+
+.debug-state-paused {
+    color: var(--warning-color);
+}
+
+.debug-state-stepping {
+    color: var(--info-color);
+}
+
+.debug-state-error {
+    color: var(--danger-color);
+}
+
+/* Interactive Elements */
+.interactive {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.interactive:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.interactive:active {
+    transform: translateY(0);
+}
+
+/* Status Indicators */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.status-dot.active {
+    background: var(--success-color);
+    animation: pulse 2s infinite;
+}
+
+.status-dot.inactive {
+    background: var(--text-light);
+}
+
+.status-dot.error {
+    background: var(--danger-color);
+}
+
+/* Filter Controls */
+.filter-controls {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--border-color);
+    background: white;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.filter-btn:hover {
+    background: var(--light-bg);
+}
+
+/* Performance Metrics */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.metric-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.metric-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.metric-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+/* Context Menus */
+.context-menu {
+    position: fixed;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    z-index: 1000;
+    min-width: 150px;
+    display: none;
+}
+
+.context-menu.visible {
+    display: block;
+}
+
+.context-menu-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.context-menu-item:last-child {
+    border-bottom: none;
+}
+
+.context-menu-item:hover {
+    background: var(--light-bg);
+}
+
+.context-menu-item.danger {
+    color: var(--danger-color);
+}
+
+/* Code Flow Indicators */
+.flow-step {
+    position: relative;
+    margin: 1rem 0;
+}
+
+.flow-step::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 0;
+    bottom: -1rem;
+    width: 2px;
+    background: var(--border-color);
+}
+
+.flow-step::after {
+    content: attr(data-step);
+    position: absolute;
+    left: -20px;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.flow-step.completed::before {
+    background: var(--success-color);
+}
+
+.flow-step.completed::after {
+    background: var(--success-color);
+}
+
+.flow-step.current::after {
+    background: var(--warning-color);
+    animation: pulse 2s infinite;
+}
+
+/* Error States */
+.error-highlight {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--danger-color);
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.error-message {
+    color: var(--danger-color);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.error-details {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    background: var(--darker-bg);
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+/* Success States */
+.success-highlight {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--success-color);
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.success-message {
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+/* Progress Indicators */
+.loading-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.loading-dots::after {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: loading-dots 1.5s infinite ease-in-out;
+}
+
+.loading-dots::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: loading-dots 1.5s infinite ease-in-out;
+    animation-delay: -1s;
+}
+
+@keyframes loading-dots {
+    0%, 80%, 100% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
+    40% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Tab Interface */
+.tab-container {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--light-bg);
+}
+
+.tab {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.tab:hover {
+    background: white;
+    color: var(--primary-color);
+}
+
+.tab.active {
+    background: white;
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.tab-content {
+    display: none;
+    padding: 1rem;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Accordion Interface */
+.accordion-item {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+}
+
+.accordion-header {
+    background: var(--light-bg);
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.accordion-header:hover {
+    background: white;
+}
+
+.accordion-header.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.accordion-content.active {
+    max-height: 500px;
+    padding: 1rem;
+}
+
+.accordion-icon {
+    transition: transform 0.3s ease;
+}
+
+.accordion-icon.rotated {
+    transform: rotate(180deg);
+}
+
+/* Search Box */
+.search-box {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.search-input {
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+.search-icon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+}
+
+.clear-search {
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.clear-search:hover {
+    color: var(--danger-color);
+}
+
+/* Notification System */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    padding: 1rem;
+    min-width: 300px;
+    z-index: 2000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.notification.visible {
+    transform: translateX(0);
+}
+
+.notification.success {
+    border-left: 4px solid var(--success-color);
+}
+
+.notification.error {
+    border-left: 4px solid var(--danger-color);
+}
+
+.notification.warning {
+    border-left: 4px solid var(--warning-color);
+}
+
+.notification.info {
+    border-left: 4px solid var(--info-color);
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.notification-title {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.notification-body {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.breadcrumb-item {
+    color: var(--text-secondary);
+}
+
+.breadcrumb-item:last-child {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.breadcrumb-separator {
+    color: var(--text-light);
+}
+
+/* Keyboard Shortcuts */
+.keyboard-shortcut {
+    display: inline-block;
+    background: var(--darker-bg);
+    color: white;
+    padding: 0.2rem 0.4rem;
+    border-radius: 2px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Theme Variants */
+.theme-dark {
+    --primary-color: #3b82f6;
+    --secondary-color: #9ca3af;
+    --success-color: #34d399;
+    --warning-color: #fbbf24;
+    --danger-color: #f87171;
+    --info-color: #06b6d4;
+    --dark-bg: #1f2937;
+    --darker-bg: #111827;
+    --light-bg: #1f2937;
+    --border-color: #374151;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --text-light: #9ca3af;
+    --code-bg: #374151;
+    --debug-bg: #451a03;
+}
+
+.theme-high-contrast {
+    --primary-color: #0000ff;
+    --border-color: #000000;
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --background-color: #ffffff;
+    --code-bg: #f5f5f5;
+}

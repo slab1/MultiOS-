@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive OS Debugging System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="components.css">
+</head>
+<body>
+    <!-- Header with MultiOS Integration -->
+    <header class="debug-header">
+        <div class="header-content">
+            <h1>🛠️ Interactive OS Debugging System</h1>
+            <div class="integration-controls">
+                <button id="integrateBtn" class="btn btn-primary">Integrate with MultiOS UI</button>
+                <div class="debug-session-info">
+                    <span id="sessionStatus" class="status-indicator">Ready</span>
+                    <span id="sessionTimer">00:00:00</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Debug Interface -->
+    <div class="debug-container">
+        <!-- Left Sidebar - Scenario Library & Controls -->
+        <div class="sidebar-left">
+            <div class="control-panel">
+                <h3>📚 Educational Scenarios</h3>
+                <div class="scenario-selector">
+                    <select id="scenarioSelect" class="form-select">
+                        <option value="">Select a scenario...</option>
+                        <option value="process-hang">Process Hang Investigation</option>
+                        <option value="memory-leak">Memory Leak Detection</option>
+                        <option value="deadlock">Deadlock Scenario</option>
+                        <option value="race-condition">Race Condition Demo</option>
+                        <option value="kernel-panic">Kernel Panic Analysis</option>
+                        <option value="system-call">System Call Tracing</option>
+                        <option value="thread-sync">Thread Synchronization</option>
+                        <option value="disk-io">Disk I/O Performance</option>
+                    </select>
+                    <button id="loadScenarioBtn" class="btn btn-secondary">Load Scenario</button>
+                </div>
+                
+                <div class="guided-mode">
+                    <h4>🎓 Guided Learning</h4>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="guidedMode" checked>
+                        <span class="checkmark"></span>
+                        Enable guided tutorials
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="showHints">
+                        <span class="checkmark"></span>
+                        Show hints automatically
+                    </label>
+                    <button id="startTutorialBtn" class="btn btn-info">Start Tutorial</button>
+                </div>
+            </div>
+
+            <!-- Scenario Progress -->
+            <div class="progress-panel" id="progressPanel" style="display: none;">
+                <h4>📊 Progress</h4>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <div class="step-counter">
+                    <span id="currentStep">1</span> / <span id="totalSteps">10</span>
+                </div>
+                <div id="stepDescription" class="step-description"></div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h4>⚡ Quick Actions</h4>
+                <button class="btn btn-sm btn-warning" id="resetScenario">Reset Scenario</button>
+                <button class="btn btn-sm btn-success" id="runToNextBreakpoint">Run to Next Breakpoint</button>
+                <button class="btn btn-sm btn-info" id="stepInto">Step Into</button>
+                <button class="btn btn-sm btn-info" id="stepOver">Step Over</button>
+                <button class="btn btn-sm btn-info" id="stepOut">Step Out</button>
+                <button class="btn btn-sm btn-danger" id="continue">Continue</button>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Code Debugging Panel -->
+            <div class="debug-panel code-panel">
+                <div class="panel-header">
+                    <h3>💻 Code Debugging</h3>
+                    <div class="debug-controls">
+                        <input type="text" id="filePath" class="file-input" placeholder="Enter file path...">
+                        <button id="loadFileBtn" class="btn btn-sm">Load File</button>
+                    </div>
+                </div>
+                <div class="code-container">
+                    <div class="line-numbers" id="lineNumbers"></div>
+                    <div class="code-content" id="codeContent">
+                        <pre id="codeDisplay"></pre>
+                    </div>
+                </div>
+                <div class="breakpoints-panel">
+                    <h4>🔴 Breakpoints</h4>
+                    <div id="breakpointsList" class="breakpoints-list"></div>
+                    <button id="addBreakpointBtn" class="btn btn-sm btn-danger">Add Breakpoint</button>
+                </div>
+            </div>
+
+            <!-- Variable Inspector -->
+            <div class="debug-panel variables-panel">
+                <div class="panel-header">
+                    <h3>🔍 Variable Inspector</h3>
+                    <button id="inspectVariablesBtn" class="btn btn-sm btn-primary">Refresh Variables</button>
+                </div>
+                <div class="variables-container">
+                    <div class="variables-tree" id="variablesTree"></div>
+                    <div class="watch-expressions">
+                        <h4>👁️ Watch Expressions</h4>
+                        <div class="watch-input-group">
+                            <input type="text" id="watchInput" class="form-input" placeholder="Enter expression...">
+                            <button id="addWatchBtn" class="btn btn-sm btn-secondary">Add Watch</button>
+                        </div>
+                        <div id="watchList" class="watch-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar - System Views -->
+        <div class="sidebar-right">
+            <!-- Memory View -->
+            <div class="debug-panel memory-panel">
+                <div class="panel-header">
+                    <h3>🧠 Memory View</h3>
+                    <div class="memory-controls">
+                        <button id="refreshMemoryBtn" class="btn btn-sm btn-primary">Refresh</button>
+                        <select id="memoryViewType" class="form-select form-select-sm">
+                            <option value="heap">Heap</option>
+                            <option value="stack">Stack</option>
+                            <option value="code">Code</option>
+                            <option value="data">Data</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="memory-visualization">
+                    <canvas id="memoryCanvas" width="300" height="400"></canvas>
+                    <div class="memory-details" id="memoryDetails"></div>
+                </div>
+            </div>
+
+            <!-- Process & Thread Inspector -->
+            <div class="debug-panel process-panel">
+                <div class="panel-header">
+                    <h3>⚙️ Processes & Threads</h3>
+                    <button id="refreshProcessesBtn" class="btn btn-sm btn-primary">Refresh</button>
+                </div>
+                <div class="process-tree" id="processTree"></div>
+                <div class="thread-details" id="threadDetails"></div>
+            </div>
+
+            <!-- System Call Tracer -->
+            <div class="debug-panel syscall-panel">
+                <div class="panel-header">
+                    <h3>📞 System Calls</h3>
+                    <div class="tracing-controls">
+                        <button id="startTracingBtn" class="btn btn-sm btn-success">Start Tracing</button>
+                        <button id="stopTracingBtn" class="btn btn-sm btn-danger">Stop Tracing</button>
+                    </div>
+                </div>
+                <div class="syscall-log" id="syscallLog"></div>
+                <div class="syscall-details" id="syscallDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Panel - Terminal & Hints -->
+    <div class="bottom-panel">
+        <div class="terminal-container">
+            <div class="terminal-header">
+                <h3>🖥️ Debug Terminal</h3>
+                <div class="terminal-controls">
+                    <button id="clearTerminalBtn" class="btn btn-sm btn-secondary">Clear</button>
+                    <button id="runCommandBtn" class="btn btn-sm btn-primary">Run Command</button>
+                </div>
+            </div>
+            <div class="terminal-output" id="terminalOutput"></div>
+            <div class="terminal-input-container">
+                <span class="prompt">$</span>
+                <input type="text" id="terminalInput" class="terminal-input" placeholder="Enter debugging command...">
+            </div>
+        </div>
+
+        <!-- Hints Panel -->
+        <div class="hints-panel">
+            <div class="hints-header">
+                <h4>💡 Hints & Guidance</h4>
+                <button id="toggleHintsBtn" class="btn btn-sm btn-info">Toggle Hints</button>
+            </div>
+            <div class="hints-content" id="hintsContent">
+                <div class="hint-item active">
+                    <div class="hint-header">
+                        <span class="hint-number">1</span>
+                        <span class="hint-title">Getting Started</span>
+                    </div>
+                    <div class="hint-body">
+                        <p>Select a debugging scenario from the left panel to begin your interactive learning journey.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GDB-like Console -->
+    <div class="gdb-console" id="gdbConsole">
+        <div class="console-header">
+            <h4>🛠️ GDB Console</h4>
+            <div class="console-controls">
+                <button id="runGdbCommandBtn" class="btn btn-sm btn-primary">Execute</button>
+                <button id="clearGdbConsoleBtn" class="btn btn-sm btn-secondary">Clear</button>
+            </div>
+        </div>
+        <div class="console-output" id="gdbOutput"></div>
+        <div class="console-input-container">
+            <span class="gdb-prompt">(gdb)</span>
+            <input type="text" id="gdbInput" class="console-input" placeholder="Enter GDB command...">
+        </div>
+    </div>
+
+    <!-- Integration Modal -->
+    <div class="modal" id="integrationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🔗 MultiOS UI Integration</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Configure integration settings for seamless debugging experience:</p>
+                <div class="integration-settings">
+                    <div class="setting-group">
+                        <label>UI Theme:</label>
+                        <select id="uiTheme" class="form-select">
+                            <option value="light">Light Theme</option>
+                            <option value="dark">Dark Theme</option>
+                            <option value="auto">Auto (System)</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>Panel Layout:</label>
+                        <select id="panelLayout" class="form-select">
+                            <option value="default">Default Layout</option>
+                            <option value="compact">Compact Layout</option>
+                            <option value="fullscreen">Fullscreen Debug</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>API Endpoint:</label>
+                        <input type="url" id="apiEndpoint" class="form-input" placeholder="http://localhost:8000/api">
+                    </div>
+                    <div class="setting-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="autoSync">
+                            <span class="checkmark"></span>
+                            Auto-sync with MultiOS
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveIntegrationBtn" class="btn btn-primary">Save Integration</button>
+                <button id="testConnectionBtn" class="btn btn-secondary">Test Connection</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+        <p>Loading debugging session...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="debug-core.js"></script>
+    <script src="memory-view.js"></script>
+    <script src="variable-inspector.js"></script>
+    <script src="syscall-tracer.js"></script>
+    <script src="gdb-console.js"></script>
+    <script src="guided-tutorials.js"></script>
+    <script src="scenarios.js"></script>
+    <script src="integration.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

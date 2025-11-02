@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Visualization Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <h1>System Performance Visualization Dashboard</h1>
+            <div class="controls">
+                <select id="refreshInterval">
+                    <option value="1000">1s</option>
+                    <option value="2000" selected>2s</option>
+                    <option value="5000">5s</option>
+                    <option value="10000">10s</option>
+                </select>
+                <button id="exportData">Export Data</button>
+                <button id="toggleRealTime">Pause</button>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Real-time CPU Utilization -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>CPU Utilization</h2>
+                    <div class="metric-summary">
+                        <span class="current-value" id="cpuUsage">0%</span>
+                        <span class="trend" id="cpuTrend">→</span>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="chart-container">
+                        <canvas id="cpuChart"></canvas>
+                    </div>
+                    <div class="heatmap-container">
+                        <h3>CPU Core Heatmap</h3>
+                        <div id="cpuHeatmap" class="heatmap"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memory Usage -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>Memory Usage</h2>
+                    <div class="metric-summary">
+                        <span class="current-value" id="memoryUsage">0 GB / 0 GB</span>
+                        <span class="trend" id="memoryTrend">→</span>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="memory-layout">
+                        <div class="memory-chart">
+                            <canvas id="memoryChart"></canvas>
+                        </div>
+                        <div class="allocation-breakdown">
+                            <h3>Allocation Breakdown</h3>
+                            <div id="memoryAllocations"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- I/O Throughput -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>I/O Throughput</h2>
+                    <div class="metric-summary">
+                        <span class="current-value" id="ioThroughput">0 MB/s</span>
+                        <span class="trend" id="ioTrend">→</span>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="io-layout">
+                        <div class="io-chart">
+                            <canvas id="ioChart"></canvas>
+                        </div>
+                        <div class="device-breakdown">
+                            <h3>Device Breakdown</h3>
+                            <div id="deviceList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Network Traffic -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>Network Traffic</h2>
+                    <div class="metric-summary">
+                        <span class="current-value" id="networkTraffic">0 Mbps</span>
+                        <span class="trend" id="networkTrend">→</span>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="network-layout">
+                        <div class="network-chart">
+                            <canvas id="networkChart"></canvas>
+                        </div>
+                        <div class="protocol-breakdown">
+                            <h3>Protocol Breakdown</h3>
+                            <canvas id="protocolChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Power & Thermal -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2>Power & Thermal</h2>
+                    <div class="metric-summary">
+                        <span class="current-value" id="powerUsage">0 W</span>
+                        <span class="trend" id="powerTrend">→</span>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="thermal-layout">
+                        <div class="thermal-charts">
+                            <div class="chart-section">
+                                <h3>Power Consumption</h3>
+                                <canvas id="powerChart"></canvas>
+                            </div>
+                            <div class="chart-section">
+                                <h3>Temperature</h3>
+                                <canvas id="temperatureChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="thermal-map">
+                            <h3>Thermal Map</h3>
+                            <div id="thermalVisualization"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Analysis Tools -->
+            <div class="dashboard-card analysis-card">
+                <div class="card-header">
+                    <h2>Performance Analysis</h2>
+                </div>
+                <div class="card-content">
+                    <div class="analysis-tools">
+                        <div class="analysis-section">
+                            <h3>Process Monitor</h3>
+                            <div class="process-list" id="processList"></div>
+                        </div>
+                        <div class="analysis-section">
+                            <h3>System Events</h3>
+                            <div class="event-log" id="eventLog"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historical Data Section -->
+        <div class="historical-section">
+            <div class="card-header">
+                <h2>Historical Performance Trends</h2>
+                <div class="time-selector">
+                    <select id="timeRange">
+                        <option value="1h">Last Hour</option>
+                        <option value="6h">Last 6 Hours</option>
+                        <option value="24h">Last 24 Hours</option>
+                        <option value="7d">Last 7 Days</option>
+                    </select>
+                    <button id="compareData">Compare</button>
+                </div>
+            </div>
+            <div class="historical-content">
+                <div class="historical-chart">
+                    <canvas id="historicalChart"></canvas>
+                </div>
+                <div class="comparison-panel" id="comparisonPanel">
+                    <h3>Performance Comparison</h3>
+                    <div class="comparison-metrics"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for detailed views -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Code Browser - MultiOS Educational Platform</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .code-editor {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .line-number {
+            color: #6b7280;
+            text-align: right;
+            padding-right: 1rem;
+            user-select: none;
+        }
+        .highlight { background-color: #fef3c7; }
+        .call-graph-node { cursor: pointer; }
+        .performance-hotspot { fill: #ef4444; opacity: 0.7; }
+        .educational-module { border-left: 4px solid #3b82f6; padding-left: 1rem; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Navigation Component
+        const Navigation = ({ currentView, setCurrentView }) => {
+            const navItems = [
+                { id: 'landing', label: 'Home', icon: '🏠' },
+                { id: 'browse', label: 'Code Browser', icon: '📁' },
+                { id: 'search', label: 'Search', icon: '🔍' },
+                { id: 'call-graph', label: 'Call Graph', icon: '🔗' },
+                { id: 'variables', label: 'Variables', icon: '📊' },
+                { id: 'performance', label: 'Performance', icon: '⚡' },
+                { id: 'learn', label: 'Learn', icon: '🎓' },
+                { id: 'dashboard', label: 'Dashboard', icon: '📈' }
+            ];
+
+            return (
+                <nav className="bg-white shadow-lg border-b">
+                    <div className="max-w-7xl mx-auto px-4">
+                        <div className="flex justify-between items-center h-16">
+                            <div className="flex items-center space-x-2">
+                                <div className="text-2xl font-bold text-blue-600">MultiOS</div>
+                                <div className="text-sm text-gray-500">Code Browser</div>
+                            </div>
+                            <div className="flex space-x-1">
+                                {navItems.map(item => (
+                                    <button
+                                        key={item.id}
+                                        onClick={() => setCurrentView(item.id)}
+                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                                            currentView === item.id
+                                                ? 'bg-blue-100 text-blue-700'
+                                                : 'text-gray-600 hover:text-blue-600 hover:bg-gray-100'
+                                        }`}
+                                    >
+                                        <span className="mr-1">{item.icon}</span>
+                                        {item.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            );
+        };
+
+        // Landing Page Component
+        const LandingPage = () => {
+            const features = [
+                {
+                    icon: '🔍',
+                    title: 'Advanced Code Analysis',
+                    description: 'Deep Rust code analysis with AST parsing, function detection, and complexity metrics.'
+                },
+                {
+                    icon: '🔗',
+                    title: 'Interactive Call Graphs',
+                    description: 'Visualize function call relationships and dependencies in the MultiOS kernel.'
+                },
+                {
+                    icon: '📊',
+                    title: 'Data Flow Tracking',
+                    description: 'Track variable usage and data dependencies across the entire codebase.'
+                },
+                {
+                    icon: '⚡',
+                    title: 'Performance Hotspots',
+                    description: 'Identify performance bottlenecks and optimization opportunities.'
+                },
+                {
+                    icon: '🎓',
+                    title: 'Educational Modules',
+                    description: 'Interactive learning content integrated with real code exploration.'
+                },
+                {
+                    icon: '🔧',
+                    title: 'Debug Interface',
+                    description: 'Interactive debugging tools with breakpoint support and step-through execution.'
+                }
+            ];
+
+            return (
+                <div className="max-w-7xl mx-auto px-4 py-8">
+                    <div className="text-center mb-12">
+                        <h1 className="text-5xl font-bold text-gray-900 mb-4">
+                            Interactive Code Browser
+                        </h1>
+                        <p className="text-xl text-gray-600 mb-8">
+                            Explore, analyze, and understand the MultiOS kernel codebase through interactive visualizations
+                        </p>
+                        <div className="flex justify-center space-x-4">
+                            <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                                Start Exploring
+                            </button>
+                            <button className="border border-gray-300 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
+                                View Documentation
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {features.map((feature, index) => (
+                            <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                                <div className="text-4xl mb-4">{feature.icon}</div>
+                                <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                                <p className="text-gray-600">{feature.description}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="mt-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8 rounded-lg">
+                        <div className="text-center">
+                            <h2 className="text-3xl font-bold mb-4">Ready to explore MultiOS?</h2>
+                            <p className="text-lg mb-6">Join thousands of developers learning through interactive code analysis</p>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                                <div>
+                                    <div className="text-3xl font-bold">50K+</div>
+                                    <div className="text-sm opacity-90">Lines of Code Analyzed</div>
+                                </div>
+                                <div>
+                                    <div className="text-3xl font-bold">1000+</div>
+                                    <div className="text-sm opacity-90">Functions Tracked</div>
+                                </div>
+                                <div>
+                                    <div className="text-3xl font-bold">500+</div>
+                                    <div className="text-sm opacity-90">Educational Modules</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Code Browser Component
+        const CodeBrowser = () => {
+            const [selectedFile, setSelectedFile] = useState(null);
+            const [code, setCode] = useState('');
+            const [searchTerm, setSearchTerm] = useState('');
+
+            const mockFiles = [
+                { name: 'main.rs', path: '/src/main.rs', type: 'file' },
+                { name: 'kernel', path: '/src/kernel', type: 'folder' },
+                { name: 'memory', path: '/src/memory', type: 'folder' },
+                { name: 'process', path: '/src/process', type: 'folder' },
+                { name: 'scheduler.rs', path: '/src/scheduler.rs', type: 'file' },
+                { name: 'memory_manager.rs', path: '/src/memory/memory_manager.rs', type: 'file' },
+                { name: 'process_manager.rs', path: '/src/process/process_manager.rs', type: 'file' },
+            ];
+
+            const mockCode = `use actix_web::{web, App, HttpServer};
+use std::sync::Arc;
+use std::collections::HashMap;
+
+mod api;
+mod code_analyzer;
+mod call_graph;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    env_logger::init();
+
+    let code_analyzer = Arc::new(CodeAnalyzer::new());
+    
+    log::info!("Starting Code Browser Backend Server...");
+
+    HttpServer::new(move || {
+        App::new()
+            .app_data(web::Data::new(code_analyzer.clone()))
+            .configure(api_config)
+    })
+    .bind("127.0.0.1:8080")?
+    .run()
+    .await?;
+
+    Ok(())
+}
+
+fn api_config(config: &mut web::ServiceConfig) {
+    config.service(
+        web::scope("/api/v1")
+            .service(analyze_code)
+            .service(get_code_suggestions)
+    );
+}`;
+
+            const handleFileSelect = (file) => {
+                setSelectedFile(file);
+                setCode(mockCode);
+            };
+
+            const highlightCode = (text, term) => {
+                if (!term) return text;
+                const regex = new RegExp(`(${term})`, 'gi');
+                return text.replace(regex, '<span class="highlight">$1</span>');
+            };
+
+            const lines = code.split('\\n').map((line, index) => (
+                <div key={index} className="flex">
+                    <div className="line-number w-12 text-sm">{index + 1}</div>
+                    <div 
+                        className="code-editor flex-1"
+                        dangerouslySetInnerHTML={{ __html: highlightCode(line, searchTerm) }}
+                    />
+                </div>
+            ));
+
+            return (
+                <div className="flex h-screen">
+                    {/* File Tree */}
+                    <div className="w-64 bg-gray-800 text-white p-4 overflow-y-auto">
+                        <h3 className="font-semibold mb-4">MultiOS Kernel</h3>
+                        <div className="space-y-1">
+                            {mockFiles.map((file, index) => (
+                                <div
+                                    key={index}
+                                    onClick={() => handleFileSelect(file)}
+                                    className={`cursor-pointer p-2 rounded hover:bg-gray-700 ${
+                                        selectedFile?.name === file.name ? 'bg-gray-700' : ''
+                                    }`}
+                                >
+                                    <span className="mr-2">{file.type === 'folder' ? '📁' : '📄'}</span>
+                                    {file.name}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Code Viewer */}
+                    <div className="flex-1 flex flex-col">
+                        <div className="p-4 border-b bg-white">
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-lg font-semibold">
+                                    {selectedFile ? selectedFile.name : 'Select a file to view code'}
+                                </h2>
+                                <input
+                                    type="text"
+                                    placeholder="Search in code..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="px-3 py-2 border rounded-md text-sm"
+                                />
+                            </div>
+                        </div>
+                        <div className="flex-1 p-4 bg-white overflow-auto">
+                            {selectedFile ? (
+                                <pre className="code-editor whitespace-pre-wrap">
+                                    {lines}
+                                </pre>
+                            ) : (
+                                <div className="flex items-center justify-center h-full text-gray-500">
+                                    <div className="text-center">
+                                        <div className="text-6xl mb-4">📁</div>
+                                        <p>Select a file from the file tree to view its contents</p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Call Graph Component
+        const CallGraph = () => {
+            const svgRef = useRef();
+
+            useEffect(() => {
+                const svg = d3.select(svgRef.current);
+                svg.selectAll('*').remove();
+
+                const width = 800;
+                const height = 600;
+
+                // Mock call graph data
+                const nodes = [
+                    { id: 'main', x: 400, y: 100, label: 'main()', type: 'entry' },
+                    { id: 'init_kernel', x: 200, y: 200, label: 'init_kernel()', type: 'function' },
+                    { id: 'setup_memory', x: 600, y: 200, label: 'setup_memory()', type: 'function' },
+                    { id: 'load_modules', x: 200, y: 350, label: 'load_modules()', type: 'function' },
+                    { id: 'start_scheduler', x: 600, y: 350, label: 'start_scheduler()', type: 'function' },
+                    { id: 'schedule_loop', x: 400, y: 500, label: 'schedule_loop()', type: 'function' },
+                ];
+
+                const links = [
+                    { source: 'main', target: 'init_kernel' },
+                    { source: 'main', target: 'setup_memory' },
+                    { source: 'init_kernel', target: 'load_modules' },
+                    { source: 'setup_memory', target: 'start_scheduler' },
+                    { source: 'load_modules', target: 'schedule_loop' },
+                    { source: 'start_scheduler', target: 'schedule_loop' },
+                ];
+
+                // Draw links
+                svg.selectAll('.link')
+                    .data(links)
+                    .enter()
+                    .append('line')
+                    .attr('class', 'link')
+                    .attr('x1', d => nodes.find(n => n.id === d.source).x)
+                    .attr('y1', d => nodes.find(n => n.id === d.source).y)
+                    .attr('x2', d => nodes.find(n => n.id === d.target).x)
+                    .attr('y2', d => nodes.find(n => n.id === d.target).y)
+                    .attr('stroke', '#6b7280')
+                    .attr('stroke-width', 2);
+
+                // Draw nodes
+                const nodeGroups = svg.selectAll('.node')
+                    .data(nodes)
+                    .enter()
+                    .append('g')
+                    .attr('class', 'node')
+                    .attr('transform', d => `translate(${d.x}, ${d.y})`);
+
+                nodeGroups.append('circle')
+                    .attr('r', 30)
+                    .attr('fill', d => d.type === 'entry' ? '#10b981' : '#3b82f6')
+                    .attr('stroke', '#ffffff')
+                    .attr('stroke-width', 3);
+
+                nodeGroups.append('text')
+                    .attr('text-anchor', 'middle')
+                    .attr('dy', '.35em')
+                    .attr('fill', 'white')
+                    .attr('font-size', '12px')
+                    .attr('font-weight', 'bold')
+                    .text(d => d.label);
+
+            }, []);
+
+            return (
+                <div className="max-w-6xl mx-auto p-6">
+                    <h1 className="text-3xl font-bold text-gray-900 mb-6">Function Call Graph</h1>
+                    <div className="bg-white p-6 rounded-lg shadow-md">
+                        <div className="mb-4 flex justify-between items-center">
+                            <p className="text-gray-600">Interactive visualization of function call relationships</p>
+                            <div className="flex space-x-4">
+                                <div className="flex items-center">
+                                    <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
+                                    <span className="text-sm">Entry Points</span>
+                                </div>
+                                <div className="flex items-center">
+                                    <div className="w-4 h-4 bg-blue-500 rounded-full mr-2"></div>
+                                    <span className="text-sm">Functions</span>
+                                </div>
+                            </div>
+                        </div>
+                        <svg ref={svgRef} width="800" height="600" className="border border-gray-200 rounded"></svg>
+                    </div>
+                </div>
+            );
+        };
+
+        // Performance Dashboard Component
+        const PerformanceDashboard = () => {
+            const [performanceData, setPerformanceData] = useState([]);
+
+            useEffect(() => {
+                // Mock performance data
+                setPerformanceData([
+                    { function: 'schedule_loop', calls: 15420, time_ms: 1250, complexity: 'High' },
+                    { function: 'memory_alloc', calls: 8932, time_ms: 890, complexity: 'Medium' },
+                    { function: 'process_switch', calls: 5621, time_ms: 1560, complexity: 'High' },
+                    { function: 'interrupt_handler', calls: 12340, time_ms: 2340, complexity: 'Medium' },
+                    { function: 'file_read', calls: 3421, time_ms: 120, complexity: 'Low' },
+                ]);
+            }, []);
+
+            return (
+                <div className="max-w-7xl mx-auto p-6">
+                    <h1 className="text-3xl font-bold text-gray-900 mb-6">Performance Dashboard</h1>
+                    
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                        <div className="bg-white p-6 rounded-lg shadow-md">
+                            <h2 className="text-xl font-semibold mb-4">Function Performance</h2>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-sm">
+                                    <thead>
+                                        <tr className="border-b">
+                                            <th className="text-left py-2">Function</th>
+                                            <th className="text-left py-2">Calls</th>
+                                            <th className="text-left py-2">Time (ms)</th>
+                                            <th className="text-left py-2">Complexity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {performanceData.map((item, index) => (
+                                            <tr key={index} className="border-b hover:bg-gray-50">
+                                                <td className="py-2 font-mono">{item.function}</td>
+                                                <td className="py-2">{item.calls.toLocaleString()}</td>
+                                                <td className="py-2">{item.time_ms}ms</td>
+                                                <td className="py-2">
+                                                    <span className={`px-2 py-1 rounded-full text-xs ${
+                                                        item.complexity === 'High' ? 'bg-red-100 text-red-800' :
+                                                        item.complexity === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
+                                                        'bg-green-100 text-green-800'
+                                                    }`}>
+                                                        {item.complexity}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div className="bg-white p-6 rounded-lg shadow-md">
+                            <h2 className="text-xl font-semibold mb-4">Optimization Suggestions</h2>
+                            <div className="space-y-3">
+                                <div className="p-3 border-l-4 border-yellow-400 bg-yellow-50">
+                                    <h3 className="font-semibold text-yellow-800">Memory Allocation</h3>
+                                    <p className="text-yellow-700 text-sm">Consider implementing object pooling for frequently allocated objects</p>
+                                </div>
+                                <div className="p-3 border-l-4 border-red-400 bg-red-50">
+                                    <h3 className="font-semibold text-red-800">Process Switching</h3>
+                                    <p className="text-red-700 text-sm">High context switch overhead detected. Optimize scheduler algorithms</p>
+                                </div>
+                                <div className="p-3 border-l-4 border-blue-400 bg-blue-50">
+                                    <h3 className="font-semibold text-blue-800">Interrupt Handling</h3>
+                                    <p className="text-blue-700 text-sm">Consider interrupt coalescing to reduce handler invocations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Main App Component
+        const App = () => {
+            const [currentView, setCurrentView] = useState('landing');
+
+            const renderView = () => {
+                switch (currentView) {
+                    case 'landing':
+                        return <LandingPage />;
+                    case 'browse':
+                        return <CodeBrowser />;
+                    case 'call-graph':
+                        return <CallGraph />;
+                    case 'performance':
+                        return <PerformanceDashboard />;
+                    case 'search':
+                        return <div className="p-6"><h1>Search functionality coming soon...</h1></div>;
+                    case 'variables':
+                        return <div className="p-6"><h1>Variable tracking coming soon...</h1></div>;
+                    case 'learn':
+                        return <div className="p-6"><h1>Educational modules coming soon...</h1></div>;
+                    case 'dashboard':
+                        return <PerformanceDashboard />;
+                    default:
+                        return <LandingPage />;
+                }
+            };
+
+            return (
+                <div className="min-h-screen bg-gray-50">
+                    <Navigation currentView={currentView} setCurrentView={setCurrentView} />
+                    <main>
+                        {renderView()}
+                    </main>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

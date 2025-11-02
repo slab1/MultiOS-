@@ -1,0 +1,65 @@
+# MultiOS Automated Regression Testing System
+# Cargo.toml
+
+[package]
+name = "regression_testing"
+version = "1.0.0"
+edition = "2021"
+authors = ["MultiOS Team"]
+description = "Comprehensive automated regression testing system for MultiOS"
+license = "MIT"
+
+[dependencies]
+# Core dependencies
+tokio = { version = "1.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+anyhow = "1.0"
+thiserror = "1.0"
+log = "0.4"
+env_logger = "0.10"
+
+# Database
+sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "postgres", "chrono"] }
+deadpool = "0.10"
+
+# Analysis and ML
+statrs = "0.16"
+simple-statistics = "0.7"
+nalgebra = "0.32"
+
+# HTTP client for integrations
+reqwest = { version = "0.11", features = ["json"] }
+
+# Configuration
+config = "0.13"
+
+# Code analysis
+git2 = "0.18"
+diff = "0.1"
+
+# Testing and mocking
+mockall = "0.11"
+proptest = "1.0"
+
+# Background tasks
+tokio-cron-scheduler = "0.9"
+
+[dev-dependencies]
+tempfile = "3.0"
+criterion = "0.5"
+
+[[bin]]
+name = "regression_testing"
+path = "src/main.rs"
+
+[lib]
+name = "regression_testing"
+path = "src/lib.rs"
+
+[features]
+default = []
+integration_testing = []
+performance_profiling = []
+ml_analysis = []

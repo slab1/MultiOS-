@@ -1,0 +1,26 @@
+# Hardware Testing Framework Requirements
+# Python dependencies for hardware testing framework
+
+# Core dependencies
+psutil>=5.8.0          # System and process utilities
+matplotlib>=3.5.0      # Plotting and visualization
+numpy>=1.21.0          # Numerical computing
+
+# Optional dependencies for enhanced functionality
+paramiko>=2.8.0        # SSH client for remote testing
+websockets>=10.0       # WebSocket support for real-time monitoring
+
+# Development and testing
+pytest>=6.2.0          # Testing framework
+pytest-cov>=2.12.0     # Coverage plugin
+
+# Additional utilities (install via system package manager)
+# - lm-sensors: Hardware sensor monitoring
+# - hwinfo: Hardware information tool
+# - stress-ng: Stress testing utility
+# - iperf3: Network performance testing
+# - smartctl: Storage device monitoring
+
+# GPU testing (optional)
+# nvidia-ml-py: NVIDIA GPU monitoring
+# - Install NVIDIA drivers for GPU testing

@@ -1,0 +1,147 @@
+# Performance Monitoring Dashboard Configuration
+
+# Database Configuration
+database:
+  path: "data/monitor.db"
+  backup_enabled: true
+  backup_interval: 3600  # 1 hour
+  cleanup_interval: 86400  # 24 hours
+  max_age_days: 30
+
+# Monitoring Configuration
+monitoring:
+  interval: 5  # seconds
+  history_size: 1000
+  enable_custom_metrics: true
+  collect_detailed_process_info: true
+  collect_network_connections: true
+  collect_disk_io: true
+
+# Alert Thresholds
+thresholds:
+  cpu:
+    warning: 80  # percentage
+    critical: 95
+  memory:
+    warning: 85
+    critical: 95
+  disk:
+    warning: 85
+    critical: 95
+  load_average:
+    warning: 2.0
+    critical: 4.0
+  network:
+    warning: 1000000  # bytes per second
+    critical: 5000000
+  processes:
+    zombie_warning: 5
+    zombie_critical: 10
+
+# Alert Aggregation
+alert_aggregation:
+  enabled: true
+  window_seconds: 300  # 5 minutes
+  max_alerts_per_window: 10
+
+# Notification Configuration
+notifications:
+  email:
+    enabled: false
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    username: "your-email@gmail.com"
+    password: "your-app-password"
+    to_addresses:
+      - "admin@company.com"
+      - "devops@company.com"
+  
+  webhook:
+    enabled: false
+    url: "https://hooks.slack.com/your-webhook"
+    headers:
+      Content-Type: "application/json"
+  
+  log:
+    enabled: true
+    log_file: "logs/alerts.log"
+    max_size_mb: 100
+    backup_count: 5
+
+# Web Dashboard Configuration
+web_dashboard:
+  host: "0.0.0.0"
+  port: 5000
+  debug: false
+  secret_key: "your-secret-key-here"
+  cors_enabled: true
+  socket_io:
+    transports: ["websocket", "polling"]
+
+# Historical Data Retention
+retention:
+  system_metrics_days: 30
+  process_metrics_days: 7
+  custom_metrics_days: 90
+  alerts_days: 90
+
+# Performance Optimizations
+performance:
+  batch_size: 100
+  async_processing: true
+  max_workers: 4
+  cache_ttl: 30  # seconds
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  file: "logs/monitor.log"
+  max_size_mb: 50
+  backup_count: 5
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# Custom Metrics
+custom_metrics:
+  # Add your custom metrics here
+  # Example:
+  # database_connections:
+  #   function: "lambda: get_database_connection_count()"
+  #   interval: 60
+  #   thresholds:
+  #     warning: 100
+  #     critical: 200
+
+# Process Monitoring
+process_monitoring:
+  top_processes_limit: 20
+  include_system_processes: false
+  monitor_io: true
+  monitor_handles: true
+
+# Network Monitoring
+network_monitoring:
+  interfaces: ["*"]  # Monitor all interfaces
+  monitor_connections: true
+  monitor_bandwidth: true
+
+# Disk Monitoring
+disk_monitoring:
+  exclude_filesystems: ["tmpfs", "devtmpfs", "squashfs"]
+  monitor_io: true
+  smart_monitoring: false  # Requires smartmontools
+
+# Export Configuration
+export:
+  formats: ["json", "csv", "pdf", "html"]
+  default_hours: 24
+  max_hours: 168  # 1 week
+  include_charts: true
+  compression: false
+
+# Security
+security:
+  api_key_required: false
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 60
+  cors_origins: ["*"]
