@@ -1,0 +1,58 @@
+[package]
+name = "multios-networking"
+version = "1.0.0"
+edition = "2021"
+description = "Advanced Wi-Fi and networking drivers for MultiOS"
+authors = ["MultiOS Development Team"]
+license = "MIT"
+
+[lib]
+name = "multios_networking"
+crate-type = ["staticlib", "lib"]
+
+[[example]]
+name = "wifi_scan_example"
+path = "examples/wifi_scan.rs"
+
+[[example]]
+name = "ethernet_driver_test"
+path = "examples/ethernet_test.rs"
+
+[dependencies]
+multios-hal = { path = "../hal" }
+multios-device-drivers = { path = "../../libraries/device-drivers" }
+multios-memory = { path = "../../libraries/memory-manager" }
+multios-scheduler = { path = "../../libraries/scheduler" }
+multios-ipc = { path = "../../libraries/ipc" }
+
+# Networking and cryptographic dependencies
+byteorder = "1.4"
+bitflags = "2.4"
+spin = "0.9"
+ring = "0.17"
+rust-crypto = "0.2"
+crypto-mac = "0.11"
+hkdf = "0.12"
+hmac = "0.12"
+sha2 = "0.10"
+padded-aes = "0.6"
+
+# Protocol parsing
+nom = "7.1"
+etherparse = "0.14"
+
+[dev-dependencies]
+rand = "0.8"
+
+[features]
+default = ["wifi", "ethernet", "security"]
+wifi = []
+ethernet = []
+security = []
+debugging = ["log"]
+performance = []
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
