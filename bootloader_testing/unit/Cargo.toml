@@ -1,0 +1,107 @@
+[package]
+name = "multios-bootloader-unit-tests"
+version = "0.1.0"
+edition = "2021"
+description = "Unit tests for bootloader components"
+authors = ["MultiOS Development Team"]
+
+[dependencies]
+# Core bootloader (relative path for testing)
+multios-bootloader = { path = "../bootloader", features = ["uefi", "legacy"] }
+
+# Testing frameworks
+criterion = { version = "0.5", features = ["html_reports"] }
+proptest = "1.4"
+serial_test = "3.0"
+tempfile = "3.8"
+mockall = "0.12"
+predicates = "3.0"
+rstest = "0.18"
+pretty_assertions = "1.4"
+
+# Test utilities
+anyhow = "1.0"
+thiserror = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.0", features = ["v4", "serde"] }
+
+# Architecture support
+x86_64 = "0.14"
+bitflags = "2.4"
+
+[dev-dependencies]
+# Additional test dependencies
+serial_test = "3.0"
+rstest = "0.18"
+
+[[test]]
+name = "bootloader_core_tests"
+harness = false
+
+[[test]]
+name = "boot_mode_detection_tests"
+harness = false
+
+[[test]
+name = "memory_management_tests"
+harness = false
+
+[[test]]
+name = "kernel_loading_tests"
+harness = false
+
+[[test]
+name = "uefi_boot_tests"
+harness = false
+
+[[test]
+name = "legacy_bios_tests"
+harness = false
+
+[[test]]
+name = "boot_configuration_tests"
+harness = false
+
+[[test]]
+name = "boot_state_tests"
+harness = false
+
+[[test]
+name = "error_handling_tests"
+harness = false
+
+[[test]
+name = "performance_tests"
+harness = false
+
+[[test]]
+name = "serial_console_tests"
+harness = false
+
+[[test]]
+name = "bootloader_security_tests"
+harness = false
+
+[[bench]]
+name = "boot_time_benchmarks"
+harness = false
+
+[[bench]]
+name = "memory_allocation_benchmarks"
+harness = false
+
+[[bench]]
+name = "kernel_loading_benchmarks"
+harness = false
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true

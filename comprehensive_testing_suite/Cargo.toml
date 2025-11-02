@@ -1,0 +1,90 @@
+[package]
+name = "multios-comprehensive-testing"
+version = "0.1.0"
+edition = "2021"
+authors = ["MultiOS Development Team"]
+description = "Comprehensive testing suite for MultiOS operating system"
+license = "MIT"
+repository = "https://github.com/multios/comprehensive-testing"
+keywords = ["testing", "operating-system", "rust", "ci-cd"]
+categories = ["development-tools", "testing"]
+
+[dependencies]
+# Core dependencies
+tokio = { version = "1.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+uuid = { version = "1.0", features = ["v4"] }
+chrono = { version = "0.4", features = ["serde"] }
+anyhow = "1.0"
+thiserror = "1.0"
+log = "0.4"
+env_logger = "0.10"
+
+# Testing and validation
+criterion = { version = "0.5", features = ["html_reports"] }
+proptest = "1.0"
+quickcheck = "1.0"
+
+# Performance monitoring
+sysinfo = "0.29"
+psutil = "0.1"
+
+# Networking and communication
+reqwest = { version = "0.11", features = ["json", "stream"] }
+async-std = "1.12"
+
+# File system and I/O
+tempfile = "3.0"
+walkdir = "2.0"
+glob = "0.3"
+
+# QEMU integration
+qemu = { version = "0.2", optional = true }
+
+# Report generation
+clap = { version = "4.0", features = ["derive"] }
+termcolor = "1.0"
+html-escape = "0.2"
+
+[dev-dependencies]
+# Additional testing dependencies
+mockall = { version = "0.12", optional = true }
+
+[features]
+default = ["std"]
+std = []
+simulation = ["qemu"]
+mocking = ["mockall"]
+parallel = ["tokio/multi_thread"]
+coverage = []
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.bench]
+opt-level = 3
+debug = true
+
+[[bin]]
+name = "multios_test_runner"
+path = "src/bin/test_runner.rs"
+
+[[bin]]
+name = "multios_test_orchestrator"
+path = "src/bin/test_orchestrator.rs"
+
+[[bin]]
+name = "multios_coverage_analyzer"
+path = "src/bin/coverage_analyzer.rs"
+
+[[bin]]
+name = "multios_performance_monitor"
+path = "src/bin/performance_monitor.rs"
+
+[[bin]]
+name = "multios_stress_tester"
+path = "src/bin/stress_tester.rs"

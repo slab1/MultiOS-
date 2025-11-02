@@ -1,0 +1,83 @@
+[package]
+name = "multios-bootloader-testing"
+version = "0.1.0"
+edition = "2021"
+description = "Comprehensive bootloader testing framework for MultiOS"
+authors = ["MultiOS Development Team"]
+license = "MIT OR Apache-2.0"
+
+[workspace]
+members = [
+    "unit",
+    "integration", 
+    "validation",
+    "scripts"
+]
+
+[dependencies]
+# Core testing framework
+tokio = { version = "1.0", features = ["full"] }
+anyhow = "1.0"
+thiserror = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["fmt", "env-filter"] }
+tracing-alloc = "0.1"
+
+# Logging
+log = "0.4"
+flexi_logger = "0.27"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.0", features = ["v4", "serde"] }
+
+# Test utilities
+criterion = { version = "0.5", features = ["html_reports"] }
+proptest = "1.4"
+serial_test = "3.0"
+tempfile = "3.8"
+mockall = "0.12"
+predicates = "3.0"
+rstest = "0.18"
+pretty_assertions = "1.4"
+
+# QEMU integration
+qemu-system = { package = "qemu-system", version = "0.1", optional = true }
+
+# Architecture support
+x86_64 = "0.14"
+bitflags = "2.4"
+spin = "0.9"
+
+[features]
+default = ["qemu", "logging", "serial", "parallel"]
+qemu = ["qemu-system"]
+logging = []
+serial = []
+parallel = []
+# Architecture features
+x86_64 = []
+aarch64 = []
+riscv64 = []
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true
+
+[[bench]]
+name = "boot_performance_benchmarks"
+harness = false
+
+[[bench]]
+name = "memory_allocation_benchmarks"
+harness = false
+
+[[bench]]
+name = "bootloader_startup_benchmarks"
+harness = false

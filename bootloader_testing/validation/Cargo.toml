@@ -1,0 +1,59 @@
+[package]
+name = "multios-bootloader-validation"
+version = "0.1.0"
+edition = "2021"
+description = "Bootloader validation and testing tools"
+authors = ["MultiOS Development Team"]
+
+[dependencies]
+# Core validation tools
+anyhow = "1.0"
+thiserror = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+uuid = { version = "1.0", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+
+# Logging and tracing
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["fmt", "env-filter", "chrono"] }
+tracing-alloc = "0.1"
+log = "0.4"
+flexi_logger = "0.27"
+
+# Testing utilities
+criterion = { version = "0.5", features = ["html_reports"] }
+serial_test = "3.0"
+predicates = "3.0"
+
+# Process and file handling
+tokio = { version = "1.0", features = ["full"] }
+std = "1.0"
+
+# Architecture support
+x86_64 = "0.14"
+bitflags = "2.4"
+
+[dev-dependencies]
+tempfile = "3.8"
+pretty_assertions = "1.4"
+
+[bin]
+name = "boot_validator"
+path = "src/main.rs"
+
+[features]
+default = ["cli", "logging", "report"]
+cli = []
+logging = []
+report = []
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true

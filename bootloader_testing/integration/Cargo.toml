@@ -1,0 +1,99 @@
+[package]
+name = "multios-bootloader-integration-tests"
+version = "0.1.0"
+edition = "2021"
+description = "Integration tests for bootloader with QEMU"
+authors = ["MultiOS Development Team"]
+
+[dependencies]
+# Core bootloader (relative path)
+multios-bootloader = { path = "../bootloader" }
+
+# Integration testing
+criterion = { version = "0.5", features = ["html_reports"] }
+tempfile = "3.8"
+serial_test = "3.0"
+tokio = { version = "1.0", features = ["full"] }
+
+# QEMU integration
+anyhow = "1.0"
+thiserror = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Test utilities
+predicates = "3.0"
+uuid = { version = "1.0", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+
+# Architecture support
+x86_64 = "0.14"
+bitflags = "2.4"
+
+[dev-dependencies]
+serial_test = "3.0"
+pretty_assertions = "1.4"
+
+[features]
+default = ["qemu", "multi_arch"]
+qemu = []
+# Enable multi-architecture testing
+multi_arch = ["x86_64"]
+
+[[test]]
+name = "qemu_boot_integration_tests"
+harness = false
+
+[[test]]
+name = "multi_arch_boot_tests"
+harness = false
+
+[[test]
+name = "boot_sequence_integration_tests"
+harness = false
+
+[[test]
+name = "memory_integration_tests"
+harness = false
+
+[[test]
+name = "uefi_integration_tests"
+harness = false
+
+[[test]
+name = "legacy_bios_integration_tests"
+harness = false
+
+[[test]
+name = "kernel_loading_integration_tests"
+harness = false
+
+[[test]
+name = "boot_performance_tests"
+harness = false
+
+[[test]
+name = "error_recovery_integration_tests"
+harness = false
+
+[[test]
+name = "serial_console_integration_tests"
+harness = false
+
+[[bench]]
+name = "boot_time_benchmarks"
+harness = false
+
+[[bench]]
+name = "qemu_performance_benchmarks"
+harness = false
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true

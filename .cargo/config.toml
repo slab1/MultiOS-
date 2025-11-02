@@ -1,0 +1,33 @@
+[build]
+# Default target for cross-compilation
+default-target = "x86_64-unknown-linux-gnu"
+
+# Target-specific linker configurations
+
+[target.x86_64-unknown-none]
+# x86_64 bare metal target - requires custom linker configuration
+linker = "rust-lld"
+rustflags = [
+    "-C", "link-arg=--script=/path/to/linker_script.ld",
+]
+
+[target.aarch64-unknown-none]
+# ARM64 bare metal target - use system cross-compiler
+linker = "aarch64-linux-gnu-gcc"
+rustflags = [
+    "-C", "link-arg=-nostartfiles",
+    "-C", "link-arg=-static",
+]
+
+[target.riscv64gc-unknown-none-elf]
+# RISC-V 64-bit bare metal target - use system cross-compiler
+linker = "riscv64-linux-gnu-gcc"
+rustflags = [
+    "-C", "link-arg=-nostartfiles",
+    "-C", "link-arg=-static",
+]
+
+# Global rustflags for all targets
+[unstable]
+# Enable build-std feature for standard library compilation
+# build-std = ["core", "compiler_builtins"]

@@ -1,0 +1,51 @@
+[package]
+name = "multios-kernel"
+version = "0.1.0"
+edition = "2021"
+description = "MultiOS Hybrid Microkernel"
+license = "MIT OR Apache-2.0"
+authors = ["MultiOS Team"]
+
+[dependencies]
+# Core kernel dependencies
+spin = "0.9"
+bitflags = "2.4"
+log = "0.4"
+x86_64 = "0.14"
+pic8259 = "0.10"
+linked_list_allocator = "0.10"
+uart_16550 = "0.3"
+pc-keyboard = "0.7"
+volatile = "0.4"
+
+# Multi-platform support
+bootloader = { version = "0.9", features = ["map_physical_memory"] }
+
+# Memory management
+multios-memory-manager = { path = "../libraries/memory-manager", features = ["x86_64"] }
+
+# HAL dependencies
+rust-std = { package = "rust-std", version = "1.65.0", features = ["core"] }
+
+# Testing
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[features]
+default = []
+virtio = ["virtio-drivers"]
+uefi = ["bootloader/uefi"]
+legacy = ["bootloader/legacy"]
+
+[profile.dev]
+opt-level = 1
+debug = true
+lto = false
+codegen-units = 1
+panic = "abort"
+
+[profile.release]
+opt-level = "s"
+lto = "thin"
+codegen-units = 1
+panic = "abort"

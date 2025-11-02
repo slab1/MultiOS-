@@ -1,0 +1,206 @@
+# Sample Test Scenarios for UI Testing Framework
+
+## Login Page Test Scenario
+```toml
+[login_scenario]
+name = "User Login Workflow"
+description = "Test the complete user login process"
+
+[[login_scenario.steps]]
+action = "navigate"
+target = "/login"
+description = "Navigate to login page"
+
+[[login_scenario.steps]]
+action = "wait_for_element"
+target = "username_field"
+timeout = 5000
+
+[[login_scenario.steps]]
+action = "input_text"
+target = "username_field"
+value = "test_user"
+
+[[login_scenario.steps]]
+action = "input_text"
+target = "password_field"
+value = "test_password"
+
+[[login_scenario.steps]]
+action = "click"
+target = "submit_button"
+
+[[login_scenario.steps]]
+action = "wait_for_url"
+pattern = "/dashboard"
+timeout = 10000
+```
+
+## Dashboard UI Test Scenario
+```toml
+[dashboard_scenario]
+name = "Dashboard Navigation"
+description = "Test dashboard UI navigation and responsiveness"
+
+[[dashboard_scenario.steps]]
+action = "navigate"
+target = "/dashboard"
+description = "Navigate to dashboard"
+
+[[dashboard_scenario.steps]]
+action = "take_screenshot"
+filename = "dashboard_main.png"
+description = "Capture main dashboard view"
+
+[[dashboard_scenario.steps]]
+action = "click"
+target = "menu_button"
+description = "Open main menu"
+
+[[dashboard_scenario.steps]]
+action = "click"
+target = "settings_menu_item"
+description = "Navigate to settings"
+
+[[dashboard_scenario.steps]]
+action = "take_screenshot"
+filename = "settings_page.png"
+description = "Capture settings page"
+```
+
+## Settings Dialog Test Scenario
+```toml
+[settings_scenario]
+name = "Settings Configuration"
+description = "Test settings dialog interactions"
+
+[[settings_scenario.steps]]
+action = "open_settings"
+description = "Open settings dialog"
+
+[[settings_scenario.steps]]
+action = "test_toggle"
+target = "notifications_toggle"
+description = "Toggle notifications setting"
+
+[[settings_scenario.steps]]
+action = "test_dropdown"
+target = "theme_selector"
+options = ["light", "dark", "auto"]
+description = "Test theme selector"
+
+[[settings_scenario.steps]]
+action = "test_slider"
+target = "volume_slider"
+min_value = 0
+max_value = 100
+default_value = 50
+description = "Test volume slider"
+
+[[settings_scenario.steps]]
+action = "save_settings"
+description = "Save settings changes"
+```
+
+## Accessibility Test Scenario
+```toml
+[accessibility_scenario]
+name = "Login Page Accessibility"
+description = "Comprehensive accessibility testing for login page"
+
+[[accessibility_scenario.checks]]
+type = "color_contrast"
+threshold = 4.5
+critical_only = false
+
+[[accessibility_scenario.checks]]
+type = "keyboard_navigation"
+check_tab_order = true
+check_focus_indicators = true
+
+[[accessibility_scenario.checks]]
+type = "screen_reader"
+check_aria_labels = true
+check_heading_structure = true
+
+[[accessibility_scenario.checks]]
+type = "alt_text"
+check_images = true
+check_icons = true
+```
+
+## Performance Test Scenario
+```toml
+[performance_scenario]
+name = "Dashboard Performance"
+description = "Performance testing for dashboard UI"
+
+[performance_scenario.metrics]
+target_fps = 60
+max_render_time_ms = 16.7
+max_memory_mb = 200
+max_cpu_percent = 50
+
+[performance_scenario.test_phases]
+[[performance_scenario.test_phases]]
+name = "initial_load"
+duration_seconds = 5
+description = "Test initial dashboard loading performance"
+
+[[performance_scenario.test_phases]]
+name = "interaction_stress"
+duration_seconds = 30
+description = "Test performance under user interaction stress"
+
+[[performance_scenario.test_phases]]
+name = "memory_leak"
+duration_seconds = 120
+description = "Test for memory leaks during extended use"
+```
+
+## Regression Test Scenario
+```toml
+[regression_scenario]
+name = "UI Regression Suite"
+description = "Visual regression testing for key UI components"
+
+[[regression_scenario.tests]]
+name = "login_page"
+baseline = "baseline/login_page.png"
+threshold = 0.95
+capture_area = "login_window"
+
+[[regression_scenario.tests]]
+name = "dashboard"
+baseline = "baseline/dashboard.png"
+threshold = 0.90
+capture_area = "dashboard_window"
+
+[[regression_scenario.tests]
+name = "settings_dialog"
+baseline = "baseline/settings_dialog.png"
+threshold = 0.92
+capture_area = "settings_window"
+
+[[regression_scenario.tests]]
+name = "navigation_menu"
+baseline = "baseline/navigation_menu.png"
+threshold = 0.88
+capture_area = "menu_window"
+
+[regression_scenario.ignore_regions]
+# Dynamic areas to ignore during comparison
+[[regression_scenario.ignore_regions]]
+x = 800
+y = 10
+width = 120
+height = 30
+description = "Status bar with timestamps"
+
+[[regression_scenario.ignore_regions]]
+x = 750
+y = 580
+width = 100
+height = 20
+description = "Footer timestamp area"
+```

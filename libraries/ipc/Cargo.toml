@@ -1,0 +1,43 @@
+[package]
+name = "multios-ipc"
+version = "0.1.0"
+edition = "2021"
+description = "MultiOS Inter-Process Communication System"
+license = "MIT OR Apache-2.0"
+authors = ["MultiOS Team"]
+
+[dependencies]
+# Core IPC
+spin = "0.9"
+bitflags = "2.4"
+log = "0.4"
+
+# Message passing
+# Circular buffer for message queues
+
+# Testing
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+proptest = "1.4"
+
+[features]
+default = ["channels", "shared_memory"]
+channels = []
+shared_memory = []
+signals = []
+semaphores = []
+pipes = []
+sockets = []
+
+[profile.dev]
+opt-level = 1
+debug = true
+lto = false
+codegen-units = 1
+panic = "abort"
+
+[profile.release]
+opt-level = "s"
+lto = "thin"
+codegen-units = 1
+panic = "abort"

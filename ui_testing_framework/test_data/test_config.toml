@@ -1,0 +1,49 @@
+# Test Configuration File
+# This file contains configuration settings for various test scenarios
+
+# General Test Settings
+[general]
+test_timeout = 300
+screenshot_delay = 1000
+retry_attempts = 3
+
+# Screenshot Comparison Settings
+[comparison]
+default_threshold = 0.95
+pixel_threshold = 0.02
+ssim_threshold = 0.90
+phash_threshold = 8
+
+# Performance Benchmark Settings
+[performance]
+target_fps = 60
+memory_threshold_mb = 100
+cpu_threshold_percent = 80
+render_time_threshold_ms = 16.7
+
+# Accessibility Test Settings
+[accessibility]
+wcag_level = "AA"
+contrast_ratio_threshold = 4.5
+check_keyboard_navigation = true
+check_screen_reader = true
+
+# Platform Test Settings
+[platform]
+supported_resolutions = [
+    "1920x1080",
+    "1366x768",
+    "2560x1440"
+]
+supported_browsers = [
+    "chrome",
+    "firefox",
+    "safari"
+]
+
+# Regression Test Settings
+[regression]
+baseline_dir = "test_data/baselines"
+screenshot_dir = "test_data/screenshots"
+diff_dir = "test_data/diffs"
+auto_update_baselines = false

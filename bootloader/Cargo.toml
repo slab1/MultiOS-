@@ -1,0 +1,62 @@
+[package]
+name = "multios-bootloader"
+version = "0.2.0"
+edition = "2021"
+description = "MultiOS Bootloader with Multiboot2 Support"
+license = "MIT OR Apache-2.0"
+authors = ["MultiOS Team"]
+
+[dependencies]
+# Bootloader core
+bootloader = "0.9"
+x86_64 = "0.14"
+spin = "0.9"
+bitflags = "2.4"
+log = "0.4"
+
+# UEFI support
+uefi = "0.20"
+
+# Memory management
+linked_list_allocator = "0.10"
+
+# Serial console
+uart_16550 = "0.3"
+
+# BIOS/Firmware interfaces
+pc-keyboard = "0.7"
+
+# Error handling
+thiserror = "1.0"
+
+# Concurrency
+atomic = "0.5"
+
+# Multiboot2 and boot protocol
+# Add any additional dependencies for compression/decompression if needed
+
+# Testing
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[features]
+default = ["uefi", "logging"]
+uefi = ["bootloader/uefi"]
+legacy = ["bootloader/legacy"]
+logging = []
+debug_mode = []
+memory_test = []
+examples = []
+
+[profile.dev]
+opt-level = 1
+debug = true
+lto = false
+codegen-units = 1
+panic = "abort"
+
+[profile.release]
+opt-level = "s"
+lto = "thin"
+codegen-units = 1
+panic = "abort"

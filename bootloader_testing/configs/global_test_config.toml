@@ -1,0 +1,186 @@
+# Global Bootloader Testing Configuration
+
+[system]
+# System requirements and limits
+min_memory_gb = 4
+min_disk_gb = 10
+max_concurrent_tests = 8
+test_timeout_seconds = 300
+
+[architecture.x86_64]
+# x86_64 specific configuration
+name = "x86_64"
+qemu_binary = "qemu-system-x86_64"
+machine = "pc"
+default_memory = "512M"
+max_memory = "8G"
+cpus = 2
+boot_modes = ["uefi", "legacy"]
+supports_kvm = true
+uefi_firmware = "/usr/share/OVMF/OVMF_CODE.fd"
+legacy_bios = "bios-256k.bin"
+
+[architecture.aarch64]
+# ARM64 specific configuration
+name = "aarch64"
+qemu_binary = "qemu-system-aarch64"
+machine = "virt"
+default_memory = "1G"
+max_memory = "16G"
+cpus = 4
+boot_modes = ["uefi"]
+supports_kvm = true
+uefi_firmware = "/usr/share/AAVMF/AAVMF_CODE.fd"
+
+[architecture.riscv64]
+# RISC-V specific configuration
+name = "riscv64"
+qemu_binary = "qemu-system-riscv64"
+machine = "virt"
+default_memory = "1G"
+max_memory = "16G"
+cpus = 4
+boot_modes = ["uefi"]
+supports_kvm = true
+opensbi_firmware = "/usr/share/opensbi-riscv64-generic/fw_jump.elf"
+uefi_firmware = "/usr/share/AAVMF/AAVMF_CODE.fd"
+
+[testing]
+# General testing configuration
+parallel = true
+cleanup_after_tests = true
+save_console_output = true
+generate_reports = true
+log_level = "INFO"
+structured_logging = true
+
+[memory]
+# Memory testing configuration
+test_sizes = ["512M", "1G", "2G", "4G"]
+memory_test_enabled = true
+memory_test_patterns = ["sequential", "random", "checkerboard", "walking_ones"]
+memory_leak_detection = true
+memory_pressure_test = false
+
+[performance]
+# Performance testing configuration
+default_iterations = 5
+warmup_iterations = 2
+measure_cpu_usage = true
+measure_memory_usage = true
+measure_disk_io = true
+measure_network_io = false
+timeout_per_test = 60
+
+[qemu]
+# QEMU configuration
+kvm_enabled = true
+nographic = true
+audio_enabled = false
+enable_debug = false
+monitor_enabled = false
+serial_enabled = true
+parallel_enabled = false
+
+[console]
+# Console output configuration
+serial_device = "isa-serial"
+serial_chardev = "serial0"
+console_output_file = "console_output.log"
+log_console_output = true
+console_timeout = 30
+
+[logging]
+# Logging configuration
+level = "INFO"
+file = "test_results/bootloader_test.log"
+structured_file = "test_results/structured.log"
+performance_file = "test_results/performance.log"
+max_log_size_mb = 100
+max_log_files = 10
+json_format = true
+
+[reporting]
+# Test reporting configuration
+formats = ["html", "json", "csv"]
+output_directory = "test_results"
+include_performance = true
+include_system_info = true
+include_test_artifacts = false
+
+[security]
+# Security testing configuration
+enable_sanitizers = true
+enable_stack_protector = true
+enable_aslr = true
+check_code_integrity = true
+validate_boot_chain = true
+
+[ci]
+# CI/CD configuration
+fail_fast = false
+continue_on_failure = false
+parallel_jobs = 4
+artifact_retention_days = 30
+test_retry_count = 2
+
+[notifications]
+# Notification configuration
+email_enabled = false
+webhook_enabled = false
+slack_enabled = false
+discord_enabled = false
+
+[features]
+# Feature toggles
+uefi_tests = true
+legacy_tests = true
+multi_arch_tests = true
+performance_tests = true
+stress_tests = false
+security_tests = true
+regression_tests = true
+
+[environment]
+# Test environment variables
+QEMU_AUDIO_DRV = "none"
+SDL_VIDEODRIVER = "dummy"
+RUST_LOG = "bootloader=info"
+MULTIOS_TEST_MODE = "comprehensive"
+
+[paths]
+# Path configuration
+test_kernels_dir = "test_kernels"
+test_configs_dir = "configs"
+test_results_dir = "test_results"
+log_dir = "test_logs"
+temp_dir = "/tmp"
+qemu_firmware_dir = "/usr/share"
+
+[templates]
+# Test template configuration
+boot_timeout_template = "{timeout_seconds}"
+memory_size_template = "{memory_size}"
+console_output_template = "{test_name}_{architecture}_{timestamp}.log"
+report_filename_template = "bootloader_test_report_{timestamp}.html"
+
+[constraints]
+# Test constraints
+max_boot_time_seconds = 60
+max_memory_usage_mb = 8192
+min_disk_space_gb = 5
+max_cpu_usage_percent = 80
+
+[thresholds]
+# Performance thresholds
+boot_time_threshold_ms = 5000
+memory_allocation_threshold_ms = 100
+console_output_rate_threshold_mbps = 10
+
+[extensions]
+# File extensions for test files
+bootloader_extension = "bin"
+kernel_extension = "elf"
+initrd_extension = "img"
+disk_extension = "qcow2"
+config_extension = "toml"

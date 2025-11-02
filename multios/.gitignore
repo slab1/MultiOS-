@@ -1,0 +1,79 @@
+# Build artifacts
+/target/
+/dist/
+/build.log
+/test.log
+
+# Rust specific
+Cargo.lock
+
+# IDE specific
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Test results
+/test_results/
+/coverage_report/
+/benchmark_results/
+/ci_results/
+
+# Documentation
+/docs/generated/
+
+# Docker
+.dockerignore
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Log files
+*.log
+
+# Performance artifacts
+*.prof
+*.perf
+
+# IDE backup files
+*~
+.#*
+#*#
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Release artifacts
+*.tar.gz
+*.zip
+*.deb
+*.rpm
+
+# Container specific
+docker-compose.override.yml
+
+# Generated files
+generated/
+*.generated.*
+
+# Cache directories
+.cache/
+.npm/
+.yarn/
+
+# Coverage reports
+coverage.xml
+*.lcov
+
+# Backup files
+*.backup
+*.orig

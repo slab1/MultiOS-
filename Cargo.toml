@@ -1,0 +1,52 @@
+[workspace]
+resolver = "2"
+members = [
+    "kernel",
+    "bootloader", 
+    "libraries/*",
+    "tools/*"
+]
+
+[workspace.package]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+authors = ["MultiOS Team"]
+
+[workspace.dependencies]
+# Shared dependencies across the workspace
+spin = "0.9"
+bitflags = "2.4"
+log = "0.4"
+bootloader = "0.9"
+pic8259 = "0.10"
+x86_64 = "0.14"
+linked_list_allocator = "0.10"
+uart_16550 = "0.3"
+pc-keyboard = "0.7"
+volatile = "0.4"
+rcstr = "0.1"
+virtio-drivers = "0.4"
+
+# Testing dependencies
+criterion = { version = "0.5", features = ["html_reports"] }
+proptest = "1.4"
+fakeit = "1.4"
+
+[profile.dev]
+opt-level = 1
+debug = true
+lto = false
+codegen-units = 1
+panic = "abort"
+
+[profile.release]
+opt-level = "s"
+lto = "thin"
+codegen-units = 1
+panic = "abort"
+
+[profile.dev.package."*"]
+opt-level = 0
+
+[profile.release.package."*"]
+opt-level = "s"

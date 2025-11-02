@@ -1,0 +1,242 @@
+{
+  "_source_id": 33,
+  "sources": {
+    "Operating System Architectures Analysis": {
+      "https://learningdaily.dev/os-design-monolithic-vs-microkernel-architecture-78981dd41c49": {
+        "id": 1,
+        "publisher": "LearningDaily",
+        "url": "https://learningdaily.dev/os-design-monolithic-vs-microkernel-architecture-78981dd41c49",
+        "title": "OS Design: Monolithic vs. microkernel architecture",
+        "info": "Comprehensive comparison of monolithic and microkernel OS architectures, including definitions, structures, key differences, advantages, and disadvantages of each approach"
+      },
+      "https://www.windriver.com/sites/default/files/2024-05/monolithic-and-microkernel-architectures.pdf": {
+        "id": 2,
+        "publisher": "Wind River",
+        "url": "https://www.windriver.com/sites/default/files/2024-05/monolithic-and-microkernel-architectures.pdf",
+        "title": "An Overview of Monolithic and Microkernel Architectures",
+        "info": "Detailed technical comparison including performance characteristics, implementation considerations, and suitability for different use cases. Monolithic kernels offer faster processing while microkernels provide size and modularity advantages"
+      },
+      "https://www.usenix.org/system/files/osdi24-chen-haibo.pdf": {
+        "id": 3,
+        "publisher": "USENIX OSDI 2024",
+        "url": "https://www.usenix.org/system/files/osdi24-chen-haibo.pdf",
+        "title": "Microkernel Goes General: Performance and Compatibility in the HongMeng Production Microkernel",
+        "info": "Modern microkernel design addressing traditional performance and compatibility issues through IPC optimization, differentiated isolation classes, flexible composition, and Linux API/ABI compatibility"
+      },
+      "https://doc.redox-os.org/book/why-rust.html": {
+        "id": 4,
+        "publisher": "Redox OS Project",
+        "url": "https://doc.redox-os.org/book/why-rust.html",
+        "title": "Why Rust? - The Redox Operating System",
+        "info": "Analysis of Rust's safety features (memory safety, thread safety, NULL safety) and how they influence kernel design, including reduced attack surface and improved reliability"
+      },
+      "https://doc.redox-os.org/book/why-a-new-os.html": {
+        "id": 5,
+        "publisher": "Redox OS Project",
+        "url": "https://doc.redox-os.org/book/why-a-new-os.html",
+        "title": "Why a New OS? - The Redox Operating System",
+        "info": "Design philosophy and microkernel architecture implementation, including restartless design, component isolation, and safety considerations for educational OS development"
+      },
+      "https://os.phil-opp.com/": {
+        "id": 6,
+        "publisher": "Philipp Oppermann",
+        "url": "https://os.phil-opp.com/",
+        "title": "Writing an OS in Rust",
+        "info": "Comprehensive tutorial series on OS development in Rust covering bare bones development, interrupts, memory management, and multitasking with practical implementation examples"
+      },
+      "https://patpannuto.com/pubs/levy15ownership.pdf": {
+        "id": 7,
+        "publisher": "Stanford University",
+        "url": "https://patpannuto.com/pubs/levy15ownership.pdf",
+        "title": "Ownership is Theft: Experiences Building an Embedded OS in Rust",
+        "info": "Detailed analysis of challenges in using Rust for embedded OS development, including ownership model limitations, resource sharing issues, and proposed execution contexts solution"
+      }
+    },
+    "Rust Cross-Compilation Guide": {
+      "https://rust-lang.github.io/rustup/cross-compilation.html": {
+        "id": 8,
+        "publisher": "Rust Project",
+        "url": "https://rust-lang.github.io/rustup/cross-compilation.html",
+        "title": "Cross-compilation - The rustup book",
+        "info": "Official rustup documentation covering target installation with rustup target add, building for targets with --target flag, external tooling requirements, and target management best practices"
+      },
+      "https://blog.logrocket.com/guide-cross-compilation-rust/": {
+        "id": 9,
+        "publisher": "LogRocket",
+        "url": "https://blog.logrocket.com/guide-cross-compilation-rust/",
+        "title": "A guide to cross-compilation in Rust",
+        "info": "LogRocket's comprehensive guide covering Rust cross-compilation basics, using cross crate for simplified setup, platform representation, Linux to Windows compilation, and platform-specific code with cfg attributes"
+      },
+      "https://www.tangramvision.com/blog/cross-compiling-your-project-in-rust": {
+        "id": 10,
+        "publisher": "Tangram Vision",
+        "url": "https://www.tangramvision.com/blog/cross-compiling-your-project-in-rust",
+        "title": "Cross-Compiling Your Project in Rust",
+        "info": "Tangram Vision's practical guide covering basic cross-compilation, cross project capabilities with Docker/Podman, osxcross setup for macOS cross-compilation, and best practices for cargo configuration and troubleshooting"
+      },
+      "https://doc.rust-lang.org/rustc/platform-support.html": {
+        "id": 11,
+        "publisher": "Rust Project",
+        "url": "https://doc.rust-lang.org/rustc/platform-support.html",
+        "title": "Platform Support - The rustc book",
+        "info": "Official Rust compiler documentation detailing platform support tiers for x86_64, ARM64, and RISC-V targets, including Tier 1-3 classifications and specific target information for each architecture"
+      },
+      "https://www.docker.com/blog/cross-compiling-rust-code-for-multiple-architectures/": {
+        "id": 12,
+        "publisher": "Docker",
+        "url": "https://www.docker.com/blog/cross-compiling-rust-code-for-multiple-architectures/",
+        "title": "Cross Compiling Rust Code for Multiple Architectures",
+        "info": "Docker blog guide covering multi-architecture Rust cross-compilation using containers, Docker image setup for different targets (x86_64 Windows, ARMv7, ARM64), and integration with Docker Buildx"
+      },
+      "https://medium.com/@mellomello2030/write-a-github-actions-workflow-for-rust-cross-compilation-44284dfa9597": {
+        "id": 13,
+        "publisher": "Medium",
+        "url": "https://medium.com/@mellomello2030/write-a-github-actions-workflow-for-rust-cross-compilation-44284dfa9597",
+        "title": "Write a GitHub Actions Workflow for Rust cross-compilation",
+        "info": "Medium article detailing GitHub Actions workflow for Rust cross-compilation, including matrix strategies for multi-architecture builds, CI/CD setup, and automated release processes"
+      },
+      "https://docs.rust-embedded.org/book/start/qemu.html": {
+        "id": 14,
+        "publisher": "Rust Embedded WG",
+        "url": "https://docs.rust-embedded.org/book/start/qemu.html",
+        "title": "QEMU - The Embedded Rust Book",
+        "info": "Embedded Rust book chapter on QEMU integration for embedded projects, covering Cortex-M3 setup, semihosting, debugging with GDB, and cargo build system integration"
+      },
+      "https://github.com/cross-rs/cross/wiki/Configuration": {
+        "id": 15,
+        "publisher": "Cross-rs Project",
+        "url": "https://github.com/cross-rs/cross/wiki/Configuration",
+        "title": "Configuration · cross-rs/cross Wiki",
+        "info": "Cross-rs GitHub wiki covering comprehensive cargo cross configuration options via Cross.toml, environment variables, custom images, and advanced build settings"
+      },
+      "https://www.robopenguins.com/cross-compiling/": {
+        "id": 16,
+        "publisher": "Robopenguins",
+        "url": "https://www.robopenguins.com/cross-compiling/",
+        "title": "Testing Cross Compiling with QEMU",
+        "info": "Robopenguins blog on QEMU testing for cross-compilation, covering Raspberry Pi ARM emulation, Docker-based cross-compiler setup, and binary transfer methods"
+      },
+      "https://blog.logrocket.com/debugging-rust-apps-with-gdb/": {
+        "id": 17,
+        "publisher": "LogRocket",
+        "url": "https://blog.logrocket.com/debugging-rust-apps-with-gdb/",
+        "title": "Debugging Rust apps with GDB",
+        "info": "Comprehensive guide to Rust debugging with GDB covering rust-gdb wrapper, command-line techniques, async application debugging, and practical examples with code snippets"
+      },
+      "https://docs.rust-embedded.org/embedonomicon/custom-target.html": {
+        "id": 18,
+        "publisher": "Rust Embedded WG",
+        "url": "https://docs.rust-embedded.org/embedonomicon/custom-target.html",
+        "title": "Creating a custom target - The Embedonomicon",
+        "info": "Official guide to creating custom Rust targets for embedded development, covering target JSON structure, atomics configuration, linker integration, and build-std feature"
+      },
+      "https://codepitbull.medium.com/cross-compilation-for-rust-and-how-to-reduce-binary-sizes-by-88-269deea50c1b": {
+        "id": 19,
+        "publisher": "CodePitBull",
+        "url": "https://codepitbull.medium.com/cross-compilation-for-rust-and-how-to-reduce-binary-sizes-by-88-269deea50c1b",
+        "title": "Cross compilation for Rust and how to reduce binary sizes by 88%",
+        "info": "Case study on cross-compilation using cross tool with Docker, binary size optimization techniques including release builds and UPX compression, practical implementation examples"
+      },
+      "https://blog.crafteo.io/2024/02/29/my-rust-cross-compilation-journey/": {
+        "id": 20,
+        "publisher": "Crafteo",
+        "url": "https://blog.crafteo.io/2024/02/29/my-rust-cross-compilation-journey/",
+        "title": "A Rust cross compilation journey",
+        "info": "Real-world case study of cross-compilation for novops project targeting Linux, macOS, and Windows across x86_64 and ARM64, covering practical challenges and solutions including osxcross setup"
+      }
+    },
+    "Bootloader Technologies Analysis": {
+      "https://uefi.org/specs/UEFI/2.10/01_Introduction.html": {
+        "id": 21,
+        "publisher": "UEFI Forum",
+        "url": "https://uefi.org/specs/UEFI/2.10/01_Introduction.html",
+        "title": "UEFI Specification 2.10 - Introduction",
+        "info": "Comprehensive UEFI specification covering boot phases, architecture, memory management, protocols, and differences from BIOS. Provides detailed technical implementation guidance."
+      },
+      "https://wiki.osdev.org/UEFI": {
+        "id": 22,
+        "publisher": "OSDev Community",
+        "url": "https://wiki.osdev.org/UEFI",
+        "title": "UEFI Implementation Guide",
+        "info": "Practical implementation guide for UEFI in OS development, including binary format, calling conventions, memory management, and development environments like EDK2 and GNU-EFI."
+      },
+      "https://docs.u-boot.org/en/v2022.04/arch/arm64.html": {
+        "id": 23,
+        "publisher": "Das U-Boot Project",
+        "url": "https://docs.u-boot.org/en/v2022.04/arch/arm64.html",
+        "title": "ARM64 U-Boot Architecture Documentation",
+        "info": "ARM64-specific U-Boot implementation details covering exception levels, FDT placement, SMP bringup, and build requirements for AArch64 systems."
+      },
+      "https://popovicu.com/posts/risc-v-sbi-and-full-boot-process/": {
+        "id": 24,
+        "publisher": "Uros Popovic",
+        "url": "https://popovicu.com/posts/risc-v-sbi-and-full-boot-process/",
+        "title": "RISC-V SBI and the Full Boot Process",
+        "info": "Comprehensive explanation of RISC-V boot process, SBI implementation, OpenSBI flavors (FW_PAYLOAD, FW_JUMP, FW_DYNAMIC), and comparison with traditional x86 boot methods."
+      },
+      "https://crates.io/crates/limine": {
+        "id": 25,
+        "publisher": "crates.io",
+        "url": "https://crates.io/crates/limine",
+        "title": "Limine Boot Protocol Rust Crate",
+        "info": "Rust crate for parsing Limine boot protocol structures, providing bindings for cross-architecture bootloader development in Rust supporting both BIOS and UEFI."
+      },
+      "https://github.com/rust-osdev/bootloader": {
+        "id": 26,
+        "publisher": "rust-osdev Organization",
+        "url": "https://github.com/rust-osdev/bootloader",
+        "title": "Rust Bootloader Crate",
+        "info": "Pure Rust bootloader implementation for x86_64 supporting both BIOS and UEFI modes, providing simplified kernel API and bootable disk image creation functionality."
+      },
+      "https://developer.arm.com/documentation/102158/0101/Booting-OpenEmbedded-using-EDK-II-UEFI": {
+        "id": 27,
+        "publisher": "Arm Developer",
+        "url": "https://developer.arm.com/documentation/102158/0101/Booting-OpenEmbedded-using-EDK-II-UEFI",
+        "title": "Booting OpenEmbedded using EDK II UEFI",
+        "info": "ARM64 UEFI development guide covering EDK2 build process, OpenEmbedded boot, device tree usage, and practical implementation examples for educational purposes."
+      },
+      "https://cyberpanel.net/blog/bios-vs-uefi": {
+        "id": 28,
+        "publisher": "CyberPanel",
+        "url": "https://cyberpanel.net/blog/bios-vs-uefi",
+        "title": "BIOS vs UEFI Comparison 2024",
+        "info": "Detailed comparison of BIOS vs UEFI focusing on cross-architecture compatibility, portable boot code techniques, and abstraction layers in modern bootloader design."
+      },
+      "https://wiki.osdev.org/Multiboot": {
+        "id": 29,
+        "publisher": "OSDev Community",
+        "url": "https://wiki.osdev.org/Multiboot",
+        "title": "Multiboot Specification",
+        "info": "Multiboot specification standard for educational OS development, providing uniform boot interface across architectures with magic numbers and standardized information structures."
+      },
+      "http://wiki.osdev.org/Rolling_Your_Own_Bootloader": {
+        "id": 30,
+        "publisher": "OSDev Community",
+        "url": "http://wiki.osdev.org/Rolling_Your_Own_Bootloader",
+        "title": "Rolling Your Own Bootloader",
+        "info": "Educational guide for developing custom bootloaders covering memory management, protected mode entry, debugging techniques, and common development challenges."
+      },
+      "https://github.com/rust-embedded/rust-raspberrypi-OS-tutorials": {
+        "id": 31,
+        "publisher": "Rust Embedded Community",
+        "url": "https://github.com/rust-embedded/rust-raspberrypi-OS-tutorials",
+        "title": "Rust Raspberry Pi OS Tutorials",
+        "info": "Step-by-step tutorial series for ARM64 OS development in Rust targeting Raspberry Pi, covering bootloader implementation, hardware abstraction, and debugging workflows."
+      },
+      "https://blog.malware.re/2023/08/20/rust-os-part1/index.html": {
+        "id": 32,
+        "publisher": "Malware.re Blog",
+        "url": "https://blog.malware.re/2023/08/20/rust-os-part1/index.html",
+        "title": "OS Experiment in Rust - Creating a UEFI Loader",
+        "info": "Practical guide for creating UEFI bootloaders in Rust, covering toolchain setup, development workflow, panic handlers, and QEMU testing environment configuration."
+      },
+      "https://krinkinmu.github.io/2021/01/17/devicetree.html": {
+        "id": 33,
+        "publisher": "Mike's Homepage",
+        "url": "https://krinkinmu.github.io/2021/01/17/devicetree.html",
+        "title": "Introduction to Devicetree Specification",
+        "info": "Device Tree specification and implementation guide covering hardware description format, binary structure, node properties, and usage in ARM/RISC-V boot processes."
+      }
+    }
+  }
+}
