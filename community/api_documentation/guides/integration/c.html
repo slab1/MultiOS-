@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Integration Guide - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar">
+            <div class="nav-content">
+                <div class="nav-section">
+                    <h3>API Reference</h3>
+                    <ul>
+                        <li><a href="../../api_reference/kernel.html" class="nav-link">Kernel API</a></li>
+                        <li><a href="../../api_reference/memory.html" class="nav-link">Memory Management</a></li>
+                        <li><a href="../../api_reference/process.html" class="nav-link">Process Management</a></li>
+                        <li><a href="../../api_reference/filesystem.html" class="nav-link">File System</a></li>
+                        <li><a href="../../api_reference/networking.html" class="nav-link">Network</a></li>
+                        <li><a href="../../api_reference/drivers.html" class="nav-link">Driver API</a></li>
+                        <li><a href="../../api_reference/gui.html" class="nav-link">GUI Framework</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Tutorials</h3>
+                    <ul>
+                        <li><a href="../../tutorials/beginner/index.html" class="nav-link">Beginner</a></li>
+                        <li><a href="../../tutorials/intermediate/index.html" class="nav-link">Intermediate</a></li>
+                        <li><a href="../../tutorials/advanced/index.html" class="nav-link">Advanced</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Guides</h3>
+                    <ul>
+                        <li><a href="rust.html" class="nav-link">Rust Integration</a></li>
+                        <li><a href="c.html" class="nav-link active">C Integration</a></li>
+                        <li><a href="python.html" class="nav-link">Python Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="content-header">
+                    <h1>C Integration Guide</h1>
+                    <p class="lead">Build MultiOS applications using C with MultiOS APIs</p>
+                    <div class="content-meta">
+                        <span class="badge badge-language">C</span>
+                        <span class="badge badge-difficulty">Intermediate</span>
+                        <span class="badge badge-ecosystem">Native</span>
+                    </div>
+                </div>
+
+                <!-- Language Overview -->
+                <section class="content-section">
+                    <h2>C Development with MultiOS</h2>
+                    <p>C remains a crucial language for system programming, and MultiOS provides comprehensive C API bindings for building high-performance applications.</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>System Programming</h3>
+                                <p>Low-level system programming with direct hardware access.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Maximum Performance</h3>
+                                <p>Optimal performance for critical system components.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-plug"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>ABI Compatibility</h3>
+                                <p>Seamless integration with existing C libraries and systems.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Tooling Support</h3>
+                                <p>Full support for GCC, Clang, Make, CMake, and debugging tools.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Setup Section -->
+                <section class="content-section">
+                    <h2>Development Environment Setup</h2>
+                    
+                    <div class="setup-steps">
+                        <div class="setup-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>Install C Compiler</h3>
+                                <div class="code-example-container">
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <h4>Install GCC or Clang</h4>
+                                        </div>
+                                        <pre><code class="language-bash"># Install GCC
+sudo apt-get install build-essential
+
+# Install Clang (alternative)
+sudo apt-get install clang
+
+# Verify installation
+gcc --version
+clang --version</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setup-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>Download MultiOS C SDK</h3>
+                                <div class="code-example-container">
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <h4>Set up MultiOS C development headers</h4>
+                                        </div>
+                                        <pre><code class="language-bash"># Download MultiOS C SDK
+wget https://github.com/multios/sdk/releases/latest/download/multi-c-sdk.tar.gz
+
+# Extract SDK
+tar -xzf multi-c-sdk.tar.gz
+cd multi-c-sdk/
+
+# Install headers and libraries
+sudo cp -r include/* /usr/local/include/
+sudo cp -r lib/* /usr/local/lib/
+sudo ldconfig</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setup-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>Create First Project</h3>
+                                <div class="code-example-container">
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <h4>Create and build a simple C application</h4>
+                                        </div>
+                                        <pre><code class="language-bash"># Create project structure
+mkdir my_multi_app
+cd my_multi_app
+
+# Create Makefile
+cat > Makefile << 'EOF'
+CC = gcc
+CFLAGS = -Wall -Wextra -O2 -I/usr/local/include
+LDFLAGS = -L/usr/local/lib -lmulti_fs -lmulti_proc -lmulti_net
+
+TARGET = my_app
+SOURCES = main.c utils.c
+
+all: $(TARGET)
+
+$(TARGET): $(SOURCES)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SOURCES) $(LDFLAGS)
+
+clean:
+	rm -f $(TARGET)
+
+.PHONY: all clean
+EOF</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Basic Usage -->
+                <section class="content-section">
+                    <h2>Basic MultiOS C Application</h2>
+                    
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>Simple MultiOS Application</h4>
+                            </div>
+                            <pre><code class="language-c">#include &lt;multi_fs.h&gt;
+#include &lt;multi_proc.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main(int argc, char *argv[]) {
+    printf("Starting MultiOS C Application\n");
+    
+    // Initialize file system
+    multi_fs_error_t fs_error;
+    multi_fs_t *fs = multi_fs_init("/app", &fs_error);
+    if (!fs) {
+        fprintf(stderr, "Failed to initialize file system: %s\n", 
+                multi_fs_error_string(fs_error));
+        return 1;
+    }
+    
+    // Create configuration file
+    multi_file_t *config_file = multi_fs_create_file(fs, "config.txt", &fs_error);
+    if (!config_file) {
+        fprintf(stderr, "Failed to create config file: %s\n", 
+                multi_fs_error_string(fs_error));
+        multi_fs_destroy(fs);
+        return 1;
+    }
+    
+    const char *config_data = "app_name=MyMultiApp\nversion=1.0.0\ndebug=true\n";
+    size_t bytes_written = multi_file_write(config_file, config_data, 
+                                            strlen(config_data), &fs_error);
+    if (bytes_written != strlen(config_data)) {
+        fprintf(stderr, "Failed to write config data: %s\n", 
+                multi_fs_error_string(fs_error));
+        multi_file_close(config_file, NULL);
+        multi_fs_destroy(fs);
+        return 1;
+    }
+    
+    multi_file_sync(config_file, &fs_error);
+    multi_file_close(config_file, NULL);
+    
+    // Initialize process manager
+    multi_proc_error_t proc_error;
+    multi_proc_manager_t *proc_mgr = multi_proc_manager_init(&proc_error);
+    if (!proc_mgr) {
+        fprintf(stderr, "Failed to initialize process manager: %s\n",
+                multi_proc_error_string(proc_error));
+        multi_fs_destroy(fs);
+        return 1;
+    }
+    
+    // Create a worker process
+    multi_proc_id_t worker_pid = multi_proc_create(proc_mgr, "worker", "/usr/bin/worker", 
+                                                   MULTI_PROC_PRIORITY_NORMAL, &proc_error);
+    if (worker_pid == MULTI_PROC_INVALID_ID) {
+        fprintf(stderr, "Failed to create worker process: %s\n",
+                multi_proc_error_string(proc_error));
+        multi_proc_manager_destroy(proc_mgr);
+        multi_fs_destroy(fs);
+        return 1;
+    }
+    
+    printf("Worker process created with PID: %d\n", worker_pid);
+    
+    // Main application loop
+    run_application_loop(fs, proc_mgr);
+    
+    // Cleanup
+    multi_proc_manager_destroy(proc_mgr);
+    multi_fs_destroy(fs);
+    
+    printf("Application shutdown complete\n");
+    return 0;
+}
+
+void run_application_loop(multi_fs_t *fs, multi_proc_manager_t *proc_mgr) {
+    bool running = true;
+    
+    while (running) {
+        check_application_events(fs, &running);
+        process_background_tasks(proc_mgr);
+        
+        // Sleep for 100ms
+        multi_os_sleep_ms(100);
+    }
+}
+
+void check_application_events(multi_fs_t *fs, bool *running) {
+    multi_fs_error_t error;
+    
+    // Check for shutdown signal
+    if (multi_fs_path_exists(fs, "/app/shutdown", &error)) {
+        *running = false;
+    }
+}
+
+void process_background_tasks(multi_proc_manager_t *proc_mgr) {
+    multi_proc_error_t error;
+    size_t proc_count = 0;
+    
+    // Get list of processes
+    multi_proc_id_t *processes = multi_proc_list(proc_mgr, &proc_count, &error);
+    if (!processes) {
+        return;
+    }
+    
+    for (size_t i = 0; i &lt; proc_count; i++) {
+        multi_proc_state_t state = multi_proc_get_state(proc_mgr, processes[i], &error);
+        
+        switch (state) {
+            case MULTI_PROC_STATE_TERMINATED:
+                printf("Process %d terminated\n", processes[i]);
+                break;
+            case MULTI_PROC_STATE_RUNNING:
+                // Process is running normally
+                break;
+            default:
+                // Handle other states
+                break;
+        }
+    }
+    
+    free(processes);
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- API Integration -->
+                <section class="content-section">
+                    <h2>MultiOS C API Integration</h2>
+                    <p>Detailed examples of using MultiOS C APIs.</p>
+                    
+                    <div class="api-examples">
+                        <div class="api-example">
+                            <h3>File System Operations</h3>
+                            <div class="code-example-container">
+                                <div class="code-example">
+                                    <div class="code-header">
+                                        <h4>File and Directory Operations</h4>
+                                    </div>
+                                    <pre><code class="language-c">#include &lt;multi_fs.h&gt;
+#include &lt;multi_json.h&gt;
+
+// File system operations example
+void file_operations_example(multi_fs_t *fs) {
+    multi_fs_error_t error;
+    
+    // Create directories
+    if (!multi_fs_create_directory(fs, "/data", &error)) {
+        fprintf(stderr, "Failed to create directory: %s\n", 
+                multi_fs_error_string(error));
+        return;
+    }
+    
+    if (!multi_fs_create_directories(fs, "/data/logs/2023", &error)) {
+        fprintf(stderr, "Failed to create directories: %s\n", 
+                multi_fs_error_string(error));
+        return;
+    }
+    
+    // Create and write JSON configuration
+    multi_json_t *config = multi_json_create_object();
+    if (!config) {
+        fprintf(stderr, "Failed to create JSON object\n");
+        return;
+    }
+    
+    multi_json_object_set_string(config, "app_name", "MyApp");
+    multi_json_object_set_string(config, "version", "1.0.0");
+    multi_json_object_set_bool(config, "enabled", true);
+    multi_json_object_set_int(config, "port", 8080);
+    
+    // Serialize JSON
+    char *json_string = multi_json_serialize(config);
+    if (!json_string) {
+        fprintf(stderr, "Failed to serialize JSON\n");
+        multi_json_destroy(config);
+        return;
+    }
+    
+    // Write to file
+    multi_file_t *config_file = multi_fs_create_file(fs, "/data/config.json", &error);
+    if (!config_file) {
+        fprintf(stderr, "Failed to create config file: %s\n", 
+                multi_fs_error_string(error));
+        free(json_string);
+        multi_json_destroy(config);
+        return;
+    }
+    
+    size_t bytes_written = multi_file_write(config_file, json_string, 
+                                            strlen(json_string), &error);
+    if (bytes_written != strlen(json_string)) {
+        fprintf(stderr, "Failed to write JSON to file: %s\n", 
+                multi_fs_error_string(error));
+    }
+    
+    multi_file_sync(config_file, &error);
+    multi_file_close(config_file, NULL);
+    
+    // Read back the configuration
+    multi_file_t *read_file = multi_fs_open_file(fs, "/data/config.json", 
+                                                  MULTI_FS_MODE_READ, &error);
+    if (!read_file) {
+        fprintf(stderr, "Failed to open config file: %s\n", 
+                multi_fs_error_string(error));
+        free(json_string);
+        multi_json_destroy(config);
+        return;
+    }
+    
+    char *read_buffer = malloc(4096);
+    if (!read_buffer) {
+        fprintf(stderr, "Failed to allocate read buffer\n");
+        multi_file_close(read_file, NULL);
+        free(json_string);
+        multi_json_destroy(config);
+        return;
+    }
+    
+    size_t bytes_read = multi_file_read(read_file, read_buffer, 4095, &error);
+    if (bytes_read == 0) {
+        fprintf(stderr, "Failed to read config file: %s\n", 
+                multi_fs_error_string(error));
+    } else {
+        read_buffer[bytes_read] = '\0';
+        
+        // Parse JSON
+        multi_json_t *loaded_config = multi_json_parse(read_buffer);
+        if (loaded_config) {
+            char *loaded_app_name = multi_json_object_get_string(loaded_config, "app_name");
+            if (loaded_app_name) {
+                printf("Loaded config - App name: %s\n", loaded_app_name);
+            }
+            multi_json_destroy(loaded_config);
+        }
+    }
+    
+    free(read_buffer);
+    multi_file_close(read_file, NULL);
+    free(json_string);
+    multi_json_destroy(config);
+    
+    // List directory contents
+    multi_fs_dir_entry_t *entries = NULL;
+    size_t entry_count = 0;
+    
+    if (multi_fs_list_directory(fs, "/data", &entries, &entry_count, &error)) {
+        for (size_t i = 0; i &lt; entry_count; i++) {
+            const char *type_str = "unknown";
+            switch (entries[i].type) {
+                case MULTI_FS_ENTRY_FILE:
+                    type_str = "file";
+                    break;
+                case MULTI_FS_ENTRY_DIRECTORY:
+                    type_str = "directory";
+                    break;
+                case MULTI_FS_ENTRY_SYMLINK:
+                    type_str = "symlink";
+                    break;
+            }
+            printf("Found: %s (%s)\n", entries[i].name, type_str);
+        }
+        free(entries);
+    }
+}
+
+// Batch file operations
+void batch_file_operations(multi_fs_t *fs) {
+    const char *files_to_copy[] = {
+        "config.json", "data.db", "logs.txt", "cache.dat"
+    };
+    size_t file_count = sizeof(files_to_copy) / sizeof(files_to_copy[0]);
+    
+    multi_fs_error_t error;
+    
+    for (size_t i = 0; i &lt; file_count; i++) {
+        char source_path[256];
+        char dest_path[256];
+        
+        snprintf(source_path, sizeof(source_path), "/tmp/%s", files_to_copy[i]);
+        snprintf(dest_path, sizeof(dest_path), "/data/backup/%s", files_to_copy[i]);
+        
+        // Check if source exists
+        if (multi_fs_path_exists(fs, source_path, &error)) {
+            if (multi_fs_copy_file(fs, source_path, dest_path, &error)) {
+                printf("Copied %s to %s\n", source_path, dest_path);
+            } else {
+                fprintf(stderr, "Failed to copy %s: %s\n", source_path, 
+                        multi_fs_error_string(error));
+            }
+        }
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="api-example">
+                            <h3>Network Communication</h3>
+                            <div class="code-example-container">
+                                <div class="code-example">
+                                    <div class="code-header">
+                                        <h4>Network Client and Server</h4>
+                                    </div>
+                                    <pre><code class="language-c">#include &lt;multi_net.h&gt;
+#include &lt;pthread.h&gt;
+
+// TCP client example
+int tcp_client_example(void) {
+    multi_net_error_t error;
+    
+    // Create TCP socket
+    multi_net_socket_t *socket = multi_net_tcp_connect("192.168.1.100", 8080, 5000, &error);
+    if (!socket) {
+        fprintf(stderr, "Failed to connect: %s\n", multi_net_error_string(error));
+        return -1;
+    }
+    
+    // Send HTTP request
+    const char *request = "GET /api/data HTTP/1.1\r\nHost: example.com\r\n\r\n";
+    size_t bytes_sent = multi_net_socket_send(socket, request, strlen(request), &error);
+    if (bytes_sent != strlen(request)) {
+        fprintf(stderr, "Failed to send request: %s\n", multi_net_error_string(error));
+        multi_net_socket_close(socket);
+        return -1;
+    }
+    
+    // Receive response
+    char response[4096];
+    size_t bytes_received = multi_net_socket_receive(socket, response, sizeof(response) - 1, &error);
+    if (bytes_received == 0) {
+        fprintf(stderr, "Failed to receive response: %s\n", multi_net_error_string(error));
+        multi_net_socket_close(socket);
+        return -1;
+    }
+    
+    response[bytes_received] = '\0';
+    printf("Server response: %s\n", response);
+    
+    // Cleanup
+    multi_net_socket_close(socket);
+    return 0;
+}
+
+// TCP server with thread per connection
+typedef struct {
+    multi_net_socket_t *client_socket;
+    int client_id;
+} client_thread_data_t;
+
+void* handle_client_thread(void *arg) {
+    client_thread_data_t *data = (client_thread_data_t*)arg;
+    multi_net_socket_t *socket = data-&gt;client_socket;
+    multi_net_error_t error;
+    
+    printf("Handling client %d\n", data-&gt;client_id);
+    
+    char buffer[1024];
+    while (1) {
+        memset(buffer, 0, sizeof(buffer));
+        size_t bytes_received = multi_net_socket_receive(socket, buffer, sizeof(buffer) - 1, &error);
+        
+        if (bytes_received == 0) {
+            printf("Client %d disconnected\n", data-&gt;client_id);
+            break;
+        }
+        
+        if (bytes_received == (size_t)-1) {
+            fprintf(stderr, "Error reading from client %d: %s\n", 
+                    data-&gt;client_id, multi_net_error_string(error));
+            break;
+        }
+        
+        buffer[bytes_received] = '\0';
+        printf("Client %d sent: %s", data-&gt;client_id, buffer);
+        
+        // Send echo response
+        const char *response_format = "HTTP/1.1 200 OK\r\nContent-Length: %zu\r\n\r\n%s";
+        char response[2048];
+        int response_len = snprintf(response, sizeof(response), response_format, 
+                                   bytes_received, buffer);
+        
+        size_t bytes_sent = multi_net_socket_send(socket, response, response_len, &error);
+        if (bytes_sent != (size_t)response_len) {
+            fprintf(stderr, "Failed to send response to client %d: %s\n", 
+                    data-&gt;client_id, multi_net_error_string(error));
+            break;
+        }
+    }
+    
+    multi_net_socket_close(socket);
+    free(data);
+    return NULL;
+}
+
+int tcp_server_example(void) {
+    multi_net_error_t error;
+    int client_counter = 0;
+    
+    // Create TCP server socket
+    multi_net_socket_t *server_socket = multi_net_tcp_bind("0.0.0.0", 8080, 100, &error);
+    if (!server_socket) {
+        fprintf(stderr, "Failed to bind server socket: %s\n", 
+                multi_net_error_string(error));
+        return -1;
+    }
+    
+    printf("TCP server listening on port 8080\n");
+    
+    // Accept connections
+    while (1) {
+        multi_net_socket_t *client_socket = multi_net_tcp_accept(server_socket, &error);
+        if (!client_socket) {
+            fprintf(stderr, "Failed to accept connection: %s\n", 
+                    multi_net_error_string(error));
+            continue;
+        }
+        
+        // Get client address
+        char client_addr[64];
+        if (multi_net_socket_get_peer_address(client_socket, client_addr, sizeof(client_addr), &error)) {
+            printf("New connection from %s\n", client_addr);
+        }
+        
+        // Create thread data
+        client_thread_data_t *thread_data = malloc(sizeof(client_thread_data_t));
+        if (!thread_data) {
+            fprintf(stderr, "Failed to allocate thread data\n");
+            multi_net_socket_close(client_socket);
+            continue;
+        }
+        
+        thread_data-&gt;client_socket = client_socket;
+        thread_data-&gt;client_id = ++client_counter;
+        
+        // Create thread to handle client
+        pthread_t thread;
+        if (pthread_create(&thread, NULL, handle_client_thread, thread_data) != 0) {
+            fprintf(stderr, "Failed to create client thread\n");
+            multi_net_socket_close(client_socket);
+            free(thread_data);
+            continue;
+        }
+        
+        pthread_detach(thread);
+    }
+    
+    multi_net_socket_close(server_socket);
+    return 0;
+}
+
+// UDP communication
+int udp_example(void) {
+    multi_net_error_t error;
+    
+    // Create UDP socket
+    multi_net_socket_t *socket = multi_net_udp_create("0.0.0.0", 8081, &error);
+    if (!socket) {
+        fprintf(stderr, "Failed to create UDP socket: %s\n", 
+                multi_net_error_string(error));
+        return -1;
+    }
+    
+    // Send broadcast message
+    const char *message = "MultiOS UDP Broadcast";
+    size_t bytes_sent = multi_net_udp_send_broadcast(socket, message, strlen(message), 8082, &error);
+    if (bytes_sent != strlen(message)) {
+        fprintf(stderr, "Failed to send broadcast: %s\n", 
+                multi_net_error_string(error));
+        multi_net_socket_close(socket);
+        return -1;
+    }
+    
+    // Receive message
+    char buffer[1024];
+    char sender_addr[64];
+    size_t bytes_received = multi_net_udp_receive(socket, buffer, sizeof(buffer) - 1, 
+                                                  sender_addr, sizeof(sender_addr), 5000, &error);
+    if (bytes_received == 0) {
+        fprintf(stderr, "Failed to receive UDP message: %s\n", 
+                multi_net_error_string(error));
+    } else {
+        buffer[bytes_received] = '\0';
+        printf("Received %zu bytes from %s: %s\n", bytes_received, sender_addr, buffer);
+    }
+    
+    // Cleanup
+    multi_net_socket_close(socket);
+    return 0;
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="api-example">
+                            <h3>Memory Management</h3>
+                            <div class="code-example-container">
+                                <div class="code-example">
+                                    <div class="code-header">
+                                        <h4>Memory Allocation and Pool Management</h4>
+                                    </div>
+                                    <pre><code class="language-c">#include &lt;multi_mem.h&gt;
+
+// Memory allocation examples
+void memory_examples(void) {
+    multi_mem_error_t error;
+    
+    // Initialize memory manager
+    multi_mem_manager_t *mem_mgr = multi_mem_manager_init(&error);
+    if (!mem_mgr) {
+        fprintf(stderr, "Failed to initialize memory manager: %s\n", 
+                multi_mem_error_string(error));
+        return;
+    }
+    
+    // Basic allocation
+    void *buffer = multi_mem_allocate(mem_mgr, 1024, &error);
+    if (!buffer) {
+        fprintf(stderr, "Failed to allocate memory: %s\n", 
+                multi_mem_error_string(error));
+        multi_mem_manager_destroy(mem_mgr);
+        return;
+    }
+    
+    printf("Allocated %zu bytes\n", multi_mem_get_size(buffer));
+    
+    // Aligned allocation
+    void *aligned_buffer = multi_mem_allocate_aligned(mem_mgr, 4096, 4096, &error);
+    if (!aligned_buffer) {
+        fprintf(stderr, "Failed to allocate aligned memory: %s\n", 
+                multi_mem_error_string(error));
+    } else {
+        printf("Allocated aligned %zu bytes\n", multi_mem_get_size(aligned_buffer));
+        multi_mem_deallocate(mem_mgr, aligned_buffer, &error);
+    }
+    
+    // Memory pool for frequent allocations
+    multi_mem_pool_t *pool = multi_mem_pool_create(100, 256, &error);
+    if (!pool) {
+        fprintf(stderr, "Failed to create memory pool: %s\n", 
+                multi_mem_error_string(error));
+        multi_mem_deallocate(mem_mgr, buffer, &error);
+        multi_mem_manager_destroy(mem_mgr);
+        return;
+    }
+    
+    // Allocate blocks from pool
+    void *block1 = multi_mem_pool_allocate_block(pool, &error);
+    void *block2 = multi_mem_pool_allocate_block(pool, &error);
+    
+    if (block1 && block2) {
+        printf("Allocated blocks from pool\n");
+        
+        // Use blocks
+        memset(block1, 0x42, 256);
+        memset(block2, 0x24, 256);
+        
+        // Get pool statistics
+        multi_mem_pool_stats_t stats;
+        if (multi_mem_pool_get_stats(pool, &stats)) {
+            printf("Pool stats: %zu used, %zu free blocks\n", 
+                   stats.used_blocks, stats.free_blocks);
+        }
+        
+        // Deallocate blocks
+        multi_mem_pool_deallocate_block(pool, block1, &error);
+        multi_mem_pool_deallocate_block(pool, block2, &error);
+    }
+    
+    // Fast allocation for temporary objects
+    multi_mem_fast_alloc_t *fast_alloc = multi_mem_fast_alloc_create(1024, &error);
+    if (!fast_alloc) {
+        fprintf(stderr, "Failed to create fast allocator: %s\n", 
+                multi_mem_error_string(error));
+        multi_mem_pool_destroy(pool, NULL);
+        multi_mem_deallocate(mem_mgr, buffer, &error);
+        multi_mem_manager_destroy(mem_mgr);
+        return;
+    }
+    
+    // Frequently allocate and deallocate objects
+    for (int i = 0; i &lt; 1000; i++) {
+        void *obj_ptr = multi_mem_fast_alloc_object(fast_alloc, sizeof(int) * 100, &error);
+        if (obj_ptr) {
+            // Use the object
+            int *obj = (int*)obj_ptr;
+            for (int j = 0; j &lt; 100; j++) {
+                obj[j] = i * 100 + j;
+            }
+            
+            // Immediately deallocate
+            multi_mem_fast_alloc_deallocate(fast_alloc, obj_ptr, &error);
+        }
+    }
+    
+    printf("Fast allocation performance test completed\n");
+    
+    // Memory protection and security
+    void *protected_region = multi_mem_allocate(mem_mgr, 4096, &error);
+    if (protected_region) {
+        // Set read-only protection
+        if (multi_mem_set_protection(mem_mgr, protected_region, 4096, 
+                                     MULTI_MEM_PROT_READ, &error)) {
+            printf("Memory region set to read-only\n");
+            
+            // Attempt to write (this should fail or cause a page fault)
+            // Note: This is platform-dependent and may not work in all environments
+            // memset(protected_region, 0x42, 100); // This would fail
+            
+            // Restore read-write protection
+            if (multi_mem_set_protection(mem_mgr, protected_region, 4096, 
+                                         MULTI_MEM_PROT_READ | MULTI_MEM_PROT_WRITE, &error)) {
+                printf("Memory protection restored\n");
+            }
+        }
+        
+        multi_mem_deallocate(mem_mgr, protected_region, &error);
+    }
+    
+    // Cleanup
+    multi_mem_fast_alloc_destroy(fast_alloc, NULL);
+    multi_mem_pool_destroy(pool, NULL);
+    multi_mem_deallocate(mem_mgr, buffer, &error);
+    multi_mem_manager_destroy(mem_mgr);
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="api-example">
+                            <h3>Process Management</h3>
+                            <div class="code-example-container">
+                                <div class="code-example">
+                                    <div class="code-header">
+                                        <h4>Process Creation and Management</h4>
+                                    </div>
+                                    <pre><code class="language-c">#include &lt;multi_proc.h&gt;
+#include &lt;multi_sync.h&gt;
+
+// Process management examples
+void process_management_example(void) {
+    multi_proc_error_t error;
+    
+    // Initialize process manager
+    multi_proc_manager_t *proc_mgr = multi_proc_manager_init(&error);
+    if (!proc_mgr) {
+        fprintf(stderr, "Failed to initialize process manager: %s\n",
+                multi_proc_error_string(error));
+        return;
+    }
+    
+    // Create a worker process
+    multi_proc_id_t worker_pid = multi_proc_create(proc_mgr, "worker_process", 
+                                                   "/usr/bin/worker_app", 
+                                                   MULTI_PROC_PRIORITY_HIGH, &error);
+    if (worker_pid == MULTI_PROC_INVALID_ID) {
+        fprintf(stderr, "Failed to create worker process: %s\n",
+                multi_proc_error_string(error));
+        multi_proc_manager_destroy(proc_mgr);
+        return;
+    }
+    
+    printf("Created worker process with PID: %d\n", worker_pid);
+    
+    // Wait for process to complete
+    int exit_status = multi_proc_wait(proc_mgr, worker_pid, 5000, &error);
+    if (exit_status &lt; 0) {
+        fprintf(stderr, "Failed to wait for process: %s\n",
+                multi_proc_error_string(error));
+    } else {
+        printf("Worker process exited with status: %d\n", exit_status);
+    }
+    
+    // Create multiple processes for parallel work
+    multi_proc_id_t processes[4];
+    
+    for (int i = 0; i &lt; 4; i++) {
+        char proc_name[32];
+        snprintf(proc_name, sizeof(proc_name), "worker_%d", i);
+        
+        processes[i] = multi_proc_create(proc_mgr, proc_name, "/usr/bin/parallel_worker",
+                                        MULTI_PROC_PRIORITY_NORMAL, &error);
+        if (processes[i] == MULTI_PROC_INVALID_ID) {
+            fprintf(stderr, "Failed to create process %d: %s\n", i,
+                    multi_proc_error_string(error));
+        }
+    }
+    
+    // Wait for all processes
+    for (int i = 0; i &lt; 4; i++) {
+        if (processes[i] != MULTI_PROC_INVALID_ID) {
+            exit_status = multi_proc_wait(proc_mgr, processes[i], -1, &error);
+            if (exit_status &gt;= 0) {
+                printf("Process %d (PID %d) exited: %d\n", i, processes[i], exit_status);
+            }
+        }
+    }
+    
+    multi_proc_manager_destroy(proc_mgr);
+}
+
+// Inter-process communication using pipes
+void ipc_pipe_example(void) {
+    multi_proc_error_t error;
+    
+    // Create pipe
+    multi_ipc_pipe_t *pipe = multi_ipc_pipe_create(&error);
+    if (!pipe) {
+        fprintf(stderr, "Failed to create pipe: %s\n",
+                multi_proc_error_string(error));
+        return;
+    }
+    
+    // Initialize process manager
+    multi_proc_manager_t *proc_mgr = multi_proc_manager_init(&error);
+    if (!proc_mgr) {
+        fprintf(stderr, "Failed to initialize process manager: %s\n",
+                multi_proc_error_string(error));
+        multi_ipc_pipe_destroy(pipe, NULL);
+        return;
+    }
+    
+    // Create child process
+    multi_proc_id_t child_pid = multi_proc_create_with_pipe(proc_mgr, "child_process",
+                                                           "/usr/bin/child_app",
+                                                           MULTI_PROC_PRIORITY_NORMAL,
+                                                           pipe, &error);
+    if (child_pid == MULTI_PROC_INVALID_ID) {
+        fprintf(stderr, "Failed to create child process: %s\n",
+                multi_proc_error_string(error));
+        multi_proc_manager_destroy(proc_mgr);
+        multi_ipc_pipe_destroy(pipe, NULL);
+        return;
+    }
+    
+    // Send data through pipe
+    const char *message = "Hello from parent!";
+    size_t bytes_sent = multi_ipc_pipe_write(pipe, message, strlen(message), &error);
+    if (bytes_sent != strlen(message)) {
+        fprintf(stderr, "Failed to send message: %s\n",
+                multi_proc_error_string(error));
+    } else {
+        printf("Sent %zu bytes to child process\n", bytes_sent);
+    }
+    
+    // Read response from child
+    char response[256];
+    size_t bytes_received = multi_ipc_pipe_read(pipe, response, sizeof(response) - 1, &error);
+    if (bytes_received == 0) {
+        fprintf(stderr, "Failed to read response: %s\n",
+                multi_proc_error_string(error));
+    } else {
+        response[bytes_received] = '\0';
+        printf("Child response: %s\n", response);
+    }
+    
+    // Cleanup
+    multi_proc_manager_destroy(proc_mgr);
+    multi_ipc_pipe_destroy(pipe, NULL);
+}
+
+// Shared memory IPC
+void ipc_shared_memory_example(void) {
+    multi_proc_error_t error;
+    
+    // Create shared memory segment
+    size_t shm_size = 4096;
+    multi_ipc_shm_t *shm = multi_ipc_shm_create("my_shared_memory", shm_size, &error);
+    if (!shm) {
+        fprintf(stderr, "Failed to create shared memory: %s\n",
+                multi_proc_error_string(error));
+        return;
+    }
+    
+    // Map shared memory
+    void *shm_ptr = multi_ipc_shm_map(shm, 0, shm_size, &error);
+    if (!shm_ptr) {
+        fprintf(stderr, "Failed to map shared memory: %s\n",
+                multi_proc_error_string(error));
+        multi_ipc_shm_destroy(shm, NULL);
+        return;
+    }
+    
+    // Write data to shared memory
+    const char *data = "Shared memory data from first process";
+    strncpy((char*)shm_ptr, data, shm_size - 1);
+    ((char*)shm_ptr)[shm_size - 1] = '\0';
+    
+    printf("Written to shared memory: %s\n", (char*)shm_ptr);
+    
+    // Cleanup
+    multi_ipc_shm_unmap(shm, shm_ptr, &error);
+    multi_ipc_shm_destroy(shm, NULL);
+}
+
+// Process signals and control
+void process_control_example(void) {
+    multi_proc_error_t error;
+    
+    multi_proc_manager_t *proc_mgr = multi_proc_manager_init(&error);
+    if (!proc_mgr) {
+        fprintf(stderr, "Failed to initialize process manager: %s\n",
+                multi_proc_error_string(error));
+        return;
+    }
+    
+    // Start a long-running process
+    multi_proc_id_t long_running = multi_proc_create(proc_mgr, "long_running",
+                                                     "/usr/bin/long_task",
+                                                     MULTI_PROC_PRIORITY_NORMAL, &error);
+    if (long_running == MULTI_PROC_INVALID_ID) {
+        fprintf(stderr, "Failed to create long-running process: %s\n",
+                multi_proc_error_string(error));
+        multi_proc_manager_destroy(proc_mgr);
+        return;
+    }
+    
+    // Start the process
+    if (!multi_proc_start(proc_mgr, long_running, &error)) {
+        fprintf(stderr, "Failed to start process: %s\n",
+                multi_proc_error_string(error));
+        multi_proc_manager_destroy(proc_mgr);
+        return;
+    }
+    
+    printf("Process started, now suspending...\n");
+    
+    // Suspend the process
+    if (!multi_proc_signal(proc_mgr, long_running, MULTI_PROC_SIGSTOP, &error)) {
+        fprintf(stderr, "Failed to suspend process: %s\n",
+                multi_proc_error_string(error));
+    } else {
+        printf("Process suspended\n");
+    }
+    
+    // Wait 2 seconds
+    multi_os_sleep_ms(2000);
+    
+    // Resume the process
+    if (!multi_proc_signal(proc_mgr, long_running, MULTI_PROC_SIGCONT, &error)) {
+        fprintf(stderr, "Failed to resume process: %s\n",
+                multi_proc_error_string(error));
+    } else {
+        printf("Process resumed\n");
+    }
+    
+    // Graceful shutdown
+    if (!multi_proc_signal(proc_mgr, long_running, MULTI_PROC_SIGINT, &error)) {
+        fprintf(stderr, "Failed to send shutdown signal: %s\n",
+                multi_proc_error_string(error));
+    }
+    
+    // Wait for graceful shutdown
+    int exit_status = multi_proc_wait(proc_mgr, long_running, 5000, &error);
+    if (exit_status &gt;= 0) {
+        printf("Process exited gracefully: %d\n", exit_status);
+    }
+    
+    multi_proc_manager_destroy(proc_mgr);
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Error Handling -->
+                <section class="content-section">
+                    <h2>Error Handling Patterns</h2>
+                    <p>Proper error handling is crucial for robust C applications.</p>
+                    
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>Comprehensive Error Handling</h4>
+                            </div>
+                            <pre><code class="language-c">#include &lt;multi_fs.h&gt;
+#include &lt;multi_net.h&gt;
+
+// Error handling macros and utilities
+#define CHECK_ERROR(condition, error_var, cleanup_label) \
+    do { \
+        if (!(condition)) { \
+            fprintf(stderr, "Error at %s:%d: %s\n", __FILE__, __LINE__, \
+                    multi_fs_error_string(error_var)); \
+            goto cleanup_label; \
+        } \
+    } while(0)
+
+// Error logging utility
+void log_error(const char *context, multi_fs_error_t error) {
+    time_t now = time(NULL);
+    char timestamp[64];
+    strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S", localtime(&now));
+    
+    fprintf(stderr, "[%s] ERROR in %s: %s\n", timestamp, context, 
+            multi_fs_error_string(error));
+}
+
+// Robust application with error handling
+int robust_application(void) {
+    multi_fs_error_t fs_error;
+    multi_net_error_t net_error;
+    int result = 0;
+    
+    // Initialize file system with error checking
+    multi_fs_t *fs = multi_fs_init("/app", &fs_error);
+    CHECK_ERROR(fs != NULL, fs_error, cleanup);
+    
+    // File operations with error checking
+    multi_file_t *log_file = multi_fs_create_file(fs, "app.log", &fs_error);
+    CHECK_ERROR(log_file != NULL, fs_error, cleanup_fs);
+    
+    const char *log_message = "Application started\n";
+    size_t bytes_written = multi_file_write(log_file, log_message, strlen(log_message), &fs_error);
+    CHECK_ERROR(bytes_written == strlen(log_message), fs_error, cleanup_log);
+    
+    CHECK_ERROR(multi_file_sync(log_file, &fs_error), fs_error, cleanup_log);
+    
+    // Network operations with retry logic
+    const char *server_addr = "192.168.1.100";
+    int port = 8080;
+    int retry_count = 0;
+    int max_retries = 3;
+    
+    multi_net_socket_t *socket = NULL;
+    while (retry_count &lt; max_retries) {
+        socket = multi_net_tcp_connect(server_addr, port, 3000, &net_error);
+        if (socket) {
+            break;
+        }
+        
+        log_error("TCP connection", net_error);
+        retry_count++;
+        
+        if (retry_count &lt; max_retries) {
+            printf("Retrying connection (%d/%d)...\n", retry_count + 1, max_retries);
+            multi_os_sleep_ms(1000 * retry_count); // Exponential backoff
+        }
+    }
+    
+    CHECK_ERROR(socket != NULL, net_error, cleanup_log);
+    
+    // Send data with error checking
+    const char *request = "GET /status HTTP/1.1\r\nHost: example.com\r\n\r\n";
+    bytes_written = multi_net_socket_send(socket, request, strlen(request), &net_error);
+    CHECK_ERROR(bytes_written == strlen(request), net_error, cleanup_socket);
+    
+    // Receive response with timeout
+    char response[4096];
+    size_t bytes_received = multi_net_socket_receive(socket, response, sizeof(response) - 1, 5000, &net_error);
+    CHECK_ERROR(bytes_received &gt; 0, net_error, cleanup_socket);
+    
+    response[bytes_received] = '\0';
+    printf("Response: %s\n", response);
+    
+    // Successful completion
+    result = 0;
+    
+cleanup_socket:
+    multi_net_socket_close(socket);
+    
+cleanup_log:
+    multi_file_close(log_file, NULL);
+    
+cleanup_fs:
+    multi_fs_destroy(fs);
+    
+cleanup:
+    return result;
+}
+
+// Graceful shutdown with cleanup
+void graceful_shutdown(multi_fs_t *fs, multi_net_socket_t *socket) {
+    printf("Shutting down application gracefully...\n");
+    
+    // Write shutdown log
+    if (fs) {
+        multi_fs_error_t error;
+        multi_file_t *log_file = multi_fs_open_file_append(fs, "app.log", &error);
+        if (log_file) {
+            const char *shutdown_msg = "Application shutdown\n";
+            multi_file_write(log_file, shutdown_msg, strlen(shutdown_msg), &error);
+            multi_file_sync(log_file, &error);
+            multi_file_close(log_file, NULL);
+        }
+    }
+    
+    // Close network connections
+    if (socket) {
+        multi_net_socket_close(socket);
+    }
+    
+    printf("Application shutdown complete\n");
+}
+
+// Resource cleanup wrapper
+typedef struct {
+    multi_fs_t *fs;
+    multi_net_socket_t *socket;
+    multi_proc_manager_t *proc_mgr;
+} application_context_t;
+
+void cleanup_context(application_context_t *ctx) {
+    if (ctx-&gt;socket) {
+        multi_net_socket_close(ctx-&gt;socket);
+        ctx-&gt;socket = NULL;
+    }
+    
+    if (ctx-&gt;proc_mgr) {
+        multi_proc_manager_destroy(ctx-&gt;proc_mgr);
+        ctx-&gt;proc_mgr = NULL;
+    }
+    
+    if (ctx-&gt;fs) {
+        multi_fs_destroy(ctx-&gt;fs);
+        ctx-&gt;fs = NULL;
+    }
+}
+
+// Application with resource management
+int application_with_context(void) {
+    application_context_t ctx = {0};
+    int result = 0;
+    
+    // Initialize all resources
+    ctx.fs = multi_fs_init("/app", &(multi_fs_error_t){0});
+    if (!ctx.fs) {
+        fprintf(stderr, "Failed to initialize file system\n");
+        result = 1;
+        goto cleanup;
+    }
+    
+    ctx.proc_mgr = multi_proc_manager_init(&(multi_proc_error_t){0});
+    if (!ctx.proc_mgr) {
+        fprintf(stderr, "Failed to initialize process manager\n");
+        result = 1;
+        goto cleanup;
+    }
+    
+    ctx.socket = multi_net_tcp_connect("localhost", 8080, 3000, &(multi_net_error_t){0});
+    if (!ctx.socket) {
+        fprintf(stderr, "Failed to connect to server\n");
+        result = 1;
+        goto cleanup;
+    }
+    
+    // Application logic here...
+    
+cleanup:
+    cleanup_context(&ctx);
+    return result;
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Threading -->
+                <section class="content-section">
+                    <h2>Multi-threading</h2>
+                    <p>Building concurrent MultiOS applications using threads.</p>
+                    
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>Threaded MultiOS Application</h4>
+                            </div>
+                            <pre><code class="language-c">#include &lt;multi_thread.h&gt;
+#import &lt;pthread.h&gt;
+
+typedef struct {
+    multi_fs_t *fs;
+    char work_dir[256];
+    int thread_id;
+    volatile bool running;
+} worker_thread_data_t;
+
+// Worker thread function
+void* worker_thread_function(void *arg) {
+    worker_thread_data_t *data = (worker_thread_data_t*)arg;
+    multi_fs_error_t error;
+    
+    printf("Worker thread %d started\n", data-&gt;thread_id);
+    
+    while (data-&gt;running) {
+        // Perform work
+        char filename[256];
+        snprintf(filename, sizeof(filename), "%s/work_%d.txt", data-&gt;work_dir, data-&gt;thread_id);
+        
+        multi_file_t *file = multi_fs_create_file(data-&gt;fs, filename, &error);
+        if (file) {
+            char content[128];
+            snprintf(content, sizeof(content), "Work done by thread %d at %ld\n", 
+                     data-&gt;thread_id, time(NULL));
+            
+            multi_file_write(file, content, strlen(content), &error);
+            multi_file_close(file, NULL);
+            
+            printf("Thread %d completed work\n", data-&gt;thread_id);
+        }
+        
+        // Sleep for a bit
+        multi_os_sleep_ms(1000);
+    }
+    
+    printf("Worker thread %d stopped\n", data-&gt;thread_id);
+    return NULL;
+}
+
+// Thread-safe file operations
+typedef struct {
+    multi_fs_t *fs;
+    pthread_mutex_t fs_mutex;
+    int file_counter;
+} file_manager_t;
+
+file_manager_t* file_manager_create(multi_fs_t *fs) {
+    file_manager_t *mgr = malloc(sizeof(file_manager_t));
+    if (!mgr) {
+        return NULL;
+    }
+    
+    mgr-&gt;fs = fs;
+    pthread_mutex_init(&mgr-&gt;fs_mutex, NULL);
+    mgr-&gt;file_counter = 0;
+    
+    return mgr;
+}
+
+void file_manager_destroy(file_manager_t *mgr) {
+    if (mgr) {
+        pthread_mutex_destroy(&mgr-&gt;fs_mutex);
+        free(mgr);
+    }
+}
+
+bool file_manager_create_file(file_manager_t *mgr, const char *content, size_t content_len) {
+    pthread_mutex_lock(&mgr-&gt;fs_mutex);
+    
+    char filename[256];
+    snprintf(filename, sizeof(filename), "thread_safe_%d.txt", mgr-&gt;file_counter++);
+    
+    multi_fs_error_t error;
+    multi_file_t *file = multi_fs_create_file(mgr-&gt;fs, filename, &error);
+    
+    pthread_mutex_unlock(&mgr-&gt;fs_mutex);
+    
+    if (file) {
+        multi_file_write(file, content, content_len, &error);
+        multi_file_close(file, NULL);
+        return true;
+    }
+    
+    return false;
+}
+
+// Thread pool implementation
+typedef struct {
+    pthread_t *threads;
+    int thread_count;
+    bool shutdown;
+    pthread_mutex_t work_mutex;
+    pthread_cond_t work_cond;
+} thread_pool_t;
+
+typedef struct {
+    void (*function)(void*);
+    void *arg;
+} work_item_t;
+
+#define MAX_WORK_ITEMS 100
+typedef struct {
+    work_item_t items[MAX_WORK_ITEMS];
+    int head;
+    int tail;
+    int count;
+    pthread_mutex_t queue_mutex;
+    pthread_cond_t queue_cond;
+} work_queue_t;
+
+thread_pool_t* thread_pool_create(int thread_count) {
+    thread_pool_t *pool = malloc(sizeof(thread_pool_t));
+    if (!pool) {
+        return NULL;
+    }
+    
+    pool-&gt;thread_count = thread_count;
+    pool-&gt;shutdown = false;
+    pthread_mutex_init(&pool-&gt;work_mutex, NULL);
+    pthread_cond_init(&pool-&gt;work_cond, NULL);
+    
+    pool-&gt;threads = malloc(sizeof(pthread_t) * thread_count);
+    if (!pool-&gt;threads) {
+        free(pool);
+        return NULL;
+    }
+    
+    // Create worker threads
+    for (int i = 0; i &lt; thread_count; i++) {
+        if (pthread_create(&pool-&gt;threads[i], NULL, thread_pool_worker, pool) != 0) {
+            // Cleanup on failure
+            for (int j = 0; j &lt; i; j++) {
+                pthread_cancel(pool-&gt;threads[j]);
+            }
+            free(pool-&gt;threads);
+            free(pool);
+            return NULL;
+        }
+    }
+    
+    return pool;
+}
+
+void thread_pool_destroy(thread_pool_t *pool) {
+    if (pool) {
+        pool-&gt;shutdown = true;
+        pthread_cond_broadcast(&pool-&gt;work_cond);
+        
+        for (int i = 0; i &lt; pool-&gt;thread_count; i++) {
+            pthread_join(pool-&gt;threads[i], NULL);
+        }
+        
+        pthread_mutex_destroy(&pool-&gt;work_mutex);
+        pthread_cond_destroy(&pool-&gt;work_cond);
+        free(pool-&gt;threads);
+        free(pool);
+    }
+}
+
+void* thread_pool_worker(void *arg) {
+    thread_pool_t *pool = (thread_pool_t*)arg;
+    
+    while (1) {
+        pthread_mutex_lock(&pool-&gt;work_mutex);
+        
+        while (!pool-&gt;shutdown) {
+            // Wait for work
+            pthread_cond_wait(&pool-&gt;work_cond, &pool-&gt;work_mutex);
+        }
+        
+        pthread_mutex_unlock(&pool-&gt;work_mutex);
+        
+        if (pool-&gt;shutdown) {
+            break;
+        }
+    }
+    
+    return NULL;
+}
+
+// Example of threaded application
+int threaded_application_example(void) {
+    // Create file system
+    multi_fs_error_t error;
+    multi_fs_t *fs = multi_fs_init("/app", &error);
+    if (!fs) {
+        fprintf(stderr, "Failed to initialize file system\n");
+        return 1;
+    }
+    
+    // Create worker threads
+    const int num_threads = 4;
+    worker_thread_data_t thread_data[num_threads];
+    pthread_t threads[num_threads];
+    
+    for (int i = 0; i &lt; num_threads; i++) {
+        thread_data[i].fs = fs;
+        thread_data[i].thread_id = i;
+        thread_data[i].running = true;
+        snprintf(thread_data[i].work_dir, sizeof(thread_data[i].work_dir), "/app/thread_%d", i);
+        
+        if (pthread_create(&threads[i], NULL, worker_thread_function, &thread_data[i]) != 0) {
+            fprintf(stderr, "Failed to create thread %d\n", i);
+            
+            // Cleanup already created threads
+            for (int j = 0; j &lt; i; j++) {
+                thread_data[j].running = false;
+                pthread_join(threads[j], NULL);
+            }
+            
+            multi_fs_destroy(fs);
+            return 1;
+        }
+    }
+    
+    // Main thread work
+    printf("Main thread running. Workers are processing...\n");
+    multi_os_sleep_ms(5000); // Let workers run for 5 seconds
+    
+    // Stop all workers
+    for (int i = 0; i &lt; num_threads; i++) {
+        thread_data[i].running = false;
+        pthread_join(threads[i], NULL);
+    }
+    
+    multi_fs_destroy(fs);
+    printf("All threads completed\n");
+    
+    return 0;
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Build System -->
+                <section class="content-section">
+                    <h2>Build System Integration</h2>
+                    <p>Use Make, CMake, or other build systems for MultiOS C projects.</p>
+                    
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>Makefile for MultiOS C Project</h4>
+                            </div>
+                            <pre><code class="language-makefile"># MultiOS C Application Makefile
+
+# Compiler and flags
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -O2 -g
+LDFLAGS = -pthread
+INCLUDES = -I/usr/local/include
+LIBS = -L/usr/local/lib -lmulti_fs -lmulti_proc -lmulti_net -lmulti_mem
+
+# Project structure
+SRCDIR = src
+OBJDIR = obj
+BINDIR = bin
+INCDIR = include
+
+# Source files
+SOURCES = $(wildcard $(SRCDIR)/*.c)
+OBJECTS = $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+TARGET = $(BINDIR)/multi_app
+
+# Default target
+all: directories $(TARGET)
+
+# Create directories
+directories:
+	@mkdir -p $(OBJDIR) $(BINDIR)
+
+# Link the final executable
+$(TARGET): $(OBJECTS)
+	@echo "Linking $(TARGET)..."
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+	@echo "Build complete: $(TARGET)"
+
+# Compile source files
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@echo "Compiling $<..."
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+# Clean build artifacts
+clean:
+	@echo "Cleaning build artifacts..."
+	rm -rf $(OBJDIR) $(BINDIR)
+
+# Install to system
+install: $(TARGET)
+	@echo "Installing $(TARGET)..."
+	install -m 755 $(TARGET) /usr/local/bin/
+	@echo "Installation complete"
+
+# Uninstall from system
+uninstall:
+	@echo "Uninstalling $(TARGET)..."
+	rm -f /usr/local/bin/multi_app
+	@echo "Uninstallation complete"
+
+# Run tests
+test: all
+	@echo "Running tests..."
+	./$(BINDIR)/multi_app --test
+
+# Debug build
+debug: CFLAGS += -DDEBUG -g -O0
+debug: all
+
+# Release build
+release: CFLAGS += -DNDEBUG -O3 -flto
+release: all
+
+# Help
+help:
+	@echo "MultiOS C Application Makefile"
+	@echo ""
+	@echo "Available targets:"
+	@echo "  all      - Build the application (default)"
+	@echo "  clean    - Remove build artifacts"
+	@echo "  install  - Install to system"
+	@echo "  uninstall- Uninstall from system"
+	@echo "  test     - Run tests"
+	@echo "  debug    - Build with debug symbols"
+	@echo "  release  - Build for release"
+	@echo "  help     - Show this help message"
+
+.PHONY: all clean install uninstall test debug release help directories</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>CMakeLists.txt for MultiOS C Project</h4>
+                            </div>
+                            <pre><code class="language-cmake">cmake_minimum_required(VERSION 3.16)
+project(MultiOSApp VERSION 1.0.0 LANGUAGES C)
+
+# Set C standard
+set(C_STANDARD 11)
+set(C_STANDARD_REQUIRED ON)
+
+# Compiler-specific options
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror")
+    set(CMAKE_C_FLAGS_DEBUG "-g -O0 -DDEBUG")
+    set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG -flto")
+endif()
+
+# Find MultiOS libraries
+find_library(MULTI_FS_LIBRARY multi_fs HINTS /usr/local/lib)
+find_library(MULTI_PROC_LIBRARY multi_proc HINTS /usr/local/lib)
+find_library(MULTI_NET_LIBRARY multi_net HINTS /usr/local/lib)
+find_library(MULTI_MEM_LIBRARY multi_mem HINTS /usr/local/lib)
+
+if(NOT MULTI_FS_LIBRARY)
+    message(FATAL_ERROR "MultiOS File System library not found")
+endif()
+
+# Include directories
+include_directories(/usr/local/include)
+
+# Source files
+set(SOURCES
+    src/main.c
+    src/utils.c
+    src/file_ops.c
+    src/network.c
+)
+
+# Headers
+set(HEADERS
+    include/utils.h
+    include/file_ops.h
+    include/network.h
+)
+
+# Create executable
+add_executable(multi_app ${SOURCES} ${HEADERS})
+
+# Link libraries
+target_link_libraries(multi_app
+    ${MULTI_FS_LIBRARY}
+    ${MULTI_PROC_LIBRARY}
+    ${MULTI_NET_LIBRARY}
+    ${MULTI_MEM_LIBRARY}
+    pthread
+)
+
+# Set output directory
+set_target_properties(multi_app PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)
+
+# Testing
+enable_testing()
+
+# Add test executable
+add_executable(test_multi_app tests/test_main.c tests/test_utils.c)
+target_link_libraries(test_multi_app
+    ${MULTI_FS_LIBRARY}
+    ${MULTI_PROC_LIBRARY}
+    ${MULTI_NET_LIBRARY}
+    ${MULTI_MEM_LIBRARY}
+    pthread
+)
+
+# Add tests
+add_test(NAME basic_test COMMAND test_multi_app)
+
+# Install rules
+install(TARGETS multi_app
+    RUNTIME DESTINATION bin
+)
+
+# Package configuration
+set(CPACK_PACKAGE_NAME "multi-os-app")
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "MultiOS C Application")
+set(CPACK_PACKAGE_VENDOR "MultiOS Team")
+
+include(CPack)</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>Best Practices</h2>
+                    <div class="best-practices">
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Memory Management</h4>
+                            <p>Always check return values and properly free allocated resources to prevent memory leaks.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Error Handling</h4>
+                            <p>Implement comprehensive error handling with proper logging and cleanup on failure paths.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Thread Safety</h4>
+                            <p>Use appropriate synchronization primitives when accessing shared MultiOS resources from multiple threads.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Build System</h4>
+                            <p>Use proper build systems (Make, CMake) to manage dependencies and ensure reproducible builds.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>Additional Resources</h2>
+                    <div class="resource-links">
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="resource-content">
+                                <h3>C Programming Language</h3>
+                                <p>Learn C programming fundamentals</p>
+                                <a href="https://en.wikipedia.org/wiki/C_(programming_language)" class="btn btn-sm btn-secondary" target="_blank">Learn More</a>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="resource-content">
+                                <h3>MultiOS C Examples</h3>
+                                <p>Official C examples and templates</p>
+                                <a href="https://github.com/multios/c-examples" class="btn btn-sm btn-secondary" target="_blank">View Examples</a>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <div class="resource-content">
+                                <h3>C Development Tools</h3>
+                                <p>Tools and utilities for C development</p>
+                                <a href="https://github.com/multios/c-tools" class="btn btn-sm btn-secondary" target="_blank">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/search.js"></script>
+    <script src="../../assets/js/theme.js"></script>
+    <script src="../../assets/js/interactive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

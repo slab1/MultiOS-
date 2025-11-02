@@ -1,0 +1,3246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Integration Guide - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar">
+            <div class="nav-content">
+                <div class="nav-section">
+                    <h3>API Reference</h3>
+                    <ul>
+                        <li><a href="../../api_reference/kernel.html" class="nav-link">Kernel API</a></li>
+                        <li><a href="../../api_reference/memory.html" class="nav-link">Memory Management</a></li>
+                        <li><a href="../../api_reference/process.html" class="nav-link">Process Management</a></li>
+                        <li><a href="../../api_reference/filesystem.html" class="nav-link">File System</a></li>
+                        <li><a href="../../api_reference/networking.html" class="nav-link">Network</a></li>
+                        <li><a href="../../api_reference/drivers.html" class="nav-link">Driver API</a></li>
+                        <li><a href="../../api_reference/gui.html" class="nav-link">GUI Framework</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Tutorials</h3>
+                    <ul>
+                        <li><a href="../../tutorials/beginner/index.html" class="nav-link">Beginner</a></li>
+                        <li><a href="../../tutorials/intermediate/index.html" class="nav-link">Intermediate</a></li>
+                        <li><a href="../../tutorials/advanced/index.html" class="nav-link">Advanced</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Guides</h3>
+                    <ul>
+                        <li><a href="rust.html" class="nav-link">Rust Integration</a></li>
+                        <li><a href="c.html" class="nav-link">C Integration</a></li>
+                        <li><a href="python.html" class="nav-link">Python Integration</a></li>
+                        <li><a href="javascript.html" class="nav-link">JavaScript Integration</a></li>
+                        <li><a href="cpp.html" class="nav-link active">C++ Integration</a></li>
+                        <li><a href="go.html" class="nav-link">Go Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="content-header">
+                    <h1>C++ Integration Guide</h1>
+                    <p class="lead">Complete guide for building MultiOS applications in C++</p>
+                    <div class="content-meta">
+                        <span class="badge badge-language">C++</span>
+                        <span class="badge badge-difficulty">Intermediate-Advanced</span>
+                        <span class="badge badge-ecosystem">Native</span>
+                    </div>
+                </div>
+
+                <!-- Language Overview -->
+                <section class="content-section">
+                    <h2>Why C++ with MultiOS?</h2>
+                    <p>C++ provides high performance, fine-grained memory control, and extensive library support. Perfect for system applications, performance-critical components, and applications requiring tight hardware integration on MultiOS.</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>High Performance</h3>
+                                <p>Native compilation and zero-overhead abstractions for maximum performance.</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-memory"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Memory Control</h3>
+                                <p>Fine-grained memory management and control over resource allocation.</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>System Programming</h3>
+                                <p>Ideal for system-level programming and driver development.</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-code-branch"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Modern C++</h3>
+                                <p>Support for C++11/14/17/20 features and modern best practices.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Installation -->
+                <section class="content-section">
+                    <h2>Installation and Setup</h2>
+                    <p>Set up C++ development for MultiOS applications:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Installing C++ Toolchain</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash"># Install MultiOS C++ SDK
+cargo install multios-cpp-sdk
+
+# Install CMake build system
+sudo apt-get install cmake build-essential
+
+# Install C++ development tools
+cargo install multios-cpp-tools
+
+# Create new C++ project
+multios-cpp new my_app
+cd my_app</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Project Structure</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash">my_app/
+├── CMakeLists.txt            # CMake build configuration
+├── Cargo.toml                # Rust dependencies
+├── src/
+│   ├── main.rs               # Rust entry point
+│   └── lib.rs                # Rust library
+├── include/
+│   └── multios/              # C++ headers
+│       ├── App.h
+│       ├── FileSystem.h
+│       └── GUI.h
+├── src/
+│   ├── main.cpp              # C++ main application
+│   ├── App.cpp
+│   ├── FileSystem.cpp
+│   └── GUI.cpp
+└── tests/
+    ├── test_app.cpp
+    └── test_filesystem.cpp</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>CMakeLists.txt</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-cmake">cmake_minimum_required(VERSION 3.16)
+project(MyApp LANGUAGES CXX)
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# MultiOS configuration
+set(MULTIOS_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../target/debug/deps")
+set(MULTIOS_LINK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../target/debug")
+
+# Include directories
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(${MULTIOS_INCLUDE_DIR})
+
+# Find required packages
+find_package(Threads REQUIRED)
+
+# Application executable
+add_executable(my_app
+    src/main.cpp
+    src/App.cpp
+    src/FileSystem.cpp
+    src/GUI.cpp
+)
+
+# Link libraries
+target_link_libraries(my_app
+    multios_core
+    ${CMAKE_THREAD_LIBS_INIT}
+)
+
+# Multi-architecture support
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+    target_compile_definitions(my_app PUBLIC ARCH_X86_64)
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
+    target_compile_definitions(my_app PUBLIC ARCH_ARM64)
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "riscv64")
+    target_compile_definitions(my_app PUBLIC ARCH_RISCV64)
+endif()
+
+# Debug/Release configurations
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(my_app PUBLIC DEBUG)
+    target_compile_options(my_app PUBLIC -g -O0)
+else()
+    target_compile_definitions(my_app PUBLIC NDEBUG)
+    target_compile_options(my_app PUBLIC -O3)
+endif()
+
+# Installation
+install(TARGETS my_app DESTINATION bin)
+install(DIRECTORY include/ DESTINATION include/multios)</code></pre>
+                    </div>
+                </section>
+
+                <!-- Basic Usage -->
+                <section class="content-section">
+                    <h2>Basic C++ Application</h2>
+                    <p>Create a simple C++ application for MultiOS:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>main.cpp</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-cpp">/**
+ * Simple MultiOS C++ Application
+ */
+#include "App.h"
+#include <iostream>
+#include <memory>
+
+int main(int argc, char* argv[]) {
+    std::cout << "Starting Simple C++ Application\n";
+
+    try {
+        // Create application instance
+        auto app = std::make_unique<SimpleApp>();
+        
+        // Initialize application
+        if (!app->initialize()) {
+            std::cerr << "Failed to initialize application\n";
+            return 1;
+        }
+        
+        // Run application
+        int exit_code = app->run();
+        
+        std::cout << "Application exited with code: " << exit_code << "\n";
+        return exit_code;
+        
+    } catch (const std::exception& e) {
+        std::cerr << "Exception: " << e.what() << "\n";
+        return 1;
+    } catch (...) {
+        std::cerr << "Unknown exception occurred\n";
+        return 1;
+    }
+}
+
+// SimpleApp implementation
+class SimpleApp : public multios::Application {
+public:
+    SimpleApp() : multios::Application("SimpleApp") {}
+    
+    ~SimpleApp() override = default;
+
+protected:
+    bool onInitialize() override {
+        std::cout << "Initializing SimpleApp...\n";
+        
+        // Create main window
+        window_ = createWindow({
+            .title = "Simple C++ App",
+            .width = 800,
+            .height = 600,
+            .resizable = true
+        });
+        
+        if (!window_) {
+            return false;
+        }
+        
+        // Setup UI
+        setupUI();
+        
+        return true;
+    }
+
+    int onRun() override {
+        std::cout << "Running SimpleApp...\n";
+        
+        // Show window
+        window_->show();
+        
+        // Main event loop
+        return eventLoop();
+    }
+
+    void onShutdown() override {
+        std::cout << "Shutting down SimpleApp...\n";
+        
+        if (window_) {
+            window_.reset();
+        }
+    }
+
+private:
+    void setupUI() {
+        // Create label
+        auto label = window_->createLabel({
+            .text = "Hello, MultiOS C++!",
+            .font_size = 24,
+            .font_weight = multios::FontWeight::Bold,
+            .color = "#333333"
+        });
+        
+        // Create button
+        auto button = window_->createButton({
+            .text = "Click Me",
+            .width = 120,
+            .height = 40,
+            .on_click = [this]() { onButtonClick(); }
+        });
+        
+        // Create status label
+        status_label_ = window_->createLabel({
+            .text = "Ready",
+            .color = "#666666"
+        });
+        
+        // Set layout
+        window_->setLayout({
+            .type = multios::LayoutType::VBox,
+            .spacing = 20,
+            .padding = 20,
+            .children = {
+                { .widget = label, .alignment = multios::Alignment::Center },
+                { .widget = button, .alignment = multios::Alignment::Center },
+                { .widget = status_label_, .alignment = multios::Alignment::Center }
+            }
+        });
+    }
+
+    void onButtonClick() {
+        std::cout << "Button clicked!\n";
+        
+        // Update status
+        status_label_->setText("Button was clicked!");
+        status_label_->setColor("#0066cc");
+        
+        // Show notification
+        multios::Notification notification{
+            .title = "SimpleApp",
+            .message = "Button clicked successfully!",
+            .type = multios::NotificationType::Info
+        };
+        multios::showNotification(notification);
+        
+        // Create log entry
+        createLogEntry();
+    }
+
+    void createLogEntry() {
+        try {
+            auto fs = multios::FileSystem::create();
+            auto log_path = multios::Path("/tmp/simple_app.log");
+            
+            std::string timestamp = multios::Time::now().toISOString();
+            std::string log_entry = "[" + timestamp + "] Button clicked\n";
+            
+            fs->appendFile(log_path, log_entry);
+            
+        } catch (const std::exception& e) {
+            std::cerr << "Failed to create log entry: " << e.what() << "\n";
+        }
+    }
+
+    multios::WindowPtr window_;
+    multios::LabelPtr status_label_;
+};</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>App.h</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-cpp">#pragma once
+
+#include <string>
+#include <memory>
+#include <functional>
+
+namespace multios {
+
+// Forward declarations
+class Window;
+class Label;
+class Button;
+class FileSystem;
+
+// Smart pointers
+using WindowPtr = std::shared_ptr<Window>;
+using LabelPtr = std::shared_ptr<Label>;
+using ButtonPtr = std::shared_ptr<Button>;
+
+// Enums
+enum class FontWeight {
+    Normal,
+    Bold
+};
+
+enum class LayoutType {
+    HBox,
+    VBox,
+    Grid
+};
+
+enum class Alignment {
+    Start,
+    Center,
+    End,
+    Stretch
+};
+
+enum class NotificationType {
+    Info,
+    Warning,
+    Error
+};
+
+// Structs
+struct WindowConfig {
+    std::string title;
+    int width = 800;
+    int height = 600;
+    bool resizable = true;
+    bool visible = false;
+};
+
+struct LabelConfig {
+    std::string text;
+    std::string font_family;
+    int font_size = 16;
+    FontWeight font_weight = FontWeight::Normal;
+    std::string color = "#000000";
+    std::string background_color;
+};
+
+struct ButtonConfig {
+    std::string text;
+    int width = -1;
+    int height = -1;
+    std::string background_color;
+    std::string text_color;
+    std::function<void()> on_click;
+};
+
+struct LayoutChild {
+    void* widget;
+    Alignment alignment = Alignment::Stretch;
+    int flex = 0;
+};
+
+struct LayoutConfig {
+    LayoutType type = LayoutType::VBox;
+    int spacing = 0;
+    int padding = 0;
+    std::vector<LayoutChild> children;
+};
+
+struct Notification {
+    std::string title;
+    std::string message;
+    NotificationType type = NotificationType::Info;
+};
+
+// Base application class
+class Application {
+public:
+    explicit Application(const std::string& name);
+    virtual ~Application() = default;
+
+    // Prevent copying
+    Application(const Application&) = delete;
+    Application& operator=(const Application&) = delete;
+
+    // Allow moving
+    Application(Application&&) = default;
+    Application& operator=(Application&&) = default;
+
+    // Run application
+    int run();
+
+    // Accessors
+    const std::string& name() const { return name_; }
+    bool isRunning() const { return is_running_; }
+
+protected:
+    // Lifecycle methods - override in derived classes
+    virtual bool onInitialize() = 0;
+    virtual int onRun() = 0;
+    virtual void onShutdown() = 0;
+
+    // Helper methods
+    WindowPtr createWindow(const WindowConfig& config);
+    LabelPtr createLabel(const LabelConfig& config);
+    ButtonPtr createButton(const ButtonConfig& config);
+
+    // File system helper
+    static std::shared_ptr<FileSystem> createFileSystem();
+
+    // Event loop
+    int eventLoop();
+
+    // Graceful shutdown
+    void shutdown();
+
+private:
+    std::string name_;
+    bool is_running_ = false;
+    bool should_shutdown_ = false;
+};
+
+// Utility functions
+namespace Notification {
+    void show(const Notification& notification);
+}
+
+} // namespace multios</code></pre>
+                    </div>
+                </section>
+
+                <!-- File System Operations -->
+                <section class="content-section">
+                    <h2>File System Operations</h2>
+                    <p>Work with the MultiOS file system from C++:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>FileSystem.h</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-cpp">#pragma once
+
+#include <string>
+#include <vector>
+#include <memory>
+#include <functional>
+#include <chrono>
+
+namespace multios {
+
+// Forward declarations
+class FileSystem;
+using FileSystemPtr = std::shared_ptr<FileSystem>;
+
+class Path {
+public:
+    Path() = default;
+    explicit Path(const std::string& path);
+    Path(const Path& other) = default;
+    Path& operator=(const Path& other) = default;
+    Path(Path&& other) = default;
+    Path& operator=(Path&& other) = default;
+
+    // String operations
+    std::string toString() const;
+    std::string filename() const;
+    std::string extension() const;
+    Path parent() const;
+
+    // Path operations
+    Path operator/(const Path& other) const;
+    Path& operator/=(const Path& other);
+
+    // Comparison
+    bool operator==(const Path& other) const;
+    bool operator!=(const Path& other) const;
+
+    // Utility
+    bool isAbsolute() const;
+    bool exists() const;
+
+private:
+    std::string path_;
+};
+
+struct FileInfo {
+    Path path;
+    bool is_directory = false;
+    bool is_file = false;
+    uint64_t size = 0;
+    std::chrono::system_clock::time_point modified;
+    std::chrono::system_clock::time_point accessed;
+    std::string owner;
+    std::string group;
+    uint16_t permissions = 0;
+};
+
+struct FileStats {
+    uint64_t total_size = 0;
+    uint64_t file_count = 0;
+    uint64_t directory_count = 0;
+    uint64_t largest_file = 0;
+};
+
+class FileSystem {
+public:
+    // Factory method
+    static FileSystemPtr create();
+
+    // Constructor/Destructor
+    FileSystem() = default;
+    virtual ~FileSystem() = default;
+
+    // File operations
+    bool createFile(const Path& path);
+    bool deleteFile(const Path& path);
+    bool copyFile(const Path& source, const Path& destination);
+    bool moveFile(const Path& source, const Path& destination);
+    bool exists(const Path& path) const;
+    bool isFile(const Path& path) const;
+    bool isDirectory(const Path& path) const;
+    uint64_t fileSize(const Path& path) const;
+
+    // Directory operations
+    bool createDirectory(const Path& path, bool recursive = false);
+    bool deleteDirectory(const Path& path, bool recursive = false);
+    bool copyDirectory(const Path& source, const Path& destination);
+    bool moveDirectory(const Path& source, const Path& destination);
+    std::vector<FileInfo> listDirectory(const Path& path) const;
+    std::vector<Path> listFiles(const Path& path) const;
+
+    // File I/O
+    bool readFile(const Path& path, std::string& content) const;
+    bool writeFile(const Path& path, const std::string& content);
+    bool appendFile(const Path& path, const std::string& content);
+    bool readFile(const Path& path, std::vector<uint8_t>& data) const;
+    bool writeFile(const Path& path, const std::vector<uint8_t>& data);
+
+    // Path operations
+    Path getCurrentDirectory() const;
+    bool setCurrentDirectory(const Path& path);
+    Path getHomeDirectory() const;
+    Path getTempDirectory() const;
+
+    // File watching
+    using FileWatchCallback = std::function<void(const Path& path, const std::string& event)>;
+    uint32_t watchFile(const Path& path, FileWatchCallback callback);
+    void unwatchFile(uint32_t watch_id);
+    void unwatchAllFiles();
+
+    // Utility functions
+    FileStats getDirectoryStats(const Path& path) const;
+    bool findFiles(const Path& directory, const std::string& pattern, std::vector<Path>& results) const;
+    bool createBackup(const Path& path, const Path& backup_path);
+
+    // JSON operations
+    template<typename T>
+    bool readJsonFile(const Path& path, T& data) const;
+    
+    template<typename T>
+    bool writeJsonFile(const Path& path, const T& data);
+
+private:
+    class Impl;
+    std::unique_ptr<Impl> impl_;
+};
+
+// Template implementations
+template<typename T>
+bool FileSystem::readJsonFile(const Path& path, T& data) const {
+    std::string content;
+    if (!readFile(path, content)) {
+        return false;
+    }
+    
+    try {
+        // Simple JSON parsing - in real implementation, use a JSON library
+        // This is a placeholder implementation
+        data = T{}; // Default construct
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
+template<typename T>
+bool FileSystem::writeJsonFile(const Path& path, const T& data) {
+    try {
+        // Simple JSON serialization - in real implementation, use a JSON library
+        // This is a placeholder implementation
+        std::string content = "{}";
+        return writeFile(path, content);
+    } catch (...) {
+        return false;
+    }
+}
+
+} // namespace multios</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>FileSystem.cpp</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-cpp">#include "FileSystem.h"
+#include <algorithm>
+#include <sstream>
+#include <fstream>
+#include <iostream>
+
+namespace multios {
+
+// Path implementation
+Path::Path(const std::string& path) : path_(path) {
+    // Normalize path
+    if (!path.empty() && path.back() == '/') {
+        path_.pop_back();
+    }
+}
+
+std::string Path::toString() const {
+    return path_;
+}
+
+std::string Path::filename() const {
+    auto pos = path_.find_last_of('/');
+    if (pos == std::string::npos) {
+        return path_;
+    }
+    return path_.substr(pos + 1);
+}
+
+std::string Path::extension() const {
+    auto filename = this->filename();
+    auto pos = filename.find_last_of('.');
+    if (pos == std::string::npos) {
+        return "";
+    }
+    return filename.substr(pos + 1);
+}
+
+Path Path::parent() const {
+    auto pos = path_.find_last_of('/');
+    if (pos == std::string::npos) {
+        return Path(".");
+    }
+    return Path(path_.substr(0, pos));
+}
+
+Path Path::operator/(const Path& other) const {
+    std::string result = path_;
+    if (!path_.empty() && path_.back() != '/') {
+        result += '/';
+    }
+    result += other.path_;
+    return Path(result);
+}
+
+Path& Path::operator/=(const Path& other) {
+    if (!path_.empty() && path_.back() != '/') {
+        path_ += '/';
+    }
+    path_ += other.path_;
+    return *this;
+}
+
+bool Path::operator==(const Path& other) const {
+    return path_ == other.path_;
+}
+
+bool Path::operator!=(const Path& other) const {
+    return !(*this == other);
+}
+
+bool Path::isAbsolute() const {
+    return !path_.empty() && path_[0] == '/';
+}
+
+bool Path::exists() const {
+    // Simple implementation - check if path exists
+    // In real implementation, use system calls
+    return !path_.empty();
+}
+
+// FileSystem implementation
+class FileSystem::Impl {
+public:
+    Impl() = default;
+    ~Impl() = default;
+
+    // This would contain platform-specific implementation
+    // For now, using placeholder implementations
+};
+
+FileSystemPtr FileSystem::create() {
+    return std::make_shared<FileSystem>();
+}
+
+FileSystem::FileSystem() : impl_(std::make_unique<Impl>()) {}
+
+bool FileSystem::createFile(const Path& path) {
+    try {
+        std::ofstream file(path.toString(), std::ios::out | std::ios::trunc);
+        if (!file) {
+            return false;
+        }
+        file.close();
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
+bool FileSystem::deleteFile(const Path& path) {
+    try {
+        return std::remove(path.toString().c_str()) == 0;
+    } catch (...) {
+        return false;
+    }
+}
+
+bool FileSystem::copyFile(const Path& source, const Path& destination) {
+    try {
+        std::ifstream src(source.toString(), std::ios::binary);
+        if (!src) {
+            return false;
+        }
+
+        std::ofstream dst(destination.toString(), std::ios::binary | std::ios::trunc);
+        if (!dst) {
+            return false;
+        }
+
+        dst << src.rdbuf();
+        return dst.good();
+    } catch (...) {
+        return false;
+    }
+}
+
+bool FileSystem::moveFile(const Path& source, const Path& destination) {
+    try {
+        return std::rename(source.toString().c_str(), destination.toString().c_str()) == 0;
+    } catch (...) {
+        return false;
+    }
+}
+
+bool FileSystem::exists(const Path& path) const {
+    try {
+        std::ifstream file(path.toString());
+        return file.good();
+    } catch (...) {
+        return false;
+    }
+}
+
+bool FileSystem::isFile(const Path& path) const {
+    // Simplified implementation
+    return exists(path) && !isDirectory(path);
+}
+
+bool FileSystem::isDirectory(const Path& path) const {
+    // Simplified implementation - assume directories end with '/'
+    return !path.toString().empty() && path.toString().back() == '/';
+}
+
+uint64_t FileSystem::fileSize(const Path& path) const {
+    try {
+        std::ifstream file(path.toString(), std::ios::binary | std::ios::ate);
+        if (!file) {
+            return 0;
+        }
+        return static_cast<uint64_t>(file.tellg());
+    } catch (...) {
+        return 0;
+    }
+}
+
+bool FileSystem::createDirectory(const Path& path, bool recursive) {
+    try {
+        if (recursive) {
+            auto parent = path.parent();
+            if (parent != path && !exists(parent)) {
+                createDirectory(parent, true);
+            }
+        }
+        
+        // Placeholder implementation
+        // In real implementation, use system mkdir
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
+bool FileSystem::deleteDirectory(const Path& path, bool recursive) {
+    try {
+        if (recursive) {
+            auto contents = listDirectory(path);
+            for (const auto& item : contents) {
+                if (item.is_directory) {
+                    deleteDirectory(item.path, true);
+                } else {
+                    deleteFile(item.path);
+                }
+            }
+        }
+        
+        // Placeholder implementation
+        // In real implementation, use system rmdir
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
+std::vector<FileInfo> FileSystem::listDirectory(const Path& path) const {
+    std::vector<FileInfo> result;
+    
+    try {
+        // Placeholder implementation
+        // In real implementation, use system calls to read directory
+        FileInfo info;
+        info.path = path / "placeholder.txt";
+        info.is_file = true;
+        info.size = 1024;
+        result.push_back(info);
+        
+    } catch (...) {
+        // Return empty vector on error
+    }
+    
+    return result;
+}
+
+std::vector<Path> FileSystem::listFiles(const Path& path) const {
+    std::vector<Path> result;
+    
+    try {
+        auto contents = listDirectory(path);
+        for (const auto& item : contents) {
+            if (item.is_file) {
+                result.push_back(item.path);
+            }
+        }
+    } catch (...) {
+        // Return empty vector on error
+    }
+    
+    return result;
+}
+
+bool FileSystem::readFile(const Path& path, std::string& content) const {
+    try {
+        std::ifstream file(path.toString());
+        if (!file) {
+            return false;
+        }
+
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        content = buffer.str();
+        return true;
+    } catch (...) {
+        return false;
+    }
+}
+
+bool FileSystem::writeFile(const Path& path, const std::string& content) {
+    try {
+        std::ofstream file(path.toString(), std::ios::out | std::ios::trunc);
+        if (!file) {
+            return false;
+        }
+
+        file << content;
+        return file.good();
+    } catch (...) {
+        return false;
+    }
+}
+
+bool FileSystem::appendFile(const Path& path, const std::string& content) {
+    try {
+        std::ofstream file(path.toString(), std::ios::out | std::ios::app);
+        if (!file) {
+            return false;
+        }
+
+        file << content;
+        return file.good();
+    } catch (...) {
+        return false;
+    }
+}
+
+bool FileSystem::readFile(const Path& path, std::vector<uint8_t>& data) const {
+    try {
+        std::ifstream file(path.toString(), std::ios::binary);
+        if (!file) {
+            return false;
+        }
+
+        file.seekg(0, std::ios::end);
+        auto size = static_cast<size_t>(file.tellg());
+        file.seekg(0, std::ios::beg);
+
+        data.resize(size);
+        file.read(reinterpret_cast<char*>(data.data()), size);
+        return file.good();
+    } catch (...) {
+        return false;
+    }
+}
+
+bool FileSystem::writeFile(const Path& path, const std::vector<uint8_t>& data) {
+    try {
+        std::ofstream file(path.toString(), std::ios::binary | std::ios::trunc);
+        if (!file) {
+            return false;
+        }
+
+        file.write(reinterpret_cast<const char*>(data.data()), data.size());
+        return file.good();
+    } catch (...) {
+        return false;
+    }
+}
+
+Path FileSystem::getCurrentDirectory() const {
+    // Placeholder implementation
+    return Path("/current");
+}
+
+bool FileSystem::setCurrentDirectory(const Path& path) {
+    // Placeholder implementation
+    return true;
+}
+
+Path FileSystem::getHomeDirectory() const {
+    return Path("/home/user");
+}
+
+Path FileSystem::getTempDirectory() const {
+    return Path("/tmp");
+}
+
+FileStats FileSystem::getDirectoryStats(const Path& path) const {
+    FileStats stats{};
+    
+    try {
+        auto contents = listDirectory(path);
+        
+        for (const auto& item : contents) {
+            if (item.is_directory) {
+                stats.directory_count++;
+            } else {
+                stats.file_count++;
+                stats.total_size += item.size;
+                stats.largest_file = std::max(stats.largest_file, item.size);
+            }
+        }
+    } catch (...) {
+        // Return default stats on error
+    }
+    
+    return stats;
+}
+
+} // namespace multios</code></pre>
+                    </div>
+                </section>
+
+                <!-- Process Management -->
+                <section class="content-section">
+                    <h2>Process Management</h2>
+                    <p>Create and manage processes from C++:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>ProcessManager.h</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-cpp">#pragma once
+
+#include <string>
+#include <vector>
+#include <map>
+#include <memory>
+#include <functional>
+#include <chrono>
+
+namespace multios {
+
+// Forward declarations
+class Process;
+class ProcessManager;
+
+using ProcessPtr = std::shared_ptr<Process>;
+using ProcessManagerPtr = std::shared_ptr<ProcessManager>;
+
+enum class ProcessStatus {
+    Created,
+    Running,
+    Paused,
+    Stopped,
+    Terminated,
+    Crashed
+};
+
+struct ProcessInfo {
+    uint32_t pid = 0;
+    std::string name;
+    std::string command;
+    std::vector<std::string> arguments;
+    ProcessStatus status = ProcessStatus::Created;
+    std::chrono::system_clock::time_point start_time;
+    std::chrono::system_clock::time_point end_time;
+    int exit_code = 0;
+    uint64_t memory_usage = 0;
+    double cpu_usage = 0.0;
+};
+
+struct ProcessConfig {
+    std::string command;
+    std::vector<std::string> arguments;
+    std::string name;
+    std::map<std::string, std::string> environment;
+    std::string working_directory;
+    bool detached = false;
+    bool use_pipe = false;
+    std::function<void(const std::string&)> stdout_callback;
+    std::function<void(const std::string&)> stderr_callback;
+};
+
+class Process : public std::enable_shared_from_this<Process> {
+public:
+    // Factory method
+    static ProcessPtr create(const ProcessConfig& config);
+
+    // Constructor/Destructor
+    Process() = default;
+    virtual ~Process() = default;
+
+    // Lifecycle
+    bool start();
+    bool stop(int timeout_ms = 5000);
+    bool kill();
+    bool pause();
+    bool resume();
+    bool restart();
+
+    // Status and information
+    ProcessInfo getInfo() const;
+    ProcessStatus getStatus() const;
+    bool isRunning() const;
+    uint32_t getPid() const;
+    int getExitCode() const;
+
+    // I/O
+    bool writeStdin(const std::string& data);
+    bool readStdout(std::string& data);
+    bool readStderr(std::string& data);
+
+    // Event handlers
+    using ExitCallback = std::function<void(const ProcessPtr&, int)>;
+    using CrashCallback = std::function<void(const ProcessPtr&, const std::string&)>;
+    
+    void setExitCallback(ExitCallback callback);
+    void setCrashCallback(CrashCallback callback);
+
+    // Monitoring
+    ProcessInfo getStats() const;
+    void setMonitorInterval(std::chrono::milliseconds interval);
+
+private:
+    class Impl;
+    std::unique_ptr<Impl> impl_;
+    ProcessConfig config_;
+    ProcessInfo info_;
+    ExitCallback exit_callback_;
+    CrashCallback crash_callback_;
+};
+
+class ProcessManager {
+public:
+    // Singleton access
+    static ProcessManagerPtr getInstance();
+
+    // Constructor/Destructor
+    ProcessManager() = default;
+    virtual ~ProcessManager() = default;
+
+    // Process creation
+    ProcessPtr spawn(const ProcessConfig& config);
+    bool terminate(uint32_t pid, int timeout_ms = 5000);
+    bool kill(uint32_t pid);
+    bool pause(uint32_t pid);
+    bool resume(uint32_t pid);
+
+    // Process querying
+    std::vector<ProcessInfo> listProcesses() const;
+    ProcessInfo getProcessInfo(uint32_t pid) const;
+    bool isProcessRunning(uint32_t pid) const;
+
+    // System information
+    uint32_t getCurrentPid() const;
+    std::vector<uint32_t> getChildPids(uint32_t pid) const;
+    uint32_t getParentPid(uint32_t pid) const;
+
+    // System management
+    bool setProcessPriority(uint32_t pid, int priority);
+    bool setProcessAffinity(uint32_t pid, const std::vector<int>& cpus);
+    bool getProcessAffinity(uint32_t pid, std::vector<int>& cpus) const;
+
+    // Cleanup
+    void cleanupZombieProcesses();
+
+private:
+    class Impl;
+    std::unique_ptr<Impl> impl_;
+    std::map<uint32_t, ProcessPtr> processes_;
+};
+
+// Notification helpers
+namespace Notification {
+    void showProcessInfo(const ProcessInfo& info);
+    void showProcessError(const std::string& message);
+}
+
+} // namespace multios</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>ProcessManager.cpp</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-cpp">#include "ProcessManager.h"
+#include <algorithm>
+#include <sstream>
+#include <iostream>
+#include <thread>
+#include <chrono>
+
+namespace multios {
+
+// Process implementation
+class Process::Impl {
+public:
+    Impl(const ProcessConfig& config) : config_(config) {}
+    ~Impl() = default;
+
+    bool start() {
+        try {
+            // Placeholder implementation
+            // In real implementation, use fork/exec or CreateProcess
+            pid_ = 1234; // Mock PID
+            status_ = ProcessStatus::Running;
+            return true;
+        } catch (...) {
+            return false;
+        }
+    }
+
+    bool stop(int timeout_ms) {
+        try {
+            // Send SIGTERM (Unix) or TerminateProcess (Windows)
+            status_ = ProcessStatus::Stopped;
+            return true;
+        } catch (...) {
+            return false;
+        }
+    }
+
+    bool kill() {
+        try {
+            // Send SIGKILL (Unix) or Force kill (Windows)
+            status_ = ProcessStatus::Terminated;
+            return true;
+        } catch (...) {
+            return false;
+        }
+    }
+
+    bool pause() {
+        try {
+            status_ = ProcessStatus::Paused;
+            return true;
+        } catch (...) {
+            return false;
+        }
+    }
+
+    bool resume() {
+        try {
+            status_ = ProcessStatus::Running;
+            return true;
+        } catch (...) {
+            return false;
+        }
+    }
+
+    uint32_t getPid() const { return pid_; }
+    ProcessStatus getStatus() const { return status_; }
+    bool isRunning() const { return status_ == ProcessStatus::Running; }
+    int getExitCode() const { return exit_code_; }
+
+    ProcessInfo getInfo() const {
+        ProcessInfo info;
+        info.pid = pid_;
+        info.name = config_.name;
+        info.command = config_.command;
+        info.arguments = config_.arguments;
+        info.status = status_;
+        info.exit_code = exit_code_;
+        // Populate other fields as needed
+        return info;
+    }
+
+private:
+    ProcessConfig config_;
+    uint32_t pid_ = 0;
+    ProcessStatus status_ = ProcessStatus::Created;
+    int exit_code_ = 0;
+};
+
+ProcessPtr Process::create(const ProcessConfig& config) {
+    auto process = std::shared_ptr<Process>(new Process());
+    process->config_ = config;
+    process->impl_ = std::make_unique<Impl>(config);
+    return process;
+}
+
+Process::Process() = default;
+
+bool Process::start() {
+    if (!impl_) {
+        impl_ = std::make_unique<Impl>(config_);
+    }
+    return impl_->start();
+}
+
+bool Process::stop(int timeout_ms) {
+    return impl_ ? impl_->stop(timeout_ms) : false;
+}
+
+bool Process::kill() {
+    return impl_ ? impl_->kill() : false;
+}
+
+bool Process::pause() {
+    return impl_ ? impl_->pause() : false;
+}
+
+bool Process::resume() {
+    return impl_ ? impl_->resume() : false;
+}
+
+bool Process::restart() {
+    if (stop() && start()) {
+        return true;
+    }
+    return false;
+}
+
+ProcessInfo Process::getInfo() const {
+    return impl_ ? impl_->getInfo() : ProcessInfo{};
+}
+
+ProcessStatus Process::getStatus() const {
+    return impl_ ? impl_->getStatus() : ProcessStatus::Created;
+}
+
+bool Process::isRunning() const {
+    return impl_ ? impl_->isRunning() : false;
+}
+
+uint32_t Process::getPid() const {
+    return impl_ ? impl_->getPid() : 0;
+}
+
+int Process::getExitCode() const {
+    return impl_ ? impl_->getExitCode() : 0;
+}
+
+// ProcessManager implementation
+class ProcessManager::Impl {
+public:
+    Impl() = default;
+    ~Impl() = default;
+
+    ProcessPtr spawn(const ProcessConfig& config) {
+        try {
+            auto process = Process::create(config);
+            if (process->start()) {
+                return process;
+            }
+            return nullptr;
+        } catch (...) {
+            return nullptr;
+        }
+    }
+
+    std::vector<ProcessInfo> listProcesses() const {
+        std::vector<ProcessInfo> result;
+        // Placeholder implementation
+        ProcessInfo info;
+        info.pid = 1234;
+        info.name = "placeholder";
+        info.status = ProcessStatus::Running;
+        result.push_back(info);
+        return result;
+    }
+
+    uint32_t getCurrentPid() const {
+        // Placeholder implementation
+        return 5678;
+    }
+
+private:
+    std::map<uint32_t, ProcessPtr> processes_;
+};
+
+ProcessManagerPtr ProcessManager::getInstance() {
+    static auto instance = std::make_shared<ProcessManager>();
+    return instance;
+}
+
+ProcessManager::ProcessManager() : impl_(std::make_unique<Impl>()) {}
+
+ProcessPtr ProcessManager::spawn(const ProcessConfig& config) {
+    return impl_->spawn(config);
+}
+
+std::vector<ProcessInfo> ProcessManager::listProcesses() const {
+    return impl_->listProcesses();
+}
+
+uint32_t ProcessManager::getCurrentPid() const {
+    return impl_->getCurrentPid();
+}
+
+// Demonstration functions
+void demonstrateProcessManagement() {
+    auto process_manager = ProcessManager::getInstance();
+
+    // Spawn a worker process
+    ProcessConfig worker_config;
+    worker_config.command = "worker_app";
+    worker_config.arguments = {"--id", "1", "--mode", "production"};
+    worker_config.name = "Worker-1";
+    
+    auto worker = process_manager->spawn(worker_config);
+    if (worker) {
+        std::cout << "Worker process started with PID: " << worker->getPid() << "\n";
+
+        // Monitor the process
+        auto monitor_interval = std::chrono::seconds(5);
+        std::thread monitor([worker, monitor_interval]() {
+            while (worker->isRunning()) {
+                auto stats = worker->getStats();
+                std::cout << "Worker status: PID=" << stats.pid 
+                         << ", CPU=" << stats.cpu_usage 
+                         << "%, Memory=" << stats.memory_usage << "MB\n";
+                std::this_thread::sleep_for(monitor_interval);
+            }
+            std::cout << "Worker process has stopped\n";
+        });
+
+        // Let it run for a while
+        std::this_thread::sleep_for(std::chrono::seconds(30));
+
+        // Stop the worker gracefully
+        std::cout << "Stopping worker process...\n";
+        worker->stop();
+
+        monitor.join();
+    }
+
+    // List all processes
+    std::cout << "\nAll running processes:\n";
+    auto processes = process_manager->listProcesses();
+    for (const auto& process : processes) {
+        std::cout << "PID " << process.pid << ": " << process.name 
+                 << " (" << process.command << ") - " 
+                 << static_cast<int>(process.status) << "\n";
+    }
+}
+
+} // namespace multios</code></pre>
+                    </div>
+                </section>
+
+                <!-- Networking -->
+                <section class="content-section">
+                    <h2>Network Operations</h2>
+                    <p>Network programming with C++ on MultiOS:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Network.h</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-cpp">#pragma once
+
+#include <string>
+#include <vector>
+#include <map>
+#include <memory>
+#include <functional>
+#include <chrono>
+#include <optional>
+
+namespace multios {
+
+// Network types
+using ByteArray = std::vector<uint8_t>;
+using IPAddress = std::string;
+using Port = uint16_t;
+
+enum class SocketType {
+    Stream,    // TCP
+    Datagram,  // UDP
+    Raw
+};
+
+enum class SocketFamily {
+    IPv4,
+    IPv6,
+    Unix
+};
+
+enum class SocketStatus {
+    Created,
+    Bound,
+    Listening,
+    Connected,
+    Closed
+};
+
+struct SocketAddress {
+    IPAddress ip;
+    Port port;
+    SocketFamily family = SocketFamily::IPv4;
+};
+
+struct NetworkInterface {
+    std::string name;
+    std::string description;
+    IPAddress ip_address;
+    IPAddress netmask;
+    IPAddress broadcast;
+    bool is_up = false;
+    bool is_loopback = false;
+};
+
+// Network exceptions
+class NetworkException : public std::exception {
+public:
+    explicit NetworkException(const std::string& message) : message_(message) {}
+    const char* what() const noexcept override { return message_.c_str(); }
+    
+private:
+    std::string message_;
+};
+
+// Socket classes
+class Socket {
+public:
+    Socket(SocketType type, SocketFamily family);
+    virtual ~Socket() = default;
+
+    // Socket operations
+    bool bind(const SocketAddress& address);
+    bool listen(int backlog = 128);
+    bool connect(const SocketAddress& address);
+    SocketPtr accept();
+    void close();
+
+    // I/O operations
+    bool send(const ByteArray& data);
+    bool send(const std::string& data);
+    bool receive(ByteArray& data, size_t max_size = 65536);
+    bool receive(std::string& data, size_t max_size = 65536);
+
+    // Options
+    bool setNonBlocking(bool enabled);
+    bool setKeepAlive(bool enabled);
+    bool setTimeout(std::chrono::milliseconds timeout);
+    
+    // Information
+    SocketAddress getLocalAddress() const;
+    SocketAddress getRemoteAddress() const;
+    SocketStatus getStatus() const;
+    bool isValid() const;
+
+protected:
+    class Impl;
+    std::unique_ptr<Impl> impl_;
+    SocketType type_;
+    SocketFamily family_;
+    SocketAddress local_address_;
+    SocketAddress remote_address_;
+    SocketStatus status_ = SocketStatus::Created;
+};
+
+using SocketPtr = std::shared_ptr<Socket>;
+
+// TCPServer
+class TCPServer {
+public:
+    TCPServer(const SocketAddress& address);
+    ~TCPServer();
+
+    bool start();
+    void stop();
+    bool isRunning() const;
+
+    // Event handlers
+    using ClientConnectCallback = std::function<void(SocketPtr client)>;
+    using ClientDisconnectCallback = std::function<void(SocketPtr client)>;
+    using DataReceivedCallback = std::function<void(SocketPtr client, const ByteArray& data)>;
+
+    void setClientConnectCallback(ClientConnectCallback callback);
+    void setClientDisconnectCallback(ClientDisconnectCallback callback);
+    void setDataReceivedCallback(DataReceivedCallback callback);
+
+private:
+    class Impl;
+    std::unique_ptr<Impl> impl_;
+    SocketAddress address_;
+    SocketPtr server_socket_;
+    std::map<uint32_t, SocketPtr> clients_;
+    bool is_running_ = false;
+};
+
+// HTTP Server
+class HTTPServer {
+public:
+    HTTPServer(const SocketAddress& address);
+    ~HTTPServer();
+
+    bool start();
+    void stop();
+    bool isRunning() const;
+
+    // Routing
+    using Handler = std::function<std::string(const std::string& path, 
+                                            const std::map<std::string, std::string>& headers,
+                                            const std::optional<std::string>& body)>;
+
+    void addHandler(const std::string& method, const std::string& path, Handler handler);
+    void addGetHandler(const std::string& path, Handler handler);
+    void addPostHandler(const std::string& path, Handler handler);
+
+    // Configuration
+    void setDocumentRoot(const std::string& path);
+    void setDefaultHandler(Handler handler);
+
+private:
+    class Impl;
+    std::unique_ptr<Impl> impl_;
+    TCPServer tcp_server_;
+    std::map<std::string, Handler> handlers_;
+};
+
+// HTTP Client
+class HTTPClient {
+public:
+    HTTPClient() = default;
+    ~HTTPClient() = default;
+
+    // Request methods
+    std::string get(const std::string& url, 
+                   const std::map<std::string, std::string>& headers = {});
+    
+    std::string post(const std::string& url, 
+                    const std::string& data,
+                    const std::map<std::string, std::string>& headers = {});
+    
+    std::string put(const std::string& url, 
+                   const std::string& data,
+                   const std::map<std::string, std::string>& headers = {});
+    
+    std::string del(const std::string& url, 
+                   const std::map<std::string, std::string>& headers = {});
+
+    // Configuration
+    void setTimeout(std::chrono::milliseconds timeout);
+    void setUserAgent(const std::string& user_agent);
+
+private:
+    std::chrono::milliseconds timeout_{30000};
+    std::string user_agent_{"MultiOS HTTP Client/1.0"};
+};
+
+// Network utilities
+namespace NetworkUtils {
+    std::vector<NetworkInterface> getInterfaces();
+    IPAddress getLocalIP();
+    bool isValidIP(const std::string& ip);
+    std::string resolveHostname(const std::string& hostname);
+    std::vector<IPAddress> resolveHost(const std::string& host);
+    
+    // URL parsing
+    struct URL {
+        std::string scheme;
+        std::string host;
+        Port port;
+        std::string path;
+        std::map<std::string, std::string> query;
+    };
+    
+    std::optional<URL> parseURL(const std::string& url);
+    std::string buildURL(const URL& url);
+}
+
+// WebSocket support
+class WebSocket {
+public:
+    WebSocket(SocketPtr socket);
+    ~WebSocket();
+
+    bool sendText(const std::string& message);
+    bool sendBinary(const ByteArray& data);
+    bool receive(std::string& message);
+    bool receive(ByteArray& data);
+    void close();
+
+private:
+    SocketPtr socket_;
+    // WebSocket frame handling implementation
+};
+
+// Async network operations
+class AsyncTCPClient {
+public:
+    AsyncTCPClient(const SocketAddress& address);
+    ~AsyncTCPClient();
+
+    bool connect();
+    void disconnect();
+    bool isConnected() const;
+
+    // Async operations
+    void sendAsync(const ByteArray& data, std::function<void(bool)> callback);
+    void receiveAsync(size_t max_size, std::function<void(const ByteArray&, bool)> callback);
+
+private:
+    SocketPtr socket_;
+    SocketAddress address_;
+    bool is_connected_ = false;
+};
+
+} // namespace multios</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>SimpleHTTPServer.cpp</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-cpp">#include "Network.h"
+#include <iostream>
+#include <sstream>
+#include <json/json.h>
+
+namespace multios {
+
+// Simple HTTP Server Example
+class SimpleHTTPServer {
+public:
+    SimpleHTTPServer(Port port = 8080) 
+        : server_(SocketAddress{"0.0.0.0", port}) {
+        setupRoutes();
+    }
+
+    bool start() {
+        std::cout << "Starting HTTP server on port " << server_.address().port << "\n";
+        
+        // Set up event handlers
+        server_.setClientConnectCallback([this](SocketPtr client) {
+            handleClientConnect(client);
+        });
+
+        server_.setDataReceivedCallback([this](SocketPtr client, const ByteArray& data) {
+            handleClientData(client, data);
+        });
+
+        return server_.start();
+    }
+
+    void stop() {
+        server_.stop();
+    }
+
+private:
+    void setupRoutes() {
+        // Root route
+        server_.addGetHandler("/", [this](const std::string& path, 
+                                         const std::map<std::string, std::string>& headers,
+                                         const std::optional<std::string>& body) {
+            return handleRootRequest(headers);
+        });
+
+        // Status route
+        server_.addGetHandler("/status", [this](const std::string& path,
+                                               const std::map<std::string, std::string>& headers,
+                                               const std::optional<std::string>& body) {
+            return handleStatusRequest();
+        });
+
+        // Echo route
+        server_.addGetHandler("/echo", [this](const std::string& path,
+                                             const std::map<std::string, std::string>& headers,
+                                             const std::optional<std::string>& body) {
+            auto message = getQueryParam(path, "message");
+            return handleEchoRequest(message.value_or("No message"));
+        });
+
+        // Data route
+        server_.addPostHandler("/api/data", [this](const std::string& path,
+                                                  const std::map<std::string, std::string>& headers,
+                                                  const std::optional<std::string>& body) {
+            return handleDataRequest(headers, body.value_or(""));
+        });
+    }
+
+    std::string getQueryParam(const std::string& path, const std::string& param) {
+        auto pos = path.find('?');
+        if (pos == std::string::npos) {
+            return std::nullopt;
+        }
+
+        auto query = path.substr(pos + 1);
+        auto params = parseQueryString(query);
+        
+        auto it = params.find(param);
+        return it != params.end() ? std::make_optional(it->second) : std::nullopt;
+    }
+
+    std::map<std::string, std::string> parseQueryString(const std::string& query) {
+        std::map<std::string, std::string> params;
+        std::istringstream iss(query);
+        std::string pair;
+        
+        while (std::getline(iss, pair, '&')) {
+            auto pos = pair.find('=');
+            if (pos != std::string::npos) {
+                auto key = pair.substr(0, pos);
+                auto value = pair.substr(pos + 1);
+                params[key] = value;
+            }
+        }
+        
+        return params;
+    }
+
+    std::string handleRootRequest(const std::map<std::string, std::string>& headers) {
+        std::ostringstream html;
+        html << "<!DOCTYPE html>\n"
+             << "<html>\n"
+             << "<head>\n"
+             << "    <title>MultiOS C++ HTTP Server</title>\n"
+             << "    <style>\n"
+             << "        body { font-family: Arial, sans-serif; margin: 40px; }\n"
+             << "        .container { max-width: 800px; margin: 0 auto; }\n"
+             << "        .header { background: #2563eb; color: white; padding: 20px; border-radius: 8px; }\n"
+             << "        .content { background: #f8fafc; padding: 20px; margin-top: 20px; border-radius: 8px; }\n"
+             << "        .endpoint { background: white; padding: 10px; margin: 10px 0; border-radius: 4px; border-left: 4px solid #2563eb; }\n"
+             << "        code { background: #f1f5f9; padding: 2px 6px; border-radius: 3px; }\n"
+             << "    </style>\n"
+             << "</head>\n"
+             << "<body>\n"
+             << "    <div class=\"container\">\n"
+             << "        <div class=\"header\">\n"
+             << "            <h1>🚀 MultiOS C++ HTTP Server</h1>\n"
+             << "            <p>Server is running successfully!</p>\n"
+             << "        </div>\n"
+             << "        <div class=\"content\">\n"
+             << "            <h3>Available Endpoints:</h3>\n"
+             << "            <div class=\"endpoint\">\n"
+             << "                <strong>GET /</strong> - This page\n"
+             << "            </div>\n"
+             << "            <div class=\"endpoint\">\n"
+             << "                <strong>GET /status</strong> - Server status\n"
+             << "            </div>\n"
+             << "            <div class=\"endpoint\">\n"
+             << "                <strong>GET /echo?message=Hello</strong> - Echo a message\n"
+             << "            </div>\n"
+             << "            <div class=\"endpoint\">\n"
+             << "                <strong>POST /api/data</strong> - Submit JSON data\n"
+             << "            </div>\n"
+             << "            <h3>Quick Test:</h3>\n"
+             << "            <p>Try: <code>curl http://localhost:8080/status</code></p>\n"
+             << "            <p>Or: <code>curl http://localhost:8080/echo?message=Hello%20World</code></p>\n"
+             << "        </div>\n"
+             << "    </div>\n"
+             << "</body>\n"
+             << "</html>";
+        
+        return html.str();
+    }
+
+    std::string handleStatusRequest() {
+        Json::Value status;
+        status["status"] = "running";
+        status["server"] = "MultiOS C++ HTTP Server";
+        status["version"] = "1.0.0";
+        status["timestamp"] = std::to_string(std::chrono::system_clock::to_time_t(
+            std::chrono::system_clock::now()));
+        
+        Json::StreamWriterBuilder writer;
+        writer["indentation"] = "  ";
+        return Json::writeString(writer, status);
+    }
+
+    std::string handleEchoRequest(const std::string& message) {
+        Json::Value response;
+        response["echo"] = message;
+        response["timestamp"] = std::to_string(std::chrono::system_clock::to_time_t(
+            std::chrono::system_clock::now()));
+        
+        Json::StreamWriterBuilder writer;
+        writer["indentation"] = "  ";
+        return Json::writeString(writer, response);
+    }
+
+    std::string handleDataRequest(const std::map<std::string, std::string>& headers,
+                                 const std::string& body) {
+        Json::Value response;
+        response["message"] = "Data received successfully";
+        response["headers"] = Json::Value(Json::objectValue);
+        response["body"] = body;
+        response["timestamp"] = std::to_string(std::chrono::system_clock::to_time_t(
+            std::chrono::system_clock::now()));
+        
+        // Add some headers to response
+        for (const auto& [key, value] : headers) {
+            response["headers"][key] = value;
+        }
+        
+        Json::StreamWriterBuilder writer;
+        writer["indentation"] = "  ";
+        return Json::writeString(writer, response);
+    }
+
+    void handleClientConnect(SocketPtr client) {
+        auto address = client->getRemoteAddress();
+        std::cout << "Client connected: " << address.ip << ":" << address.port << "\n";
+    }
+
+    void handleClientData(SocketPtr client, const ByteArray& data) {
+        try {
+            // Parse HTTP request (simplified)
+            std::string request(data.begin(), data.end());
+            auto response = processHTTPRequest(request);
+            
+            // Send response
+            client->send(response);
+            
+        } catch (const std::exception& e) {
+            std::cerr << "Error handling client data: " << e.what() << "\n";
+            client->close();
+        }
+    }
+
+    std::string processHTTPRequest(const std::string& request) {
+        // Simple HTTP request parsing
+        std::istringstream iss(request);
+        std::string method, path, version;
+        iss >> method >> path >> version;
+        
+        std::map<std::string, std::string> headers;
+        std::string header_line;
+        while (std::getline(iss, header_line) && !header_line.empty()) {
+            auto pos = header_line.find(':');
+            if (pos != std::string::npos) {
+                std::string key = header_line.substr(0, pos);
+                std::string value = header_line.substr(pos + 2); // Skip ": "
+                headers[key] = value;
+            }
+        }
+        
+        // Read body if present
+        std::string body;
+        std::string body_line;
+        while (std::getline(iss, body_line)) {
+            body += body_line + "\n";
+        }
+        
+        // Find and call appropriate handler
+        auto handler = findHandler(method, path);
+        std::string content;
+        
+        if (handler) {
+            try {
+                auto body_opt = body.empty() ? std::nullopt : std::make_optional(body);
+                content = handler(path, headers, body_opt);
+            } catch (const std::exception& e) {
+                content = "Internal Server Error: " + std::string(e.what());
+            }
+        } else {
+            content = "404 Not Found";
+        }
+        
+        // Build HTTP response
+        std::ostringstream response;
+        response << "HTTP/1.1 200 OK\r\n";
+        response << "Content-Type: application/json\r\n";
+        response << "Content-Length: " << content.size() << "\r\n";
+        response << "Connection: close\r\n";
+        response << "\r\n";
+        response << content;
+        
+        return response.str();
+    }
+
+    std::optional<Handler> findHandler(const std::string& method, const std::string& path) {
+        auto handlers_it = handlers_.find(method);
+        if (handlers_it != handlers_.end()) {
+            // Simple path matching (can be enhanced with regex)
+            auto& method_handlers = handlers_it->second;
+            auto handler_it = method_handlers.find(path);
+            if (handler_it != method_handlers.end()) {
+                return handler_it->second;
+            }
+        }
+        return std::nullopt;
+    }
+
+    HTTPServer server_;
+    std::map<std::string, std::map<std::string, Handler>> handlers_;
+};
+
+// Usage example
+int main() {
+    try {
+        SimpleHTTPServer server(8080);
+        
+        if (server.start()) {
+            std::cout << "Server started successfully. Press Ctrl+C to stop.\n";
+            
+            // Keep server running
+            while (true) {
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+            }
+        } else {
+            std::cerr << "Failed to start server\n";
+            return 1;
+        }
+        
+    } catch (const std::exception& e) {
+        std::cerr << "Server error: " << e.what() << "\n";
+        return 1;
+    }
+}
+
+} // namespace multios</code></pre>
+                    </div>
+                </section>
+
+                <!-- GUI Development -->
+                <section class="content-section">
+                    <h2>GUI Development</h2>
+                    <p>Create graphical interfaces with C++ and MultiOS GUI:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>GUI.h</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-cpp">#pragma once
+
+#include <string>
+#include <vector>
+#include <memory>
+#include <functional>
+#include <variant>
+
+namespace multios {
+
+// Forward declarations
+class Window;
+class Widget;
+class Layout;
+
+using WindowPtr = std::shared_ptr<Window>;
+using WidgetPtr = std::shared_ptr<Widget>;
+using LayoutPtr = std::shared_ptr<Layout>;
+
+// Color representation
+struct Color {
+    uint8_t r = 0, g = 0, b = 0, a = 255;
+    
+    Color() = default;
+    Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255)
+        : r(r), g(g), b(b), a(a) {}
+    
+    static Color fromHex(const std::string& hex);
+    std::string toHex() const;
+};
+
+// Font configuration
+struct Font {
+    std::string family = "Arial";
+    int size = 16;
+    bool bold = false;
+    bool italic = false;
+};
+
+// Geometry
+struct Rect {
+    int x = 0, y = 0, width = 0, height = 0;
+    
+    Rect() = default;
+    Rect(int x, int y, int width, int height)
+        : x(x), y(y), width(width), height(height) {}
+    
+    bool contains(int px, int py) const {
+        return px >= x && px <= x + width && 
+               py >= y && py <= y + height;
+    }
+};
+
+// Event types
+enum class EventType {
+    MouseClick,
+    MouseMove,
+    MouseWheel,
+    KeyPress,
+    KeyRelease,
+    FocusGained,
+    FocusLost,
+    Resize,
+    Close
+};
+
+struct MouseEvent {
+    int x, y;
+    int button; // 0=left, 1=middle, 2=right
+    bool pressed;
+};
+
+struct KeyEvent {
+    int key_code;
+    bool pressed;
+    bool ctrl, alt, shift;
+};
+
+struct ResizeEvent {
+    int width, height;
+};
+
+using EventData = std::variant<MouseEvent, KeyEvent, ResizeEvent>;
+
+// Widget base class
+class Widget {
+public:
+    Widget() = default;
+    virtual ~Widget() = default;
+
+    // Geometry
+    void setBounds(const Rect& bounds);
+    Rect getBounds() const;
+    void setPosition(int x, int y);
+    void setSize(int width, int height);
+    
+    // Visibility
+    void setVisible(bool visible);
+    bool isVisible() const;
+    
+    // Styling
+    void setBackgroundColor(const Color& color);
+    void setBorderColor(const Color& color);
+    void setBorderWidth(int width);
+    
+    // Events
+    using EventCallback = std::function<void(EventType, const EventData&)>;
+    void setEventCallback(EventType type, EventCallback callback);
+    
+    // Parent/child relationship
+    void setParent(Widget* parent);
+    Widget* getParent() const { return parent_; }
+    
+    // Layout
+    virtual void layout() {}
+    virtual void invalidate() {}
+
+protected:
+    Rect bounds_;
+    Color background_color_;
+    Color border_color_;
+    int border_width_ = 1;
+    bool visible_ = true;
+    Widget* parent_ = nullptr;
+    
+    std::map<EventType, EventCallback> event_callbacks_;
+};
+
+// Specific widget types
+class Label : public Widget {
+public:
+    Label(const std::string& text = "");
+    
+    void setText(const std::string& text);
+    std::string getText() const;
+    
+    void setFont(const Font& font);
+    Font getFont() const;
+    
+    void setTextColor(const Color& color);
+    Color getTextColor() const;
+
+private:
+    std::string text_;
+    Font font_;
+    Color text_color_;
+};
+
+class Button : public Widget {
+public:
+    Button(const std::string& text = "");
+    
+    void setText(const std::string& text);
+    std::string getText() const;
+    
+    void setEnabled(bool enabled);
+    bool isEnabled() const;
+    
+    using ClickCallback = std::function<void()>;
+    void setClickCallback(ClickCallback callback);
+
+private:
+    std::string text_;
+    bool enabled_ = true;
+    ClickCallback click_callback_;
+};
+
+class TextField : public Widget {
+public:
+    TextField(const std::string& placeholder = "");
+    
+    void setText(const std::string& text);
+    std::string getText() const;
+    
+    void setPlaceholder(const std::string& placeholder);
+    std::string getPlaceholder() const;
+    
+    void setReadOnly(bool read_only);
+    bool isReadOnly() const;
+    
+    using TextChangedCallback = std::function<void(const std::string&)>;
+    void setTextChangedCallback(TextChangedCallback callback);
+
+private:
+    std::string text_;
+    std::string placeholder_;
+    bool read_only_ = false;
+    TextChangedCallback text_changed_callback_;
+};
+
+class ListView : public Widget {
+public:
+    struct Item {
+        std::string text;
+        std::string icon;
+        void* user_data = nullptr;
+    };
+    
+    void addItem(const Item& item);
+    void removeItem(int index);
+    void clear();
+    
+    int getSelectedIndex() const;
+    void setSelectedIndex(int index);
+    
+    using SelectionChangedCallback = std::function<void(int)>;
+    void setSelectionChangedCallback(SelectionChangedCallback callback);
+
+private:
+    std::vector<Item> items_;
+    int selected_index_ = -1;
+    SelectionChangedCallback selection_changed_callback_;
+};
+
+// Layout managers
+enum class LayoutType {
+    Box,
+    Grid,
+    Border,
+    Flow
+};
+
+class Layout {
+public:
+    virtual ~Layout() = default;
+    virtual void addWidget(WidgetPtr widget) = 0;
+    virtual void removeWidget(WidgetPtr widget) = 0;
+    virtual void layout(const Rect& bounds) = 0;
+};
+
+// Window class
+class Window {
+public:
+    struct Config {
+        std::string title = "Window";
+        int width = 800;
+        int height = 600;
+        bool resizable = true;
+        bool visible = false;
+        bool centered = true;
+    };
+
+    Window(const Config& config);
+    ~Window();
+
+    // Window management
+    bool show();
+    bool hide();
+    bool close();
+    bool isVisible() const;
+    
+    // Window properties
+    void setTitle(const std::string& title);
+    std::string getTitle() const;
+    
+    void setSize(int width, int height);
+    std::pair<int, int> getSize() const;
+    
+    void setPosition(int x, int y);
+    std::pair<int, int> getPosition() const;
+    
+    // Widget management
+    LabelPtr createLabel(const std::string& text);
+    ButtonPtr createButton(const std::string& text);
+    TextFieldPtr createTextField(const std::string& placeholder = "");
+    ListViewPtr createListView();
+    
+    void addWidget(WidgetPtr widget);
+    void removeWidget(WidgetPtr widget);
+    
+    // Layout
+    void setLayout(LayoutPtr layout);
+    LayoutPtr getLayout() const;
+    
+    // Event handling
+    using WindowEventCallback = std::function<void(EventType, const EventData&)>;
+    void setEventCallback(WindowEventCallback callback);
+    
+    // Drawing
+    void invalidate();
+    void update();
+    
+    // Utility
+    Rect getClientBounds() const;
+
+private:
+    class Impl;
+    std::unique_ptr<Impl> impl_;
+    Config config_;
+    std::string title_;
+    LayoutPtr layout_;
+    std::vector<WidgetPtr> widgets_;
+    WindowEventCallback event_callback_;
+};
+
+// Factory functions
+namespace GUI {
+    WindowPtr createWindow(const Window::Config& config);
+    LayoutPtr createBoxLayout(bool vertical = true);
+    LayoutPtr createGridLayout(int rows, int columns);
+    LayoutPtr createBorderLayout();
+}
+
+// Application integration
+class GUIApplication {
+public:
+    GUIApplication();
+    virtual ~GUIApplication();
+    
+    // Lifecycle
+    virtual bool initialize();
+    virtual int run();
+    virtual void shutdown();
+    
+    // Window management
+    WindowPtr createMainWindow(const Window::Config& config);
+    
+    // Event loop
+    void processEvents();
+    bool shouldQuit() const;
+    void quit();
+    
+    // Utility
+    static GUIApplication* getInstance();
+
+protected:
+    bool initialized_ = false;
+    bool should_quit_ = false;
+    WindowPtr main_window_;
+};
+
+// Convenience macros
+#define MULTOS_DECLARE_WIDGET(class_name) \
+    class class_name : public Widget { \
+    public: \
+        class_name(); \
+        virtual ~class_name(); \
+    private: \
+        /* Additional members */ \
+    };
+
+} // namespace multios</code></pre>
+                    </div>
+                </section>
+
+                <!-- Performance and Best Practices -->
+                <section class="content-section">
+                    <h2>Performance and Best Practices</h2>
+                    
+                    <h3>C++ Performance Optimization</h3>
+                    <ul>
+                        <li><strong>RAII patterns:</strong> Use RAII for resource management and automatic cleanup</li>
+                        <li><strong>Move semantics:</strong> Leverage move constructors and std::move for efficient transfers</li>
+                        <li><strong>Smart pointers:</strong> Use std::unique_ptr and std::shared_ptr for automatic memory management</li>
+                        <li><strong>Inline functions:</strong> Mark small, frequently-called functions as inline</li>
+                        <li><strong>Compile-time optimizations:</strong> Use constexpr, templates, and static_assert</li>
+                    </ul>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Performance Patterns</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-cpp">#include <memory>
+#include <vector>
+#include <string>
+#include <chrono>
+#include <iostream>
+
+namespace multios {
+
+// RAII Resource Manager
+class ResourceManager {
+public:
+    ResourceManager() {
+        std::cout << "Resource acquired\n";
+    }
+    
+    ~ResourceManager() {
+        std::cout << "Resource released\n";
+    }
+    
+    // Move semantics for efficient transfers
+    ResourceManager(ResourceManager&& other) noexcept = default;
+    ResourceManager& operator=(ResourceManager&& other) noexcept = default;
+    
+    // Delete copy operations to prevent accidental copying
+    ResourceManager(const ResourceManager&) = delete;
+    ResourceManager& operator=(const ResourceManager&) = delete;
+};
+
+// Object Pool for performance
+template<typename T>
+class ObjectPool {
+public:
+    ObjectPool(size_t initial_size = 10) {
+        for (size_t i = 0; i < initial_size; ++i) {
+            pool_.push_back(std::make_unique<T>());
+        }
+    }
+    
+    std::unique_ptr<T> acquire() {
+        if (pool_.empty()) {
+            return std::make_unique<T>();
+        }
+        
+        auto obj = std::move(pool_.back());
+        pool_.pop_back();
+        return obj;
+    }
+    
+    void release(std::unique_ptr<T> obj) {
+        pool_.push_back(std::move(obj));
+    }
+    
+private:
+    std::vector<std::unique_ptr<T>> pool_;
+};
+
+// Memory pool for frequent allocations
+class MemoryPool {
+public:
+    MemoryPool(size_t block_size, size_t pool_size)
+        : block_size_(block_size), pool_size_(pool_size) {
+        allocateBlocks();
+    }
+    
+    void* allocate() {
+        if (free_blocks_.empty()) {
+            allocateBlocks();
+        }
+        
+        void* block = free_blocks_.back();
+        free_blocks_.pop_back();
+        return block;
+    }
+    
+    void deallocate(void* block) {
+        free_blocks_.push_back(block);
+    }
+    
+private:
+    void allocateBlocks() {
+        for (size_t i = 0; i < pool_size_; ++i) {
+            void* block = ::operator new(block_size_);
+            free_blocks_.push_back(block);
+        }
+    }
+    
+    size_t block_size_;
+    size_t pool_size_;
+    std::vector<void*> free_blocks_;
+};
+
+// Compile-time configuration
+template<typename T>
+class Config {
+public:
+    constexpr static T getValue() { return T{}; }
+};
+
+// Performance monitoring
+class PerformanceMonitor {
+public:
+    PerformanceMonitor(const std::string& name) : name_(name) {
+        start_time_ = std::chrono::high_resolution_clock::now();
+    }
+    
+    ~PerformanceMonitor() {
+        auto end_time = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
+            end_time - start_time_).count();
+        
+        std::cout << "[" << name_ << "] took " << duration << " μs\n";
+    }
+    
+private:
+    std::string name_;
+    std::chrono::high_resolution_clock::time_point start_time_;
+};
+
+// Usage examples
+void demonstratePerformancePatterns() {
+    // RAII - Resource automatically cleaned up
+    {
+        auto resource = std::make_unique<ResourceManager>();
+        // Resource is automatically released when scope ends
+    }
+    
+    // Object Pool - Reuse objects to reduce allocations
+    {
+        ObjectPool<std::string> pool;
+        
+        auto str1 = pool.acquire();
+        *str1 = "Hello";
+        
+        auto str2 = pool.acquire();
+        *str2 = "World";
+        
+        // Return to pool for reuse
+        pool.release(std::move(str1));
+        pool.release(std::move(str2));
+    }
+    
+    // Performance monitoring
+    {
+        PerformanceMonitor monitor("Test Operation");
+        
+        // Simulate some work
+        volatile int sum = 0;
+        for (int i = 0; i < 1000000; ++i) {
+            sum += i;
+        }
+    }
+}
+
+} // namespace multios</code></pre>
+                    </div>
+
+                    <h3>Error Handling Patterns</h3>
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Error Handling</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-cpp">#include <stdexcept>
+#include <system_error>
+#include <iostream>
+#include <string>
+
+namespace multios {
+
+// Custom exception hierarchy
+class MultiOSException : public std::exception {
+public:
+    explicit MultiOSException(const std::string& message) 
+        : message_(message) {}
+    
+    const char* what() const noexcept override {
+        return message_.c_str();
+    }
+    
+    std::string getMessage() const { return message_; }
+
+private:
+    std::string message_;
+};
+
+class FileSystemException : public MultiOSException {
+public:
+    FileSystemException(const std::string& message, const std::string& path)
+        : MultiOSException(message), path_(path) {}
+    
+    const std::string& getPath() const { return path_; }
+
+private:
+    std::string path_;
+};
+
+class NetworkException : public MultiOSException {
+public:
+    NetworkException(const std::string& message, int error_code = 0)
+        : MultiOSException(message), error_code_(error_code) {}
+    
+    int getErrorCode() const { return error_code_; }
+
+private:
+    int error_code_;
+};
+
+// Error handling utilities
+class ErrorHandler {
+public:
+    using ErrorCallback = std::function<void(const MultiOSException&)>;
+    
+    static void setGlobalHandler(ErrorCallback callback) {
+        global_handler_ = callback;
+    }
+    
+    static void handleError(const MultiOSException& error) {
+        if (global_handler_) {
+            global_handler_(error);
+        } else {
+            std::cerr << "Error: " << error.what() << "\n";
+        }
+    }
+    
+    template<typename Func>
+    static auto executeWithErrorHandling(Func&& func) 
+        -> decltype(func()) {
+        try {
+            return func();
+        } catch (const FileSystemException& e) {
+            handleError(e);
+            throw;
+        } catch (const NetworkException& e) {
+            handleError(e);
+            throw;
+        } catch (const MultiOSException& e) {
+            handleError(e);
+            throw;
+        } catch (const std::exception& e) {
+            handleError(MultiOSException(std::string("Unknown error: ") + e.what()));
+            throw;
+        }
+    }
+
+private:
+    static ErrorCallback global_handler_;
+};
+
+// Safe resource operations
+class SafeFile {
+public:
+    SafeFile(const std::string& path) : path_(path) {
+        // Open file with error checking
+        file_.open(path, std::ios::in | std::ios::out);
+        if (!file_.is_open()) {
+            throw FileSystemException("Failed to open file", path);
+        }
+    }
+    
+    ~SafeFile() {
+        if (file_.is_open()) {
+            file_.close();
+        }
+    }
+    
+    // Move operations
+    SafeFile(SafeFile&& other) noexcept 
+        : file_(std::move(other.file_)), path_(std::move(other.path_)) {
+        other.file_.clear();
+    }
+    
+    SafeFile& operator=(SafeFile&& other) noexcept {
+        if (this != &other) {
+            if (file_.is_open()) {
+                file_.close();
+            }
+            file_ = std::move(other.file_);
+            path_ = std::move(other.path_);
+            other.file_.clear();
+        }
+        return *this;
+    }
+    
+    // Prevent copying
+    SafeFile(const SafeFile&) = delete;
+    SafeFile& operator=(const SafeFile&) = delete;
+    
+    std::string readLine() {
+        if (!file_.is_open()) {
+            throw FileSystemException("File not open", path_);
+        }
+        
+        std::string line;
+        if (!std::getline(file_, line)) {
+            if (file_.eof()) {
+                throw std::runtime_error("End of file");
+            } else {
+                throw FileSystemException("Failed to read line", path_);
+            }
+        }
+        return line;
+    }
+    
+    void writeLine(const std::string& line) {
+        if (!file_.is_open()) {
+            throw FileSystemException("File not open", path_);
+        }
+        
+        file_ << line << "\n";
+        if (!file_.good()) {
+            throw FileSystemException("Failed to write line", path_);
+        }
+    }
+
+private:
+    std::fstream file_;
+    std::string path_;
+};
+
+// Usage pattern
+void demonstrateErrorHandling() {
+    ErrorHandler::setGlobalHandler([](const MultiOSException& error) {
+        std::cerr << "Global error handler: " << error.what() << "\n";
+    });
+    
+    try {
+        // Safe file operation with error handling
+        auto result = ErrorHandler::executeWithErrorHandling([]() {
+            SafeFile file("test.txt");
+            return file.readLine();
+        });
+        
+        std::cout << "Read line: " << result << "\n";
+        
+    } catch (const FileSystemException& e) {
+        std::cerr << "File system error: " << e.what() 
+                  << " (path: " << e.getPath() << ")\n";
+    } catch (const std::exception& e) {
+        std::cerr << "General error: " << e.what() << "\n";
+    }
+}
+
+} // namespace multios</code></pre>
+                    </div>
+                </section>
+
+                <!-- Debugging -->
+                <section class="content-section">
+                    <h2>Debugging and Development</h2>
+                    <p>Debug C++ applications on MultiOS:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Debug Configuration</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash"># Debug build configuration
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+make -j$(nproc)
+
+# Enable sanitizers
+cmake -DCMAKE_BUILD_TYPE=Debug \
+      -DCMAKE_CXX_FLAGS_DEBUG="-g -O0 -fsanitize=address -fsanitize=undefined" \
+      ..
+
+# Run with GDB
+gdb ./my_app
+
+# Memory debugging
+valgrind --leak-check=full --show-leak-kinds=all ./my_app
+
+# Performance profiling
+perf record ./my_app
+perf report</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Debug Utilities</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-cpp">#include <iostream>
+#include <fstream>
+#include <chrono>
+#include <unordered_map>
+#include <source_location>
+
+namespace multios {
+
+// Debug logging system
+class DebugLogger {
+public:
+    enum class Level {
+        Debug,
+        Info,
+        Warning,
+        Error,
+        Fatal
+    };
+    
+    static void setLevel(Level level) {
+        instance().current_level_ = level;
+    }
+    
+    static void enableFileLogging(const std::string& filename) {
+        instance().log_file_.open(filename, std::ios::app);
+        instance().file_logging_enabled_ = true;
+    }
+    
+    template<typename... Args>
+    static void log(Level level, const std::string& message, Args... args) {
+        if (level < instance().current_level_) {
+            return;
+        }
+        
+        auto& logger = instance();
+        std::string log_message = formatMessage(message, args...);
+        
+        // Console output
+        std::cout << formatOutput(level, log_message) << "\n";
+        
+        // File output if enabled
+        if (logger.file_logging_enabled_ && logger.log_file_.is_open()) {
+            logger.log_file_ << formatOutput(level, log_message) << "\n";
+            logger.log_file_.flush();
+        }
+    }
+    
+    template<typename... Args>
+    static void debug(const std::string& message, Args... args) {
+        log(Level::Debug, message, args...);
+    }
+    
+    template<typename... Args>
+    static void info(const std::string& message, Args... args) {
+        log(Level::Info, message, args...);
+    }
+    
+    template<typename... Args>
+    static void warning(const std::string& message, Args... args) {
+        log(Level::Warning, message, args...);
+    }
+    
+    template<typename... Args>
+    static void error(const std::string& message, Args... args) {
+        log(Level::Error, message, args...);
+    }
+    
+    template<typename... Args>
+    static void fatal(const std::string& message, Args... args) {
+        log(Level::Fatal, message, args...);
+        std::abort(); // Terminate on fatal error
+    }
+
+private:
+    DebugLogger() = default;
+    static DebugLogger& instance() {
+        static DebugLogger logger;
+        return logger;
+    }
+    
+    template<typename... Args>
+    static std::string formatMessage(const std::string& message, Args... args) {
+        // Simple string formatting - in real implementation, use format library
+        return message;
+    }
+    
+    static std::string formatOutput(Level level, const std::string& message) {
+        auto now = std::chrono::system_clock::now();
+        auto time_t = std::chrono::system_clock::to_time_t(now);
+        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+            now.time_since_epoch()) % 1000;
+        
+        std::ostringstream oss;
+        oss << "[" << std::put_time(std::localtime(&time_t), "%H:%M:%S");
+        oss << "." << std::setfill('0') << std::setw(3) << ms.count() << "]";
+        oss << "[" << levelToString(level) << "] " << message;
+        
+        return oss.str();
+    }
+    
+    static const char* levelToString(Level level) {
+        switch (level) {
+            case Level::Debug:   return "DEBUG";
+            case Level::Info:    return "INFO ";
+            case Level::Warning: return "WARN ";
+            case Level::Error:   return "ERROR";
+            case Level::Fatal:   return "FATAL";
+            default:             return "UNKNOWN";
+        }
+    }
+    
+    Level current_level_ = Level::Info;
+    bool file_logging_enabled_ = false;
+    std::ofstream log_file_;
+};
+
+// Performance profiling
+class Profiler {
+public:
+    Profiler(const std::string& name) : name_(name) {
+        start_time_ = std::chrono::high_resolution_clock::now();
+        DebugLogger::debug("Starting profiling: ", name_);
+    }
+    
+    ~Profiler() {
+        auto end_time = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
+            end_time - start_time_).count();
+        
+        DebugLogger::debug("Completed profiling: ", name_, " (", duration, " μs)");
+        
+        // Store in global statistics
+        instance().recordTiming(name_, duration);
+    }
+    
+    static void printStatistics() {
+        instance().printTimingStatistics();
+    }
+    
+    static void resetStatistics() {
+        instance().timings_.clear();
+    }
+
+private:
+    struct TimingStats {
+        uint64_t total_time = 0;
+        uint64_t count = 0;
+        uint64_t min_time = UINT64_MAX;
+        uint64_t max_time = 0;
+    };
+    
+    static Profiler& instance() {
+        static Profiler profiler("Global");
+        return profiler;
+    }
+    
+    void recordTiming(const std::string& name, uint64_t duration) {
+        auto& stats = timings_[name];
+        stats.total_time += duration;
+        stats.count++;
+        stats.min_time = std::min(stats.min_time, duration);
+        stats.max_time = std::max(stats.max_time, duration);
+    }
+    
+    void printTimingStatistics() {
+        DebugLogger::info("Profiling Statistics:");
+        for (const auto& [name, stats] : timings_) {
+            if (stats.count > 0) {
+                auto avg_time = stats.total_time / stats.count;
+                DebugLogger::info("  ", name, ": avg=", avg_time, "μs, "
+                                "min=", stats.min_time, "μs, max=", stats.max_time, "μs, "
+                                "count=", stats.count);
+            }
+        }
+    }
+    
+    std::string name_;
+    std::chrono::high_resolution_clock::time_point start_time_;
+    std::unordered_map<std::string, TimingStats> timings_;
+};
+
+// Memory tracking
+class MemoryTracker {
+public:
+    static void enableTracking() {
+        instance().tracking_enabled_ = true;
+    }
+    
+    static void* allocate(size_t size, const std::source_location& loc = std::source_location::current()) {
+        auto ptr = ::operator new(size);
+        if (instance().tracking_enabled_) {
+            instance().trackAllocation(ptr, size, loc);
+        }
+        return ptr;
+    }
+    
+    static void deallocate(void* ptr) {
+        if (instance().tracking_enabled_) {
+            instance().trackDeallocation(ptr);
+        }
+        ::operator delete(ptr);
+    }
+    
+    static void printLeaks() {
+        if (!instance().tracking_enabled_) {
+            return;
+        }
+        
+        DebugLogger::warning("Memory Leaks Detected:");
+        for (const auto& [ptr, info] : instance().allocations_) {
+            DebugLogger::warning("  ", ptr, " (", info.size, " bytes) at ", 
+                               info.file, ":", info.line);
+        }
+    }
+    
+    static void reset() {
+        instance().allocations_.clear();
+    }
+
+private:
+    struct AllocationInfo {
+        size_t size;
+        std::string file;
+        int line;
+    };
+    
+    MemoryTracker() = default;
+    
+    void trackAllocation(void* ptr, size_t size, const std::source_location& loc) {
+        AllocationInfo info{
+            size,
+            std::string(loc.file_name()),
+            loc.line()
+        };
+        allocations_[ptr] = info;
+    }
+    
+    void trackDeallocation(void* ptr) {
+        allocations_.erase(ptr);
+    }
+    
+    static MemoryTracker& instance() {
+        static MemoryTracker tracker;
+        return tracker;
+    }
+    
+    bool tracking_enabled_ = false;
+    std::unordered_map<void*, AllocationInfo> allocations_;
+};
+
+// Convenience macros for easier debugging
+#define MULTOS_DEBUG(msg, ...) \
+    DebugLogger::debug(msg, ##__VA_ARGS__)
+
+#define MULTOS_INFO(msg, ...) \
+    DebugLogger::info(msg, ##__VA_ARGS__)
+
+#define MULTOS_WARNING(msg, ...) \
+    DebugLogger::warning(msg, ##__VA_ARGS__)
+
+#define MULTOS_ERROR(msg, ...) \
+    DebugLogger::error(msg, ##__VA_ARGS__)
+
+#define MULTOS_PROFILER(name) \
+    Profiler profiler(name)
+
+#define MULTOS_TRACK_ALLOCATION(ptr, size) \
+    ptr = MemoryTracker::allocate(size)
+
+#define MULTOS_FREE(ptr) \
+    do { \
+        MemoryTracker::deallocate(ptr); \
+        ptr = nullptr; \
+    } while(0)
+
+// Usage examples
+void demonstrateDebugTools() {
+    // Enable debug logging
+    DebugLogger::setLevel(DebugLogger::Level::Debug);
+    DebugLogger::enableFileLogging("app_debug.log");
+    
+    // Enable memory tracking
+    MemoryTracker::enableTracking();
+    
+    MULTOS_DEBUG("Application starting");
+    
+    {
+        MULTOS_PROFILER("Initialization");
+        
+        // Simulate some initialization work
+        int* data = nullptr;
+        MULTOS_TRACK_ALLOCATION(data, sizeof(int) * 100);
+        
+        for (int i = 0; i < 100; ++i) {
+            data[i] = i;
+        }
+        
+        MULTOS_FREE(data);
+    }
+    
+    {
+        MULTOS_PROFILER("Processing");
+        
+        // Simulate processing
+        std::string result;
+        for (int i = 0; i < 1000; ++i) {
+            result += "x";
+        }
+        
+        MULTOS_INFO("Processing completed, result length: ", result.length());
+    }
+    
+    // Print profiling statistics
+    Profiler::printStatistics();
+    
+    // Check for memory leaks
+    MemoryTracker::printLeaks();
+    
+    MULTOS_DEBUG("Application ending");
+}
+
+} // namespace multios</code></pre>
+                    </div>
+                </section>
+
+                <!-- Conclusion -->
+                <section class="content-section">
+                    <h2>Summary</h2>
+                    <p>C++ integration with MultiOS provides:</p>
+                    <ul>
+                        <li>High-performance native compilation with modern C++ standards</li>
+                        <li>Fine-grained memory control and resource management</li>
+                        <li>Comprehensive API for system programming and driver development</li>
+                        <li>Rich networking and GUI frameworks</li>
+                        <li>Advanced debugging and profiling tools</li>
+                        <li>Seamless integration with MultiOS runtime and other languages</li>
+                    </ul>
+                    
+                    <div class="next-steps">
+                        <h3>Next Steps</h3>
+                        <ul>
+                            <li>Explore the <a href="../../api_reference/index.html">API Reference</a> for detailed function documentation</li>
+                            <li>Try the <a href="../../tutorials/advanced/index.html">Advanced Tutorials</a> for complex examples</li>
+                            <li>Check out <a href="../rust.html">Rust Integration</a> for memory-safe alternatives</li>
+                            <li>Use the <a href="../../api-explorer.html">API Explorer</a> for interactive testing</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/search.js"></script>
+    <script src="../../assets/js/theme.js"></script>
+    <script src="../../assets/js/interactive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

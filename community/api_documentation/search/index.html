@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Search - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Breadcrumb -->
+                <nav class="breadcrumb">
+                    <div class="breadcrumb-item">
+                        <a href="../index.html" class="breadcrumb-link">Home</a>
+                    </div>
+                    <div class="breadcrumb-item">
+                        <span class="breadcrumb-current">Advanced Search</span>
+                    </div>
+                </nav>
+
+                <!-- Search Header -->
+                <div class="search-header">
+                    <h1>Advanced Search</h1>
+                    <p class="search-description">
+                        Search across all MultiOS documentation, API references, tutorials, and examples.
+                        Use advanced filters to find exactly what you need.
+                    </p>
+                </div>
+
+                <!-- Search Form -->
+                <div class="search-form-container">
+                    <form class="search-form" id="advanced-search-form">
+                        <div class="search-input-group">
+                            <i class="fas fa-search search-icon"></i>
+                            <input 
+                                type="text" 
+                                id="search-input" 
+                                placeholder="Search for APIs, tutorials, examples, functions..."
+                                autocomplete="off"
+                            >
+                            <button type="submit" class="search-submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Search Filters -->
+                        <div class="search-filters">
+                            <div class="filter-group">
+                                <label class="filter-label">Content Type</label>
+                                <div class="filter-options">
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="content-type" value="api" checked>
+                                        <span class="checkmark"></span>
+                                        <i class="fas fa-microchip"></i>
+                                        API Reference
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="content-type" value="tutorial" checked>
+                                        <span class="checkmark"></span>
+                                        <i class="fas fa-graduation-cap"></i>
+                                        Tutorials
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="content-type" value="example" checked>
+                                        <span class="checkmark"></span>
+                                        <i class="fas fa-code"></i>
+                                        Examples
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="content-type" value="guide" checked>
+                                        <span class="checkmark"></span>
+                                        <i class="fas fa-book"></i>
+                                        Guides
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="filter-group">
+                                <label class="filter-label">Difficulty Level</label>
+                                <div class="filter-options">
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="difficulty" value="beginner" checked>
+                                        <span class="checkmark"></span>
+                                        Beginner
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="difficulty" value="intermediate" checked>
+                                        <span class="checkmark"></span>
+                                        Intermediate
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="difficulty" value="advanced" checked>
+                                        <span class="checkmark"></span>
+                                        Advanced
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="filter-group">
+                                <label class="filter-label">Category</label>
+                                <div class="filter-options">
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="category" value="kernel" checked>
+                                        <span class="checkmark"></span>
+                                        <i class="fas fa-microchip"></i>
+                                        Kernel
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="category" value="memory" checked>
+                                        <span class="checkmark"></span>
+                                        <i class="fas fa-memory"></i>
+                                        Memory
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="category" value="process" checked>
+                                        <span class="checkmark"></span>
+                                        <i class="fas fa-cogs"></i>
+                                        Process
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="category" value="filesystem" checked>
+                                        <span class="checkmark"></span>
+                                        <i class="fas fa-folder"></i>
+                                        Filesystem
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="category" value="network" checked>
+                                        <span class="checkmark"></span>
+                                        <i class="fas fa-network-wired"></i>
+                                        Network
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="category" value="gui" checked>
+                                        <span class="checkmark"></span>
+                                        <i class="fas fa-window-maximize"></i>
+                                        GUI
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="category" value="driver" checked>
+                                        <span class="checkmark"></span>
+                                        <i class="fas fa-plug"></i>
+                                        Drivers
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="filter-group">
+                                <label class="filter-label">Language</label>
+                                <div class="filter-options">
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="language" value="rust" checked>
+                                        <span class="checkmark"></span>
+                                        Rust
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="language" value="c" checked>
+                                        <span class="checkmark"></span>
+                                        C
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="language" value="cpp" checked>
+                                        <span class="checkmark"></span>
+                                        C++
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="language" value="python" checked>
+                                        <span class="checkmark"></span>
+                                        Python
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="language" value="go" checked>
+                                        <span class="checkmark"></span>
+                                        Go
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" name="language" value="javascript" checked>
+                                        <span class="checkmark"></span>
+                                        JavaScript
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="search-actions">
+                            <button type="button" class="btn btn-secondary" onclick="clearFilters()">
+                                <i class="fas fa-times"></i> Clear Filters
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Search Results -->
+                <div class="search-results-container" id="search-results-container" style="display: none;">
+                    <div class="search-results-header">
+                        <div class="results-info">
+                            <h2>Search Results</h2>
+                            <div class="results-stats" id="results-stats">
+                                <span class="results-count">0 results found</span>
+                                <span class="search-time">in 0ms</span>
+                            </div>
+                        </div>
+                        <div class="results-actions">
+                            <select id="sort-order" class="sort-select">
+                                <option value="relevance">Sort by Relevance</option>
+                                <option value="date">Sort by Date</option>
+                                <option value="title">Sort by Title</option>
+                            </select>
+                            <button class="btn btn-secondary btn-sm" id="save-search">
+                                <i class="fas fa-bookmark"></i> Save Search
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="search-results-grid" id="search-results-grid">
+                        <!-- Results will be populated here -->
+                    </div>
+
+                    <div class="pagination" id="pagination">
+                        <!-- Pagination will be added here -->
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Start Your Search</h3>
+                    <p>Enter a search term above to find relevant documentation, tutorials, and examples.</p>
+                    
+                    <div class="search-suggestions">
+                        <h4>Popular Searches</h4>
+                        <div class="suggestion-tags">
+                            <button class="suggestion-tag" onclick="searchSuggestion('process creation')">
+                                process creation
+                            </button>
+                            <button class="suggestion-tag" onclick="searchSuggestion('memory allocation')">
+                                memory allocation
+                            </button>
+                            <button class="suggestion-tag" onclick="searchSuggestion('file operations')">
+                                file operations
+                            </button>
+                            <button class="suggestion-tag" onclick="searchSuggestion('network programming')">
+                                network programming
+                            </button>
+                            <button class="suggestion-tag" onclick="searchSuggestion('gui development')">
+                                gui development
+                            </button>
+                            <button class="suggestion-tag" onclick="searchSuggestion('system calls')">
+                                system calls
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- No Results State -->
+                <div class="no-results" id="no-results" style="display: none;">
+                    <div class="no-results-icon">
+                        <i class="fas fa-search-minus"></i>
+                    </div>
+                    <h3>No results found</h3>
+                    <p>We couldn't find any results for your search. Try adjusting your search terms or filters.</p>
+                    
+                    <div class="search-tips">
+                        <h4>Search Tips</h4>
+                        <ul>
+                            <li>Check your spelling</li>
+                            <li>Try more general terms</li>
+                            <li>Remove some filters</li>
+                            <li>Use fewer keywords</li>
+                            <li>Try searching in different content types</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/search.js"></script>
+
+    <script>
+        // Mock search data for demonstration
+        const searchIndex = [
+            {
+                id: 1,
+                title: "create_process - Kernel API",
+                content: "Creates a new process in the MultiOS kernel with specified parameters",
+                type: "api",
+                category: "kernel",
+                difficulty: "beginner",
+                language: "rust",
+                url: "../api_reference/kernel.html",
+                tags: ["process", "create", "kernel", "api"]
+            },
+            {
+                id: 2,
+                title: "Memory Allocation Tutorial",
+                content: "Learn how to allocate and manage memory in MultiOS",
+                type: "tutorial",
+                category: "memory",
+                difficulty: "beginner",
+                language: "rust",
+                url: "../tutorials/beginner/memory-allocation.html",
+                tags: ["memory", "allocation", "tutorial", "beginner"]
+            },
+            {
+                id: 3,
+                title: "File Operations Example",
+                content: "Complete example showing file creation, reading, and writing",
+                type: "example",
+                category: "filesystem",
+                difficulty: "beginner",
+                language: "rust",
+                url: "../examples/beginner/file-operations.html",
+                tags: ["file", "filesystem", "example", "operations"]
+            },
+            {
+                id: 4,
+                title: "Network Configuration Guide",
+                content: "Configure network interfaces and connectivity",
+                type: "guide",
+                category: "network",
+                difficulty: "intermediate",
+                language: "rust",
+                url: "../guides/network-configuration.html",
+                tags: ["network", "configuration", "guide", "interfaces"]
+            },
+            {
+                id: 5,
+                title: "GUI Programming Tutorial",
+                content: "Create your first graphical user interface",
+                type: "tutorial",
+                category: "gui",
+                difficulty: "intermediate",
+                language: "rust",
+                url: "../tutorials/intermediate/gui-programming.html",
+                tags: ["gui", "window", "tutorial", "graphics"]
+            }
+        ];
+
+        let currentSearch = '';
+        let currentFilters = {};
+        let fuse = null;
+
+        // Initialize search functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeSearch();
+            setupEventListeners();
+        });
+
+        function initializeSearch() {
+            // Initialize Fuse.js for fuzzy search
+            fuse = new Fuse(searchIndex, {
+                keys: [
+                    { name: 'title', weight: 0.4 },
+                    { name: 'content', weight: 0.3 },
+                    { name: 'tags', weight: 0.3 }
+                ],
+                threshold: 0.3,
+                includeScore: true,
+                minMatchCharLength: 2
+            });
+        }
+
+        function setupEventListeners() {
+            const searchForm = document.getElementById('advanced-search-form');
+            const searchInput = document.getElementById('search-input');
+            
+            searchForm.addEventListener('submit', handleSearch);
+            searchInput.addEventListener('input', handleSearchInput);
+            
+            // Filter change listeners
+            document.querySelectorAll('input[name]').forEach(input => {
+                input.addEventListener('change', updateFilters);
+            });
+        }
+
+        function handleSearchInput(e) {
+            const query = e.target.value;
+            if (query.length >= 2) {
+                performSearch(query);
+            } else if (query.length === 0) {
+                clearSearch();
+            }
+        }
+
+        function handleSearch(e) {
+            e.preventDefault();
+            const query = document.getElementById('search-input').value;
+            if (query.trim()) {
+                performSearch(query);
+            }
+        }
+
+        function performSearch(query) {
+            currentSearch = query;
+            const startTime = performance.now();
+            
+            let results = [];
+            
+            if (query.trim()) {
+                // Perform fuzzy search
+                results = fuse.search(query);
+                
+                // Apply filters
+                results = applyFilters(results);
+                
+                // Sort results
+                results = sortResults(results);
+            }
+            
+            const endTime = performance.now();
+            const searchTime = Math.round(endTime - startTime);
+            
+            displayResults(results, searchTime);
+            updateURL(query);
+        }
+
+        function applyFilters(results) {
+            return results.filter(result => {
+                const item = result.item || result;
+                const filters = getActiveFilters();
+                
+                // Check content type filter
+                if (filters.contentTypes.length > 0 && !filters.contentTypes.includes(item.type)) {
+                    return false;
+                }
+                
+                // Check difficulty filter
+                if (filters.difficulties.length > 0 && !filters.difficulties.includes(item.difficulty)) {
+                    return false;
+                }
+                
+                // Check category filter
+                if (filters.categories.length > 0 && !filters.categories.includes(item.category)) {
+                    return false;
+                }
+                
+                // Check language filter
+                if (filters.languages.length > 0 && !filters.languages.includes(item.language)) {
+                    return false;
+                }
+                
+                return true;
+            });
+        }
+
+        function getActiveFilters() {
+            return {
+                contentTypes: Array.from(document.querySelectorAll('input[name="content-type"]:checked')).map(cb => cb.value),
+                difficulties: Array.from(document.querySelectorAll('input[name="difficulty"]:checked')).map(cb => cb.value),
+                categories: Array.from(document.querySelectorAll('input[name="category"]:checked')).map(cb => cb.value),
+                languages: Array.from(document.querySelectorAll('input[name="language"]:checked')).map(cb => cb.value)
+            };
+        }
+
+        function sortResults(results) {
+            const sortOrder = document.getElementById('sort-order').value;
+            
+            return results.sort((a, b) => {
+                switch (sortOrder) {
+                    case 'relevance':
+                        return (a.score || 1) - (b.score || 1);
+                    case 'date':
+                        return b.id - a.id; // Mock date sort
+                    case 'title':
+                        return (a.item?.title || a.title).localeCompare(b.item?.title || b.title);
+                    default:
+                        return 0;
+                }
+            });
+        }
+
+        function displayResults(results, searchTime) {
+            const container = document.getElementById('search-results-container');
+            const grid = document.getElementById('search-results-grid');
+            const stats = document.getElementById('results-stats');
+            const emptyState = document.getElementById('empty-state');
+            const noResults = document.getElementById('no-results');
+            
+            // Hide empty states
+            emptyState.style.display = 'none';
+            noResults.style.display = 'none';
+            
+            if (results.length === 0) {
+                container.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+            
+            // Show results container
+            container.style.display = 'block';
+            
+            // Update stats
+            stats.innerHTML = `
+                <span class="results-count">${results.length} result${results.length !== 1 ? 's' : ''} found</span>
+                <span class="search-time">in ${searchTime}ms</span>
+            `;
+            
+            // Generate results HTML
+            grid.innerHTML = results.map(result => {
+                const item = result.item || result;
+                return `
+                    <div class="search-result-item" onclick="openResult('${item.url}')">
+                        <div class="result-header">
+                            <div class="result-type ${item.type}">
+                                <i class="fas fa-${getTypeIcon(item.type)}"></i>
+                                ${item.type.charAt(0).toUpperCase() + item.type.slice(1)}
+                            </div>
+                            <div class="result-score">
+                                Relevance: ${Math.round((1 - (result.score || 0)) * 100)}%
+                            </div>
+                        </div>
+                        
+                        <h3 class="result-title">${highlightMatch(item.title, currentSearch)}</h3>
+                        <p class="result-content">${highlightMatch(item.content, currentSearch)}</p>
+                        
+                        <div class="result-meta">
+                            <span class="result-difficulty ${item.difficulty}">${item.difficulty}</span>
+                            <span class="result-category">
+                                <i class="fas fa-${getCategoryIcon(item.category)}"></i>
+                                ${item.category}
+                            </span>
+                            <span class="result-language">${item.language}</span>
+                        </div>
+                        
+                        <div class="result-tags">
+                            ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        
+                        <div class="result-url">${item.url}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function highlightMatch(text, query) {
+            if (!query) return text;
+            const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            return text.replace(regex, '<mark>$1</mark>');
+        }
+
+        function getTypeIcon(type) {
+            const icons = {
+                api: 'microchip',
+                tutorial: 'graduation-cap',
+                example: 'code',
+                guide: 'book'
+            };
+            return icons[type] || 'file';
+        }
+
+        function getCategoryIcon(category) {
+            const icons = {
+                kernel: 'microchip',
+                memory: 'memory',
+                process: 'cogs',
+                filesystem: 'folder',
+                network: 'network-wired',
+                gui: 'window-maximize',
+                driver: 'plug'
+            };
+            return icons[category] || 'folder';
+        }
+
+        function openResult(url) {
+            window.open(url, '_blank');
+        }
+
+        function clearFilters() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            performSearch(currentSearch);
+        }
+
+        function searchSuggestion(suggestion) {
+            document.getElementById('search-input').value = suggestion;
+            performSearch(suggestion);
+        }
+
+        function clearSearch() {
+            document.getElementById('search-results-container').style.display = 'none';
+            document.getElementById('no-results').style.display = 'none';
+            document.getElementById('empty-state').style.display = 'block';
+            currentSearch = '';
+            updateURL('');
+        }
+
+        function updateURL(query) {
+            const url = new URL(window.location);
+            if (query) {
+                url.searchParams.set('q', query);
+            } else {
+                url.searchParams.delete('q');
+            }
+            window.history.pushState({ query }, '', url);
+        }
+
+        function updateFilters() {
+            if (currentSearch) {
+                performSearch(currentSearch);
+            }
+        }
+    </script>
+
+    <style>
+        .search-header {
+            text-align: center;
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .search-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .search-description {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .search-form-container {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+            box-shadow: var(--shadow);
+        }
+
+        .search-input-group {
+            position: relative;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: var(--spacing-md);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            z-index: 1;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-lg) 3rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1.125rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: border-color 0.2s ease;
+        }
+
+        #search-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .search-submit {
+            position: absolute;
+            right: var(--spacing-sm);
+            top: 50%;
+            transform: translateY(-50%);
+            padding: var(--spacing-sm);
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .filter-group {
+            background: var(--bg-secondary);
+            padding: var(--spacing-lg);
+            border-radius: 8px;
+        }
+
+        .filter-label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .filter-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent-primary);
+        }
+
+        .search-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--spacing-md);
+        }
+
+        .search-results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .results-info h2 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .results-stats {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: center;
+        }
+
+        .sort-select {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .search-results-grid {
+            display: grid;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .search-result-item {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: var(--spacing-lg);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .search-result-item:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow);
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .result-type {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .result-type.api {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .result-type.tutorial {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .result-type.example {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        .result-type.guide {
+            background: rgba(139, 92, 246, 0.1);
+            color: #8b5cf6;
+        }
+
+        .result-score {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .result-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .result-content {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.6;
+        }
+
+        .result-meta {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            font-size: 0.875rem;
+        }
+
+        .result-difficulty {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .result-difficulty.beginner {
+            background: var(--success);
+            color: white;
+        }
+
+        .result-difficulty.intermediate {
+            background: var(--warning);
+            color: white;
+        }
+
+        .result-difficulty.advanced {
+            background: var(--error);
+            color: white;
+        }
+
+        .result-category {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            color: var(--text-secondary);
+        }
+
+        .result-language {
+            color: var(--text-muted);
+        }
+
+        .result-tags {
+            display: flex;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .tag {
+            background: var(--bg-secondary);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .result-url {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .empty-state, .no-results {
+            text-align: center;
+            padding: var(--spacing-2xl);
+            color: var(--text-secondary);
+        }
+
+        .empty-icon, .no-results-icon {
+            font-size: 4rem;
+            color: var(--text-muted);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .empty-state h3, .no-results h3 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .search-suggestions {
+            margin-top: var(--spacing-xl);
+        }
+
+        .search-suggestions h4 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .suggestion-tags {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .suggestion-tag {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .suggestion-tag:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .search-tips {
+            margin-top: var(--spacing-lg);
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .search-tips ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .search-tips li {
+            padding: var(--spacing-xs) 0;
+            color: var(--text-secondary);
+        }
+
+        .search-tips li::before {
+            content: '•';
+            color: var(--accent-primary);
+            font-weight: bold;
+            margin-right: var(--spacing-sm);
+        }
+
+        mark {
+            background: rgba(255, 235, 59, 0.3);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .search-header h1 {
+                font-size: 2rem;
+            }
+
+            .search-filters {
+                grid-template-columns: 1fr;
+            }
+
+            .search-results-header {
+                flex-direction: column;
+                gap: var(--spacing-md);
+                align-items: flex-start;
+            }
+
+            .results-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .suggestion-tags {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</body>
+</html>

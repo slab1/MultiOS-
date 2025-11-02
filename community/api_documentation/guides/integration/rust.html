@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Integration Guide - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar">
+            <div class="nav-content">
+                <div class="nav-section">
+                    <h3>API Reference</h3>
+                    <ul>
+                        <li><a href="../../api_reference/kernel.html" class="nav-link">Kernel API</a></li>
+                        <li><a href="../../api_reference/memory.html" class="nav-link">Memory Management</a></li>
+                        <li><a href="../../api_reference/process.html" class="nav-link">Process Management</a></li>
+                        <li><a href="../../api_reference/filesystem.html" class="nav-link">File System</a></li>
+                        <li><a href="../../api_reference/networking.html" class="nav-link">Network</a></li>
+                        <li><a href="../../api_reference/drivers.html" class="nav-link">Driver API</a></li>
+                        <li><a href="../../api_reference/gui.html" class="nav-link">GUI Framework</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Tutorials</h3>
+                    <ul>
+                        <li><a href="../../tutorials/beginner/index.html" class="nav-link">Beginner</a></li>
+                        <li><a href="../../tutorials/intermediate/index.html" class="nav-link">Intermediate</a></li>
+                        <li><a href="../../tutorials/advanced/index.html" class="nav-link">Advanced</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Guides</h3>
+                    <ul>
+                        <li><a href="rust.html" class="nav-link active">Rust Integration</a></li>
+                        <li><a href="c.html" class="nav-link">C Integration</a></li>
+                        <li><a href="python.html" class="nav-link">Python Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="content-header">
+                    <h1>Rust Integration Guide</h1>
+                    <p class="lead">Complete guide for building MultiOS applications in Rust</p>
+                    <div class="content-meta">
+                        <span class="badge badge-language">Rust</span>
+                        <span class="badge badge-difficulty">All Levels</span>
+                        <span class="badge badge-ecosystem">Native</span>
+                    </div>
+                </div>
+
+                <!-- Language Overview -->
+                <section class="content-section">
+                    <h2>Why Rust with MultiOS?</h2>
+                    <p>Rust is the primary language for MultiOS development, offering memory safety, zero-cost abstractions, and excellent performance. This guide covers everything you need to build applications for MultiOS using Rust.</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Memory Safety</h3>
+                                <p>Zero-cost memory safety guarantees prevent common security vulnerabilities.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>High Performance</h3>
+                                <p>Native performance comparable to C/C++ with modern language features.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-puzzle-piece"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Excellent Integration</h3>
+                                <p>First-class MultiOS API integration with idiomatic Rust patterns.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Great Tooling</h3>
+                                <p>Cargo package manager, rustup, and comprehensive IDE support.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Setup Section -->
+                <section class="content-section">
+                    <h2>Development Environment Setup</h2>
+                    
+                    <div class="setup-steps">
+                        <div class="setup-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>Install Rust Toolchain</h3>
+                                <div class="code-example-container">
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <h4>Install Rust using rustup</h4>
+                                        </div>
+                                        <pre><code class="language-bash"># Install rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Reload PATH
+source ~/.cargo/env
+
+# Verify installation
+rustc --version
+cargo --version</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setup-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>Configure Cargo for MultiOS</h3>
+                                <div class="code-example-container">
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <h4>Add MultiOS target and configuration</h4>
+                                        </div>
+                                        <pre><code class="language-bash"># Install MultiOS target (when available)
+rustup target add x86_64-unknown-multios
+
+# Configure Cargo for MultiOS
+mkdir -p ~/.cargo
+cat > ~/.cargo/config.toml << 'EOF'
+[target.x86_64-unknown-multios]
+runner = "multi-run"
+EOF</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setup-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>Project Setup</h3>
+                                <div class="code-example-container">
+                                    <div class="code-example">
+                                        <div class="code-header">
+                                            <h4>Create and configure a MultiOS project</h4>
+                                        </div>
+                                        <pre><code class="language-bash"># Create new project
+cargo new my_multi_app
+cd my_multi_app
+
+# Add MultiOS dependencies
+cargo add multi_kernel
+cargo add multi_filesystem
+cargo add multi_process
+cargo add multi_network
+
+# Or create with Cargo.toml
+cargo new --bin multi_app</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Basic Usage -->
+                <section class="content-section">
+                    <h2>Basic MultiOS Application</h2>
+                    <p>Learn the fundamentals of building a MultiOS application with Rust.</p>
+                    
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>Simple MultiOS Application</h4>
+                            </div>
+                            <pre><code class="language-rust">use multi_filesystem::{FileSystem, File};
+use multi_process::{ProcessManager, ProcessPriority};
+use std::collections::HashMap;
+
+fn main() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    println!("Starting MultiOS Application");
+    
+    // Initialize file system
+    let fs = FileSystem::new("/app")?;
+    
+    // Create a configuration file
+    let mut config_file = fs.create_file("config.json")?;
+    let config_data = r#"{
+        "app_name": "My MultiOS App",
+        "version": "1.0.0",
+        "debug": true
+    }"#;
+    config_file.write_all(config_data.as_bytes())?;
+    config_file.flush()?;
+    
+    // Initialize process manager
+    let mut process_manager = ProcessManager::new();
+    
+    // Start a background worker process
+    let worker_process = process_manager.create_process(
+        "worker",
+        "/app/worker",
+        ProcessPriority::Normal
+    )?;
+    
+    println!("Worker process started: PID {}", worker_process.get_id().0);
+    
+    // Main application loop
+    run_application_loop(&fs, &mut process_manager)?;
+    
+    Ok(())
+}
+
+fn run_application_loop(
+    fs: &FileSystem,
+    process_manager: &mut ProcessManager,
+) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut running = true;
+    
+    while running {
+        // Check for application events
+        check_application_events(fs, &mut running)?;
+        
+        // Process background tasks
+        process_background_tasks(process_manager)?;
+        
+        // Sleep to avoid busy waiting
+        std::thread::sleep(std::time::Duration::from_millis(100));
+    }
+    
+    println!("Application shutdown");
+    Ok(())
+}
+
+fn check_application_events(fs: &FileSystem, running: &mut bool) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Check for shutdown signal
+    if fs.path_exists("/app/shutdown")? {
+        *running = false;
+    }
+    
+    Ok(())
+}
+
+fn process_background_tasks(process_manager: &mut ProcessManager) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Process management tasks
+    let processes = process_manager.list_processes();
+    
+    for process in processes {
+        match process.get_state() {
+            multi_process::ProcessState::Terminated => {
+                println!("Process {} terminated", process.get_id().0);
+            }
+            multi_process::ProcessState::Running => {
+                // Process is running normally
+            }
+            _ => {
+                // Handle other states
+            }
+        }
+    }
+    
+    Ok(())
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- API Integration -->
+                <section class="content-section">
+                    <h2>MultiOS API Integration</h2>
+                    <p>Detailed examples of using different MultiOS APIs from Rust.</p>
+                    
+                    <div class="api-examples">
+                        <div class="api-example">
+                            <h3>File System Operations</h3>
+                            <div class="code-example-container">
+                                <div class="code-example">
+                                    <div class="code-header">
+                                        <h4>File and Directory Operations</h4>
+                                    </div>
+                                    <pre><code class="language-rust">use multi_filesystem::{FileSystem, File, Directory, FileMode};
+use serde_json::{Value, Map};
+
+// File system operations
+fn file_operations_example(fs: &mut FileSystem) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Create directory
+    fs.create_directory("/data")?;
+    fs.create_directories("/data/logs/2023")?;
+    
+    // Write JSON configuration
+    let mut config = Map::new();
+    config.insert("app_name".to_string(), Value::String("MyApp".to_string()));
+    config.insert("version".to_string(), Value::String("1.0.0".to_string()));
+    config.insert("enabled".to_string(), Value::Bool(true));
+    
+    let config_json = Value::Object(config);
+    let mut config_file = fs.create_file("/data/config.json")?;
+    config_file.write_all(config_json.to_string().as_bytes())?;
+    config_file.sync_all()?;
+    
+    // Read configuration
+    let mut read_file = fs.open_file("/data/config.json")?;
+    let mut contents = String::new();
+    read_file.read_to_string(&mut contents)?;
+    let loaded_config: Value = serde_json::from_str(&contents)?;
+    
+    println!("Loaded config: {:?}", loaded_config);
+    
+    // List directory contents
+    let entries = fs.list_directory("/data")?;
+    for entry in entries {
+        println!("Found: {} ({:?})", entry.name, entry.entry_type);
+    }
+    
+    Ok(())
+}
+
+// Batch file operations
+fn batch_file_operations(fs: &FileSystem) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Copy multiple files
+    let files_to_copy = vec!["config.json", "data.db", "logs.txt"];
+    
+    for file_name in files_to_copy {
+        let source = format!("/tmp/{}", file_name);
+        let dest = format!("/data/backup/{}", file_name);
+        
+        if fs.path_exists(&source)? {
+            fs.copy_file(&source, &dest)?;
+            println!("Copied {} to {}", source, dest);
+        }
+    }
+    
+    Ok(())
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="api-example">
+                            <h3>Network Communication</h3>
+                            <div class="code-example-container">
+                                <div class="code-example">
+                                    <div class="code-header">
+                                        <h4>Network Client and Server</h4>
+                                    </div>
+                                    <pre><code class="language-rust">use multi_network::{TcpStream, TcpListener, SocketAddr, UdpSocket};
+use std::sync::Arc;
+use tokio::sync::Mutex;
+
+// TCP Client example
+async fn tcp_client_example() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let server_addr = SocketAddr::new("192.168.1.100:8080");
+    let mut stream = TcpStream::connect(server_addr).await?;
+    
+    // Send request
+    let request = b"GET /api/data HTTP/1.1\r\nHost: example.com\r\n\r\n";
+    stream.write_all(request).await?;
+    
+    // Read response
+    let mut buffer = vec![0u8; 4096];
+    let bytes_read = stream.read(&mut buffer).await?;
+    let response = String::from_utf8_lossy(&buffer[..bytes_read]);
+    
+    println!("Server response: {}", response);
+    Ok(())
+}
+
+// TCP Server example
+async fn tcp_server_example() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let listener = TcpListener::bind("0.0.0.0:8080")?;
+    println!("Server listening on port 8080");
+    
+    let shared_state = Arc::new(Mutex::new(0)); // Shared counter
+    
+    loop {
+        let (socket, addr) = listener.accept().await?;
+        println!("New connection from {}", addr);
+        
+        let state = Arc::clone(&shared_state);
+        
+        tokio::spawn(async move {
+            handle_client(socket, state).await;
+        });
+    }
+}
+
+async fn handle_client(mut stream: TcpStream, state: Arc&lt;Mutex&lt;i32&gt;&gt;) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    loop {
+        let mut buffer = vec![0u8; 1024];
+        match stream.read(&mut buffer).await {
+            Ok(0) => break, // Connection closed
+            Ok(n) => {
+                // Process request
+                let request = String::from_utf8_lossy(&buffer[..n]);
+                println!("Received: {}", request.trim());
+                
+                // Update shared state
+                {
+                    let mut count = state.lock().await;
+                    *count += 1;
+                    println!("Request count: {}", *count);
+                }
+                
+                // Send response
+                let response = format!("HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, MultiOS!");
+                stream.write_all(response.as_bytes()).await?;
+            }
+            Err(e) => {
+                eprintln!("Error reading from client: {}", e);
+                break;
+            }
+        }
+    }
+    
+    println!("Client disconnected");
+    Ok(())
+}
+
+// UDP communication
+fn udp_example() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let socket = UdpSocket::bind("0.0.0.0:8081")?;
+    
+    // Send broadcast message
+    let message = b"MultiOS UDP Broadcast";
+    socket.send_to(message, "255.255.255.255:8082")?;
+    
+    // Receive message
+    let mut buffer = vec![0u8; 1024];
+    let (bytes_read, src_addr) = socket.recv_from(&mut buffer)?;
+    let received = String::from_utf8_lossy(&buffer[..bytes_read]);
+    
+    println!("Received {} bytes from {}: {}", bytes_read, src_addr, received);
+    
+    Ok(())
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="api-example">
+                            <h3>Memory Management</h3>
+                            <div class="code-example-container">
+                                <div class="code-example">
+                                    <div class="code-header">
+                                        <h4>Memory Allocation and Pool Management</h4>
+                                    </div>
+                                    <pre><code class="language-rust">use multi_memory::{MemoryManager, MemoryPool, FastAlloc};
+use std::sync::Arc;
+
+// Memory allocation examples
+fn memory_examples() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut memory_manager = MemoryManager::new();
+    
+    // Basic allocation
+    let buffer = memory_manager.allocate(1024)?;
+    println!("Allocated {} bytes", buffer.len());
+    
+    // Aligned allocation
+    let aligned_buffer = memory_manager.allocate_aligned(4096, 4096)?;
+    println!("Allocated aligned {} bytes", aligned_buffer.len());
+    
+    // Memory pool for frequent allocations
+    let mut pool = MemoryPool::new(100, 256); // 100 blocks of 256 bytes each
+    
+    // Allocate from pool
+    let block1 = pool.allocate_block()?;
+    let block2 = pool.allocate_block()?;
+    
+    // Use blocks
+    for (i, byte) in block1.iter_mut().enumerate() {
+        *byte = (i % 256) as u8;
+    }
+    
+    // Get pool statistics
+    let stats = pool.get_stats();
+    println!("Pool stats: {} used, {} free", stats.used_blocks, stats.free_blocks);
+    
+    Ok(())
+}
+
+// Fast allocation for temporary objects
+fn fast_allocation_example() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut fast_alloc = FastAlloc::new(1024); // 1KB fast pool
+    
+    // Frequently allocate and deallocate objects
+    for i in 0..1000 {
+        // Allocate temporary object
+        let obj_ptr = fast_alloc.allocate::&lt;Vec&lt;i32&gt;&gt;()?;
+        let obj = unsafe { &mut *obj_ptr };
+        
+        // Use the object
+        obj.push(i as i32);
+        obj.push((i * 2) as i32);
+        
+        // Immediately deallocate
+        fast_alloc.deallocate(obj_ptr);
+    }
+    
+    println!("Fast allocation performance test completed");
+    Ok(())
+}
+
+// Memory protection and security
+fn memory_protection_example() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut memory_manager = MemoryManager::new();
+    
+    // Allocate memory region
+    let protected_region = memory_manager.allocate(4096)?;
+    
+    // Set read-only protection
+    memory_manager.set_protection(
+        protected_region.as_ptr() as usize,
+        4096,
+        multi_memory::ProtectionFlags::READ
+    )?;
+    
+    println!("Memory region protected (read-only)");
+    
+    // Attempt to write (should fail)
+    unsafe {
+        let write_result = std::panic::catch_unwind(|| {
+            *protected_region.as_mut_ptr() = 42;
+        });
+        
+        match write_result {
+            Ok(_) => println!("Unexpected: write succeeded"),
+            Err(_) => println!("Expected: write was prevented"),
+        }
+    }
+    
+    Ok(())
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="api-example">
+                            <h3>Process Management</h3>
+                            <div class="code-example-container">
+                                <div class="code-example">
+                                    <div class="code-header">
+                                        <h4>Process Creation and Management</h4>
+                                    </div>
+                                    <pre><code class="language-rust">use multi_process::{ProcessManager, ProcessPriority, ProcessSignal};
+use std::sync::Arc;
+use tokio::time::Duration;
+
+// Process management examples
+fn process_management_example() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut process_manager = ProcessManager::new();
+    
+    // Create a worker process
+    let worker = process_manager.create_process(
+        "worker_process",
+        "/usr/bin/worker_app",
+        ProcessPriority::High
+    )?;
+    
+    println!("Created worker process: PID {}", worker.get_id().0);
+    
+    // Monitor process status
+    let process_id = worker.get_id();
+    
+    // Wait for process to complete
+    let exit_status = worker.wait()?;
+    println!("Worker process exited with status: {}", exit_status);
+    
+    // Create multiple processes for parallel work
+    let mut processes = Vec::new();
+    
+    for i in 0..4 {
+        let process = process_manager.create_process(
+            &format!("worker_{}", i),
+            "/usr/bin/parallel_worker",
+            ProcessPriority::Normal
+        )?;
+        processes.push(process);
+    }
+    
+    // Wait for all processes
+    for mut process in processes {
+        let exit_status = process.wait()?;
+        println!("Process {} exited: {}", process.get_id().0, exit_status);
+    }
+    
+    Ok(())
+}
+
+// Inter-process communication
+fn ipc_example() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut process_manager = ProcessManager::new();
+    
+    // Create pipe for communication
+    let (read_end, write_end) = multi_process::create_pipe()?;
+    
+    // Create child process
+    let mut child = process_manager.create_process(
+        "child_process",
+        "/usr/bin/child_app",
+        ProcessPriority::Normal
+    )?;
+    
+    // Configure child to inherit pipe
+    child.set_pipe_inherits(true);
+    
+    // Send data through pipe
+    write_end.write_all(b"Hello from parent!")?;
+    
+    // Read response from child
+    let mut response = String::new();
+    read_end.read_to_string(&mut response)?;
+    
+    println!("Child response: {}", response);
+    
+    Ok(())
+}
+
+// Process signals and control
+fn process_control_example() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut process_manager = ProcessManager::new();
+    
+    // Start a long-running process
+    let mut long_running = process_manager.create_process(
+        "long_running",
+        "/usr/bin/long_task",
+        ProcessPriority::Normal
+    )?;
+    
+    long_running.start()?;
+    
+    // Suspend the process
+    multi_process::send_signal(long_running.get_id(), ProcessSignal::Suspend)?;
+    println!("Process suspended");
+    
+    // Wait a bit
+    std::thread::sleep(Duration::from_secs(2));
+    
+    // Resume the process
+    multi_process::send_signal(long_running.get_id(), ProcessSignal::Resume)?;
+    println!("Process resumed");
+    
+    // Graceful shutdown
+    multi_process::send_signal(long_running.get_id(), ProcessSignal::Interrupt)?;
+    
+    // Wait for graceful shutdown
+    let exit_status = long_running.wait()?;
+    println!("Process exited gracefully: {}", exit_status);
+    
+    Ok(())
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Error Handling -->
+                <section class="content-section">
+                    <h2>Error Handling Patterns</h2>
+                    <p>Rust's error handling patterns work seamlessly with MultiOS APIs.</p>
+                    
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>Comprehensive Error Handling</h4>
+                            </div>
+                            <pre><code class="language-rust">use multi_filesystem::{FileSystem, FileSystemError, ErrorKind};
+use multi_network::{NetworkError, ErrorKind as NetErrorKind};
+use thiserror::Error;
+
+// Custom error types
+#[derive(Error, Debug)]
+pub enum MultiOSAppError {
+    #[error("File system error: {0}")]
+    FileSystem(#[from] FileSystemError),
+    
+    #[error("Network error: {0}")]
+    Network(#[from] NetworkError),
+    
+    #[error("Configuration error: {0}")]
+    Configuration(String),
+    
+    #[error("Process error: {0}")]
+    Process(String),
+}
+
+// Application-specific error conversion
+impl From&lt;multi_filesystem::FileSystemError&gt; for MultiOSAppError {
+    fn from(error: multi_filesystem::FileSystemError) -> Self {
+        match error.kind {
+            ErrorKind::NotFound => {
+                MultiOSAppError::Configuration(
+                    format!("Required file not found: {}", error.message)
+                )
+            }
+            ErrorKind::PermissionDenied => {
+                MultiOSAppError::Configuration(
+                    format!("Permission denied: {}", error.message)
+                )
+            }
+            _ => MultiOSAppError::FileSystem(error),
+        }
+    }
+}
+
+// Result type alias for the application
+type AppResult&lt;T&gt; = Result&lt;T, MultiOSAppError&gt;;
+
+// Application with proper error handling
+fn robust_application() -&gt; AppResult&lt;()&gt; {
+    let mut fs = FileSystem::new("/app")?;
+    
+    // File operations with error handling
+    let result = fs.create_file("app.log");
+    match result {
+        Ok(mut file) => {
+            file.write_all(b"Application started\n")?;
+            file.flush()?;
+        }
+        Err(e) => {
+            match e.kind {
+                ErrorKind::DiskFull => {
+                    return Err(MultiOSAppError::Configuration(
+                        "Disk is full, cannot create log file".to_string()
+                    ));
+                }
+                ErrorKind::PermissionDenied => {
+                    return Err(MultiOSAppError::Configuration(
+                        "Permission denied for log file creation".to_string()
+                    ));
+                }
+                _ => return Err(e.into()),
+            }
+        }
+    }
+    
+    // Network operations with retry logic
+    let network_result = retry_network_operation();
+    match network_result {
+        Ok(data) => {
+            println!("Network operation successful: {} bytes", data.len());
+        }
+        Err(e) => {
+            match e.kind {
+                NetErrorKind::ConnectionRefused => {
+                    println!("Network service unavailable, continuing without network");
+                }
+                NetErrorKind::Timeout => {
+                    println!("Network timeout, retrying with different approach");
+                }
+                _ => return Err(e.into()),
+            }
+        }
+    }
+    
+    Ok(())
+}
+
+// Retry logic for network operations
+fn retry_network_operation() -&gt; Result&lt;Vec&lt;u8&gt;, NetworkError&gt; {
+    let mut attempts = 0;
+    let max_attempts = 3;
+    
+    while attempts &lt; max_attempts {
+        match attempt_network_operation() {
+            Ok(data) => return Ok(data),
+            Err(e) => {
+                attempts += 1;
+                if attempts &gt;= max_attempts {
+                    return Err(e);
+                }
+                
+                // Exponential backoff
+                std::thread::sleep(std::time::Duration::from_millis(100 * attempts));
+            }
+        }
+    }
+    
+    unreachable!()
+}
+
+fn attempt_network_operation() -&gt; Result&lt;Vec&lt;u8&gt;, NetworkError&gt; {
+    // Simulate network operation
+    use std::net::TcpStream;
+    let mut stream = TcpStream::connect("localhost:8080")?;
+    let mut buffer = vec![0u8; 1024];
+    
+    stream.read(&mut buffer)?;
+    Ok(buffer)
+}
+
+// Graceful shutdown with error handling
+fn graceful_shutdown() -&gt; AppResult&lt;()&gt; {
+    println!("Shutting down application gracefully...");
+    
+    // Close all file handles
+    let fs = FileSystem::new("/app")?;
+    
+    // Write shutdown log
+    if let Ok(mut log_file) = fs.open_file_append("app.log") {
+        log_file.write_all(b"Application shutdown\n")?;
+        log_file.flush()?;
+    }
+    
+    // Stop background processes
+    let mut process_manager = multi_process::ProcessManager::new();
+    let processes = process_manager.list_processes();
+    
+    for process in processes {
+        if process.get_name().starts_with("worker") {
+            multi_process::send_signal(process.get_id(), multi_process::ProcessSignal::Interrupt)?;
+        }
+    }
+    
+    println!("Application shutdown complete");
+    Ok(())
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Async Programming -->
+                <section class="content-section">
+                    <h2>Asynchronous Programming</h2>
+                    <p>MultiOS provides excellent async support for high-performance applications.</p>
+                    
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>Async MultiOS Application</h4>
+                            </div>
+                            <pre><code class="language-rust">use multi_filesystem::AsyncFileSystem;
+use multi_network::{AsyncTcpStream, AsyncTcpListener};
+use tokio::sync::{Mutex, Semaphore, broadcast};
+use std::sync::Arc;
+
+// Async file operations
+async fn async_file_example() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let fs = AsyncFileSystem::new("/app").await?;
+    
+    // Async file creation and writing
+    let mut file = fs.create_file("async_data.txt").await?;
+    let data = "Hello, async MultiOS!".as_bytes();
+    file.write_all(data).await?;
+    file.flush().await?;
+    
+    // Async reading with timeout
+    tokio::time::timeout(
+        std::time::Duration::from_secs(5),
+        async {
+            let mut read_file = fs.open_file("async_data.txt").await?;
+            let mut contents = String::new();
+            read_file.read_to_string(&mut contents).await?;
+            Ok(contents)
+        }
+    ).await??;
+    
+    Ok(())
+}
+
+// Async server with concurrent connections
+#[tokio::main]
+async fn async_server() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let listener = AsyncTcpListener::bind("0.0.0.0:8080").await?;
+    
+    // Shared state with concurrency control
+    let connection_count = Arc::new(Mutex::new(0));
+    let connection_limit = Arc::new(Semaphore::new(100)); // Max 100 concurrent connections
+    
+    loop {
+        // Accept connection with limit
+        let permit = connection_limit.clone().acquire_owned().await?;
+        let (stream, addr) = listener.accept().await?;
+        
+        let count = Arc::clone(&connection_count);
+        
+        tokio::spawn(async move {
+            let _permit = permit; // Keep permit alive
+            
+            {
+                let mut count = count.lock().await;
+                *count += 1;
+                println!("Connection {} from {}. Active: {}", stream.peer_addr()?, addr, *count);
+            }
+            
+            // Handle the connection
+            if let Err(e) = handle_async_connection(stream).await {
+                eprintln!("Connection error: {}", e);
+            }
+            
+            {
+                let mut count = count.lock().await;
+                *count -= 1;
+                println!("Connection closed. Active: {}", *count);
+            }
+        });
+    }
+}
+
+async fn handle_async_connection(mut stream: AsyncTcpStream) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut buffer = vec![0u8; 1024];
+    
+    loop {
+        // Read with timeout
+        match tokio::time::timeout(
+            std::time::Duration::from_secs(30),
+            stream.read(&mut buffer)
+        ).await {
+            Ok(Ok(0)) => break, // Connection closed
+            Ok(Ok(n)) => {
+                let request = String::from_utf8_lossy(&buffer[..n]);
+                println!("Received: {}", request.trim());
+                
+                // Process request asynchronously
+                let response = process_request(&request).await?;
+                stream.write_all(response.as_bytes()).await?;
+            }
+            Ok(Err(e)) => {
+                eprintln!("Read error: {}", e);
+                break;
+            }
+            Err(_) => {
+                println!("Read timeout");
+                break;
+            }
+        }
+    }
+    
+    Ok(())
+}
+
+async fn process_request(request: &str) -> Result&lt;String, Box&lt;dyn std::error::Error&gt;&gt; {
+    // Simulate async processing
+    tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+    
+    if request.starts_with("GET /status") {
+        Ok("HTTP/1.1 200 OK\r\nContent-Length: 15\r\n\r\nServer Healthy!".to_string())
+    } else if request.starts_with("GET /data") {
+        // Fetch data asynchronously
+        let data = fetch_data_async().await?;
+        Ok(format!("HTTP/1.1 200 OK\r\nContent-Length: {}\r\n\r\n{}", data.len(), data))
+    } else {
+        Ok("HTTP/1.1 404 Not Found\r\n\r\nNot Found".to_string())
+    }
+}
+
+async fn fetch_data_async() -> Result&lt;String, Box&lt;dyn std::error::Error&gt;&gt; {
+    // Simulate async data fetching from file system
+    let fs = AsyncFileSystem::new("/app").await?;
+    let mut file = fs.open_file("data.json").await?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents).await?;
+    Ok(contents)
+}
+
+// Async channel communication between tasks
+async fn async_channel_example() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let (tx, mut rx) = broadcast::channel(100);
+    
+    // Producer task
+    let producer_tx = tx.clone();
+    tokio::spawn(async move {
+        for i in 0..10 {
+            let message = format!("Message {}", i);
+            if let Err(e) = producer_tx.send(message) {
+                eprintln!("Send error: {}", e);
+                break;
+            }
+            tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+        }
+    });
+    
+    // Consumer task
+    let mut consumer_rx = tx.subscribe();
+    tokio::spawn(async move {
+        while let Ok(message) = consumer_rx.recv().await {
+            println!("Received: {}", message);
+            tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+        }
+    });
+    
+    // Wait for producer to finish
+    tokio::time::sleep(std::time::Duration::from_secs(2)).await;
+    
+    Ok(())
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Performance Optimization -->
+                <section class="content-section">
+                    <h2>Performance Optimization</h2>
+                    <p>Best practices for building high-performance MultiOS applications in Rust.</p>
+                    
+                    <div class="optimization-grid">
+                        <div class="optimization-card">
+                            <div class="optimization-icon">
+                                <i class="fas fa-memory"></i>
+                            </div>
+                            <div class="optimization-content">
+                                <h3>Memory Efficiency</h3>
+                                <ul>
+                                    <li>Use memory pools for frequent allocations</li>
+                                    <li>Pre-allocate buffers when size is known</li>
+                                    <li>Use <code>&amp;str</code> instead of <code>String</code> when possible</li>
+                                    <li>Avoid unnecessary cloning of large data structures</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="optimization-card">
+                            <div class="optimization-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="optimization-content">
+                                <h3>Concurrency</h3>
+                                <ul>
+                                    <li>Use async/await for I/O-bound operations</li>
+                                    <li>Implement worker pools for CPU-bound tasks</li>
+                                    <li>Use appropriate concurrency primitives (Mutex, RwLock, etc.)</li>
+                                    <li>Profile to identify bottlenecks</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="optimization-card">
+                            <div class="optimization-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="optimization-content">
+                                <h3>Data Structures</h3>
+                                <ul>
+                                    <li>Choose appropriate data structures for your use case</li>
+                                    <li>Use specialized collections (HashMap, BTreeMap, etc.)</li>
+                                    <li>Consider memory layout for cache efficiency</li>
+                                    <li>Use zero-copy techniques when possible</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="optimization-card">
+                            <div class="optimization-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="optimization-content">
+                                <h3>Compilation</h3>
+                                <ul>
+                                    <li>Use release builds for production</li>
+                                    <li>Enable LTO (Link Time Optimization)</li>
+                                    <li>Use appropriate target features</li>
+                                    <li>Profile-guided optimization for critical paths</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Testing -->
+                <section class="content-section">
+                    <h2>Testing MultiOS Applications</h2>
+                    <p>Comprehensive testing strategies for MultiOS Rust applications.</p>
+                    
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>Unit Testing with MultiOS APIs</h4>
+                            </div>
+                            <pre><code class="language-rust">#![cfg(test)]
+
+use multi_filesystem::{FileSystem, FileSystemError};
+use multi_process::ProcessManager;
+use tempfile::TempDir;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serial_test::serial;
+
+    #[test]
+    fn test_file_operations() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        // Create temporary file system for testing
+        let temp_dir = TempDir::new()?;
+        let fs = FileSystem::new(temp_dir.path().to_str().unwrap())?;
+        
+        // Test file creation
+        let mut file = fs.create_file("test.txt")?;
+        file.write_all(b"Hello, Test!")?;
+        
+        // Test file reading
+        let mut read_file = fs.open_file("test.txt")?;
+        let mut contents = String::new();
+        read_file.read_to_string(&mut contents)?;
+        
+        assert_eq!(contents, "Hello, Test!");
+        
+        Ok(())
+    }
+    
+    #[test]
+    fn test_error_handling() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        let fs = FileSystem::new("/nonexistent")?;
+        
+        // Test file not found error
+        let result = fs.open_file("nonexistent.txt");
+        assert!(result.is_err());
+        
+        if let Err(error) = result {
+            assert_eq!(error.kind, ErrorKind::NotFound);
+        }
+        
+        Ok(())
+    }
+    
+    #[serial] // Run tests serially to avoid conflicts
+    #[tokio::test]
+    async fn test_async_operations() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        let temp_dir = TempDir::new()?;
+        let fs = AsyncFileSystem::new(temp_dir.path().to_str().unwrap()).await?;
+        
+        // Test async file operations
+        let mut file = fs.create_file("async_test.txt").await?;
+        file.write_all(b"Async test data").await?;
+        
+        let mut read_file = fs.open_file("async_test.txt").await?;
+        let mut contents = String::new();
+        read_file.read_to_string(&mut contents).await?;
+        
+        assert_eq!(contents, "Async test data");
+        
+        Ok(())
+    }
+    
+    #[test]
+    fn test_process_management() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        let mut process_manager = ProcessManager::new();
+        
+        // Create a test process (assuming /bin/true exists)
+        let result = process_manager.create_process(
+            "test_process",
+            "/bin/true",
+            ProcessPriority::Normal
+        );
+        
+        // Process creation might fail in test environment
+        if let Ok(mut process) = result {
+            let exit_status = process.wait()?;
+            assert!(exit_status == 0);
+        }
+        
+        Ok(())
+    }
+    
+    #[cfg(feature = "integration-tests")]
+    #[tokio::test]
+    async fn test_integration() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        // Full integration test
+        let temp_dir = TempDir::new()?;
+        let fs = AsyncFileSystem::new(temp_dir.path().to_str().unwrap()).await?;
+        let mut process_manager = ProcessManager::new();
+        
+        // Create configuration file
+        let mut config_file = fs.create_file("config.json").await?;
+        let config = r#"{"enabled": true, "port": 8080}"#;
+        config_file.write_all(config.as_bytes()).await?;
+        config_file.flush().await?;
+        
+        // Create worker process that reads config
+        let worker = process_manager.create_process(
+            "config_reader",
+            "/bin/cat", // Simple command for testing
+            ProcessPriority::Normal
+        )?;
+        
+        // Test inter-process communication
+        let exit_status = worker.wait()?;
+        
+        assert!(exit_status == 0);
+        
+        Ok(())
+    }
+}
+
+// Property-based testing
+#[cfg(test)]
+mod property_tests {
+    use super::*;
+    use quickcheck::{QuickCheck, TestResult};
+    use std::collections::HashMap;
+
+    #[quickcheck]
+    fn file_content_preserved(content: String) -> TestResult {
+        if content.len() > 1024 * 1024 {
+            return TestResult::discard(); // Skip very large content
+        }
+        
+        let temp_dir = TempDir::new().unwrap();
+        let fs = FileSystem::new(temp_dir.path().to_str().unwrap()).unwrap();
+        
+        let mut file = fs.create_file("content_test.txt").unwrap();
+        file.write_all(content.as_bytes()).unwrap();
+        
+        let mut read_file = fs.open_file("content_test.txt").unwrap();
+        let mut read_content = String::new();
+        read_file.read_to_string(&mut read_content).unwrap();
+        
+        TestResult::from_bool(content == read_content)
+    }
+    
+    #[quickcheck]
+    fn hash_map_operations_preserve_data(data: HashMap&lt;String, i32&gt;) -> bool {
+        let temp_dir = TempDir::new().unwrap();
+        let fs = FileSystem::new(temp_dir.path().to_str().unwrap()).unwrap();
+        
+        // Serialize and write
+        let serialized = serde_json::to_string(&data).unwrap();
+        let mut file = fs.create_file("hashmap_test.json").unwrap();
+        file.write_all(serialized.as_bytes()).unwrap();
+        
+        // Read and deserialize
+        let mut read_file = fs.open_file("hashmap_test.json").unwrap();
+        let mut contents = String::new();
+        read_file.read_to_string(&mut contents).unwrap();
+        let read_data: HashMap&lt;String, i32&gt; = serde_json::from_str(&contents).unwrap();
+        
+        data == read_data
+    }
+}
+
+// Benchmarking
+#[cfg(test)]
+mod benchmarks {
+    use super::*;
+    use criterion::{criterion_group, criterion_main, Criterion, BenchmarkId};
+
+    fn benchmark_file_operations(c: &mut Criterion) {
+        let temp_dir = TempDir::new().unwrap();
+        let fs = FileSystem::new(temp_dir.path().to_str().unwrap()).unwrap();
+        
+        let mut group = c.benchmark_group("file_operations");
+        
+        group.bench_function("create_file", |b| {
+            b.iter(|| {
+                let mut file = fs.create_file("bench_test.txt").unwrap();
+                file.write_all(b"Benchmark data").unwrap();
+            });
+        });
+        
+        group.bench_function("read_file", |b| {
+            // Setup: create file first
+            let mut file = fs.create_file("bench_read.txt").unwrap();
+            file.write_all(&vec![42u8; 1024]).unwrap();
+            
+            b.iter(|| {
+                let mut read_file = fs.open_file("bench_read.txt").unwrap();
+                let mut buffer = vec![0u8; 1024];
+                read_file.read(&mut buffer).unwrap();
+            });
+        });
+        
+        group.finish();
+    }
+    
+    fn benchmark_memory_allocation(c: &mut Criterion) {
+        let mut memory_manager = MemoryManager::new();
+        
+        let mut group = c.benchmark_group("memory_allocation");
+        
+        for size in [64, 256, 1024, 4096].iter() {
+            group.bench_with_input(
+                BenchmarkId::new("allocate", size),
+                size,
+                |b, &size| {
+                    b.iter(|| {
+                        let _buffer = memory_manager.allocate(size).unwrap();
+                    });
+                },
+            );
+        }
+        
+        group.finish();
+    }
+    
+    criterion_group!(benches, benchmark_file_operations, benchmark_memory_allocation);
+    criterion_main!(benches);
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>Best Practices</h2>
+                    <div class="best-practices">
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Follow Rust Conventions</h4>
+                            <p>Use idiomatic Rust patterns and naming conventions for better maintainability.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Error Handling</h4>
+                            <p>Implement comprehensive error handling with appropriate error types.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Documentation</h4>
+                            <p>Document your code thoroughly, including MultiOS-specific behaviors.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Testing</h4>
+                            <p>Write comprehensive tests, including integration and property-based tests.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Resources -->
+                <section class="content-section">
+                    <h2>Additional Resources</h2>
+                    <div class="resource-links">
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="resource-content">
+                                <h3>Rust Book</h3>
+                                <p>Official Rust programming language book</p>
+                                <a href="https://doc.rust-lang.org/book/" class="btn btn-sm btn-secondary" target="_blank">Read Now</a>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="resource-content">
+                                <h3>MultiOS Examples</h3>
+                                <p>Collection of example MultiOS applications</p>
+                                <a href="https://github.com/multios/examples" class="btn btn-sm btn-secondary" target="_blank">View Examples</a>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <div class="resource-content">
+                                <h3>Rust Community</h3>
+                                <p>Join the MultiOS Rust developer community</p>
+                                <a href="https://github.com/multios/rust" class="btn btn-sm btn-secondary" target="_blank">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/search.js"></script>
+    <script src="../../assets/js/theme.js"></script>
+    <script src="../../assets/js/interactive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

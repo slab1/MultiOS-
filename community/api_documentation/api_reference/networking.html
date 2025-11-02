@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network API - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar">
+            <div class="nav-content">
+                <div class="nav-section">
+                    <h3>API Reference</h3>
+                    <ul>
+                        <li><a href="kernel.html" class="nav-link">Kernel API</a></li>
+                        <li><a href="memory.html" class="nav-link">Memory Management</a></li>
+                        <li><a href="process.html" class="nav-link">Process Management</a></li>
+                        <li><a href="filesystem.html" class="nav-link">File System</a></li>
+                        <li><a href="networking.html" class="nav-link active">Network</a></li>
+                        <li><a href="drivers.html" class="nav-link">Driver API</a></li>
+                        <li><a href="gui.html" class="nav-link">GUI Framework</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Tutorials</h3>
+                    <ul>
+                        <li><a href="../tutorials/beginner/index.html" class="nav-link">Beginner</a></li>
+                        <li><a href="../tutorials/intermediate/index.html" class="nav-link">Intermediate</a></li>
+                        <li><a href="../tutorials/advanced/index.html" class="nav-link">Advanced</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Guides</h3>
+                    <ul>
+                        <li><a href="../guides/integration/rust.html" class="nav-link">Rust Integration</a></li>
+                        <li><a href="../guides/integration/c.html" class="nav-link">C Integration</a></li>
+                        <li><a href="../guides/integration/python.html" class="nav-link">Python Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="content-header">
+                    <h1>Network API</h1>
+                    <p class="lead">Comprehensive networking capabilities for MultiOS applications</p>
+                    <div class="content-meta">
+                        <span class="badge badge-version">v1.0</span>
+                        <span class="badge badge-module">network</span>
+                        <span class="badge badge-stability">Stable</span>
+                    </div>
+                </div>
+
+                <!-- Quick Start Section -->
+                <section class="content-section">
+                    <h2>Quick Start</h2>
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>Create TCP Connection</h4>
+                                <div class="code-actions">
+                                    <button class="btn btn-sm btn-secondary run-example" data-example="network-basic">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary copy-code" data-code="network-basic">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                            </div>
+                            <pre><code class="language-rust">use multi::net::{TcpStream, TcpListener, SocketAddr};
+
+// Connect to a server
+let server_addr = SocketAddr::new("127.0.0.1:8080");
+let mut stream = TcpStream::connect(server_addr)?;
+
+// Send data
+stream.write_all(b"Hello, MultiOS!")?;
+
+// Receive response
+let mut buffer = [0; 1024];
+let bytes_read = stream.read(&mut buffer)?;
+let response = String::from_utf8_lossy(&buffer[..bytes_read]);
+println!("Received: {}", response);</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TCP Networking -->
+                <section class="content-section">
+                    <h2>TCP Networking</h2>
+                    <p>Establish reliable, connection-oriented communication using TCP sockets.</p>
+                    
+                    <div class="api-section">
+                        <h3>TcpStream</h3>
+                        <div class="api-description">
+                            <p>Create TCP connections for bidirectional communication.</p>
+                        </div>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>TCP Client Operations</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::net::{TcpStream, SocketAddr, TcpStreamConfig};
+
+// Connect with configuration
+let config = TcpStreamConfig {
+    timeout: Some(Duration::from_secs(10)),
+    keep_alive: Some(Duration::from_secs(30)),
+    no_delay: true,
+};
+
+let mut stream = TcpStream::connect_with_config(
+    SocketAddr::new("192.168.1.100:8080"), 
+    config
+)?;
+
+// Set socket options
+stream.set_nodelay(true)?;
+stream.set_keepalive(Some(Duration::from_secs(30)))?;
+
+// Write data
+let data = b"MultiOS TCP Message";
+let bytes_written = stream.write(data)?;
+println!("Sent {} bytes", bytes_written);
+
+// Read response with timeout
+stream.set_read_timeout(Some(Duration::from_secs(5)))?;
+let mut buffer = [0u8; 4096];
+let bytes_read = stream.read(&mut buffer)?;
+println!("Received {} bytes", bytes_read);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>TcpListener</h3>
+                        <div class="api-description">
+                            <p>Listen for incoming TCP connections and handle them asynchronously.</p>
+                        </div>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>TCP Server Implementation</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::net::{TcpListener, IncomingStream};
+
+// Create TCP listener
+let listener = TcpListener::bind("0.0.0.0:8080")?;
+println!("Listening on port 8080");
+
+// Accept connections
+for stream_result in listener.incoming() {
+    match stream_result {
+        Ok(mut stream) => {
+            println!("New connection from {}", stream.peer_addr()?);
+            
+            // Handle client in a separate task
+            tokio::spawn(async move {
+                handle_client(&mut stream).await;
+            });
+        }
+        Err(e) => {
+            println!("Connection error: {}", e);
+        }
+    }
+}
+
+async fn handle_client(stream: &mut TcpStream) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut buffer = [0u8; 1024];
+    
+    loop {
+        match stream.read(&mut buffer) {
+            Ok(0) => {
+                println!("Client disconnected");
+                break;
+            }
+            Ok(n) => {
+                // Echo received data back
+                stream.write_all(&buffer[..n])?;
+                println!("Echoed {} bytes", n);
+            }
+            Err(e) => {
+                println!("Read error: {}", e);
+                break;
+            }
+        }
+    }
+    Ok(())
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- UDP Networking -->
+                <section class="content-section">
+                    <h2>UDP Networking</h2>
+                    <p>Send and receive datagrams using the lightweight UDP protocol.</p>
+                    
+                    <div class="api-section">
+                        <h3>UdpSocket</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>UDP Datagram Communication</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::net::{UdpSocket, SocketAddr};
+
+// Create UDP socket
+let socket = UdpSocket::bind("0.0.0.0:8081")?;
+
+// Send datagram
+let data = b"UDP message from MultiOS";
+let dest = SocketAddr::new("192.168.1.100:8081");
+socket.send_to(data, dest)?;
+
+// Receive datagram
+let mut buffer = [0u8; 1024];
+let (bytes_read, src_addr) = socket.recv_from(&mut buffer)?;
+println!("Received {} bytes from {}", bytes_read, src_addr);
+println!("Data: {}", String::from_utf8_lossy(&buffer[..bytes_read]));
+
+// Broadcast example
+let broadcast_socket = UdpSocket::bind("0.0.0.0:0")?;
+broadcast_socket.set_broadcast(true)?;
+broadcast_socket.send_to(b"Broadcast message", "255.255.255.255:8082")?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Network Protocols -->
+                <section class="content-section">
+                    <h2>Application Protocols</h2>
+                    <p>Built-in support for common application protocols like HTTP, WebSocket, and DNS.</p>
+                    
+                    <div class="api-section">
+                        <h3>HTTP Client</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Make HTTP Requests</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::net::http::{HttpClient, HttpRequest, HttpMethod};
+
+// Create HTTP client
+let client = HttpClient::new();
+
+// GET request
+let get_request = HttpRequest::builder()
+    .method(HttpMethod::GET)
+    .url("https://api.example.com/data")
+    .header("User-Agent", "MultiOS/1.0")
+    .build()?;
+
+let response = client.send(get_request)?;
+println!("Status: {}", response.status());
+println!("Body: {}", response.body());
+
+// POST request with JSON
+let post_data = serde_json::json!({
+    "name": "MultiOS",
+    "version": "1.0"
+});
+
+let post_request = HttpRequest::builder()
+    .method(HttpMethod::POST)
+    .url("https://api.example.com/data")
+    .header("Content-Type", "application/json")
+    .body(&post_data.to_string())
+    .build()?;
+
+let response = client.send(post_request)?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>WebSocket Support</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>WebSocket Connections</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::net::websocket::{WebSocket, WebSocketEvent};
+
+// Connect to WebSocket server
+let mut ws = WebSocket::connect("wss://echo.websocket.org")?;
+
+// Send message
+ws.send_message("Hello, WebSocket!")?;
+
+// Receive events
+while let Some(event) = ws.next_event() {
+    match event {
+        WebSocketEvent::Message(msg) => {
+            println!("Received: {}", msg);
+        }
+        WebSocketEvent::Open => {
+            println!("WebSocket connected");
+        }
+        WebSocketEvent::Close => {
+            println!("WebSocket closed");
+        }
+        WebSocketEvent::Error(e) => {
+            println!("WebSocket error: {}", e);
+        }
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Network Configuration -->
+                <section class="content-section">
+                    <h2>Network Configuration</h2>
+                    <p>Configure network interfaces, IP addresses, and routing.</p>
+                    
+                    <div class="api-section">
+                        <h3>Network Interfaces</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Manage Network Interfaces</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::net::interface::{NetworkInterface, InterfaceConfig};
+
+// Get all network interfaces
+let interfaces = NetworkInterface::list_all()?;
+for interface in &interfaces {
+    println!("Interface: {}", interface.name);
+    println!("MAC Address: {}", interface.mac_address);
+    println!("IP Address: {}", interface.ip_address);
+    println!("Is Up: {}", interface.is_up);
+    
+    for ip_addr in &interface.ip_addresses {
+        println!("  IP: {}", ip_addr);
+    }
+}
+
+// Configure interface
+let mut config = InterfaceConfig::new();
+config.set_ip_address("192.168.1.100", 24);
+config.set_gateway("192.168.1.1");
+config.set_dns_servers(vec!["8.8.8.8", "8.8.4.4"]);
+
+NetworkInterface::configure("eth0", config)?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>DNS Resolution</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>DNS Lookup Operations</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::net::dns::{DnsResolver, DnsRecord};
+
+// Resolve domain name to IP addresses
+let resolver = DnsResolver::new();
+let records = resolver.resolve("example.com")?;
+
+for record in &records {
+    match record {
+        DnsRecord::A(ip) => println!("IPv4: {}", ip),
+        DnsRecord::AAAA(ip) => println!("IPv6: {}", ip),
+        DnsRecord::CNAME(cname) => println!("CNAME: {}", cname),
+        DnsRecord::MX(mx) => println!("MX: {} (priority: {})", mx.exchange, mx.preference),
+    }
+}
+
+// Reverse DNS lookup
+let ptr_records = resolver.reverse_lookup("8.8.8.8")?;
+for ptr in &ptr_records {
+    println!("PTR: {}", ptr);
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Network Security -->
+                <section class="content-section">
+                    <h2>Network Security</h2>
+                    <p>Implement secure communications with TLS/SSL and certificate management.</p>
+                    
+                    <div class="api-section">
+                        <h3>TLS/SSL Connections</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Secure TCP Connections</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::net::tls::{TlsConnector, TlsStream, Certificate};
+
+// Create TLS connector with certificates
+let mut builder = TlsConnector::builder();
+builder.add_certificate(Certificate::from_pem_file("ca.pem")?);
+builder.add_certificate(Certificate::from_pem_file("client_cert.pem")?);
+builder.set_hostname_verification(true);
+
+let connector = builder.build()?;
+
+// Establish TLS connection
+let addr = SocketAddr::new("https://example.com:443");
+let mut tls_stream = connector.connect("example.com", addr)?;
+
+// Send secure data
+tls_stream.write_all(b"Secure MultiOS message")?;
+
+// Receive encrypted response
+let mut buffer = [0u8; 4096];
+let bytes_read = tls_stream.read(&mut buffer)?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>Certificate Management</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Manage SSL Certificates</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::net::tls::{CertificateManager, CertificateInfo};
+
+// Load and verify certificate
+let cert_manager = CertificateManager::new();
+let cert_info = cert_manager.load_certificate("server.crt")?;
+
+println!("Subject: {}", cert_info.subject());
+println!("Issuer: {}", cert_info.issuer());
+println!("Valid From: {}", cert_info.valid_from());
+println!("Valid Until: {}", cert_info.valid_until());
+
+// Verify certificate
+if cert_manager.verify_certificate(&cert_info)? {
+    println!("Certificate is valid");
+} else {
+    println!("Certificate verification failed");
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interactive Network Monitor -->
+                <section class="content-section">
+                    <h2>Interactive Network Monitor</h2>
+                    <div class="interactive-demo">
+                        <div class="demo-controls">
+                            <button class="btn btn-primary" id="simulate-traffic">
+                                <i class="fas fa-exchange-alt"></i> Simulate Traffic
+                            </button>
+                            <button class="btn btn-secondary" id="scan-ports">
+                                <i class="fas fa-search"></i> Port Scan
+                            </button>
+                            <button class="btn btn-secondary" id="test-connectivity">
+                                <i class="fas fa-check-circle"></i> Test Connection
+                            </button>
+                            <button class="btn btn-warning" id="block-connection">
+                                <i class="fas fa-ban"></i> Block Connection
+                            </button>
+                        </div>
+                        <div class="demo-visualization" id="network-visualization">
+                            <div class="network-graph" id="network-graph"></div>
+                            <div class="traffic-log" id="traffic-log"></div>
+                        </div>
+                        <div class="demo-stats" id="demo-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Active Connections:</span>
+                                <span class="stat-value" id="active-connections">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Packets Sent:</span>
+                                <span class="stat-value" id="packets-sent">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Packets Received:</span>
+                                <span class="stat-value" id="packets-received">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Network Protocols Deep Dive -->
+                <section class="content-section">
+                    <h2>Protocol Implementation</h2>
+                    <p>Low-level network protocol implementation and customization.</p>
+                    
+                    <div class="api-section">
+                        <h3>Raw Sockets</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Raw Socket Programming</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::net::raw::{RawSocket, Protocol};
+
+// Create raw socket for ICMP
+let mut raw_socket = RawSocket::new(Protocol::Icmp)?;
+
+// Send custom ICMP packet
+let icmp_packet = build_custom_icmp_packet();
+raw_socket.send_to(&icmp_packet, "8.8.8.8")?;
+
+// Receive raw packets
+let mut buffer = [0u8; 65535];
+let (bytes_read, src_addr) = raw_socket.recv_from(&mut buffer)?;
+let packet = &buffer[..bytes_read];
+
+// Parse and process packet
+process_raw_packet(packet, src_addr)?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>Custom Protocols</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Implement Custom Protocol</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::net::protocol::{Protocol, Packet};
+
+// Define custom protocol
+#[derive(Debug)]
+struct CustomProtocol;
+
+impl Protocol for CustomProtocol {
+    const PROTO_NUM: u8 = 200;
+    type Packet = CustomPacket;
+}
+
+// Implement packet structure
+struct CustomPacket {
+    version: u8,
+    msg_type: u8,
+    sequence: u16,
+    payload: Vec<u8>,
+}
+
+// Parse and serialize custom packets
+impl Packet for CustomPacket {
+    fn parse(data: &[u8]) -> Result&lt;CustomPacket, ProtocolError> {
+        // Parse packet data
+        Ok(CustomPacket {
+            version: data[0],
+            msg_type: data[1],
+            sequence: u16::from_be_bytes([data[2], data[3]]),
+            payload: data[4..].to_vec(),
+        })
+    }
+    
+    fn serialize(&self) -> Vec<u8> {
+        let mut data = Vec::new();
+        data.push(self.version);
+        data.push(self.msg_type);
+        data.extend_from_slice(&self.sequence.to_be_bytes());
+        data.extend_from_slice(&self.payload);
+        data
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Network Performance -->
+                <section class="content-section">
+                    <h2>Network Performance</h2>
+                    <p>Monitor and optimize network performance metrics.</p>
+                    
+                    <div class="api-section">
+                        <h3>Network Statistics</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Monitor Network Performance</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::net::stats::{NetworkStats, InterfaceStats};
+
+// Get network statistics
+let net_stats = NetworkStats::get()?;
+println!("Bytes sent: {}", net_stats.bytes_sent);
+println!("Bytes received: {}", net_stats.bytes_received);
+println!("Packets sent: {}", net_stats.packets_sent);
+println!("Packets received: {}", net_stats.packets_received);
+println!("Dropped packets: {}", net_stats.dropped_packets);
+
+// Per-interface statistics
+let iface_stats = InterfaceStats::get("eth0")?;
+println!("Interface {} stats:", iface_stats.name);
+println!("  TX packets: {}", iface_stats.tx_packets);
+println!("  RX packets: {}", iface_stats.rx_packets);
+println!("  TX bytes: {}", iface_stats.tx_bytes);
+println!("  RX bytes: {}", iface_stats.rx_bytes);
+println!("  Errors: {}", iface_stats.errors);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Error Handling -->
+                <section class="content-section">
+                    <h2>Error Handling</h2>
+                    <p>Comprehensive error handling for network operations.</p>
+                    
+                    <div class="api-section">
+                        <h3>NetworkError Types</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Handle Network Errors</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::net::{NetworkError, ErrorKind};
+
+fn robust_network_operation() -> Result&lt;String, String&gt; {
+    let mut stream = match TcpStream::connect("example.com:80") {
+        Ok(stream) => stream,
+        Err(e) => {
+            match e.kind {
+                ErrorKind::ConnectionRefused => {
+                    return Err("Connection refused - server may be down".to_string());
+                }
+                ErrorKind::Timeout => {
+                    return Err("Connection timed out".to_string());
+                }
+                ErrorKind::NetworkUnreachable => {
+                    return Err("Network unreachable".to_string());
+                }
+                _ => return Err(format!("Connection error: {}", e))
+            }
+        }
+    };
+    
+    match stream.write_all(b"GET / HTTP/1.1\r\nHost: example.com\r\n\r\n") {
+        Ok(_) => {}
+        Err(e) => return Err(format!("Write error: {}", e))
+    }
+    
+    let mut buffer = String::new();
+    match stream.read_to_string(&mut buffer) {
+        Ok(_) => Ok(buffer),
+        Err(e) => Err(format!("Read error: {}", e))
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>Best Practices</h2>
+                    <div class="best-practices">
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Connection Management</h4>
+                            <p>Properly close network connections and handle timeouts.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Security</h4>
+                            <p>Always use TLS/SSL for sensitive data transmission.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Error Handling</h4>
+                            <p>Implement comprehensive error handling for network operations.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Performance Monitoring</h4>
+                            <p>Monitor network performance and optimize accordingly.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/search.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/interactive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Network specific interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            let connections = [];
+            let trafficLog = [];
+            let packetsSent = 0;
+            let packetsReceived = 0;
+            
+            function updateNetworkVisualization() {
+                const graphContainer = document.getElementById('network-graph');
+                graphContainer.innerHTML = '';
+                
+                // Create network topology
+                const center = document.createElement('div');
+                center.className = 'network-node center';
+                center.innerHTML = '<i class="fas fa-server"></i><br>MultiOS Server';
+                graphContainer.appendChild(center);
+                
+                connections.forEach((conn, index) => {
+                    const node = document.createElement('div');
+                    node.className = 'network-node';
+                    node.style.left = `${20 + (index % 3) * 100}px`;
+                    node.style.top = `${20 + Math.floor(index / 3) * 80}px`;
+                    node.innerHTML = `
+                        <i class="fas fa-${conn.type === 'tcp' ? 'exchange-alt' : 'broadcast-tower'}"></i>
+                        <br>${conn.address}
+                        <br><small>${conn.status}</small>
+                    `;
+                    graphContainer.appendChild(node);
+                });
+                
+                // Update traffic log
+                const logContainer = document.getElementById('traffic-log');
+                logContainer.innerHTML = trafficLog.slice(-5).map(entry => 
+                    `<div class="traffic-entry ${entry.type}">${entry.timestamp} - ${entry.message}</div>`
+                ).join('');
+                
+                // Update statistics
+                document.getElementById('active-connections').textContent = connections.length;
+                document.getElementById('packets-sent').textContent = packetsSent;
+                document.getElementById('packets-received').textContent = packetsReceived;
+            }
+            
+            function addTrafficLog(message, type) {
+                const timestamp = new Date().toLocaleTimeString();
+                trafficLog.push({ timestamp, message, type });
+                if (trafficLog.length > 10) trafficLog.shift();
+                updateNetworkVisualization();
+            }
+            
+            document.getElementById('simulate-traffic').addEventListener('click', function() {
+                packetsSent++;
+                packetsReceived++;
+                
+                const newConn = {
+                    address: `192.168.1.${Math.floor(Math.random() * 255)}`,
+                    type: Math.random() > 0.5 ? 'tcp' : 'udp',
+                    status: 'connected'
+                };
+                connections.push(newConn);
+                
+                addTrafficLog(`Traffic from ${newConn.address}`, 'in');
+                updateNetworkVisualization();
+            });
+            
+            document.getElementById('scan-ports').addEventListener('click', function() {
+                addTrafficLog('Port scan initiated', 'scan');
+                packetsSent += 100;
+                
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        packetsReceived++;
+                        addTrafficLog(`Port ${80 + i * 10} open`, 'open');
+                    }, i * 200);
+                }
+            });
+            
+            document.getElementById('test-connectivity').addEventListener('click', function() {
+                packetsSent++;
+                addTrafficLog('Connectivity test to 8.8.8.8', 'test');
+                
+                setTimeout(() => {
+                    packetsReceived++;
+                    addTrafficLog('Connection successful', 'success');
+                    connections.push({ address: '8.8.8.8', type: 'icmp', status: 'responsive' });
+                    updateNetworkVisualization();
+                }, 500);
+            });
+            
+            document.getElementById('block-connection').addEventListener('click', function() {
+                if (connections.length > 0) {
+                    const blocked = connections.pop();
+                    addTrafficLog(`Blocked connection from ${blocked.address}`, 'block');
+                    updateNetworkVisualization();
+                }
+            });
+            
+            // Initialize visualization
+            updateNetworkVisualization();
+        });
+    </script>
+</body>
+</html>

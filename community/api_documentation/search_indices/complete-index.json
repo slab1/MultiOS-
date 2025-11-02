@@ -1,0 +1,500 @@
+[
+  {
+    "id": "kernel-init",
+    "title": "kernel_init",
+    "description": "Initialize the kernel with the provided bootstrap information",
+    "content": "kernel initialization bootstrap architecture boot_info",
+    "category": "Kernel API",
+    "language": "rust",
+    "type": "function",
+    "difficulty": "intermediate",
+    "url": "api_reference/kernel.html#kernel_init",
+    "tags": ["kernel", "initialization", "bootstrap"],
+    "signature": "pub fn kernel_init(architecture: Architecture, boot_info: &BootInfo) -> KernelResult<()>",
+    "parameters": [
+      {
+        "name": "architecture",
+        "type": "Architecture",
+        "description": "Target CPU architecture"
+      },
+      {
+        "name": "boot_info",
+        "type": "&BootInfo",
+        "description": "Bootstrap information from bootloader"
+      }
+    ],
+    "returns": {
+      "type": "KernelResult<()>",
+      "description": "Result of kernel initialization"
+    }
+  },
+  {
+    "id": "process-create",
+    "title": "create_process",
+    "description": "Create a new process with specified parameters",
+    "content": "process creation pid process_id parameters",
+    "category": "Process Management",
+    "language": "rust",
+    "type": "function",
+    "difficulty": "intermediate",
+    "url": "api_reference/process.html#create_process",
+    "tags": ["process", "creation", "pid"],
+    "signature": "pub fn create_process(params: ProcessCreateParams) -> ProcessResult<ProcessId>",
+    "parameters": [
+      {
+        "name": "params",
+        "type": "ProcessCreateParams",
+        "description": "Process creation parameters"
+      }
+    ],
+    "returns": {
+      "type": "ProcessResult<ProcessId>",
+      "description": "Created process ID"
+    }
+  },
+  {
+    "id": "memory-allocate",
+    "title": "allocate_physical_pages",
+    "description": "Allocate contiguous physical pages from system memory",
+    "content": "memory allocation physical pages heap memory management",
+    "category": "Memory Management",
+    "language": "rust",
+    "type": "function",
+    "difficulty": "advanced",
+    "url": "api_reference/memory.html#allocate_physical_pages",
+    "tags": ["memory", "allocation", "physical", "pages"],
+    "signature": "pub fn allocate_physical_pages(count: usize) -> MemoryResult<Vec<PhysAddr>>",
+    "parameters": [
+      {
+        "name": "count",
+        "type": "usize",
+        "description": "Number of pages to allocate"
+      }
+    ],
+    "returns": {
+      "type": "MemoryResult<Vec<PhysAddr>>",
+      "description": "Vector of allocated physical addresses"
+    }
+  },
+  {
+    "id": "filesystem-mount",
+    "title": "mount",
+    "description": "Mount a file system on a device",
+    "content": "filesystem mount device vfs virtual file system",
+    "category": "File System",
+    "language": "rust",
+    "type": "function",
+    "difficulty": "intermediate",
+    "url": "api_reference/filesystem.html#mount",
+    "tags": ["filesystem", "mount", "vfs", "device"],
+    "signature": "pub fn mount(&self, device: Arc<dyn BlockDevice>, options: &MountOptions) -> Result<(), FsError>",
+    "parameters": [
+      {
+        "name": "device",
+        "type": "Arc<dyn BlockDevice>",
+        "description": "Block device to mount"
+      },
+      {
+        "name": "options",
+        "type": "&MountOptions",
+        "description": "Mount options"
+      }
+    ],
+    "returns": {
+      "type": "Result<(), FsError>",
+      "description": "Mount result"
+    }
+  },
+  {
+    "id": "network-socket-create",
+    "title": "socket_create",
+    "description": "Create a new network socket",
+    "content": "network socket tcp udp ip socket programming",
+    "category": "Network API",
+    "language": "rust",
+    "type": "function",
+    "difficulty": "intermediate",
+    "url": "api_reference/network.html#socket_create",
+    "tags": ["network", "socket", "tcp", "udp"],
+    "signature": "pub fn create(family: SocketFamily, socket_type: SocketType, protocol: SocketProtocol) -> Result<Arc<dyn Socket>, NetError>",
+    "parameters": [
+      {
+        "name": "family",
+        "type": "SocketFamily",
+        "description": "Socket address family"
+      },
+      {
+        "name": "socket_type",
+        "type": "SocketType",
+        "description": "Type of socket"
+      },
+      {
+        "name": "protocol",
+        "type": "SocketProtocol",
+        "description": "Network protocol"
+      }
+    ],
+    "returns": {
+      "type": "Result<Arc<dyn Socket>, NetError>",
+      "description": "Created socket instance"
+    }
+  },
+  {
+    "id": "driver-register",
+    "title": "register_driver",
+    "description": "Register a device driver with the system",
+    "content": "device driver registration hardware peripheral",
+    "category": "Device Drivers",
+    "language": "rust",
+    "type": "function",
+    "difficulty": "advanced",
+    "url": "api_reference/drivers.html#register_driver",
+    "tags": ["driver", "registration", "device", "hardware"],
+    "signature": "pub fn register_driver(&mut self, driver: Box<dyn DeviceDriver>) -> Result<(), DriverError>",
+    "parameters": [
+      {
+        "name": "driver",
+        "type": "Box<dyn DeviceDriver>",
+        "description": "Driver instance to register"
+      }
+    ],
+    "returns": {
+      "type": "Result<(), DriverError>",
+      "description": "Registration result"
+    }
+  },
+  {
+    "id": "gui-window-create",
+    "title": "window_create",
+    "description": "Create a new GUI window",
+    "content": "gui window graphics user interface widget",
+    "category": "GUI Toolkit",
+    "language": "rust",
+    "type": "function",
+    "difficulty": "intermediate",
+    "url": "api_reference/gui.html#window_create",
+    "tags": ["gui", "window", "graphics", "ui"],
+    "signature": "pub fn create(rect: Rectangle, title: String) -> Result<Arc<dyn Window>, GuiError>",
+    "parameters": [
+      {
+        "name": "rect",
+        "type": "Rectangle",
+        "description": "Window dimensions and position"
+      },
+      {
+        "name": "title",
+        "type": "String",
+        "description": "Window title"
+      }
+    ],
+    "returns": {
+      "type": "Result<Arc<dyn Window>, GuiError>",
+      "description": "Created window instance"
+    }
+  },
+  {
+    "id": "syscall-file-open",
+    "title": "sys_file_open",
+    "description": "System call to open a file",
+    "content": "system call file operations vfs file descriptor",
+    "category": "System Calls",
+    "language": "rust",
+    "type": "function",
+    "difficulty": "advanced",
+    "url": "api_reference/syscall.html#sys_file_open",
+    "tags": ["syscall", "file", "vfs", "descriptor"],
+    "signature": "pub fn sys_file_open(path: &str, flags: FileOpenFlags) -> Result<FileId, SyscallError>",
+    "parameters": [
+      {
+        "name": "path",
+        "type": "&str",
+        "description": "File path to open"
+      },
+      {
+        "name": "flags",
+        "type": "FileOpenFlags",
+        "description": "File open flags"
+      }
+    ],
+    "returns": {
+      "type": "Result<FileId, SyscallError>",
+      "description": "File descriptor ID"
+    }
+  },
+  {
+    "id": "quick-start-installation",
+    "title": "Installation Guide",
+    "description": "Complete guide to installing MultiOS development environment",
+    "content": "installation setup development environment tools rust cargo",
+    "category": "Tutorials",
+    "language": "bash",
+    "type": "tutorial",
+    "difficulty": "beginner",
+    "url": "tutorials/beginner/installation.html",
+    "tags": ["installation", "setup", "development", "tutorial"]
+  },
+  {
+    "id": "tutorial-first-program",
+    "title": "Your First MultiOS Program",
+    "description": "Step-by-step tutorial to create your first MultiOS application",
+    "content": "tutorial first program hello world process creation",
+    "category": "Tutorials",
+    "language": "rust",
+    "type": "tutorial",
+    "difficulty": "beginner",
+    "url": "tutorials/beginner/first-program.html",
+    "tags": ["tutorial", "first-program", "hello-world", "beginner"]
+  },
+  {
+    "id": "example-memory-allocation",
+    "title": "Memory Allocation Example",
+    "description": "Complete example of memory allocation and management",
+    "content": "example memory allocation pages heap management",
+    "category": "Examples",
+    "language": "rust",
+    "type": "example",
+    "difficulty": "intermediate",
+    "url": "examples/intermediate/memory-allocation.html",
+    "tags": ["example", "memory", "allocation", "intermediate"]
+  },
+  {
+    "id": "integration-rust",
+    "title": "Rust Integration Guide",
+    "description": "Complete guide to integrating MultiOS with Rust applications",
+    "content": "integration rust cargo dependency crate library",
+    "category": "Integration Guides",
+    "language": "rust",
+    "type": "guide",
+    "difficulty": "intermediate",
+    "url": "languages/rust/integration.html",
+    "tags": ["integration", "rust", "cargo", "library"]
+  },
+  {
+    "id": "best-practices-error-handling",
+    "title": "Error Handling Best Practices",
+    "description": "Best practices for handling errors in MultiOS applications",
+    "content": "best practices error handling result option error types",
+    "category": "Best Practices",
+    "language": "rust",
+    "type": "guide",
+    "difficulty": "intermediate",
+    "url": "best_practices/error-handling.html",
+    "tags": ["best-practices", "error-handling", "result", "option"]
+  },
+  {
+    "id": "api-tester",
+    "title": "API Testing Tool",
+    "description": "Interactive tool for testing MultiOS API calls",
+    "content": "api testing tool interactive validation testing",
+    "category": "Tools",
+    "language": "javascript",
+    "type": "tool",
+    "difficulty": "beginner",
+    "url": "validation/api-tester.html",
+    "tags": ["api", "testing", "tool", "interactive"]
+  },
+  {
+    "id": "code-playground",
+    "title": "Code Playground",
+    "description": "Interactive code playground for experimenting with MultiOS APIs",
+    "content": "code playground interactive editing execution sandbox",
+    "category": "Tools",
+    "language": "javascript",
+    "type": "tool",
+    "difficulty": "beginner",
+    "url": "validation/code-playground.html",
+    "tags": ["playground", "interactive", "editing", "sandbox"]
+  },
+  {
+    "id": "performance-monitor",
+    "title": "Performance Monitor",
+    "description": "Real-time performance monitoring for MultiOS applications",
+    "content": "performance monitoring metrics real-time analysis benchmarking",
+    "category": "Tools",
+    "language": "javascript",
+    "type": "tool",
+    "difficulty": "advanced",
+    "url": "validation/performance-monitor.html",
+    "tags": ["performance", "monitoring", "metrics", "benchmarking"]
+  },
+  {
+    "id": "architecture-overview",
+    "title": "MultiOS Architecture Overview",
+    "description": "High-level overview of MultiOS system architecture",
+    "content": "architecture overview kernel components system design",
+    "category": "Architecture",
+    "language": "markdown",
+    "type": "guide",
+    "difficulty": "beginner",
+    "url": "guides/architecture-overview.html",
+    "tags": ["architecture", "overview", "system", "design"]
+  },
+  {
+    "id": "cross-platform-development",
+    "title": "Cross-Platform Development",
+    "description": "Guide to developing applications that run on multiple architectures",
+    "content": "cross-platform development architecture x86 arm riscv portable",
+    "category": "Guides",
+    "language": "rust",
+    "type": "guide",
+    "difficulty": "advanced",
+    "url": "guides/cross-platform-development.html",
+    "tags": ["cross-platform", "architecture", "portable", "development"]
+  },
+  {
+    "id": "basic-system-call",
+    "title": "Basic System Call Example",
+    "description": "Make your first system call to get system information",
+    "content": "system call kernel basic api get_system_info",
+    "category": "Kernel Examples",
+    "language": "rust",
+    "type": "example",
+    "difficulty": "beginner",
+    "url": "examples/index.html#basic-system-call",
+    "tags": ["system-call", "kernel", "basics"],
+    "language": "rust"
+  },
+  {
+    "id": "simple-memory-alloc",
+    "title": "Simple Memory Allocation Example",
+    "description": "Allocate and deallocate memory using MultiOS memory API",
+    "content": "memory allocation deallocate MemoryManager basic",
+    "category": "Memory Examples",
+    "language": "rust",
+    "type": "example",
+    "difficulty": "beginner",
+    "url": "examples/index.html#simple-memory-alloc",
+    "tags": ["memory", "allocation", "basics"],
+    "language": "rust"
+  },
+  {
+    "id": "create-child-process",
+    "title": "Create Child Process Example",
+    "description": "Spawn a new process and interact with it",
+    "content": "process spawn child ProcessManager interprocess",
+    "category": "Process Examples",
+    "language": "rust",
+    "type": "example",
+    "difficulty": "beginner",
+    "url": "examples/index.html#create-child-process",
+    "tags": ["process", "spawn", "interprocess"],
+    "language": "rust"
+  },
+  {
+    "id": "read-text-file",
+    "title": "Read Text File Example",
+    "description": "Read contents from a text file",
+    "content": "filesystem file read text io FileSystem",
+    "category": "Filesystem Examples",
+    "language": "rust",
+    "type": "example",
+    "difficulty": "beginner",
+    "url": "examples/index.html#read-text-file",
+    "tags": ["filesystem", "file", "io"],
+    "language": "rust"
+  },
+  {
+    "id": "simple-http-request",
+    "title": "Simple HTTP Request Example",
+    "description": "Make a basic HTTP GET request",
+    "content": "networking http request client HttpClient",
+    "category": "Networking Examples",
+    "language": "rust",
+    "type": "example",
+    "difficulty": "beginner",
+    "url": "examples/index.html#simple-http-request",
+    "tags": ["networking", "http", "client"],
+    "language": "rust"
+  },
+  {
+    "id": "create-window",
+    "title": "Create Window Example",
+    "description": "Create a basic GUI window",
+    "content": "gui window create EventLoop WindowBuilder",
+    "category": "GUI Examples",
+    "language": "rust",
+    "type": "example",
+    "difficulty": "beginner",
+    "url": "examples/index.html#create-window",
+    "tags": ["gui", "window", "basics"],
+    "language": "rust"
+  },
+  {
+    "id": "memory-pool-implementation",
+    "title": "Memory Pool Implementation Example",
+    "description": "Create and manage a pool of pre-allocated memory blocks",
+    "content": "memory pool pre-allocated performance optimization",
+    "category": "Memory Examples",
+    "language": "rust",
+    "type": "example",
+    "difficulty": "intermediate",
+    "url": "examples/index.html#memory-pool-implementation",
+    "tags": ["memory", "pool", "performance"],
+    "language": "rust"
+  },
+  {
+    "id": "shared-memory-locking",
+    "title": "Shared Memory with Locking Example",
+    "description": "Implement thread-safe shared memory regions using MultiOS synchronization",
+    "content": "shared memory locking thread-safe synchronization RwLock",
+    "category": "Memory Examples",
+    "language": "rust",
+    "type": "example",
+    "difficulty": "intermediate",
+    "url": "examples/index.html#shared-memory-locking",
+    "tags": ["memory", "sync", "threading"],
+    "language": "rust"
+  },
+  {
+    "id": "tcp-server-client",
+    "title": "TCP Server and Client Example",
+    "description": "Create a simple TCP server and client communication",
+    "content": "tcp server client networking socket connection",
+    "category": "Networking Examples",
+    "language": "rust",
+    "type": "example",
+    "difficulty": "intermediate",
+    "url": "examples/index.html#tcp-server-client",
+    "tags": ["networking", "tcp", "server-client"],
+    "language": "rust"
+  },
+  {
+    "id": "kernel-module-loading",
+    "title": "Dynamic Kernel Module Loading Example",
+    "description": "Load and unload kernel modules dynamically",
+    "content": "kernel module loading dynamic ModuleManager driver",
+    "category": "Kernel Examples",
+    "language": "rust",
+    "type": "example",
+    "difficulty": "advanced",
+    "url": "examples/index.html#kernel-module-loading",
+    "tags": ["kernel", "modules", "advanced"],
+    "language": "rust"
+  },
+  {
+    "id": "custom-allocator-debugging",
+    "title": "Custom Allocator with Debugging Example",
+    "description": "Implement a memory allocator with detailed tracking and debugging features",
+    "content": "custom allocator debugging memory tracking leak detection",
+    "category": "Memory Examples",
+    "language": "rust",
+    "type": "example",
+    "difficulty": "advanced",
+    "url": "examples/index.html#custom-allocator-debugging",
+    "tags": ["memory", "allocator", "debugging"],
+    "language": "rust"
+  },
+  {
+    "id": "memory-mapped-io",
+    "title": "Memory-Mapped File I/O Example",
+    "description": "Efficiently read and write large files using memory mapping",
+    "content": "memory mapped file io performance large files optimization",
+    "category": "Memory Examples",
+    "language": "rust",
+    "type": "example",
+    "difficulty": "advanced",
+    "url": "examples/index.html#memory-mapped-io",
+    "tags": ["memory", "file-io", "performance"],
+    "language": "rust"
+  }
+]

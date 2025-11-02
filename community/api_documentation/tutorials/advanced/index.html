@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Tutorials - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar">
+            <div class="nav-content">
+                <div class="nav-section">
+                    <h3>API Reference</h3>
+                    <ul>
+                        <li><a href="../api_reference/kernel.html" class="nav-link">Kernel API</a></li>
+                        <li><a href="../api_reference/memory.html" class="nav-link">Memory Management</a></li>
+                        <li><a href="../api_reference/process.html" class="nav-link">Process Management</a></li>
+                        <li><a href="../api_reference/filesystem.html" class="nav-link">File System</a></li>
+                        <li><a href="../api_reference/networking.html" class="nav-link">Network</a></li>
+                        <li><a href="../api_reference/drivers.html" class="nav-link">Driver API</a></li>
+                        <li><a href="../api_reference/gui.html" class="nav-link">GUI Framework</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Tutorials</h3>
+                    <ul>
+                        <li><a href="beginner/index.html" class="nav-link">Beginner</a></li>
+                        <li><a href="intermediate/index.html" class="nav-link">Intermediate</a></li>
+                        <li><a href="advanced/index.html" class="nav-link active">Advanced</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Guides</h3>
+                    <ul>
+                        <li><a href="../guides/integration/rust.html" class="nav-link">Rust Integration</a></li>
+                        <li><a href="../guides/integration/c.html" class="nav-link">C Integration</a></li>
+                        <li><a href="../guides/integration/python.html" class="nav-link">Python Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="content-header">
+                    <h1>Advanced Tutorials</h1>
+                    <p class="lead">Deep dive into MultiOS kernel development and system programming</p>
+                    <div class="content-meta">
+                        <span class="badge badge-level">Advanced</span>
+                        <span class="badge badge-duration">8-12 hours</span>
+                        <span class="badge badge-prerequisites">Strong Rust knowledge + Intermediate tutorials</span>
+                    </div>
+                </div>
+
+                <!-- Tutorial Overview -->
+                <section class="content-section">
+                    <h2>Advanced Tutorial Overview</h2>
+                    <p>These advanced tutorials will teach you how to develop kernel modules, device drivers, and system-level applications. You'll work with low-level APIs and gain deep understanding of operating system internals.</p>
+                    
+                    <div class="tutorial-grid">
+                        <div class="tutorial-card">
+                            <div class="tutorial-icon">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <div class="tutorial-content">
+                                <h3>Kernel Module Development</h3>
+                                <p>Create and integrate kernel modules for extending MultiOS functionality.</p>
+                                <div class="tutorial-details">
+                                    <span><i class="fas fa-clock"></i> 4 hours</span>
+                                    <span><i class="fas fa-book"></i> Kernel, Memory APIs</span>
+                                </div>
+                                <a href="#kernel-module-tutorial" class="btn btn-primary">Start Tutorial</a>
+                            </div>
+                        </div>
+
+                        <div class="tutorial-card">
+                            <div class="tutorial-icon">
+                                <i class="fas fa-plug"></i>
+                            </div>
+                            <div class="tutorial-content">
+                                <h3>Custom Device Driver</h3>
+                                <p>Develop a complete device driver from scratch with interrupts and DMA.</p>
+                                <div class="tutorial-details">
+                                    <span><i class="fas fa-clock"></i> 5 hours</span>
+                                    <span><i class="fas fa-book"></i> Driver, Interrupt APIs</span>
+                                </div>
+                                <a href="#device-driver-tutorial" class="btn btn-primary">Start Tutorial</a>
+                            </div>
+                        </div>
+
+                        <div class="tutorial-card">
+                            <div class="tutorial-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="tutorial-content">
+                                <h3>Security Module</h3>
+                                <p>Implement advanced security features including mandatory access control.</p>
+                                <div class="tutorial-details">
+                                    <span><i class="fas fa-clock"></i> 3 hours</span>
+                                    <span><i class="fas fa-book"></i> Security, Process APIs</span>
+                                </div>
+                                <a href="#security-module-tutorial" class="btn btn-primary">Start Tutorial</a>
+                            </div>
+                        </div>
+
+                        <div class="tutorial-card">
+                            <div class="tutorial-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="tutorial-content">
+                                <h3>Custom Scheduler</h3>
+                                <p>Build a custom process scheduler with priority-based execution.</p>
+                                <div class="tutorial-details">
+                                    <span><i class="fas fa-clock"></i> 4 hours</span>
+                                    <span><i class="fas fa-book"></i> Process, Kernel APIs</span>
+                                </div>
+                                <a href="#custom-scheduler-tutorial" class="btn btn-primary">Start Tutorial</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Kernel Module Tutorial -->
+                <section class="content-section tutorial-content" id="kernel-module-tutorial">
+                    <h2>Tutorial 1: Kernel Module Development</h2>
+                    <div class="tutorial-progress">
+                        <div class="progress-steps">
+                            <span class="step completed">1. Setup</span>
+                            <span class="step completed">2. Module Structure</span>
+                            <span class="step active">3. Module Init/Exit</span>
+                            <span class="step">4. Kernel API Usage</span>
+                            <span class="step">5. Module Loading</span>
+                            <span class="step">6. Testing</span>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Step 1: Module Project Setup</h3>
+                        <p>Set up a kernel module development environment and project structure.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Create Kernel Module Project</h4>
+                                </div>
+                                <pre><code class="language-bash"># Create module directory
+mkdir multi_kernel_module
+cd multi_kernel_module
+
+# Initialize Cargo for kernel module
+cargo init --lib
+
+# Add kernel dependencies
+cargo add multi_kernel --features="module_support"
+cargo add multi_memory --features="kernel"
+cargo add multi_process --features="kernel"
+
+# Create module directory structure
+mkdir src/modules
+mkdir build
+mkdir include</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Cargo.toml Configuration</h4>
+                                </div>
+                                <pre><code class="language-toml">[package]
+name = "multi_kernel_module"
+version = "0.1.0"
+edition = "2021"
+lib-type = "kernel-module"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+multi_kernel = { path = "../multi_kernel", features = ["module_support"] }
+multi_memory = { path = "../multi_memory", features = ["kernel"] }
+multi_process = { path = "../multi_process", features = ["kernel"] }
+
+[build-dependencies]
+multi_kernel_build = { path = "../multi_kernel_build" }
+
+[features]
+default = []
+debug = ["multi_kernel/debug"]
+logging = ["multi_kernel/logging"]</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Step 2: Basic Module Structure</h3>
+                        <p>Create the fundamental structure for a MultiOS kernel module.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Module Declaration</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi_kernel::{Module, KernelModule, KernelError};
+use multi_memory::{KernelMemoryManager, PageAllocator};
+use core::panic::PanicInfo;
+
+/// Module information structure
+#[module_info(
+    name = "multi_example_module",
+    version = "1.0.0",
+    author = "MultiOS Developer",
+    description = "Example kernel module for MultiOS",
+    license = "MIT"
+)]
+pub struct ExampleModule {
+    /// Module instance ID
+    instance_id: u64,
+    /// Kernel memory manager
+    memory_manager: Option&lt;KernelMemoryManager&gt;,
+    /// Module state
+    is_initialized: bool,
+}
+
+impl KernelModule for ExampleModule {
+    /// Called when module is loaded
+    fn init() -> Result&lt;Box&lt;dyn KernelModule&gt;, KernelError&gt; {
+        println!("[ExampleModule] Initializing kernel module...");
+        
+        // Initialize module instance
+        let mut module = ExampleModule {
+            instance_id: 0,
+            memory_manager: None,
+            is_initialized: false,
+        };
+        
+        // Initialize kernel memory manager
+        module.memory_manager = Some(KernelMemoryManager::new()?);
+        
+        // Register module with kernel
+        module.instance_id = multi_kernel::register_module(&module)?;
+        
+        println!("[ExampleModule] Module initialized with ID: {}", module.instance_id);
+        
+        Ok(Box::new(module))
+    }
+    
+    /// Called when module is unloaded
+    fn shutdown(&mut self) -> Result&lt;(), KernelError&gt; {
+        println!("[ExampleModule] Shutting down module...");
+        
+        // Cleanup resources
+        self.cleanup()?;
+        
+        // Unregister from kernel
+        multi_kernel::unregister_module(self.instance_id)?;
+        
+        println!("[ExampleModule] Module shutdown complete");
+        Ok(())
+    }
+    
+    /// Get module information
+    fn get_info(&self) -> ModuleInfo {
+        ModuleInfo {
+            name: "multi_example_module".to_string(),
+            version: "1.0.0".to_string(),
+            author: "MultiOS Developer".to_string(),
+            description: "Example kernel module".to_string(),
+            instance_id: self.instance_id,
+            state: if self.is_initialized { ModuleState::Running } else { ModuleState::Stopped },
+        }
+    }
+    
+    /// Handle module command
+    fn handle_command(&mut self, command: &str, args: Vec&lt;String&gt;) -> Result&lt;String, KernelError&gt; {
+        match command {
+            "status" => Ok(format!("Module is {}", if self.is_initialized { "running" } else { "stopped" })),
+            "memory_usage" => {
+                if let Some(ref mm) = self.memory_manager {
+                    let usage = mm.get_usage_stats()?;
+                    Ok(format!("Memory usage: {} bytes", usage.used_bytes))
+                } else {
+                    Ok("Memory manager not initialized".to_string())
+                }
+            }
+            _ => Err(KernelError::InvalidCommand(command.to_string())),
+        }
+    }
+}
+
+impl ExampleModule {
+    /// Cleanup module resources
+    fn cleanup(&mut self) -> Result&lt;(), KernelError&gt; {
+        println!("[ExampleModule] Cleaning up resources...");
+        
+        // Cleanup memory manager
+        if let Some(ref mut mm) = self.memory_manager {
+            mm.cleanup()?;
+        }
+        
+        self.is_initialized = false;
+        Ok(())
+    }
+    
+    /// Initialize module functionality
+    fn initialize(&mut self) -> Result&lt;(), KernelError&gt; {
+        if self.is_initialized {
+            return Err(KernelError::AlreadyInitialized);
+        }
+        
+        // Initialize specific module features here
+        println!("[ExampleModule] Setting up module features...");
+        
+        self.is_initialized = true;
+        Ok(())
+    }
+}
+
+/// Kernel panic handler
+#[panic_handler]
+fn panic_handler(info: &PanicInfo) -> ! {
+    println!("[ExampleModule] Kernel panic: {}", info);
+    loop {}
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Step 3: Module Loading and Registration</h3>
+                        <p>Implement module loading mechanisms and kernel registration.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Module Registration System</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi_kernel::{ModuleRegistry, KernelSymbolTable};
+
+/// Global module registry
+static mut MODULE_REGISTRY: Option&lt;ModuleRegistry&gt; = None;
+
+/// Initialize module system
+pub fn init_module_system() -> Result&lt;(), KernelError&gt; {
+    unsafe {
+        MODULE_REGISTRY = Some(ModuleRegistry::new());
+    }
+    Ok(())
+}
+
+/// Register a kernel module
+pub fn register_module(module: &dyn KernelModule) -> Result&lt;u64, KernelError&gt; {
+    unsafe {
+        if let Some(ref registry) = MODULE_REGISTRY {
+            let info = module.get_info();
+            
+            // Check if module is already registered
+            if registry.find_by_name(&info.name).is_some() {
+                return Err(KernelError::ModuleAlreadyLoaded(info.name));
+            }
+            
+            // Register the module
+            let instance_id = registry.register(module)?;
+            
+            // Export module symbols to kernel symbol table
+            export_module_symbols(&info, instance_id)?;
+            
+            println!("[ModuleSystem] Registered module '{}' with ID: {}", info.name, instance_id);
+            Ok(instance_id)
+        } else {
+            Err(KernelError::ModuleSystemNotInitialized)
+        }
+    }
+}
+
+/// Export module symbols to kernel symbol table
+fn export_module_symbols(info: &ModuleInfo, instance_id: u64) -> Result&lt;(), KernelError&gt; {
+    let symbol_table = KernelSymbolTable::get_global()?;
+    
+    // Export module info symbols
+    symbol_table.add_symbol(&format!("module_{}_info", info.name), info as *const ModuleInfo as usize)?;
+    symbol_table.add_symbol(&format!("module_{}_init", info.name), module_init_trampoline as usize)?;
+    symbol_table.add_symbol(&format!("module_{}_exit", info.name), module_exit_trampoline as usize)?;
+    
+    Ok(())
+}
+
+/// Module initialization trampoline
+#[no_mangle]
+pub extern "C" fn module_init_trampoline(instance_id: u64) -> i32 {
+    unsafe {
+        if let Some(ref registry) = MODULE_REGISTRY {
+            if let Some(module) = registry.get_by_id(instance_id) {
+                match module.init() {
+                    Ok(_) => {
+                        println!("[ModuleSystem] Module {} initialized successfully", instance_id);
+                        0 // Success
+                    }
+                    Err(e) => {
+                        println!("[ModuleSystem] Module {} initialization failed: {:?}", instance_id, e);
+                        -1 // Error
+                    }
+                }
+            } else {
+                -1
+            }
+        } else {
+            -1
+        }
+    }
+}
+
+/// Module exit trampoline
+#[no_mangle]
+pub extern "C" fn module_exit_trampoline(instance_id: u64) -> i32 {
+    unsafe {
+        if let Some(ref mut registry) = MODULE_REGISTRY {
+            if let Some(module) = registry.get_by_id_mut(instance_id) {
+                match module.shutdown() {
+                    Ok(_) => {
+                        println!("[ModuleSystem] Module {} shut down successfully", instance_id);
+                        0 // Success
+                    }
+                    Err(e) => {
+                        println!("[ModuleSystem] Module {} shutdown failed: {:?}", instance_id, e);
+                        -1 // Error
+                    }
+                }
+            } else {
+                -1
+            }
+        } else {
+            -1
+        }
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Step 4: Building and Loading Modules</h3>
+                        <p>Compile the kernel module and learn how to load it into the running kernel.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Build Script</h4>
+                                </div>
+                                <pre><code class="language-rust">// build.rs
+use std::env;
+use std::process::Command;
+
+fn main() {
+    // Set kernel module build flags
+    println!("cargo:rerun-if-env-changed=KERNEL_BUILD_DIR");
+    println!("cargo:rerun-if-env-changed=KERNEL_INCLUDE_DIR");
+    
+    // Define build flags for kernel modules
+    println!("cargo:rustc-env=KERNEL_MODULE_CFLAGS=-DMODULE -D__KERNEL__ -DMODULE");
+    
+    // Link against kernel symbols
+    println!("cargo:rustc-link-lib=kernel");
+    
+    // Generate module information
+    generate_module_info();
+}
+
+fn generate_module_info() {
+    println!("cargo:rerun-if-changed=src/modules");
+    
+    // This would generate the module.lds script and module info
+    println!("cargo:warning=Generating module information...");
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Module Build Commands</h4>
+                                </div>
+                                <pre><code class="language-bash"># Build the kernel module
+cargo build --release
+
+# Load the module into kernel (requires root privileges)
+sudo insmod target/release/libmulti_kernel_module.so
+
+# Check if module is loaded
+lsmod | grep example_module
+
+# View module information
+cat /proc/modules | grep example_module
+
+# Check module parameters
+cat /sys/module/example_module/parameters/
+
+# Unload the module
+sudo rmmod example_module
+
+# View kernel messages
+dmesg | tail</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Device Driver Tutorial -->
+                <section class="content-section tutorial-content" id="device-driver-tutorial">
+                    <h2>Tutorial 2: Custom Device Driver</h2>
+                    <div class="tutorial-progress">
+                        <div class="progress-steps">
+                            <span class="step completed">1. Driver Framework</span>
+                            <span class="step completed">2. Hardware Interface</span>
+                            <span class="step active">3. Interrupt Handling</span>
+                            <span class="step">4. DMA Operations</span>
+                            <span class="step">5. Device Registration</span>
+                            <span class="step">6. Testing</span>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Driver Framework</h3>
+                        <p>Build a complete device driver framework that can be extended for different hardware.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Character Device Driver</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi_drivers::{DeviceDriver, DriverManager, DriverError, DeviceType};
+use multi_drivers::char::{CharDevice, DeviceFile};
+use multi_drivers::interrupt::{InterruptHandler, IrqNumber, InterruptConfig};
+use multi_drivers::dma::{DmaController, DmaChannel, DmaTransfer};
+use multi_memory::{PhysicalMemory, PageFrame};
+use std::collections::VecDeque;
+use spin::Mutex;
+
+/// Example device register offsets
+const DEVICE_REG_STATUS: usize = 0x00;
+const DEVICE_REG_CONTROL: usize = 0x04;
+const DEVICE_REG_DATA: usize = 0x08;
+const DEVICE_REG_INTERRUPT: usize = 0x0C;
+
+/// Device control bits
+const DEVICE_CTRL_ENABLE: u32 = 0x01;
+const DEVICE_CTRL_INT_ENABLE: u32 = 0x02;
+const DEVICE_CTRL_RESET: u32 = 0x04;
+
+/// Device status bits
+const DEVICE_STATUS_READY: u32 = 0x01;
+const DEVICE_STATUS_INTERRUPT: u32 = 0x02;
+const DEVICE_STATUS_ERROR: u32 = 0x04;
+
+/// Custom device driver
+pub struct ExampleDeviceDriver {
+    /// Device base address
+    base_address: usize,
+    /// Device ID
+    device_id: u16,
+    /// Interrupt number
+    irq_number: IrqNumber,
+    /// DMA controller
+    dma_controller: DmaController,
+    /// Read buffer
+    read_buffer: Mutex&lt;VecDeque&lt;u8&gt;&gt;,
+    /// Write buffer
+    write_buffer: Mutex&lt;VecDeque&lt;u8&gt;&gt;,
+    /// Device state
+    is_initialized: bool,
+    /// Character device interface
+    device_file: DeviceFile,
+}
+
+impl ExampleDeviceDriver {
+    pub fn new(base_address: usize, irq_number: IrqNumber, device_id: u16) -> Self {
+        ExampleDeviceDriver {
+            base_address,
+            device_id,
+            irq_number,
+            dma_controller: DmaController::new(0x1000),
+            read_buffer: Mutex::new(VecDeque::new()),
+            write_buffer: Mutex::new(VecDeque::new()),
+            is_initialized: false,
+            device_file: DeviceFile::new(format!("example_dev_{}", device_id)),
+        }
+    }
+    
+    /// Initialize device hardware
+    fn init_hardware(&mut self) -> Result&lt;(), DriverError&gt; {
+        println!("[ExampleDriver] Initializing device hardware at {:#x}", self.base_address);
+        
+        // Reset device
+        self.write_reg(DEVICE_REG_CONTROL, DEVICE_CTRL_RESET);
+        
+        // Wait for reset to complete
+        let mut timeout = 0;
+        while timeout < 1000 {
+            let status = self.read_reg(DEVICE_REG_STATUS);
+            if status & DEVICE_STATUS_READY != 0 {
+                break;
+            }
+            timeout += 1;
+            std::thread::sleep(std::time::Duration::from_micros(10));
+        }
+        
+        if timeout >= 1000 {
+            return Err(DriverError::DeviceTimeout);
+        }
+        
+        // Enable device and interrupts
+        let control = DEVICE_CTRL_ENABLE | DEVICE_CTRL_INT_ENABLE;
+        self.write_reg(DEVICE_REG_CONTROL, control);
+        
+        // Clear any pending interrupts
+        self.write_reg(DEVICE_REG_INTERRUPT, 0xFF);
+        
+        println!("[ExampleDriver] Device hardware initialized successfully");
+        Ok(())
+    }
+    
+    /// Read device register
+    fn read_reg(&self, offset: usize) -> u32 {
+        let addr = self.base_address + offset;
+        unsafe {
+            // In a real implementation, this would use proper memory barriers
+            core::ptr::read_volatile(addr as *const u32)
+        }
+    }
+    
+    /// Write device register
+    fn write_reg(&self, offset: usize, value: u32) {
+        let addr = self.base_address + offset;
+        unsafe {
+            // In a real implementation, this would use proper memory barriers
+            core::ptr::write_volatile(addr as *mut u32, value);
+        }
+    }
+    
+    /// Handle device interrupt
+    fn handle_device_interrupt(&mut self) -> Result&lt;(), DriverError&gt; {
+        // Read interrupt status
+        let interrupt_status = self.read_reg(DEVICE_REG_INTERRUPT);
+        
+        // Clear interrupt
+        self.write_reg(DEVICE_REG_INTERRUPT, interrupt_status);
+        
+        if interrupt_status & 0x01 != 0 {
+            // Data ready interrupt
+            self.handle_data_ready()?;
+        }
+        
+        if interrupt_status & 0x02 != 0 {
+            // Transmit complete interrupt
+            self.handle_transmit_complete()?;
+        }
+        
+        if interrupt_status & 0x04 != 0 {
+            // Error interrupt
+            self.handle_error_interrupt()?;
+        }
+        
+        Ok(())
+    }
+    
+    /// Handle data ready interrupt
+    fn handle_data_ready(&mut self) -> Result&lt;(), DriverError&gt; {
+        // Read data from device
+        let data = self.read_reg(DEVICE_REG_DATA) as u8;
+        
+        // Add to read buffer
+        let mut buffer = self.read_buffer.lock();
+        buffer.push_back(data);
+        
+        println!("[ExampleDriver] Received data: {:#x}", data);
+        Ok(())
+    }
+    
+    /// Handle transmit complete interrupt
+    fn handle_transmit_complete(&mut self) -> Result&lt;(), DriverError&gt; {
+        println!("[ExampleDriver] Transmit complete");
+        
+        // If there's more data to send, continue transmission
+        let mut buffer = self.write_buffer.lock();
+        if let Some(data) = buffer.pop_front() {
+            self.write_reg(DEVICE_REG_DATA, data as u32);
+        }
+        
+        Ok(())
+    }
+    
+    /// Handle error interrupt
+    fn handle_error_interrupt(&mut self) -> Result&lt;(), DriverError&gt; {
+        let status = self.read_reg(DEVICE_REG_STATUS);
+        println!("[ExampleDriver] Device error: status = {:#x}", status);
+        
+        // Reset device on error
+        self.write_reg(DEVICE_REG_CONTROL, DEVICE_CTRL_RESET);
+        Ok(())
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Character Device Implementation</h3>
+                        <p>Implement the character device interface for user-space communication.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>CharDevice Implementation</h4>
+                                </div>
+                                <pre><code class="language-rust">impl CharDevice for ExampleDeviceDriver {
+    fn read(&mut self, buffer: &mut [u8]) -> Result&lt;usize, DriverError&gt; {
+        let mut data_buffer = self.read_buffer.lock();
+        let mut bytes_read = 0;
+        
+        for byte in buffer.iter_mut() {
+            if let Some(data) = data_buffer.pop_front() {
+                *byte = data;
+                bytes_read += 1;
+            } else {
+                break;
+            }
+        }
+        
+        println!("[ExampleDriver] Read {} bytes", bytes_read);
+        Ok(bytes_read)
+    }
+    
+    fn write(&mut self, buffer: &[u8]) -> Result&lt;usize, DriverError&gt; {
+        let mut data_buffer = self.write_buffer.lock();
+        
+        // Add data to write buffer
+        for &byte in buffer {
+            data_buffer.push_back(byte);
+        }
+        
+        // Start transmission if not already transmitting
+        if data_buffer.len() == buffer.len() {
+            // First data to send
+            if let Some(&first_byte) = data_buffer.front() {
+                self.write_reg(DEVICE_REG_DATA, first_byte as u32);
+            }
+        }
+        
+        println!("[ExampleDriver] Wrote {} bytes", buffer.len());
+        Ok(buffer.len())
+    }
+    
+    fn ioctl(&mut self, command: u32, arg: usize) -> Result&lt;isize, DriverError&gt; {
+        match command {
+            // Device control commands
+            0x1001 => { // GET_STATUS
+                let status = self.read_reg(DEVICE_REG_STATUS);
+                Ok(status as isize)
+            }
+            0x1002 => { // RESET_DEVICE
+                self.write_reg(DEVICE_REG_CONTROL, DEVICE_CTRL_RESET);
+                Ok(0)
+            }
+            0x1003 => { // GET_DEVICE_INFO
+                // Return device information
+                Ok(self.device_id as isize)
+            }
+            _ => Err(DriverError::InvalidIoctl(command)),
+        }
+    }
+    
+    fn flush(&mut self) -> Result&lt;(), DriverError&gt; {
+        // Wait for all write operations to complete
+        let mut timeout = 0;
+        while timeout < 10000 {
+            let status = self.read_reg(DEVICE_REG_STATUS);
+            if status & DEVICE_STATUS_READY != 0 {
+                break;
+            }
+            timeout += 1;
+            std::thread::sleep(std::time::Duration::from_micros(100));
+        }
+        
+        Ok(())
+    }
+    
+    fn get_device_info(&self) -> multi_drivers::DeviceInfo {
+        multi_drivers::DeviceInfo {
+            device_type: DeviceType::Character,
+            vendor_id: 0x1234,
+            device_id: self.device_id,
+            revision: 1,
+        }
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Interrupt Handler Registration</h3>
+                        <p>Register and handle device interrupts for responsive operation.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Interrupt Handling</h4>
+                                </div>
+                                <pre><code class="language-rust">impl InterruptHandler for ExampleDeviceDriver {
+    fn handle_interrupt(&mut self, _irq: IrqNumber) -> Result&lt;bool, DriverError&gt; {
+        // Handle our specific interrupt
+        self.handle_device_interrupt()?;
+        Ok(true) // Interrupt was handled
+    }
+    
+    fn get_priority(&self) -> multi_drivers::interrupt::InterruptPriority {
+        multi_drivers::interrupt::InterruptPriority::High
+    }
+    
+    fn enable(&mut self) -> Result&lt;(), DriverError&gt; {
+        // Enable device interrupts
+        let control = self.read_reg(DEVICE_REG_CONTROL);
+        self.write_reg(DEVICE_REG_CONTROL, control | DEVICE_CTRL_INT_ENABLE);
+        Ok(())
+    }
+    
+    fn disable(&mut self) -> Result&lt;(), DriverError&gt; {
+        // Disable device interrupts
+        let control = self.read_reg(DEVICE_REG_CONTROL);
+        self.write_reg(DEVICE_REG_CONTROL, control & !DEVICE_CTRL_INT_ENABLE);
+        Ok(())
+    }
+}
+
+impl DeviceDriver for ExampleDeviceDriver {
+    fn initialize(&mut self) -> Result&lt;(), DriverError&gt; {
+        if self.is_initialized {
+            return Err(DriverError::AlreadyInitialized);
+        }
+        
+        // Initialize hardware
+        self.init_hardware()?;
+        
+        // Register interrupt handler
+        let interrupt_config = InterruptConfig {
+            vector: self.irq_number,
+            trigger: multi_drivers::interrupt::InterruptTrigger::Level,
+            polarity: multi_drivers::interrupt::InterruptPolarity::High,
+        };
+        
+        multi_drivers::interrupt::register_handler(self.irq_number, Box::new(self))?;
+        
+        // Enable interrupts
+        self.enable()?;
+        
+        // Register character device
+        self.device_file.register()?;
+        
+        self.is_initialized = true;
+        println!("[ExampleDriver] Device driver initialized");
+        Ok(())
+    }
+    
+    fn shutdown(&mut self) -> Result&lt;(), DriverError&gt; {
+        // Disable interrupts
+        self.disable()?;
+        
+        // Unregister interrupt handler
+        multi_drivers::interrupt::unregister_handler(self.irq_number)?;
+        
+        // Unregister character device
+        self.device_file.unregister()?;
+        
+        // Reset device
+        self.write_reg(DEVICE_REG_CONTROL, DEVICE_CTRL_RESET);
+        
+        self.is_initialized = false;
+        println!("[ExampleDriver] Device driver shut down");
+        Ok(())
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Security Module Tutorial -->
+                <section class="content-section tutorial-content" id="security-module-tutorial">
+                    <h2>Tutorial 3: Security Module</h2>
+                    <div class="tutorial-progress">
+                        <div class="progress-steps">
+                            <span class="step completed">1. Security Framework</span>
+                            <span class="step completed">2. Access Control</span>
+                            <span class="step active">3. Policy Engine</span>
+                            <span class="step">4. Audit System</span>
+                            <span class="step">5. Integration</span>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Security Framework</h3>
+                        <p>Create a comprehensive security module with mandatory access control.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Security Module Core</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi_kernel::{KernelModule, KernelError};
+use multi_process::{ProcessManager, ProcessId, SecurityContext};
+use multi_memory::{MemoryManager, MemoryProtection};
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
+
+/// Security levels
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum SecurityLevel {
+    Unclassified = 0,
+    Confidential = 1,
+    Secret = 2,
+    TopSecret = 3,
+    CosmicTopSecret = 4,
+}
+
+/// Access permissions
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct AccessPermissions {
+    pub read: bool,
+    pub write: bool,
+    pub execute: bool,
+    pub delete: bool,
+}
+
+/// Security policy rule
+#[derive(Debug, Clone)]
+pub struct SecurityRule {
+    pub subject_pattern: String,    // Process/user pattern
+    pub object_pattern: String,     // Resource pattern
+    pub permissions: AccessPermissions,
+    pub security_level: SecurityLevel,
+}
+
+/// Security violation event
+#[derive(Debug, Clone)]
+pub struct SecurityViolation {
+    pub timestamp: u64,
+    pub process_id: ProcessId,
+    pub action: String,
+    pub resource: String,
+    pub reason: String,
+    pub security_level: SecurityLevel,
+}
+
+/// Main security module
+pub struct SecurityModule {
+    module_id: u64,
+    rules: Arc&lt;Mutex&lt;Vec&lt;SecurityRule&gt;&gt;&gt;,
+    audit_log: Arc&lt;Mutex&lt;Vec&lt;SecurityViolation&gt;&gt;&gt;,
+    is_enabled: Arc&lt;Mutex&lt;bool&gt;&gt;,
+    process_manager: Option&lt;ProcessManager&gt;,
+}
+
+impl SecurityModule {
+    pub fn new() -> Self {
+        SecurityModule {
+            module_id: 0,
+            rules: Arc::new(Mutex::new(Vec::new())),
+            audit_log: Arc::new(Mutex::new(Vec::new())),
+            is_enabled: Arc::new(Mutex::new(false)),
+            process_manager: None,
+        }
+    }
+    
+    /// Enable the security module
+    pub fn enable(&self) -> Result&lt;(), KernelError&gt; {
+        let mut enabled = self.is_enabled.lock().unwrap();
+        *enabled = true;
+        println!("[SecurityModule] Security module enabled");
+        Ok(())
+    }
+    
+    /// Disable the security module
+    pub fn disable(&self) -> Result&lt;(), KernelError&gt; {
+        let mut enabled = self.is_enabled.lock().unwrap();
+        *enabled = false;
+        println!("[SecurityModule] Security module disabled");
+        Ok(())
+    }
+    
+    /// Check if access is allowed
+    pub fn check_access(
+        &self,
+        process_id: ProcessId,
+        resource: &str,
+        required_permissions: AccessPermissions,
+    ) -> Result&lt;bool, KernelError&gt; {
+        let enabled = *self.is_enabled.lock().unwrap();
+        if !enabled {
+            return Ok(true); // Allow all if disabled
+        }
+        
+        // Get process security context
+        let process_context = self.get_process_security_context(process_id)?;
+        let process_level = process_context.security_level;
+        
+        // Evaluate rules
+        let mut allowed = false;
+        let mut violation_reason = String::new();
+        
+        let rules = self.rules.lock().unwrap();
+        for rule in rules.iter() {
+            if self.matches_pattern(process_id, &rule.subject_pattern) &&
+               self.matches_resource(resource, &rule.object_pattern) {
+                
+                // Check security level compatibility
+                if process_level as u8 >= rule.security_level as u8 {
+                    // Check permissions
+                    if (required_permissions.read && rule.permissions.read) ||
+                       (required_permissions.write && rule.permissions.write) ||
+                       (required_permissions.execute && rule.permissions.execute) ||
+                       (required_permissions.delete && rule.permissions.delete) {
+                        allowed = true;
+                        break;
+                    }
+                } else {
+                    violation_reason = format!(
+                        "Insufficient security level: process={:?}, required={:?}",
+                        process_level, rule.security_level
+                    );
+                }
+            }
+        }
+        
+        if !allowed {
+            // Log security violation
+            self.log_violation(SecurityViolation {
+                timestamp: std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .unwrap()
+                    .as_secs(),
+                process_id,
+                action: "ACCESS_DENIED".to_string(),
+                resource: resource.to_string(),
+                reason: if violation_reason.is_empty() {
+                    "No matching rule found".to_string()
+                } else {
+                    violation_reason
+                },
+                security_level: process_level,
+            });
+        }
+        
+        Ok(allowed)
+    }
+    
+    /// Add security rule
+    pub fn add_rule(&self, rule: SecurityRule) -> Result&lt;(), KernelError&gt; {
+        let mut rules = self.rules.lock().unwrap();
+        rules.push(rule);
+        println!("[SecurityModule] Added security rule");
+        Ok(())
+    }
+    
+    /// Remove security rule
+    pub fn remove_rule(&self, index: usize) -> Result&lt;(), KernelError&gt; {
+        let mut rules = self.rules.lock().unwrap();
+        if index < rules.len() {
+            rules.remove(index);
+            Ok(())
+        } else {
+            Err(KernelError::InvalidArgument)
+        }
+    }
+    
+    /// Log security violation
+    fn log_violation(&self, violation: SecurityViolation) {
+        let mut audit_log = self.audit_log.lock().unwrap();
+        audit_log.push(violation);
+        
+        // Keep only last 1000 violations
+        if audit_log.len() > 1000 {
+            audit_log.remove(0);
+        }
+        
+        println!("[SecurityModule] SECURITY VIOLATION: {}", violation.reason);
+    }
+    
+    /// Check if process matches pattern
+    fn matches_pattern(&self, process_id: ProcessId, pattern: &str) -> bool {
+        // Simple pattern matching - in real implementation, this would be more sophisticated
+        pattern == "*" || pattern == format!("pid:{}", process_id.0)
+    }
+    
+    /// Check if resource matches pattern
+    fn matches_resource(&self, resource: &str, pattern: &str) -> bool {
+        // Simple pattern matching
+        pattern == "*" || resource.starts_with(pattern.trim_end_matches('*'))
+    }
+    
+    /// Get process security context
+    fn get_process_security_context(&self, process_id: ProcessId) -> Result&lt;SecurityContext, KernelError&gt; {
+        if let Some(ref pm) = self.process_manager {
+            if let Some(process) = pm.get_process(process_id) {
+                Ok(process.get_security_context())
+            } else {
+                Err(KernelError::ProcessNotFound)
+            }
+        } else {
+            // Default security context
+            Ok(SecurityContext {
+                security_level: SecurityLevel::Unclassified,
+                user_id: 0,
+                group_id: 0,
+                capabilities: vec![],
+            })
+        }
+    }
+    
+    /// Get audit log
+    pub fn get_audit_log(&self) -> Vec&lt;SecurityViolation&gt; {
+        self.audit_log.lock().unwrap().clone()
+    }
+    
+    /// Clear audit log
+    pub fn clear_audit_log(&self) {
+        self.audit_log.lock().unwrap().clear();
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Custom Scheduler Tutorial -->
+                <section class="content-section tutorial-content" id="custom-scheduler-tutorial">
+                    <h2>Tutorial 4: Custom Process Scheduler</h2>
+                    <div class="tutorial-progress">
+                        <div class="progress-steps">
+                            <span class="step completed">1. Scheduler Interface</span>
+                            <span class="step completed">2. Priority System</span>
+                            <span class="step active">3. Time Slicing</span>
+                            <span class="step">4. Load Balancing</span>
+                            <span class="step">5. Integration</span>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Scheduler Interface</h3>
+                        <p>Implement a custom process scheduler with priority-based execution.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Custom Scheduler Implementation</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi_process::{Process, ProcessId, ProcessState, Scheduler, SchedulerConfig};
+use multi_kernel::{KernelError, HZ};
+use std::collections::{BinaryHeap, HashMap};
+use std::cmp::Ordering;
+use std::sync::{Arc, Mutex};
+
+/// Process scheduling information
+#[derive(Debug, Clone)]
+struct SchedProcess {
+    process_id: ProcessId,
+    priority: u32,
+    nice_value: i32,
+    time_slice: u64,
+    remaining_time: u64,
+    arrival_time: u64,
+    cpu_burst: u64,
+    state: ProcessState,
+}
+
+/// Priority comparison for scheduler
+impl Ord for SchedProcess {
+    fn cmp(&self, other: &Self) -> Ordering {
+        // Reverse ordering for max-heap (highest priority first)
+        other.priority.cmp(&self.priority)
+            .then_with(|| other.nice_value.cmp(&self.nice_value))
+            .then_with(|| self.arrival_time.cmp(&other.arrival_time))
+    }
+}
+
+impl PartialOrd for SchedProcess {
+    fn partial_cmp(&self, other: &Self) -> Option&lt;Ordering&gt; {
+        Some(self.cmp(other))
+    }
+}
+
+impl PartialEq for SchedProcess {
+    fn eq(&self, other: &Self) -> bool {
+        self.process_id == other.process_id
+    }
+}
+
+impl Eq for SchedProcess {}
+
+/// Custom priority-based scheduler
+pub struct PriorityScheduler {
+    ready_queue: Arc&lt;Mutex&lt;BinaryHeap&lt;SchedProcess&gt;&gt;&gt;,
+    waiting_queue: Arc&lt;Mutex&lt;HashMap&lt;ProcessId, SchedProcess&gt;&gt;&gt;,
+    current_process: Option&lt;ProcessId&gt;,
+    time_slice_size: u64,
+    config: SchedulerConfig,
+    total_processes: Arc&lt;Mutex&lt;u64&gt;&gt;,
+    context_switches: Arc&lt;Mutex&lt;u64&gt;&gt;,
+}
+
+impl PriorityScheduler {
+    pub fn new(config: SchedulerConfig) -> Self {
+        let time_slice_size = if config.time_slice_ms > 0 {
+            (config.time_slice_ms as u64 * HZ as u64) / 1000
+        } else {
+            HZ as u64 / 10 // Default: 100ms
+        };
+        
+        PriorityScheduler {
+            ready_queue: Arc::new(Mutex::new(BinaryHeap::new())),
+            waiting_queue: Arc::new(Mutex::new(HashMap::new())),
+            current_process: None,
+            time_slice_size,
+            config,
+            total_processes: Arc::new(Mutex::new(0)),
+            context_switches: Arc::new(Mutex::new(0)),
+        }
+    }
+    
+    /// Add process to scheduler
+    pub fn add_process(&self, process: Process) -> Result&lt;(), KernelError&gt; {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs();
+        
+        let priority = self.calculate_priority(&process)?;
+        
+        let sched_process = SchedProcess {
+            process_id: process.get_id(),
+            priority,
+            nice_value: process.get_nice_value(),
+            time_slice: self.time_slice_size,
+            remaining_time: self.time_slice_size,
+            arrival_time: now,
+            cpu_burst: 0,
+            state: ProcessState::Ready,
+        };
+        
+        let mut queue = self.ready_queue.lock().unwrap();
+        queue.push(sched_process);
+        
+        // Update statistics
+        let mut total = self.total_processes.lock().unwrap();
+        *total += 1;
+        
+        println!("[PriorityScheduler] Added process {} with priority {}", 
+                 process.get_id().0, priority);
+        Ok(())
+    }
+    
+    /// Remove process from scheduler
+    pub fn remove_process(&self, process_id: ProcessId) -> Result&lt;(), KernelError&gt; {
+        // Remove from ready queue
+        let mut queue = self.ready_queue.lock().unwrap();
+        queue.retain(|p| p.process_id != process_id);
+        
+        // Remove from waiting queue
+        let mut waiting = self.waiting_queue.lock().unwrap();
+        waiting.remove(&process_id);
+        
+        // Clear current process if it's the one being removed
+        if self.current_process == Some(process_id) {
+            self.current_process = None;
+        }
+        
+        Ok(())
+    }
+    
+    /// Calculate process priority
+    fn calculate_priority(&self, process: &Process) -> Result&lt;u32, KernelError&gt; {
+        let base_priority = process.get_base_priority();
+        let nice_value = process.get_nice_value();
+        
+        // Priority ranges from 0 (highest) to 139 (lowest)
+        // User processes: 100-139
+        // Kernel processes: 0-99
+        let mut priority = if base_priority < 100 {
+            // Kernel process
+            base_priority
+        } else {
+            // User process
+            100 + nice_value.saturating_add(20) // Adjust based on nice value
+        };
+        
+        // Apply scheduling policy adjustments
+        match self.config.policy {
+            multi_process::SchedulingPolicy::Normal => {
+                // No additional adjustments
+            }
+            multi_process::SchedulingPolicy::Fifo => {
+                // First-in-first-out: use arrival time as tiebreaker
+                priority = 100; // Reset to user priority
+            }
+            multi_process::SchedulingPolicy::RoundRobin => {
+                // Round-robin: base priority with time slicing
+                priority = base_priority;
+            }
+            multi_process::SchedulingPolicy::Batch => {
+                // Batch processes get lower priority
+                priority = priority.saturating_add(10);
+            }
+        }
+        
+        Ok(priority)
+    }
+    
+    /// Select next process to run
+    pub fn select_next_process(&self) -> Option&lt;ProcessId&gt; {
+        let mut queue = self.ready_queue.lock().unwrap();
+        
+        if let Some(sched_process) = queue.pop() {
+            self.current_process = Some(sched_process.process_id);
+            Some(sched_process.process_id)
+        } else {
+            None
+        }
+    }
+    
+    /// Update scheduler state (called on timer interrupt)
+    pub fn tick(&self) -> Result&lt;Option&lt;ProcessId&gt;, KernelError&gt; {
+        // Decrement time slice for current process
+        if let Some(current_pid) = self.current_process {
+            let mut queue = self.ready_queue.lock().unwrap();
+            
+            // Find and update current process
+            for sched_process in queue.iter_mut() {
+                if sched_process.process_id == current_pid {
+                    if sched_process.remaining_time > 0 {
+                        sched_process.remaining_time -= 1;
+                    }
+                    
+                    // Time slice expired
+                    if sched_process.remaining_time == 0 {
+                        sched_process.remaining_time = self.time_slice_size;
+                        sched_process.priority = sched_process.priority.saturating_add(1); // Reduce priority
+                        
+                        // Move to back of queue (will be re-inserted)
+                        return Ok(Some(current_pid));
+                    }
+                    break;
+                }
+            }
+        }
+        
+        // Check if we need to select a new process
+        self.select_next_process()
+    }
+    
+    /// Wake up a waiting process
+    pub fn wake_up_process(&self, process_id: ProcessId) -> Result&lt;(), KernelError&gt; {
+        let mut waiting = self.waiting_queue.lock().unwrap();
+        
+        if let Some(mut sched_process) = waiting.remove(&process_id) {
+            sched_process.state = ProcessState::Ready;
+            sched_process.remaining_time = self.time_slice_size;
+            
+            let mut queue = self.ready_queue.lock().unwrap();
+            queue.push(sched_process);
+            
+            println!("[PriorityScheduler] Woke up process {}", process_id.0);
+        }
+        
+        Ok(())
+    }
+    
+    /// Put process to sleep
+    pub fn sleep_process(&self, process_id: ProcessId) -> Result&lt;(), KernelError&gt; {
+        let mut queue = self.ready_queue.lock().unwrap();
+        
+        if let Some(index) = queue.iter().position(|p| p.process_id == process_id) {
+            let sched_process = queue.remove(index);
+            let mut waiting = self.waiting_queue.lock().unwrap();
+            waiting.insert(process_id, sched_process);
+            
+            // Clear current process if it's going to sleep
+            if self.current_process == Some(process_id) {
+                self.current_process = None;
+            }
+            
+            println!("[PriorityScheduler] Put process {} to sleep", process_id.0);
+        }
+        
+        Ok(())
+    }
+    
+    /// Get scheduler statistics
+    pub fn get_statistics(&self) -> SchedulerStatistics {
+        let ready_queue = self.ready_queue.lock().unwrap();
+        let waiting_queue = self.waiting_queue.lock().unwrap();
+        let total_processes = *self.total_processes.lock().unwrap();
+        let context_switches = *self.context_switches.lock().unwrap();
+        
+        SchedulerStatistics {
+            ready_processes: ready_queue.len(),
+            waiting_processes: waiting_queue.len(),
+            total_processes,
+            context_switches,
+            average_priority: if ready_queue.is_empty() {
+                0
+            } else {
+                ready_queue.iter().map(|p| p.priority).sum::&lt;u32&gt;() / (ready_queue.len() as u32)
+            },
+        }
+    }
+}
+
+/// Scheduler statistics
+#[derive(Debug, Clone)]
+pub struct SchedulerStatistics {
+    pub ready_processes: usize,
+    pub waiting_processes: usize,
+    pub total_processes: u64,
+    pub context_switches: u64,
+    pub average_priority: u32,
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Module System Integration -->
+                <section class="content-section">
+                    <h2>Module System Integration</h2>
+                    <p>Learn how to integrate your custom modules into the MultiOS kernel.</p>
+                    
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>Module Registration</h4>
+                            </div>
+                            <pre><code class="language-rust">// Register all custom modules
+pub fn register_all_modules() -> Result&lt;(), KernelError&gt; {
+    // Register security module
+    let security_module = Box::new(SecurityModule::new());
+    multi_kernel::register_module(security_module)?;
+    
+    // Register custom scheduler
+    let scheduler_config = SchedulerConfig {
+        policy: SchedulingPolicy::Priority,
+        time_slice_ms: 10,
+        max_processes: 1000,
+    };
+    let scheduler = Box::new(PriorityScheduler::new(scheduler_config));
+    multi_kernel::register_module(scheduler)?;
+    
+    println!("[ModuleSystem] All custom modules registered successfully");
+    Ok(())
+}
+
+// Module initialization entry point
+#[no_mangle]
+pub extern "C" fn init_modules() -> i32 {
+    match register_all_modules() {
+        Ok(_) => 0,  // Success
+        Err(_) => -1, // Error
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Testing and Debugging -->
+                <section class="content-section">
+                    <h2>Testing and Debugging</h2>
+                    <div class="best-practices">
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Kernel Module Testing</h4>
+                            <p>Use the module testing framework to validate functionality before deployment.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Driver Validation</h4>
+                            <p>Thoroughly test device drivers with hardware simulation and real hardware.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Security Auditing</h4>
+                            <p>Regularly audit security modules and review access control policies.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Performance Monitoring</h4>
+                            <p>Monitor scheduler performance and optimize based on real-world usage patterns.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Next Steps -->
+                <section class="content-section">
+                    <h2>Congratulations!</h2>
+                    <p>You've completed the advanced MultiOS tutorials. You now have the knowledge to:</p>
+                    
+                    <div class="achievement-grid">
+                        <div class="achievement-card">
+                            <div class="achievement-icon">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <div class="achievement-content">
+                                <h3>Kernel Development</h3>
+                                <p>Develop kernel modules, device drivers, and system-level components.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="achievement-card">
+                            <div class="achievement-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="achievement-content">
+                                <h3>Security Implementation</h3>
+                                <p>Create security policies, access control systems, and audit mechanisms.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="achievement-card">
+                            <div class="achievement-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="achievement-content">
+                                <h3>System Integration</h3>
+                                <p>Integrate custom components with the MultiOS kernel and framework.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="next-steps">
+                        <div class="step-card">
+                            <div class="step-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>Continue Learning</h3>
+                                <p>Explore the <a href="../api_reference/kernel.html">Kernel API reference</a> for detailed documentation of all available functions.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>Build Real Projects</h3>
+                                <p>Apply your knowledge to build real-world applications and contribute to the MultiOS ecosystem.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/search.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/interactive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

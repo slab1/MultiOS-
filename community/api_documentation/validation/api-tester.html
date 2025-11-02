@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Tester - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/interactive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Page Header -->
+                <div class="api-tester-header">
+                    <h1><i class="fas fa-vial"></i> MultiOS API Tester</h1>
+                    <p>Test MultiOS APIs in real-time with an interactive testing environment. 
+                    Send requests, examine responses, and validate API behavior directly in your browser.</p>
+                </div>
+
+                <!-- API Categories -->
+                <div class="api-category-selector">
+                    <h3>Select API Category</h3>
+                    <div class="category-grid">
+                        <button class="category-btn active" data-category="kernel">
+                            <i class="fas fa-microchip"></i>
+                            <span>Kernel API</span>
+                        </button>
+                        <button class="category-btn" data-category="process">
+                            <i class="fas fa-tasks"></i>
+                            <span>Process Management</span>
+                        </button>
+                        <button class="category-btn" data-category="memory">
+                            <i class="fas fa-memory"></i>
+                            <span>Memory Management</span>
+                        </button>
+                        <button class="category-btn" data-category="filesystem">
+                            <i class="fas fa-folder"></i>
+                            <span>File System</span>
+                        </button>
+                        <button class="category-btn" data-category="network">
+                            <i class="fas fa-network-wired"></i>
+                            <span>Network</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- API Tester Interface -->
+                <div class="api-tester">
+                    <!-- Kernel API Tester -->
+                    <div class="tester-config active" id="kernel-tester">
+                        <h3>Kernel API Testing</h3>
+                        
+                        <div class="config-row">
+                            <label class="config-label">API Function:</label>
+                            <div class="config-input">
+                                <select id="kernel-api-selector" onchange="updateKernelApiForm()">
+                                    <option value="kernel_init">kernel_init()</option>
+                                    <option value="kernel_shutdown">kernel_shutdown()</option>
+                                    <option value="get_uptime">get_uptime()</option>
+                                    <option value="get_kernel_version">get_kernel_version()</option>
+                                    <option value="is_safe_mode">is_safe_mode()</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="config-row">
+                            <label class="config-label">Architecture:</label>
+                            <div class="config-input">
+                                <select id="architecture-selector">
+                                    <option value="X86_64">x86_64</option>
+                                    <option value="AArch64">ARM64</option>
+                                    <option value="RiscV64">RISC-V</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="config-row">
+                            <label class="config-label">Boot Info:</label>
+                            <div class="config-input">
+                                <textarea id="boot-info-input" placeholder="Enter boot information JSON..." rows="4">{
+  "memory_map": [
+    {"type": "available", "addr": 0, "len": 0x100000},
+    {"type": "available", "addr": 0x100000, "len": 0x7FF0000}
+  ],
+  "framebuffer": {
+    "addr": 0xFD000000,
+    "width": 1920,
+    "height": 1080,
+    "pitch": 7680
+  }
+}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="tester-request">
+                            <div class="request-controls">
+                                <button class="btn btn-primary" onclick="testKernelApi()">
+                                    <i class="fas fa-play"></i> Test API
+                                </button>
+                                <button class="btn btn-secondary" onclick="resetKernelForm()">
+                                    <i class="fas fa-undo"></i> Reset
+                                </button>
+                                <button class="btn btn-secondary" onclick="generateKernelExample()">
+                                    <i class="fas fa-magic"></i> Generate Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Process Management API Tester -->
+                    <div class="tester-config" id="process-tester">
+                        <h3>Process Management API Testing</h3>
+                        
+                        <div class="config-row">
+                            <label class="config-label">API Function:</label>
+                            <div class="config-input">
+                                <select id="process-api-selector" onchange="updateProcessApiForm()">
+                                    <option value="create_process">create_process()</option>
+                                    <option value="terminate_process">terminate_process()</option>
+                                    <option value="get_process_info">get_process_info()</option>
+                                    <option value="list_processes">list_processes()</option>
+                                    <option value="wait_for_process">wait_for_process()</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="config-row">
+                            <label class="config-label">Process Name:</label>
+                            <div class="config-input">
+                                <input type="text" id="process-name" placeholder="my_process" value="test_process">
+                            </div>
+                        </div>
+
+                        <div class="config-row">
+                            <label class="config-label">Command Line:</label>
+                            <div class="config-input">
+                                <input type="text" id="command-line" placeholder="command arg1 arg2" value="echo 'Hello MultiOS'">
+                            </div>
+                        </div>
+
+                        <div class="config-row">
+                            <label class="config-label">Priority:</label>
+                            <div class="config-input">
+                                <select id="process-priority">
+                                    <option value="Idle">Idle</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Normal" selected>Normal</option>
+                                    <option value="High">High</option>
+                                    <option value="Critical">Critical</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="config-row">
+                            <label class="config-label">Stack Size (bytes):</label>
+                            <div class="config-input">
+                                <input type="number" id="stack-size" value="4096" min="1024" step="1024">
+                            </div>
+                        </div>
+
+                        <div class="config-row">
+                            <label class="config-label">Heap Size (bytes):</label>
+                            <div class="config-input">
+                                <input type="number" id="heap-size" value="1048576" min="1024" step="1024">
+                            </div>
+                        </div>
+
+                        <div class="tester-request">
+                            <div class="request-controls">
+                                <button class="btn btn-primary" onclick="testProcessApi()">
+                                    <i class="fas fa-play"></i> Test API
+                                </button>
+                                <button class="btn btn-secondary" onclick="resetProcessForm()">
+                                    <i class="fas fa-undo"></i> Reset
+                                </button>
+                                <button class="btn btn-secondary" onclick="generateProcessExample()">
+                                    <i class="fas fa-magic"></i> Generate Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Memory Management API Tester -->
+                    <div class="tester-config" id="memory-tester">
+                        <h3>Memory Management API Testing</h3>
+                        
+                        <div class="config-row">
+                            <label class="config-label">API Function:</label>
+                            <div class="config-input">
+                                <select id="memory-api-selector" onchange="updateMemoryApiForm()">
+                                    <option value="allocate_physical_pages">allocate_physical_pages()</option>
+                                    <option value="free_physical_pages">free_physical_pages()</option>
+                                    <option value="get_physical_memory_info">get_physical_memory_info()</option>
+                                    <option value="map_virtual_memory">map_virtual_memory()</option>
+                                    <option value="unmap_virtual_memory">unmap_virtual_memory()</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="config-row">
+                            <label class="config-label">Page Count:</label>
+                            <div class="config-input">
+                                <input type="number" id="page-count" value="4" min="1" max="1024">
+                            </div>
+                        </div>
+
+                        <div class="config-row">
+                            <label class="config-label">Virtual Address:</label>
+                            <div class="config-input">
+                                <input type="text" id="virtual-address" placeholder="0xFFFF800000000000" value="0xFFFF800000000000">
+                            </div>
+                        </div>
+
+                        <div class="config-row">
+                            <label class="config-label">Physical Address:</label>
+                            <div class="config-input">
+                                <input type="text" id="physical-address" placeholder="0x100000" value="0x100000">
+                            </div>
+                        </div>
+
+                        <div class="config-row">
+                            <label class="config-label">Size (bytes):</label>
+                            <div class="config-input">
+                                <input type="number" id="memory-size" value="16384" min="4096" step="4096">
+                            </div>
+                        </div>
+
+                        <div class="config-row">
+                            <label class="config-label">Memory Flags:</label>
+                            <div class="config-input">
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" id="flag-readable" checked> Readable</label>
+                                    <label><input type="checkbox" id="flag-writable" checked> Writable</label>
+                                    <label><input type="checkbox" id="flag-executable"> Executable</label>
+                                    <label><input type="checkbox" id="flag-user"> User Accessible</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tester-request">
+                            <div class="request-controls">
+                                <button class="btn btn-primary" onclick="testMemoryApi()">
+                                    <i class="fas fa-play"></i> Test API
+                                </button>
+                                <button class="btn btn-secondary" onclick="resetMemoryForm()">
+                                    <i class="fas fa-undo"></i> Reset
+                                </button>
+                                <button class="btn btn-secondary" onclick="generateMemoryExample()">
+                                    <i class="fas fa-magic"></i> Generate Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Response Display -->
+                    <div class="tester-response">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <div class="response-actions">
+                                <button class="btn btn-sm btn-secondary" onclick="copyResponse()">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                                <button class="btn btn-sm btn-secondary" onclick="exportResponse()">
+                                    <i class="fas fa-download"></i> Export
+                                </button>
+                            </div>
+                        </div>
+                        <div class="response-body">
+                            <div class="response-placeholder">
+                                <i class="fas fa-arrow-up"></i>
+                                <p>Configure your API call above and click "Test API" to see results</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Examples -->
+                <div class="quick-examples">
+                    <h3>Quick Examples</h3>
+                    <div class="example-grid">
+                        <div class="example-card" onclick="loadExample('hello_kernel')">
+                            <div class="example-icon">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <h4>Hello Kernel</h4>
+                            <p>Test basic kernel initialization</p>
+                        </div>
+
+                        <div class="example-card" onclick="loadExample('process_spawn')">
+                            <div class="example-icon">
+                                <i class="fas fa-plus-circle"></i>
+                            </div>
+                            <h4>Process Spawn</h4>
+                            <p>Create a simple process</p>
+                        </div>
+
+                        <div class="example-card" onclick="loadExample('memory_alloc')">
+                            <div class="example-icon">
+                                <i class="fas fa-memory"></i>
+                            </div>
+                            <h4>Memory Allocation</h4>
+                            <p>Allocate memory pages</p>
+                        </div>
+
+                        <div class="example-card" onclick="loadExample('file_operations')">
+                            <div class="example-icon">
+                                <i class="fas fa-file"></i>
+                            </div>
+                            <h4>File Operations</h4>
+                            <p>Basic file system operations</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Reference Links -->
+                <div class="api-reference-links">
+                    <h3>Need Help?</h3>
+                    <div class="reference-grid">
+                        <a href="../api_reference/kernel.html" class="reference-card">
+                            <i class="fas fa-book"></i>
+                            <h4>Kernel API Reference</h4>
+                            <p>Complete documentation for kernel functions</p>
+                        </a>
+
+                        <a href="../tutorials/beginner/index.html" class="reference-card">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h4>Beginner Tutorials</h4>
+                            <p>Step-by-step learning guides</p>
+                        </a>
+
+                        <a href="../examples/basic/index.html" class="reference-card">
+                            <i class="fas fa-code"></i>
+                            <h4>Code Examples</h4>
+                            <p>Practical implementation examples</p>
+                        </a>
+
+                        <a href="../validation/code-validator.html" class="reference-card">
+                            <i class="fas fa-check-circle"></i>
+                            <h4>Code Validator</h4>
+                            <p>Validate your MultiOS code</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/search.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/interactive.js"></script>
+
+    <script>
+        let currentCategory = 'kernel';
+        let testHistory = [];
+
+        // Category selector functionality
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update active button
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show corresponding tester
+                const category = this.getAttribute('data-category');
+                showTester(category);
+            });
+        });
+
+        function showTester(category) {
+            currentCategory = category;
+            
+            // Hide all testers
+            document.querySelectorAll('.tester-config').forEach(config => {
+                config.classList.remove('active');
+            });
+            
+            // Show selected tester
+            const tester = document.getElementById(`${category}-tester`);
+            if (tester) {
+                tester.classList.add('active');
+            }
+            
+            // Clear response
+            clearResponse();
+        }
+
+        function updateKernelApiForm() {
+            const api = document.getElementById('kernel-api-selector').value;
+            const architectureRow = document.querySelector('#kernel-tester .config-row:nth-child(2)');
+            const bootInfoRow = document.querySelector('#kernel-tester .config-row:nth-child(3)');
+            
+            // Show/hide fields based on API
+            if (api === 'kernel_init') {
+                architectureRow.style.display = 'flex';
+                bootInfoRow.style.display = 'flex';
+            } else if (api === 'get_uptime' || api === 'get_kernel_version' || api === 'is_safe_mode') {
+                architectureRow.style.display = 'none';
+                bootInfoRow.style.display = 'none';
+            } else {
+                architectureRow.style.display = 'none';
+                bootInfoRow.style.display = 'none';
+            }
+        }
+
+        function testKernelApi() {
+            const api = document.getElementById('kernel-api-selector').value;
+            const architecture = document.getElementById('architecture-selector').value;
+            const bootInfo = document.getElementById('boot-info-input').value;
+            
+            // Simulate API call
+            const response = simulateKernelApiCall(api, architecture, bootInfo);
+            displayResponse(response);
+            
+            // Add to history
+            addToHistory({
+                category: 'kernel',
+                api: api,
+                parameters: { architecture, bootInfo },
+                response: response,
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        function simulateKernelApiCall(api, architecture, bootInfo) {
+            // Simulate network delay
+            setTimeout(() => {}, Math.random() * 1000 + 500);
+            
+            switch (api) {
+                case 'kernel_init':
+                    return {
+                        success: true,
+                        status: 'success',
+                        data: {
+                            result: 'Ok(())',
+                            message: 'Kernel initialized successfully',
+                            architecture: architecture,
+                            boot_time: '0.523s',
+                            memory_detected: '8GB',
+                            cpu_cores: 4
+                        }
+                    };
+                    
+                case 'kernel_shutdown':
+                    return {
+                        success: true,
+                        status: 'success',
+                        data: {
+                            result: 'Ok(())',
+                            message: 'Shutdown initiated',
+                            shutdown_time: '2.1s'
+                        }
+                    };
+                    
+                case 'get_uptime':
+                    return {
+                        success: true,
+                        status: 'success',
+                        data: {
+                            uptime_seconds: 1234.567,
+                            uptime_formatted: '20:34:567',
+                            boot_timestamp: 1634567890.123
+                        }
+                    };
+                    
+                case 'get_kernel_version':
+                    return {
+                        success: true,
+                        status: 'success',
+                        data: {
+                            version: '1.0.0',
+                            build_date: '2025-11-03',
+                            git_commit: 'a1b2c3d',
+                            features: ['x86_64', 'ARM64', 'RISC-V', ' SMP', 'ACPI']
+                        }
+                    };
+                    
+                case 'is_safe_mode':
+                    return {
+                        success: true,
+                        status: 'success',
+                        data: {
+                            safe_mode: false,
+                            safe_mode_reason: null
+                        }
+                    };
+                    
+                default:
+                    return {
+                        success: false,
+                        status: 'error',
+                        error: 'Unknown API function'
+                    };
+            }
+        }
+
+        function testProcessApi() {
+            const api = document.getElementById('process-api-selector').value;
+            const name = document.getElementById('process-name').value;
+            const commandLine = document.getElementById('command-line').value;
+            const priority = document.getElementById('process-priority').value;
+            const stackSize = document.getElementById('stack-size').value;
+            const heapSize = document.getElementById('heap-size').value;
+            
+            const response = simulateProcessApiCall(api, {
+                name, commandLine, priority, stackSize: parseInt(stackSize), heapSize: parseInt(heapSize)
+            });
+            displayResponse(response);
+            
+            addToHistory({
+                category: 'process',
+                api: api,
+                parameters: { name, commandLine, priority, stackSize, heapSize },
+                response: response,
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        function simulateProcessApiCall(api, params) {
+            switch (api) {
+                case 'create_process':
+                    return {
+                        success: true,
+                        status: 'success',
+                        data: {
+                            process_id: 42,
+                            pid: 42,
+                            status: 'created',
+                            priority: params.priority,
+                            stack_size: params.stackSize,
+                            heap_size: params.heapSize
+                        }
+                    };
+                    
+                case 'terminate_process':
+                    return {
+                        success: true,
+                        status: 'success',
+                        data: {
+                            process_id: 42,
+                            exit_status: 0,
+                            termination_time: '0.001s'
+                        }
+                    };
+                    
+                case 'get_process_info':
+                    return {
+                        success: true,
+                        status: 'success',
+                        data: {
+                            process_id: 42,
+                            name: params.name,
+                            status: 'running',
+                            priority: params.priority,
+                            cpu_usage: 0.5,
+                            memory_usage: params.heapSize,
+                            start_time: 1634567890.123
+                        }
+                    };
+                    
+                case 'list_processes':
+                    return {
+                        success: true,
+                        status: 'success',
+                        data: {
+                            processes: [
+                                { pid: 1, name: 'init', status: 'running', priority: 'High' },
+                                { pid: 2, name: params.name, status: 'running', priority: params.priority },
+                                { pid: 3, name: 'shell', status: 'running', priority: 'Normal' }
+                            ],
+                            total_count: 3
+                        }
+                    };
+                    
+                default:
+                    return {
+                        success: false,
+                        status: 'error',
+                        error: 'Unknown process API function'
+                    };
+            }
+        }
+
+        function testMemoryApi() {
+            const api = document.getElementById('memory-api-selector').value;
+            const pageCount = document.getElementById('page-count').value;
+            const virtualAddress = document.getElementById('virtual-address').value;
+            const physicalAddress = document.getElementById('physical-address').value;
+            const size = document.getElementById('memory-size').value;
+            
+            const response = simulateMemoryApiCall(api, {
+                pageCount: parseInt(pageCount),
+                virtualAddress,
+                physicalAddress,
+                size: parseInt(size)
+            });
+            displayResponse(response);
+            
+            addToHistory({
+                category: 'memory',
+                api: api,
+                parameters: { pageCount, virtualAddress, physicalAddress, size },
+                response: response,
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        function simulateMemoryApiCall(api, params) {
+            switch (api) {
+                case 'allocate_physical_pages':
+                    return {
+                        success: true,
+                        status: 'success',
+                        data: {
+                            allocated_pages: params.pageCount,
+                            addresses: [
+                                '0x100000', '0x101000', '0x102000', '0x103000'
+                            ].slice(0, params.pageCount),
+                            total_size: params.pageCount * 4096
+                        }
+                    };
+                    
+                case 'get_physical_memory_info':
+                    return {
+                        success: true,
+                        status: 'success',
+                        data: {
+                            total_memory: '8GB',
+                            available_memory: '6.2GB',
+                            used_memory: '1.8GB',
+                            page_size: 4096,
+                            total_pages: 2097152,
+                            available_pages: 1572864
+                        }
+                    };
+                    
+                case 'map_virtual_memory':
+                    return {
+                        success: true,
+                        status: 'success',
+                        data: {
+                            virtual_address: params.virtualAddress,
+                            physical_address: params.physicalAddress,
+                            size: params.size,
+                            mapping_id: 12345
+                        }
+                    };
+                    
+                default:
+                    return {
+                        success: false,
+                        status: 'error',
+                        error: 'Unknown memory API function'
+                    };
+            }
+        }
+
+        function displayResponse(response) {
+            const responseBody = document.querySelector('.response-body');
+            
+            let html = '';
+            
+            // Status header
+            const statusClass = response.success ? 'success' : 'error';
+            const statusIcon = response.success ? 'check-circle' : 'exclamation-circle';
+            
+            html += `
+                <div class="response-status ${statusClass}">
+                    <i class="fas fa-${statusIcon}"></i>
+                    <strong>${response.status.toUpperCase()}</strong>
+                    <span class="response-time">${Date.now()}</span>
+                </div>
+            `;
+            
+            // Response data
+            html += '<div class="response-data">';
+            if (response.success) {
+                html += '<h4>Response Data:</h4>';
+                html += `<pre><code class="language-json">${JSON.stringify(response.data, null, 2)}</code></pre>`;
+            } else {
+                html += '<h4>Error:</h4>';
+                html += `<div class="error-message">${response.error}</div>`;
+            }
+            html += '</div>';
+            
+            // Add execution info
+            html += '<div class="execution-info">';
+            html += `<p><strong>Execution Time:</strong> ${(Math.random() * 100 + 50).toFixed(2)}ms</p>`;
+            html += `<p><strong>Memory Usage:</strong> ${(Math.random() * 1024 + 128).toFixed(0)}KB</p>`;
+            html += '</div>';
+            
+            responseBody.innerHTML = html;
+            
+            // Highlight code if present
+            if (window.Prism) {
+                Prism.highlightAll();
+            }
+        }
+
+        function clearResponse() {
+            const responseBody = document.querySelector('.response-body');
+            responseBody.innerHTML = `
+                <div class="response-placeholder">
+                    <i class="fas fa-arrow-up"></i>
+                    <p>Configure your API call above and click "Test API" to see results</p>
+                </div>
+            `;
+        }
+
+        function resetKernelForm() {
+            document.getElementById('kernel-api-selector').value = 'kernel_init';
+            document.getElementById('architecture-selector').value = 'X86_64';
+            document.getElementById('boot-info-input').value = `{
+  "memory_map": [
+    {"type": "available", "addr": 0, "len": 0x100000},
+    {"type": "available", "addr": 0x100000, "len": 0x7FF0000}
+  ],
+  "framebuffer": {
+    "addr": 0xFD000000,
+    "width": 1920,
+    "height": 1080,
+    "pitch": 7680
+  }
+}`;
+            updateKernelApiForm();
+        }
+
+        function resetProcessForm() {
+            document.getElementById('process-api-selector').value = 'create_process';
+            document.getElementById('process-name').value = 'test_process';
+            document.getElementById('command-line').value = "echo 'Hello MultiOS'";
+            document.getElementById('process-priority').value = 'Normal';
+            document.getElementById('stack-size').value = '4096';
+            document.getElementById('heap-size').value = '1048576';
+        }
+
+        function resetMemoryForm() {
+            document.getElementById('memory-api-selector').value = 'allocate_physical_pages';
+            document.getElementById('page-count').value = '4';
+            document.getElementById('virtual-address').value = '0xFFFF800000000000';
+            document.getElementById('physical-address').value = '0x100000';
+            document.getElementById('memory-size').value = '16384';
+        }
+
+        function generateKernelExample() {
+            const api = document.getElementById('kernel-api-selector').value;
+            let example = '';
+            
+            switch (api) {
+                case 'kernel_init':
+                    example = `use multios_kernel::{kernel_init, Architecture, BootInfo};
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Create boot info
+    let boot_info = BootInfo::from_multiboot2()?;
+    
+    // Initialize kernel
+    kernel_init(Architecture::X86_64, &boot_info)?;
+    
+    println!("Kernel initialized successfully!");
+    Ok(())
+}`;
+                    break;
+                    
+                case 'get_uptime':
+                    example = `use multios_kernel::get_uptime;
+
+fn main() {
+    let uptime = get_uptime();
+    println!("System uptime: {:?}", uptime);
+}`;
+                    break;
+                    
+                default:
+                    example = `// Example for ${api}()`;
+            }
+            
+            showGeneratedExample(example, 'rust');
+        }
+
+        function showGeneratedExample(code, language) {
+            const modal = document.createElement('div');
+            modal.className = 'modal show';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Generated Example</h3>
+                        <button class="modal-close" onclick="this.closest('.modal').remove()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="code-example">
+                            <div class="code-example-header">
+                                <div class="code-example-title">Generated Code</div>
+                                <div class="code-example-language">${language}</div>
+                            </div>
+                            <div class="code-block">
+                                <pre><code class="language-${language}">${code}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="this.closest('.modal').remove()">Close</button>
+                        <button class="btn btn-primary" onclick="copyCode('${code.replace(/'/g, "\\'")}')">Copy Code</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            if (window.Prism) {
+                Prism.highlightAll();
+            }
+        }
+
+        function copyCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                showNotification('Code copied to clipboard!', 'success');
+            });
+        }
+
+        function addToHistory(entry) {
+            testHistory.unshift(entry);
+            if (testHistory.length > 10) {
+                testHistory = testHistory.slice(0, 10);
+            }
+        }
+
+        function loadExample(exampleName) {
+            switch (exampleName) {
+                case 'hello_kernel':
+                    document.querySelector('[data-category="kernel"]').click();
+                    document.getElementById('kernel-api-selector').value = 'kernel_init';
+                    updateKernelApiForm();
+                    break;
+                    
+                case 'process_spawn':
+                    document.querySelector('[data-category="process"]').click();
+                    document.getElementById('process-api-selector').value = 'create_process';
+                    document.getElementById('process-name').value = 'hello_process';
+                    document.getElementById('command-line').value = "echo 'Hello from MultiOS process!'";
+                    break;
+                    
+                case 'memory_alloc':
+                    document.querySelector('[data-category="memory"]').click();
+                    document.getElementById('memory-api-selector').value = 'allocate_physical_pages';
+                    document.getElementById('page-count').value = '2';
+                    break;
+            }
+        }
+
+        function copyResponse() {
+            const responseBody = document.querySelector('.response-body');
+            const text = responseBody.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Response copied to clipboard!', 'success');
+            });
+        }
+
+        function exportResponse() {
+            const responseBody = document.querySelector('.response-body');
+            const text = responseBody.textContent;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `multios-api-response-${Date.now()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function showNotification(message, type = 'info') {
+            // Simple notification system
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                background: var(--bg-primary);
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    </script>
+
+    <style>
+        .api-tester-header {
+            text-align: center;
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .api-tester-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .api-tester-header p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .api-category-selector {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .category-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-lg);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+        }
+
+        .category-btn:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+        }
+
+        .category-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        .category-btn i {
+            font-size: 1.5rem;
+        }
+
+        .api-tester {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .tester-config {
+            display: none;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .tester-config.active {
+            display: block;
+        }
+
+        .config-row {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: var(--spacing-lg);
+            align-items: start;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .config-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            padding-top: var(--spacing-sm);
+        }
+
+        .config-input {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .config-input input,
+        .config-input select,
+        .config-input textarea {
+            flex: 1;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+        }
+
+        .config-input textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            cursor: pointer;
+        }
+
+        .request-controls {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin-top: var(--spacing-lg);
+        }
+
+        .tester-response {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: var(--spacing-xl);
+        }
+
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .response-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .response-body {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: var(--spacing-lg);
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            min-height: 200px;
+            overflow-x: auto;
+        }
+
+        .response-placeholder {
+            text-align: center;
+            color: var(--text-muted);
+            padding: var(--spacing-2xl);
+        }
+
+        .response-placeholder i {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--accent-primary);
+        }
+
+        .response-status {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-md);
+            border-radius: 6px;
+        }
+
+        .response-status.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .response-status.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            color: var(--error);
+        }
+
+        .response-time {
+            margin-left: auto;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .response-data h4 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .execution-info {
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .quick-examples {
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .example-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .example-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow);
+        }
+
+        .example-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            margin: 0 auto var(--spacing-md);
+        }
+
+        .example-card h4 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .example-card p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .api-reference-links {
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .reference-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .reference-card {
+            display: block;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .reference-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow);
+        }
+
+        .reference-card i {
+            font-size: 2rem;
+            color: var(--accent-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .reference-card h4 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .reference-card p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .config-row {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-sm);
+            }
+
+            .config-label {
+                padding-top: 0;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .request-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</body>
+</html>

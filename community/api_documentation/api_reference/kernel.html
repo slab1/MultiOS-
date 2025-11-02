@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kernel API - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar">
+            <div class="nav-content">
+                <div class="nav-section">
+                    <h3>API Reference</h3>
+                    <ul>
+                        <li><a href="kernel.html" class="nav-link active">Kernel API</a></li>
+                        <li><a href="memory.html" class="nav-link">Memory Management</a></li>
+                        <li><a href="process.html" class="nav-link">Process Management</a></li>
+                        <li><a href="filesystem.html" class="nav-link">File System</a></li>
+                        <li><a href="network.html" class="nav-link">Network</a></li>
+                        <li><a href="drivers.html" class="nav-link">Device Drivers</a></li>
+                        <li><a href="gui.html" class="nav-link">GUI Toolkit</a></li>
+                        <li><a href="syscall.html" class="nav-link">System Calls</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Breadcrumb -->
+                <nav class="breadcrumb">
+                    <div class="breadcrumb-item">
+                        <a href="../index.html" class="breadcrumb-link">Home</a>
+                    </div>
+                    <div class="breadcrumb-item">
+                        <a href="index.html" class="breadcrumb-link">API Reference</a>
+                    </div>
+                    <div class="breadcrumb-item">
+                        <span class="breadcrumb-current">Kernel API</span>
+                    </div>
+                </nav>
+
+                <!-- API Header -->
+                <div class="api-header">
+                    <h1 class="api-title">Kernel API</h1>
+                    <p class="api-description">
+                        The Kernel API provides core functionality for MultiOS system initialization, 
+                        hardware abstraction, and essential system services. This API is fundamental 
+                        for all MultiOS operations and provides the foundation for higher-level abstractions.
+                    </p>
+                    <div class="api-meta">
+                        <div class="api-meta-item">
+                            <span class="api-meta-label">Language:</span>
+                            <span class="api-meta-value">Rust</span>
+                        </div>
+                        <div class="api-meta-item">
+                            <span class="api-meta-label">Stability:</span>
+                            <span class="api-meta-value">Stable</span>
+                        </div>
+                        <div class="api-meta-item">
+                            <span class="api-meta-label">Version:</span>
+                            <span class="api-meta-value">1.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table of Contents -->
+                <div class="toc">
+                    <h3>Table of Contents</h3>
+                    <ul>
+                        <li><a href="#initialization">Initialization & Lifecycle</a></li>
+                        <li><a href="#error-handling">Error Handling</a></li>
+                        <li><a href="#system-info">System Information</a></li>
+                        <li><a href="#arch-abstraction">Architecture Abstraction</a></li>
+                        <li><a href="#examples">Examples</a></li>
+                    </ul>
+                </div>
+
+                <!-- Initialization Section -->
+                <section id="initialization" class="api-section">
+                    <h2>Initialization & Lifecycle</h2>
+                    <p>Core kernel initialization and lifecycle management functions.</p>
+
+                    <!-- kernel_init -->
+                    <div class="api-item">
+                        <div class="api-item-header" onclick="toggleApiItem(this)">
+                            <div class="api-signature">
+                                <span class="api-modifiers">pub fn</span>
+                                <span class="api-name">kernel_init</span>
+                                (architecture: Architecture, boot_info: &BootInfo) -> KernelResult<()>
+                            </div>
+                        </div>
+                        <div class="api-item-content">
+                            <div class="api-description">
+                                Initialize the kernel with the provided bootstrap information. This function 
+                                sets up essential kernel structures, initializes hardware abstraction layers, 
+                                and prepares the system for operation.
+                            </div>
+                            
+                            <div class="api-parameters">
+                                <h4>Parameters</h4>
+                                <div class="parameter-list">
+                                    <div class="parameter-item">
+                                        <div class="parameter-name">architecture</div>
+                                        <div class="parameter-type">Architecture</div>
+                                        <div class="parameter-description">
+                                            Target CPU architecture (x86_64, ARM64, or RISC-V)
+                                        </div>
+                                    </div>
+                                    <div class="parameter-item">
+                                        <div class="parameter-name">boot_info</div>
+                                        <div class="parameter-type">&BootInfo</div>
+                                        <div class="parameter-description">
+                                            Bootstrap information provided by the bootloader, including 
+                                            memory map and hardware configuration
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="api-returns">
+                                <h4>Returns</h4>
+                                <div class="return-list">
+                                    <div class="return-item">
+                                        <div class="return-type">KernelResult<()> </div>
+                                        <div class="return-description">
+                                            Ok(()) on success, or Err(KernelError) on failure
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="code-example">
+                                <div class="code-example-header">
+                                    <div class="code-example-title">Basic Kernel Initialization</div>
+                                    <div class="code-example-language">Rust</div>
+                                </div>
+                                <div class="code-block">
+                                    <pre><code class="language-rust">use multios_kernel::{kernel_init, Architecture, BootInfo};
+
+fn boot_kernel() -> Result<(), Box<dyn std::error::Error>> {
+    // Get boot information from bootloader
+    let boot_info = BootInfo::from_multiboot2()?;
+    
+    // Detect and set target architecture
+    let architecture = Architecture::detect()?;
+    
+    // Initialize the kernel
+    kernel_init(architecture, &boot_info)?;
+    
+    println!("Kernel initialized successfully on {:?}", architecture);
+    
+    Ok(())
+}</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="callout callout-note">
+                                <div class="callout-title">Note</div>
+                                <p>This function must be called exactly once during system startup. 
+                                Calling it multiple times will result in a panic.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- kernel_shutdown -->
+                    <div class="api-item">
+                        <div class="api-item-header" onclick="toggleApiItem(this)">
+                            <div class="api-signature">
+                                <span class="api-modifiers">pub fn</span>
+                                <span class="api-name">kernel_shutdown</span>
+                                () -> KernelResult<()>
+                            </div>
+                        </div>
+                        <div class="api-item-content">
+                            <div class="api-description">
+                                Gracefully shutdown the kernel and power off the system. This function 
+                                performs cleanup operations including flushing file systems, closing 
+                                network connections, and notifying any registered shutdown hooks.
+                            </div>
+
+                            <div class="api-returns">
+                                <h4>Returns</h4>
+                                <div class="return-list">
+                                    <div class="return-item">
+                                        <div class="return-type">KernelResult<()> </div>
+                                        <div class="return-description">
+                                            Ok(()) on successful shutdown initiation
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="code-example">
+                                <div class="code-example-header">
+                                    <div class="code-example-title">Graceful Shutdown</div>
+                                    <div class="code-example-language">Rust</div>
+                                </div>
+                                <div class="code-block">
+                                    <pre><code class="language-rust">use multios_kernel::kernel_shutdown;
+
+fn shutdown_system() -> Result<(), Box<dyn std::error::Error>> {
+    println!("Initiating system shutdown...");
+    
+    // Perform any application-specific cleanup
+    cleanup_application_state()?;
+    
+    // Shutdown kernel
+    kernel_shutdown()?;
+    
+    // This function may not return on some architectures
+    unreachable!()
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- kernel_reboot -->
+                    <div class="api-item">
+                        <div class="api-item-header" onclick="toggleApiItem(this)">
+                            <div class="api-signature">
+                                <span class="api-modifiers">pub fn</span>
+                                <span class="api-name">kernel_reboot</span>
+                                () -> KernelResult<!>
+                            </div>
+                        </div>
+                        <div class="api-item-content">
+                            <div class="api-description">
+                                Restart the kernel and reboot the system. This function performs a 
+                                complete system restart without powering off.
+                            </div>
+
+                            <div class="api-returns">
+                                <h4>Returns</h4>
+                                <div class="return-list">
+                                    <div class="return-item">
+                                        <div class="return-type">KernelResult<!> </div>
+                                        <div class="return-description">
+                                            Never returns on success; may return Err on failure
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="callout callout-warning">
+                                <div class="callout-title">Warning</div>
+                                <p>This function never returns on success and immediately reboots 
+                                the system. Ensure all critical data has been saved before calling.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Error Handling Section -->
+                <section id="error-handling" class="api-section">
+                    <h2>Error Handling</h2>
+                    <p>Kernel error types and handling mechanisms.</p>
+
+                    <!-- KernelError enum -->
+                    <div class="api-item">
+                        <div class="api-item-header" onclick="toggleApiItem(this)">
+                            <div class="api-signature">
+                                <span class="api-modifiers">pub enum</span>
+                                <span class="api-name">KernelError</span>
+                            </div>
+                        </div>
+                        <div class="api-item-content">
+                            <div class="api-description">
+                                Comprehensive error type for kernel operations. All kernel functions 
+                                return KernelError variants to indicate specific failure conditions.
+                            </div>
+
+                            <div class="api-parameters">
+                                <h4>Variants</h4>
+                                <div class="parameter-list">
+                                    <div class="parameter-item">
+                                        <div class="parameter-name">OutOfMemory</div>
+                                        <div class="parameter-description">
+                                            System has run out of available memory
+                                        </div>
+                                    </div>
+                                    <div class="parameter-item">
+                                        <div class="parameter-name">InvalidAddress</div>
+                                        <div class="parameter-description">
+                                            An invalid memory address was provided
+                                        </div>
+                                    </div>
+                                    <div class="parameter-item">
+                                        <div class="parameter-name">PageFault</div>
+                                        <div class="parameter-description">
+                                            Page fault occurred during memory access
+                                        </div>
+                                    </div>
+                                    <div class="parameter-item">
+                                        <div class="parameter-name">ProcessNotFound</div>
+                                        <div class="parameter-description">
+                                            Referenced process does not exist
+                                        </div>
+                                    </div>
+                                    <div class="parameter-item">
+                                        <div class="parameter-name">DeviceNotFound</div>
+                                        <div class="parameter-description">
+                                            Requested device is not available
+                                        </div>
+                                    </div>
+                                    <div class="parameter-item">
+                                        <div class="parameter-name">NotImplemented</div>
+                                        <div class="parameter-description">
+                                            Functionality is not yet implemented
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="code-example">
+                                <div class="code-example-header">
+                                    <div class="code-example-title">Error Handling Pattern</div>
+                                    <div class="code-example-language">Rust</div>
+                                </div>
+                                <div class="code-block">
+                                    <pre><code class="language-rust">use multios_kernel::{KernelError, KernelResult};
+
+fn handle_kernel_operations() -> KernelResult<()> {
+    match perform_risky_operation() {
+        Ok(()) => println!("Operation successful"),
+        Err(KernelError::OutOfMemory) => {
+            println!("Out of memory - attempting cleanup");
+            cleanup_memory()?;
+        },
+        Err(KernelError::DeviceNotFound) => {
+            println!("Device not found - using fallback");
+            use_fallback_device()?;
+        },
+        Err(e) => return Err(e),
+    }
+    Ok(())
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KernelResult type alias -->
+                    <div class="api-item">
+                        <div class="api-item-header" onclick="toggleApiItem(this)">
+                            <div class="api-signature">
+                                <span class="api-modifiers">pub type</span>
+                                <span class="api-name">KernelResult</span>
+                                <T> = Result<T, KernelError>
+                            </div>
+                        </div>
+                        <div class="api-item-content">
+                            <div class="api-description">
+                                Convenient type alias for kernel operation results, used throughout 
+                                the kernel API for consistent error handling.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- System Information Section -->
+                <section id="system-info" class="api-section">
+                    <h2>System Information</h2>
+                    <p>Functions to query system status and configuration.</p>
+
+                    <!-- get_uptime -->
+                    <div class="api-item">
+                        <div class="api-item-header" onclick="toggleApiItem(this)">
+                            <div class="api-signature">
+                                <span class="api-modifiers">pub fn</span>
+                                <span class="api-name">get_uptime</span>
+                                () -> Duration
+                            </div>
+                        </div>
+                        <div class="api-item-content">
+                            <div class="api-description">
+                                Get the current system uptime since kernel initialization.
+                            </div>
+
+                            <div class="api-returns">
+                                <h4>Returns</h4>
+                                <div class="return-list">
+                                    <div class="return-item">
+                                        <div class="return-type">Duration</div>
+                                        <div class="return-description">
+                                            System uptime as a Duration
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- get_kernel_version -->
+                    <div class="api-item">
+                        <div class="api-item-header" onclick="toggleApiItem(this)">
+                            <div class="api-signature">
+                                <span class="api-modifiers">pub fn</span>
+                                <span class="api-name">get_kernel_version</span>
+                                () -> KernelVersion
+                            </div>
+                        </div>
+                        <div class="api-item-content">
+                            <div class="api-description">
+                                Get detailed kernel version information including version number, 
+                                build date, and feature flags.
+                            </div>
+
+                            <div class="api-returns">
+                                <h4>Returns</h4>
+                                <div class="return-list">
+                                    <div class="return-item">
+                                        <div class="return-type">KernelVersion</div>
+                                        <div class="return-description">
+                                            Structure containing version information
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- is_safe_mode -->
+                    <div class="api-item">
+                        <div class="api-item-header" onclick="toggleApiItem(this)">
+                            <div class="api-signature">
+                                <span class="api-modifiers">pub fn</span>
+                                <span class="api-name">is_safe_mode</span>
+                                () -> bool
+                            </div>
+                        </div>
+                        <div class="api-item-content">
+                            <div class="api-description">
+                                Check if the kernel is running in safe mode, which typically 
+                                indicates reduced functionality for troubleshooting purposes.
+                            </div>
+
+                            <div class="api-returns">
+                                <h4>Returns</h4>
+                                <div class="return-list">
+                                    <div class="return-item">
+                                        <div class="return-type">bool</div>
+                                        <div class="return-description">
+                                            true if in safe mode, false otherwise
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Architecture Abstraction Section -->
+                <section id="arch-abstraction" class="api-section">
+                    <h2>Architecture Abstraction</h2>
+                    <p>Architecture-specific operations and abstractions.</p>
+
+                    <!-- Architecture enum -->
+                    <div class="api-item">
+                        <div class="api-item-header" onclick="toggleApiItem(this)">
+                            <div class="api-signature">
+                                <span class="api-modifiers">pub enum</span>
+                                <span class="api-name">Architecture</span>
+                            </div>
+                        </div>
+                        <div class="api-item-content">
+                            <div class="api-description">
+                                Supported CPU architectures in MultiOS.
+                            </div>
+
+                            <div class="api-parameters">
+                                <h4>Variants</h4>
+                                <div class="parameter-list">
+                                    <div class="parameter-item">
+                                        <div class="parameter-name">X86_64</div>
+                                        <div class="parameter-description">
+                                            Intel/AMD 64-bit x86 architecture
+                                        </div>
+                                    </div>
+                                    <div class="parameter-item">
+                                        <div class="parameter-name">AArch64</div>
+                                        <div class="parameter-description">
+                                            ARM 64-bit architecture (ARMv8-A)
+                                        </div>
+                                    </div>
+                                    <div class="parameter-item">
+                                        <div class="parameter-name">RiscV64</div>
+                                        <div class="parameter-description">
+                                            RISC-V 64-bit architecture (RV64GC)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="code-example">
+                                <div class="code-example-header">
+                                    <div class="code-example-title">Architecture Detection</div>
+                                    <div class="code-example-language">Rust</div>
+                                </div>
+                                <div class="code-block">
+                                    <pre><code class="language-rust">use multios_kernel::{Architecture, KernelResult};
+
+fn detect_and_use_architecture() -> KernelResult<()> {
+    let arch = Architecture::detect()?;
+    
+    match arch {
+        Architecture::X86_64 => {
+            println!("Running on x86_64");
+            setup_x86_64_features()?;
+        },
+        Architecture::AArch64 => {
+            println!("Running on ARM64");
+            setup_aarch64_features()?;
+        },
+        Architecture::RiscV64 => {
+            println!("Running on RISC-V");
+            setup_riscv_features()?;
+        },
+    }
+    
+    Ok(())
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Examples Section -->
+                <section id="examples" class="api-section">
+                    <h2>Complete Examples</h2>
+                    <p>Full examples demonstrating kernel API usage.</p>
+
+                    <!-- Complete Bootstrap Example -->
+                    <div class="api-item">
+                        <div class="api-item-header" onclick="toggleApiItem(this)">
+                            <div class="api-signature">
+                                Complete Bootstrap Example
+                            </div>
+                        </div>
+                        <div class="api-item-content">
+                            <div class="code-example">
+                                <div class="code-example-header">
+                                    <div class="code-example-title">Full Kernel Bootstrap</div>
+                                    <div class="code-example-language">Rust</div>
+                                    <div class="code-example-actions">
+                                        <button class="btn btn-sm btn-primary" onclick="runCode(this)">
+                                            <i class="fas fa-play"></i> Run
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="code-block">
+                                    <pre><code class="language-rust">use multios_kernel::{
+    kernel_init, kernel_shutdown, Architecture, BootInfo, 
+    KernelError, KernelResult
+};
+use std::time::Duration;
+
+#[multios_kernel::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Initialize kernel
+    println!("Starting MultiOS Kernel v{}", env!("CARGO_PKG_VERSION"));
+    
+    // Parse boot information
+    let boot_info = BootInfo::from_multiboot2()?;
+    println!("Boot info parsed successfully");
+    
+    // Detect architecture
+    let architecture = Architecture::detect()?;
+    println!("Detected architecture: {:?}", architecture);
+    
+    // Initialize kernel subsystems
+    kernel_init(architecture, &boot_info)?;
+    println!("Kernel initialized successfully");
+    
+    // Run main system loop
+    run_system_loop().await?;
+    
+    // Graceful shutdown
+    println!("Shutting down...");
+    kernel_shutdown()?;
+    
+    Ok(())
+}
+
+async fn run_system_loop() -> Result<(), Box<dyn std::error::Error>> {
+    let mut uptime_start = std::time::Instant::now();
+    let mut tick_count = 0u64;
+    
+    loop {
+        // Check for shutdown signal
+        if should_shutdown() {
+            break;
+        }
+        
+        // System tick processing
+        process_system_tick(tick_count)?;
+        tick_count = tick_count.wrapping_add(1);
+        
+        // Print status every 1000 ticks
+        if tick_count % 1000 == 0 {
+            let uptime = uptime_start.elapsed();
+            let cpu_usage = get_cpu_usage();
+            let memory_info = get_memory_info()?;
+            
+            println!(
+                "System Status - Uptime: {:?}, CPU: {:.1}%, Memory: {}/{}",
+                uptime,
+                cpu_usage,
+                memory_info.used,
+                memory_info.total
+            );
+        }
+        
+        // Sleep for 1ms
+        tokio::time::sleep(Duration::from_millis(1)).await;
+    }
+    
+    Ok(())
+}
+
+fn process_system_tick(tick: u64) -> Result<(), KernelError> {
+    // Process scheduled tasks
+    process_scheduled_tasks(tick)?;
+    
+    // Update system timers
+    update_system_timers(tick)?;
+    
+    // Check for hardware events
+    check_hardware_events()?;
+    
+    Ok(())
+}
+
+fn should_shutdown() -> bool {
+    // Check for shutdown conditions
+    // This would be implemented based on system requirements
+    false
+}
+
+fn get_cpu_usage() -> f32 {
+    // Calculate CPU usage percentage
+    // This is a simplified example
+    25.0
+}
+
+fn get_memory_info() -> Result<MemoryInfo, KernelError> {
+    // Get memory usage information
+    Ok(MemoryInfo {
+        total: "8GB".to_string(),
+        used: "2GB".to_string(),
+        free: "6GB".to_string(),
+    })
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Architecture-Specific Example -->
+                    <div class="api-item">
+                        <div class="api-item-header" onclick="toggleApiItem(this)">
+                            <div class="api-signature">
+                                Architecture-Specific Initialization
+                            </div>
+                        </div>
+                        <div class="api-item-content">
+                            <div class="code-example">
+                                <div class="code-example-header">
+                                    <div class="code-example-title">Multi-Architecture Setup</div>
+                                    <div class="code-example-language">Rust</div>
+                                    <div class="code-example-actions">
+                                        <button class="btn btn-sm btn-primary" onclick="runCode(this)">
+                                            <i class="fas fa-play"></i> Run
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="code-block">
+                                    <pre><code class="language-rust">use multios_kernel::{
+    Architecture, KernelResult, CpuInfo, MemoryInfo
+};
+
+fn setup_architecture_specific() -> KernelResult<()> {
+    let arch = Architecture::detect()?;
+    
+    match arch {
+        Architecture::X86_64 => setup_x86_64(),
+        Architecture::AArch64 => setup_aarch64(),
+        Architecture::RiscV64 => setup_riscv64(),
+    }
+}
+
+fn setup_x86_64() -> KernelResult<()> {
+    let cpu_info = CpuInfo::x86_64()?;
+    
+    // Enable SSE and AVX if available
+    if cpu_info.has_sse() {
+        enable_sse()?;
+        println!("SSE enabled");
+    }
+    
+    if cpu_info.has_avx() {
+        enable_avx()?;
+        println!("AVX enabled");
+    }
+    
+    // Setup x86_64 specific interrupt handling
+    setup_x86_interrupts()?;
+    
+    Ok(())
+}
+
+fn setup_aarch64() -> KernelResult<()> {
+    let cpu_info = CpuInfo::aarch64()?;
+    
+    // Enable NEON and crypto extensions
+    if cpu_info.has_neon() {
+        enable_neon()?;
+        println!("NEON enabled");
+    }
+    
+    if cpu_info.has_crypto_extensions() {
+        enable_crypto_extensions()?;
+        println!("Crypto extensions enabled");
+    }
+    
+    // Setup ARM64 specific features
+    setup_aarch64_features()?;
+    
+    Ok(())
+}
+
+fn setup_riscv64() -> KernelResult<()> {
+    let cpu_info = CpuInfo::riscv64()?;
+    
+    // Check for required extensions
+    if !cpu_info.has_extension('m') {
+        return Err(KernelError::NotImplemented);
+    }
+    
+    if !cpu_info.has_extension('a') {
+        return Err(KernelError::NotImplemented);
+    }
+    
+    // Enable floating point unit
+    if cpu_info.has_extension('f') {
+        enable_riscv_fpu()?;
+        println!("RISC-V FPU enabled");
+    }
+    
+    Ok(())
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- See Also -->
+                <section class="api-section">
+                    <h2>See Also</h2>
+                    <div class="see-also">
+                        <ul>
+                            <li><a href="memory.html">Memory Management API</a></li>
+                            <li><a href="process.html">Process Management API</a></li>
+                            <li><a href="syscall.html">System Call Interface</a></li>
+                            <li><a href="../tutorials/beginner/kernel-basics.html">Kernel Basics Tutorial</a></li>
+                            <li><a href="../examples/advanced/kernel-development.html">Advanced Kernel Development</a></li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/search.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/interactive.js"></script>
+    
+    <script>
+        function toggleApiItem(header) {
+            const item = header.parentElement;
+            const isExpanded = item.classList.contains('expanded');
+            
+            if (isExpanded) {
+                item.classList.remove('expanded');
+            } else {
+                item.classList.add('expanded');
+            }
+        }
+        
+        function runCode(button) {
+            // Implementation would run the code example
+            window.interactiveComponents?.executeCode('rust', button.closest('.code-block').querySelector('code').textContent);
+        }
+    </script>
+</body>
+</html>

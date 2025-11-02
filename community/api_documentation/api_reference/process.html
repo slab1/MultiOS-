@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Management API - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar">
+            <div class="nav-content">
+                <div class="nav-section">
+                    <h3>API Reference</h3>
+                    <ul>
+                        <li><a href="kernel.html" class="nav-link">Kernel API</a></li>
+                        <li><a href="memory.html" class="nav-link">Memory Management</a></li>
+                        <li><a href="process.html" class="nav-link active">Process Management</a></li>
+                        <li><a href="filesystem.html" class="nav-link">File System</a></li>
+                        <li><a href="networking.html" class="nav-link">Network</a></li>
+                        <li><a href="drivers.html" class="nav-link">Driver API</a></li>
+                        <li><a href="gui.html" class="nav-link">GUI Framework</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Tutorials</h3>
+                    <ul>
+                        <li><a href="../tutorials/beginner/index.html" class="nav-link">Beginner</a></li>
+                        <li><a href="../tutorials/intermediate/index.html" class="nav-link">Intermediate</a></li>
+                        <li><a href="../tutorials/advanced/index.html" class="nav-link">Advanced</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Guides</h3>
+                    <ul>
+                        <li><a href="../guides/integration/rust.html" class="nav-link">Rust Integration</a></li>
+                        <li><a href="../guides/integration/c.html" class="nav-link">C Integration</a></li>
+                        <li><a href="../guides/integration/python.html" class="nav-link">Python Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="content-header">
+                    <h1>Process Management API</h1>
+                    <p class="lead">Create, manage, and monitor processes in MultiOS</p>
+                    <div class="content-meta">
+                        <span class="badge badge-version">v1.0</span>
+                        <span class="badge badge-module">process</span>
+                        <span class="badge badge-stability">Stable</span>
+                    </div>
+                </div>
+
+                <!-- Quick Start Section -->
+                <section class="content-section">
+                    <h2>Quick Start</h2>
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>Create and Manage a Process</h4>
+                                <div class="code-actions">
+                                    <button class="btn btn-sm btn-secondary run-example" data-example="process-basic">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary copy-code" data-code="process-basic">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                            </div>
+                            <pre><code class="language-rust">use multi::process::{Process, ProcessManager};
+
+// Create a new process
+let mut process_manager = ProcessManager::new();
+let mut child_process = process_manager.create_process(
+    "hello_world",
+    "./target/debug/hello_world",
+    ProcessPriority::Normal
+)?;
+
+// Wait for process to complete
+let exit_status = child_process.wait()?;
+
+// Display results
+println!("Process '{}' exited with status: {}", child_process.name(), exit_status);
+println!("Runtime: {}ms", child_process.runtime_ms());</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Process Creation -->
+                <section class="content-section">
+                    <h2>Process Creation</h2>
+                    <p>MultiOS provides flexible process creation with support for different execution modes and configurations.</p>
+                    
+                    <div class="api-section">
+                        <h3>create_process()</h3>
+                        <div class="api-description">
+                            <p>Create a new process with specified configuration.</p>
+                        </div>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Create Process with Options</h4>
+                                </div>
+                                <pre><code class="language-rust">// Function signature
+fn create_process(
+    &mut self, 
+    name: &str, 
+    path: &str, 
+    priority: ProcessPriority
+) -> Result&lt;Process, ProcessError&gt;
+
+// Usage example with full configuration
+use multi::process::{ProcessConfig, ProcessManager, ProcessPriority};
+
+let mut pm = ProcessManager::new();
+
+let config = ProcessConfig::builder()
+    .name("worker_process")
+    .executable("/usr/bin/worker")
+    .priority(ProcessPriority::High)
+    .stack_size(8 * 1024 * 1024) // 8MB
+    .memory_limit(512 * 1024 * 1024) // 512MB
+    .working_directory("/app/workers")
+    .environment(vec![
+        ("RUST_LOG".to_string(), "info".to_string()),
+        ("WORKER_ID".to_string(), "001".to_string())
+    ])
+    .build()?;
+
+let mut process = pm.create_process_with_config(config)?;</code></pre>
+                            </div>
+                        </div>
+                        <div class="parameters">
+                            <h4>Parameters</h4>
+                            <table class="api-table">
+                                <thead>
+                                    <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>name</td><td>&str</td><td>Process identifier name</td></tr>
+                                    <tr><td>path</td><td>&str</td><td>Path to executable file</td></tr>
+                                    <tr><td>priority</td><td>ProcessPriority</td><td>Process scheduling priority</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>Fork Process</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Fork Current Process</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::process::{fork_process, ForkConfig};
+
+// Fork the current process
+let child_pid = fork_process(ForkConfig::default())?;
+
+if child_pid == 0 {
+    // Child process
+    println!("I'm the child process!");
+    // Child-specific code here
+    std::process::exit(0);
+} else {
+    // Parent process
+    println!("Child process spawned with PID: {}", child_pid);
+    
+    // Wait for child to complete
+    let exit_status = wait_for_process(child_pid)?;
+    println!("Child exited with status: {}", exit_status);
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Process Control -->
+                <section class="content-section">
+                    <h2>Process Control</h2>
+                    <p>Control process execution with pause, resume, and termination operations.</p>
+                    
+                    <div class="api-section">
+                        <h3>Process Lifecycle Management</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Control Process Execution</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::process::{ProcessManager, ProcessState};
+
+let mut pm = ProcessManager::new();
+let mut process = pm.create_process("long_task", "./long_running_task", ProcessPriority::Normal)?;
+
+// Start the process
+process.start()?;
+
+// Monitor process state
+while process.state() != ProcessState::Completed {
+    match process.state() {
+        ProcessState::Running => {
+            println!("Process is running...");
+            std::thread::sleep(Duration::from_millis(100));
+        }
+        ProcessState::Paused => {
+            println!("Process is paused, resuming...");
+            process.resume()?;
+        }
+        ProcessState::Terminated => {
+            println!("Process was terminated");
+            break;
+        }
+        _ => {}
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>Signal Handling</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Send Signals to Process</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::process::{ProcessSignal, send_signal};
+
+// Send different signals to a process
+send_signal(target_pid, ProcessSignal::Suspend)?;
+send_signal(target_pid, ProcessSignal::Resume)?;
+send_signal(target_pid, ProcessSignal::Terminate)?;
+
+// Graceful shutdown
+send_signal(target_pid, ProcessSignal::Interrupt)?;
+
+// Force termination (last resort)
+send_signal(target_pid, ProcessSignal::Kill)?;</code></pre>
+                            </div>
+                        </div>
+                        <div class="parameters">
+                            <h4>Process Signals</h4>
+                            <table class="api-table">
+                                <thead>
+                                    <tr><th>Signal</th><th>Value</th><th>Description</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Interrupt</td><td>SIGINT</td><td>Interrupt signal (Ctrl+C)</td></tr>
+                                    <tr><td>Terminate</td><td>SIGTERM</td><td>Graceful termination request</td></tr>
+                                    <tr><td>Kill</td><td>SIGKILL</td><td>Force termination (uncatchable)</td></tr>
+                                    <tr><td>Suspend</td><td>SIGSTOP</td><td>Suspend process execution</td></tr>
+                                    <tr><td>Resume</td><td>SIGCONT</td><td>Resume suspended process</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Inter-Process Communication -->
+                <section class="content-section">
+                    <h2>Inter-Process Communication</h2>
+                    <p>Enable communication between processes using pipes, shared memory, and message queues.</p>
+                    
+                    <div class="api-section">
+                        <h3>Anonymous Pipes</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Create Communication Pipe</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::process::{create_pipe, Pipe};
+
+// Create an anonymous pipe for IPC
+let (read_end, write_end) = create_pipe()?;
+
+// Spawn child process with pipe
+let mut child = pm.create_process("child", "./child_program", ProcessPriority::Normal)?;
+
+// Child inherits pipe ends
+child.set_pipe_inherits(true);
+
+// Send data through pipe
+write_end.write_all(b"Hello from parent!")?;
+
+// Read response from child
+let mut response = String::new();
+read_end.read_to_string(&mut response)?;
+println!("Child response: {}", response);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>Shared Memory</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Create Shared Memory Region</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::process::{create_shared_memory, SharedMemory};
+
+// Create shared memory for IPC
+let mut shared_mem = create_shared_memory(4096, "shared_data")?;
+
+// Write data to shared memory
+shared_mem.write_at(0, b"Shared message from process 1")?;
+
+// Map shared memory in another process
+let mut other_mem = SharedMemory::attach("shared_data")?;
+
+// Read data from shared memory
+let mut data = vec![0u8; 1024];
+other_mem.read_at(0, &mut data)?;
+println!("Read from shared memory: {}", String::from_utf8_lossy(&data));</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Process Monitoring -->
+                <section class="content-section">
+                    <h2>Process Monitoring</h2>
+                    <p>Monitor process performance, resource usage, and status.</p>
+                    
+                    <div class="api-section">
+                        <h3>Process Statistics</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Monitor Process Resources</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::process::{ProcessStats, get_process_stats};
+
+let stats = get_process_stats(target_pid)?;
+
+println!("CPU Usage: {:.2}%", stats.cpu_usage);
+println!("Memory Usage: {:.2} MB", stats.memory_usage / (1024 * 1024));
+println!("Runtime: {} seconds", stats.runtime_seconds);
+println!("I/O Operations: {}", stats.io_operations);
+println!("Context Switches: {}", stats.context_switches);
+
+// Get thread information
+for thread in &stats.threads {
+    println!("Thread {}: CPU {:.2}%, State: {:?}", 
+             thread.id, thread.cpu_usage, thread.state);
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>Real-time Monitoring</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Continuous Process Monitoring</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::process::{ProcessMonitor, MonitoringConfig};
+
+// Set up process monitoring
+let mut monitor = ProcessMonitor::new(MonitoringConfig {
+    sample_interval: Duration::from_secs(1),
+    enable_cpu_tracking: true,
+    enable_memory_tracking: true,
+    alert_thresholds: AlertThresholds {
+        cpu_usage: 80.0,
+        memory_usage: 1024 * 1024 * 1024, // 1GB
+    },
+});
+
+// Register process for monitoring
+monitor.watch_process(target_pid)?;
+
+// Process monitoring events
+while let Some(event) = monitor.next_event() {
+    match event {
+        MonitoringEvent::CpuSpike(pid, usage) => {
+            println!("High CPU usage on process {}: {:.2}%", pid, usage);
+        }
+        MonitoringEvent::MemoryLeak(pid, growth) => {
+            println!("Memory leak detected in process {}: {} bytes", pid, growth);
+        }
+        MonitoringEvent::ProcessCrashed(pid) => {
+            println!("Process {} crashed!", pid);
+        }
+        _ => {}
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interactive Process Manager -->
+                <section class="content-section">
+                    <h2>Interactive Process Manager</h2>
+                    <div class="interactive-demo">
+                        <div class="demo-controls">
+                            <button class="btn btn-primary" id="spawn-process">
+                                <i class="fas fa-plus"></i> Spawn Process
+                            </button>
+                            <button class="btn btn-secondary" id="pause-process">
+                                <i class="fas fa-pause"></i> Pause Process
+                            </button>
+                            <button class="btn btn-secondary" id="resume-process">
+                                <i class="fas fa-play"></i> Resume Process
+                            </button>
+                            <button class="btn btn-warning" id="terminate-process">
+                                <i class="fas fa-stop"></i> Terminate Process
+                            </button>
+                        </div>
+                        <div class="demo-visualization" id="process-visualization">
+                            <div class="process-list" id="process-list"></div>
+                        </div>
+                        <div class="demo-stats" id="demo-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Active Processes:</span>
+                                <span class="stat-value" id="active-processes">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total CPU Usage:</span>
+                                <span class="stat-value" id="total-cpu">0%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total Memory:</span>
+                                <span class="stat-value" id="total-memory">0 MB</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Process Groups and Sessions -->
+                <section class="content-section">
+                    <h2>Process Groups and Sessions</h2>
+                    <p>Manage related processes using groups and sessions for organized control.</p>
+                    
+                    <div class="api-section">
+                        <h3>Process Groups</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Create Process Group</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::process::{ProcessGroup, create_process_group};
+
+// Create a process group
+let mut group = create_process_group("web_server")?;
+
+// Spawn processes in the group
+let mut workers = Vec::new();
+for i in 0..4 {
+    let mut worker = pm.create_process(
+        &format!("worker_{}", i),
+        "./worker",
+        ProcessPriority::Normal
+    )?;
+    group.add_process(&mut worker)?;
+    workers.push(worker);
+}
+
+// Control entire group
+group.suspend_all()?; // Suspend all workers
+group.resume_all()?;  // Resume all workers
+group.terminate_all()?; // Terminate all workers</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Error Handling -->
+                <section class="content-section">
+                    <h2>Error Handling</h2>
+                    <p>The process management API provides comprehensive error handling for all operations.</p>
+                    
+                    <div class="api-section">
+                        <h3>ProcessError Types</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Handle Process Errors</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::process::{ProcessError, ErrorType};
+
+fn handle_process_creation(path: &str) -> Result&lt;Process, String&gt; {
+    let mut pm = ProcessManager::new();
+    
+    match pm.create_process("test_process", path, ProcessPriority::Normal) {
+        Ok(process) => Ok(process),
+        Err(error) => {
+            match error.error_type {
+                ErrorType::ExecutableNotFound => {
+                    println!("Executable not found: {}", path);
+                    Err("Executable not found".to_string())
+                }
+                ErrorType::PermissionDenied => {
+                    println!("Permission denied to execute: {}", path);
+                    Err("Permission denied".to_string())
+                }
+                ErrorType::OutOfMemory => {
+                    println!("Not enough memory to create process");
+                    Err("Out of memory".to_string())
+                }
+                ErrorType::ProcessLimitExceeded => {
+                    println!("Process limit exceeded");
+                    Err("Too many processes".to_string())
+                }
+                _ => Err(format!("Process error: {}", error))
+            }
+        }
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>Best Practices</h2>
+                    <div class="best-practices">
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Resource Cleanup</h4>
+                            <p>Always properly terminate and clean up processes to prevent resource leaks.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Process Monitoring</h4>
+                            <p>Implement monitoring for long-running processes to detect issues early.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Error Handling</h4>
+                            <p>Handle process creation and management errors gracefully with appropriate fallbacks.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Process Groups</h4>
+                            <p>Use process groups for related processes to simplify management and cleanup.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/search.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/interactive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Process Management specific interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            let processes = [];
+            let nextProcessId = 1;
+            
+            function updateProcessVisualization() {
+                const container = document.getElementById('process-list');
+                container.innerHTML = '';
+                
+                processes.forEach(process => {
+                    const processElement = document.createElement('div');
+                    processElement.className = `process-item ${process.state.toLowerCase()}`;
+                    processElement.innerHTML = `
+                        <div class="process-header">
+                            <span class="process-name">${process.name}</span>
+                            <span class="process-state ${process.state.toLowerCase()}">${process.state}</span>
+                        </div>
+                        <div class="process-stats">
+                            <span class="stat">CPU: ${process.cpuUsage.toFixed(1)}%</span>
+                            <span class="stat">Memory: ${(process.memory / 1024 / 1024).toFixed(1)} MB</span>
+                            <span class="stat">PID: ${process.pid}</span>
+                        </div>
+                    `;
+                    container.appendChild(processElement);
+                });
+                
+                // Update summary statistics
+                document.getElementById('active-processes').textContent = processes.filter(p => p.state === 'Running').length;
+                document.getElementById('total-cpu').textContent = 
+                    processes.reduce((sum, p) => sum + p.cpuUsage, 0).toFixed(1) + '%';
+                document.getElementById('total-memory').textContent = 
+                    (processes.reduce((sum, p) => sum + p.memory, 0) / 1024 / 1024).toFixed(1) + ' MB';
+            }
+            
+            function spawnProcess() {
+                const process = {
+                    pid: nextProcessId++,
+                    name: `Process_${nextProcessId}`,
+                    state: 'Running',
+                    cpuUsage: Math.random() * 100,
+                    memory: Math.random() * 100 * 1024 * 1024 + 1024 * 1024
+                };
+                processes.push(process);
+                updateProcessVisualization();
+            }
+            
+            function pauseProcess() {
+                const runningProcess = processes.find(p => p.state === 'Running');
+                if (runningProcess) {
+                    runningProcess.state = 'Paused';
+                    updateProcessVisualization();
+                }
+            }
+            
+            function resumeProcess() {
+                const pausedProcess = processes.find(p => p.state === 'Paused');
+                if (pausedProcess) {
+                    pausedProcess.state = 'Running';
+                    updateProcessVisualization();
+                }
+            }
+            
+            function terminateProcess() {
+                const processIndex = processes.findIndex(p => p.state !== 'Terminated');
+                if (processIndex !== -1) {
+                    processes[processIndex].state = 'Terminated';
+                    updateProcessVisualization();
+                }
+            }
+            
+            // Update process statistics periodically
+            setInterval(() => {
+                processes.forEach(process => {
+                    if (process.state === 'Running') {
+                        process.cpuUsage = Math.max(0, Math.min(100, 
+                            process.cpuUsage + (Math.random() - 0.5) * 10));
+                        process.memory += Math.random() * 1024 * 1024 - 512 * 1024;
+                    }
+                });
+                updateProcessVisualization();
+            }, 1000);
+            
+            // Event listeners
+            document.getElementById('spawn-process').addEventListener('click', spawnProcess);
+            document.getElementById('pause-process').addEventListener('click', pauseProcess);
+            document.getElementById('resume-process').addEventListener('click', resumeProcess);
+            document.getElementById('terminate-process').addEventListener('click', terminateProcess);
+        });
+    </script>
+</body>
+</html>

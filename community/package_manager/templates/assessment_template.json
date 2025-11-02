@@ -1,0 +1,85 @@
+{
+  "name": "math-assessment-grade7",
+  "version": "1.2.0",
+  "description": "Comprehensive assessment package for 7th grade mathematics covering all major topics",
+  "author": "Assessment Team",
+  "email": "assessments@school.edu",
+  "type": "assessment",
+  "compatibility": "beginner",
+  "subjects": ["Mathematics"],
+  "grade_levels": ["Grade 7"],
+  "prerequisites": ["Basic arithmetic"],
+  "dependencies": {
+    "python-3.8+": ">=3.8",
+    "flask": ">=2.0.0",
+    "reportlab": ">=3.5.0"
+  },
+  "size": 73400320,
+  "checksum": "sha256-placeholder",
+  "created_at": "2025-11-03T05:34:19Z",
+  "updated_at": "2025-11-03T05:34:19Z",
+  "license": "Educational-Use-Only",
+  "homepage": "https://math-assessment.example.com",
+  "repository": "https://github.com/school/math-assessment-grade7",
+  "tags": ["mathematics", "assessment", "grade7", "testing", "evaluation"],
+  "files": [
+    "src/",
+    "tests/",
+    "docs/",
+    "assessments/",
+    "questions/",
+    "solutions/",
+    "reports/",
+    "README.md",
+    "LICENSE",
+    "requirements.txt"
+  ],
+  "scripts": {
+    "pre_install": "scripts/pre_install.sh",
+    "post_install": "scripts/post_install.sh",
+    "launch_assessment": "launch_assessment.py",
+    "generate_reports": "generate_reports.py"
+  },
+  "assessment_config": {
+    "total_questions": 50,
+    "time_limit_minutes": 90,
+    "question_types": [
+      "multiple_choice",
+      "short_answer",
+      "long_answer",
+      "numeric"
+    ],
+    "difficulty_levels": [
+      "easy",
+      "medium",
+      "hard"
+    ],
+    "topics_covered": [
+      "integers",
+      "fractions",
+      "decimals",
+      "percentages",
+      "basic_algebra",
+      "geometry",
+      "statistics"
+    ],
+    "scoring": {
+      "passing_score": 70,
+      "full_score": 100,
+      "partial_credit": true
+    }
+  },
+  "question_bank": {
+    "multiple_choice": 30,
+    "short_answer": 12,
+    "long_answer": 6,
+    "numeric": 2
+  },
+  "analytics": {
+    "track_time": true,
+    "track_attempts": true,
+    "generate_feedback": true,
+    "create_reports": true,
+    "export_data": true
+  }
+}

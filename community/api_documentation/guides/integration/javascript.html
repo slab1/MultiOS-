@@ -1,0 +1,2527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Integration Guide - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar">
+            <div class="nav-content">
+                <div class="nav-section">
+                    <h3>API Reference</h3>
+                    <ul>
+                        <li><a href="../../api_reference/kernel.html" class="nav-link">Kernel API</a></li>
+                        <li><a href="../../api_reference/memory.html" class="nav-link">Memory Management</a></li>
+                        <li><a href="../../api_reference/process.html" class="nav-link">Process Management</a></li>
+                        <li><a href="../../api_reference/filesystem.html" class="nav-link">File System</a></li>
+                        <li><a href="../../api_reference/networking.html" class="nav-link">Network</a></li>
+                        <li><a href="../../api_reference/drivers.html" class="nav-link">Driver API</a></li>
+                        <li><a href="../../api_reference/gui.html" class="nav-link">GUI Framework</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Tutorials</h3>
+                    <ul>
+                        <li><a href="../../tutorials/beginner/index.html" class="nav-link">Beginner</a></li>
+                        <li><a href="../../tutorials/intermediate/index.html" class="nav-link">Intermediate</a></li>
+                        <li><a href="../../tutorials/advanced/index.html" class="nav-link">Advanced</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Guides</h3>
+                    <ul>
+                        <li><a href="rust.html" class="nav-link">Rust Integration</a></li>
+                        <li><a href="c.html" class="nav-link">C Integration</a></li>
+                        <li><a href="python.html" class="nav-link">Python Integration</a></li>
+                        <li><a href="javascript.html" class="nav-link active">JavaScript Integration</a></li>
+                        <li><a href="cpp.html" class="nav-link">C++ Integration</a></li>
+                        <li><a href="go.html" class="nav-link">Go Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="content-header">
+                    <h1>JavaScript Integration Guide</h1>
+                    <p class="lead">Complete guide for building MultiOS applications in JavaScript</p>
+                    <div class="content-meta">
+                        <span class="badge badge-language">JavaScript</span>
+                        <span class="badge badge-difficulty">All Levels</span>
+                        <span class="badge badge-ecosystem">Scripting</span>
+                    </div>
+                </div>
+
+                <!-- Language Overview -->
+                <section class="content-section">
+                    <h2>Why JavaScript with MultiOS?</h2>
+                    <p>JavaScript offers dynamic, event-driven programming with excellent GUI capabilities and real-time features. Perfect for web-like applications, interactive interfaces, and rapid prototyping on MultiOS.</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-desktop"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Rich GUI</h3>
+                                <p>Create modern, responsive user interfaces with JavaScript and DOM-like APIs.</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Event-Driven</h3>
+                                <p>Natural event-driven programming model perfect for GUI and network applications.</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Dynamic Language</h3>
+                                <p>Flexible, dynamic language for rapid development and prototyping.</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Web Technologies</h3>
+                                <p>Leverage web technologies and libraries for cross-platform development.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Installation -->
+                <section class="content-section">
+                    <h2>Installation and Setup</h2>
+                    <p>Set up JavaScript development for MultiOS applications:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Installing JavaScript Runtime</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash"># Install MultiOS JavaScript runtime
+cargo install multios-js-runtime
+
+# Install development tools
+npm install -g @multios/js-tools
+
+# Create new JavaScript project
+multios-js new my_app
+cd my_app
+
+# Install dependencies
+npm install</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Project Structure</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash">my_app/
+├── package.json              # JavaScript configuration
+├── Cargo.toml                # Rust dependencies
+├── src/
+│   └── main.rs               # Rust entry point
+├── js/
+│   ├── index.js              # Main JavaScript file
+│   ├── app/
+│   │   ├── ui/               # UI components
+│   │   ├── network/          # Network logic
+│   │   └── utils/            # Utilities
+│   └── assets/
+│       ├── css/              # Styles
+│       └── images/
+└── README.md</code></pre>
+                    </div>
+                </section>
+
+                <!-- Basic Usage -->
+                <section class="content-section">
+                    <h2>Basic JavaScript Application</h2>
+                    <p>Create a simple JavaScript application for MultiOS:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>index.js</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-javascript">/**
+ * Simple MultiOS JavaScript Application
+ */
+import { MultiOS, GUI, FileSystem, Process } from '@multios/core';
+
+class SimpleApp {
+    constructor() {
+        this.appName = 'SimpleApp';
+        this.window = null;
+        this.gui = new GUI();
+        
+        console.log(`Starting ${this.appName}`);
+    }
+
+    async initialize() {
+        try {
+            // Initialize application
+            await MultiOS.init();
+            
+            // Create main window
+            this.window = await this.gui.createWindow({
+                title: this.appName,
+                width: 800,
+                height: 600,
+                resizable: true
+            });
+            
+            // Setup UI
+            await this.setupUI();
+            
+            // Start event loop
+            await this.startEventLoop();
+            
+        } catch (error) {
+            console.error('Failed to initialize app:', error);
+            throw error;
+        }
+    }
+
+    async setupUI() {
+        // Create UI components
+        const titleLabel = await this.window.createLabel({
+            text: 'Hello, MultiOS JavaScript!',
+            fontSize: 24,
+            fontWeight: 'bold',
+            color: '#333333'
+        });
+
+        const button = await this.window.createButton({
+            text: 'Click Me',
+            width: 120,
+            height: 40,
+            onClick: () => this.onButtonClick()
+        });
+
+        const statusLabel = await this.window.createLabel({
+            text: 'Ready',
+            color: '#666666'
+        });
+
+        // Layout components
+        this.window.setLayout({
+            type: 'vbox',
+            spacing: 20,
+            padding: 20,
+            children: [
+                { widget: titleLabel, alignment: 'center' },
+                { widget: button, alignment: 'center' },
+                { widget: statusLabel, alignment: 'center' }
+            ]
+        });
+
+        // Store reference for updates
+        this.statusLabel = statusLabel;
+    }
+
+    onButtonClick() {
+        console.log('Button clicked!');
+        
+        // Update status
+        this.statusLabel.setText('Button was clicked!');
+        this.statusLabel.setColor('#0066cc');
+        
+        // Show notification
+        MultiOS.showNotification({
+            title: 'SimpleApp',
+            message: 'Button clicked successfully!',
+            type: 'info'
+        });
+        
+        // Create a simple file
+        this.createLogEntry();
+    }
+
+    async createLogEntry() {
+        try {
+            const fs = new FileSystem();
+            const logPath = '/tmp/simple_app.log';
+            
+            const timestamp = new Date().toISOString();
+            const logEntry = `[${timestamp}] Button clicked\n`;
+            
+            await fs.appendFile(logPath, logEntry);
+            console.log('Log entry created');
+            
+        } catch (error) {
+            console.error('Failed to create log entry:', error);
+        }
+    }
+
+    async startEventLoop() {
+        // Show window
+        await this.window.show();
+        
+        // Event loop
+        while (this.window.isVisible()) {
+            await this.processEvents();
+            await new Promise(resolve => setTimeout(resolve, 16)); // ~60fps
+        }
+    }
+
+    async processEvents() {
+        // Process any pending events
+        const events = await MultiOS.getEventQueue();
+        
+        for (const event of events) {
+            await this.handleEvent(event);
+        }
+    }
+
+    async handleEvent(event) {
+        switch (event.type) {
+            case 'window_closed':
+                console.log('Window closed');
+                this.window.hide();
+                break;
+                
+            case 'file_system_changed':
+                console.log('File system changed:', event.path);
+                break;
+                
+            default:
+                console.log('Unhandled event:', event.type);
+        }
+    }
+
+    async shutdown() {
+        console.log('Shutting down application');
+        
+        if (this.window) {
+            await this.window.hide();
+        }
+        
+        await MultiOS.shutdown();
+    }
+}
+
+// Main application entry
+async function main() {
+    const app = new SimpleApp();
+    
+    try {
+        await app.initialize();
+    } catch (error) {
+        console.error('Application failed:', error);
+        process.exit(1);
+    }
+    
+    // Handle graceful shutdown
+    process.on('SIGINT', async () => {
+        console.log('Received SIGINT, shutting down...');
+        await app.shutdown();
+        process.exit(0);
+    });
+}
+
+// Start application
+if (import.meta.url === `file://${process.argv[1]}`) {
+    main().catch(error => {
+        console.error('Fatal error:', error);
+        process.exit(1);
+    });
+}
+
+export { SimpleApp };</code></pre>
+                    </div>
+                </section>
+
+                <!-- File System Operations -->
+                <section class="content-section">
+                    <h2>File System Operations</h2>
+                    <p>Work with the MultiOS file system from JavaScript:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>File System Example</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-javascript">import { FileSystem, Path } from '@multios/core';
+
+class FileManager {
+    constructor() {
+        this.fs = new FileSystem();
+        this.currentDir = null;
+    }
+
+    async initialize() {
+        try {
+            // Get current directory
+            this.currentDir = await this.fs.getCurrentDirectory();
+            console.log(`Current directory: ${this.currentDir}`);
+            
+            // Create application directory
+            this.appDir = new Path('/apps/file_manager');
+            await this.ensureDirectory(this.appDir);
+            
+        } catch (error) {
+            console.error('FileManager initialization failed:', error);
+            throw error;
+        }
+    }
+
+    async ensureDirectory(path) {
+        try {
+            await this.fs.createDirectory(path, { recursive: true });
+            console.log(`Directory created/verified: ${path}`);
+        } catch (error) {
+            if (error.code !== 'EEXIST') {
+                throw error;
+            }
+        }
+    }
+
+    async createSampleFiles() {
+        try {
+            const files = [
+                {
+                    name: 'config.json',
+                    content: JSON.stringify({
+                        appName: 'FileManager',
+                        version: '1.0.0',
+                        theme: 'dark',
+                        settings: {
+                            autoSave: true,
+                            showHiddenFiles: false
+                        }
+                    }, null, 2)
+                },
+                {
+                    name: 'readme.txt',
+                    content: 'File Manager Application\n\nThis is a sample text file.\nIt contains some information about the application.'
+                },
+                {
+                    name: 'data.csv',
+                    content: 'name,age,city\nJohn,25,New York\nJane,30,London\nBob,35,Tokyo'
+                }
+            ];
+
+            for (const file of files) {
+                const filePath = this.appDir.join(file.name);
+                await this.fs.writeFile(filePath, file.content);
+                console.log(`Created file: ${file.name}`);
+            }
+
+        } catch (error) {
+            console.error('Failed to create sample files:', error);
+        }
+    }
+
+    async readAndProcessFiles() {
+        try {
+            const files = await this.fs.readDirectory(this.appDir);
+            
+            for (const file of files) {
+                if (file.isFile()) {
+                    await this.processFile(file);
+                }
+            }
+            
+        } catch (error) {
+            console.error('Failed to read files:', error);
+        }
+    }
+
+    async processFile(file) {
+        try {
+            console.log(`Processing file: ${file.name}`);
+            
+            const filePath = this.appDir.join(file.name);
+            const content = await this.fs.readFile(filePath);
+            
+            // Process based on file extension
+            if (file.name.endsWith('.json')) {
+                await this.processJSON(file.name, content);
+            } else if (file.name.endsWith('.csv')) {
+                await this.processCSV(file.name, content);
+            } else if (file.name.endsWith('.txt')) {
+                await this.processText(file.name, content);
+            }
+            
+        } catch (error) {
+            console.error(`Failed to process file ${file.name}:`, error);
+        }
+    }
+
+    async processJSON(filename, content) {
+        try {
+            const data = JSON.parse(content);
+            console.log(`JSON data from ${filename}:`, data);
+            
+            // Create processed version
+            const outputPath = this.appDir.join(`processed_${filename}`);
+            const processedData = {
+                ...data,
+                processedAt: new Date().toISOString(),
+                fileSize: content.length
+            };
+            
+            await this.fs.writeFile(outputPath, JSON.stringify(processedData, null, 2));
+            console.log(`Created processed JSON: ${outputPath}`);
+            
+        } catch (error) {
+            console.error(`JSON processing error:`, error);
+        }
+    }
+
+    async processCSV(filename, content) {
+        try {
+            const lines = content.trim().split('\n');
+            const headers = lines[0].split(',');
+            const data = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',');
+                const row = {};
+                headers.forEach((header, index) => {
+                    row[header] = values[index];
+                });
+                data.push(row);
+            }
+            
+            console.log(`CSV data from ${filename}:`, data);
+            
+            // Create summary
+            const summaryPath = this.appDir.join(`summary_${filename.replace('.csv', '.txt')}`);
+            const summary = `CSV Summary for ${filename}\n` +
+                          `Total rows: ${data.length}\n` +
+                          `Headers: ${headers.join(', ')}\n` +
+                          `Sample: ${JSON.stringify(data[0], null, 2)}`;
+            
+            await this.fs.writeFile(summaryPath, summary);
+            console.log(`Created CSV summary: ${summaryPath}`);
+            
+        } catch (error) {
+            console.error(`CSV processing error:`, error);
+        }
+    }
+
+    async processText(filename, content) {
+        try {
+            const lines = content.split('\n');
+            const wordCount = content.split(/\s+/).length;
+            const charCount = content.length;
+            
+            console.log(`Text analysis for ${filename}:`);
+            console.log(`  Lines: ${lines.length}`);
+            console.log(`  Words: ${wordCount}`);
+            console.log(`  Characters: ${charCount}`);
+            
+            // Create analysis
+            const analysisPath = this.appDir.join(`analysis_${filename.replace('.txt', '.json')}`);
+            const analysis = {
+                filename,
+                lineCount: lines.length,
+                wordCount,
+                characterCount: charCount,
+                processedAt: new Date().toISOString()
+            };
+            
+            await this.fs.writeFile(analysisPath, JSON.stringify(analysis, null, 2));
+            console.log(`Created text analysis: ${analysisPath}`);
+            
+        } catch (error) {
+            console.error(`Text processing error:`, error);
+        }
+    }
+
+    async copyAndOrganizeFiles() {
+        try {
+            // Create organized directories
+            const jsonDir = this.appDir.join('json_files');
+            const textDir = this.appDir.join('text_files');
+            const dataDir = this.appDir.join('data_files');
+            
+            await this.ensureDirectory(jsonDir);
+            await this.ensureDirectory(textDir);
+            await this.ensureDirectory(dataDir);
+            
+            const files = await this.fs.readDirectory(this.appDir);
+            
+            for (const file of files) {
+                if (file.isFile() && !file.name.startsWith('.')) {
+                    const sourcePath = this.appDir.join(file.name);
+                    
+                    let destDir;
+                    if (file.name.endsWith('.json')) {
+                        destDir = jsonDir;
+                    } else if (file.name.endsWith('.txt')) {
+                        destDir = textDir;
+                    } else if (file.name.endsWith('.csv')) {
+                        destDir = dataDir;
+                    } else {
+                        continue; // Skip other file types
+                    }
+                    
+                    const destPath = destDir.join(file.name);
+                    await this.fs.copyFile(sourcePath, destPath);
+                    console.log(`Copied ${file.name} to ${destDir}`);
+                }
+            }
+            
+        } catch (error) {
+            console.error('File organization failed:', error);
+        }
+    }
+
+    async cleanup() {
+        try {
+            console.log('Cleaning up...');
+            
+            // List final directory structure
+            await this.listDirectoryTree(this.appDir);
+            
+        } catch (error) {
+            console.error('Cleanup failed:', error);
+        }
+    }
+
+    async listDirectoryTree(dir, indent = '') {
+        try {
+            const items = await this.fs.readDirectory(dir);
+            
+            console.log(`${indent}${dir}:`, items.length, 'items');
+            
+            for (const item of items) {
+                if (item.isDirectory()) {
+                    console.log(`${indent}  [DIR]  ${item.name}`);
+                    await this.listDirectoryTree(dir.join(item.name), indent + '    ');
+                } else {
+                    const stats = await this.fs.getFileStats(dir.join(item.name));
+                    console.log(`${indent}  [FILE] ${item.name} (${stats.size} bytes)`);
+                }
+            }
+            
+        } catch (error) {
+            console.error('Directory tree listing failed:', error);
+        }
+    }
+
+    async run() {
+        try {
+            await this.initialize();
+            await this.createSampleFiles();
+            await this.readAndProcessFiles();
+            await this.copyAndOrganizeFiles();
+            await this.cleanup();
+            
+            console.log('FileManager demo completed successfully');
+            
+        } catch (error) {
+            console.error('FileManager failed:', error);
+            throw error;
+        }
+    }
+}
+
+// Usage
+async function main() {
+    const fileManager = new FileManager();
+    await fileManager.run();
+}
+
+// Run if this is the main module
+if (import.meta.url === `file://${process.argv[1]}`) {
+    main().catch(error => {
+        console.error('Fatal error:', error);
+        process.exit(1);
+    });
+}
+
+export { FileManager };</code></pre>
+                    </div>
+                </section>
+
+                <!-- Process Management -->
+                <section class="content-section">
+                    <h2>Process Management</h2>
+                    <p>Create and manage processes from JavaScript:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Process Management Example</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-javascript">import { Process, ProcessManager } from '@multios/core';
+
+class ProcessManagerDemo {
+    constructor() {
+        this.processManager = new ProcessManager();
+        this.workers = new Map();
+        this.isRunning = false;
+    }
+
+    async initialize() {
+        console.log('Process Manager Demo initializing...');
+        
+        // Set up process event handlers
+        Process.onExit((process, exitCode) => {
+            console.log(`Process ${process.pid} (${process.name}) exited with code ${exitCode}`);
+            this.workers.delete(process.pid);
+        });
+
+        Process.onCrash((process, error) => {
+            console.error(`Process ${process.pid} (${process.name}) crashed:`, error);
+            this.workers.delete(process.pid);
+        });
+    }
+
+    async startWorker(workerId) {
+        try {
+            console.log(`Starting worker ${workerId}...`);
+
+            // Create worker process
+            const worker = await this.processManager.spawn({
+                command: 'node',
+                args: ['worker.js', workerId.toString()],
+                name: `Worker-${workerId}`,
+                env: {
+                    WORKER_ID: workerId.toString(),
+                    LOG_LEVEL: 'info'
+                },
+                stdio: 'pipe'
+            });
+
+            // Store worker reference
+            this.workers.set(worker.pid, worker);
+            
+            // Set up I/O handlers
+            worker.stdout.on('data', (data) => {
+                console.log(`Worker ${workerId} [${worker.pid}]: ${data.toString().trim()}`);
+            });
+
+            worker.stderr.on('data', (data) => {
+                console.error(`Worker ${workerId} [${worker.pid}] ERROR: ${data.toString().trim()}`);
+            });
+
+            // Monitor worker status
+            setInterval(async () => {
+                if (this.workers.has(worker.pid)) {
+                    const stats = await worker.getStats();
+                    console.log(`Worker ${workerId} status: CPU ${stats.cpuUsage}%, Memory ${stats.memoryUsage}MB`);
+                }
+            }, 5000);
+
+            console.log(`Worker ${workerId} started with PID: ${worker.pid}`);
+            return worker;
+
+        } catch (error) {
+            console.error(`Failed to start worker ${workerId}:`, error);
+            throw error;
+        }
+    }
+
+    async startMultipleWorkers(count = 3) {
+        console.log(`Starting ${count} workers...`);
+        
+        const workers = [];
+        for (let i = 1; i <= count; i++) {
+            try {
+                const worker = await this.startWorker(i);
+                workers.push(worker);
+                
+                // Stagger worker startup
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+            } catch (error) {
+                console.error(`Failed to start worker ${i}:`, error);
+            }
+        }
+        
+        console.log(`Started ${workers.length} workers`);
+        return workers;
+    }
+
+    async monitorWorkers() {
+        console.log('Monitoring all workers...');
+        
+        const checkInterval = setInterval(async () => {
+            if (!this.isRunning || this.workers.size === 0) {
+                clearInterval(checkInterval);
+                return;
+            }
+
+            console.log(`\n--- Worker Status (${this.workers.size} active) ---`);
+            
+            for (const [pid, worker] of this.workers) {
+                try {
+                    const stats = await worker.getStats();
+                    const uptime = Math.floor((Date.now() - worker.startTime) / 1000);
+                    
+                    console.log(`PID ${pid} (${worker.name}):`);
+                    console.log(`  Status: ${worker.status}`);
+                    console.log(`  Uptime: ${uptime}s`);
+                    console.log(`  CPU: ${stats.cpuUsage.toFixed(1)}%`);
+                    console.log(`  Memory: ${stats.memoryUsage.toFixed(1)}MB`);
+                    console.log(`  Messages processed: ${stats.messagesProcessed || 0}`);
+                    
+                } catch (error) {
+                    console.error(`Failed to get stats for worker ${pid}:`, error);
+                }
+            }
+            console.log('-----------------------------------\n');
+            
+        }, 10000); // Check every 10 seconds
+    }
+
+    async sendWorkToWorkers(workItems) {
+        console.log(`Sending ${workItems.length} work items to workers...`);
+        
+        let workIndex = 0;
+        
+        const sendWork = async () => {
+            if (workIndex >= workItems.length || !this.isRunning) {
+                return;
+            }
+
+            const workItem = workItems[workIndex++];
+            
+            // Find an available worker (simple round-robin)
+            const availableWorkers = Array.from(this.workers.values())
+                .filter(w => w.status === 'running');
+            
+            if (availableWorkers.length === 0) {
+                console.log('No available workers, waiting...');
+                setTimeout(sendWork, 1000);
+                return;
+            }
+
+            const worker = availableWorkers[workIndex % availableWorkers.length];
+            
+            try {
+                // Send work message to worker
+                await worker.sendMessage({
+                    type: 'work',
+                    item: workItem,
+                    timestamp: Date.now()
+                });
+                
+                console.log(`Sent work item ${workIndex} to worker ${worker.name}`);
+                
+                // Schedule next work item
+                setTimeout(sendWork, 200);
+                
+            } catch (error) {
+                console.error(`Failed to send work to worker ${worker.name}:`, error);
+                setTimeout(sendWork, 1000);
+            }
+        };
+
+        // Start sending work
+        await sendWork();
+    }
+
+    async stopWorker(workerId) {
+        console.log(`Stopping worker ${workerId}...`);
+        
+        // Find worker by ID
+        const worker = Array.from(this.workers.values())
+            .find(w => w.name === `Worker-${workerId}`);
+        
+        if (!worker) {
+            console.log(`Worker ${workerId} not found`);
+            return;
+        }
+
+        try {
+            // Graceful shutdown
+            await worker.terminate(5000); // 5 second timeout
+            
+            console.log(`Worker ${workerId} stopped successfully`);
+            
+        } catch (error) {
+            console.error(`Failed to stop worker ${workerId}, force killing...`);
+            await worker.kill(); // Force kill
+            
+            console.log(`Worker ${workerId} force killed`);
+        }
+    }
+
+    async stopAllWorkers() {
+        console.log('Stopping all workers...');
+        
+        const stopPromises = Array.from(this.workers.keys()).map(pid => {
+            const worker = this.workers.get(pid);
+            return worker ? worker.terminate(3000) : Promise.resolve();
+        });
+        
+        await Promise.allSettled(stopPromises);
+        this.workers.clear();
+        
+        console.log('All workers stopped');
+    }
+
+    async demonstrateProcessCommunication() {
+        console.log('Demonstrating process communication...');
+        
+        // Create a simple echo server process
+        const echoServer = await this.processManager.spawn({
+            command: 'node',
+            args: ['echo_server.js'],
+            name: 'EchoServer',
+            stdio: 'pipe'
+        });
+
+        this.workers.set(echoServer.pid, echoServer);
+
+        // Set up communication
+        echoServer.stdout.on('data', (data) => {
+            console.log(`Echo Server: ${data.toString().trim()}`);
+        });
+
+        // Wait for server to start
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Send test messages
+        const messages = [
+            'Hello, Echo Server!',
+            'How are you?',
+            'Testing communication',
+            'Goodbye!'
+        ];
+
+        for (const message of messages) {
+            try {
+                await echoServer.sendMessage({
+                    type: 'echo',
+                    message: message,
+                    timestamp: Date.now()
+                });
+                
+                console.log(`Sent: "${message}"`);
+                
+                // Wait between messages
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+            } catch (error) {
+                console.error('Failed to send message:', error);
+            }
+        }
+
+        // Stop echo server
+        await echoServer.terminate(2000);
+        this.workers.delete(echoServer.pid);
+        
+        console.log('Process communication demo completed');
+    }
+
+    async runDemo() {
+        try {
+            this.isRunning = true;
+            
+            await this.initialize();
+            
+            // Start multiple workers
+            const workers = await this.startMultipleWorkers(3);
+            
+            // Monitor workers
+            this.monitorWorkers();
+            
+            // Demonstrate communication
+            await this.demonstrateProcessCommunication();
+            
+            // Send some work
+            const workItems = Array.from({ length: 15 }, (_, i) => ({
+                id: i + 1,
+                data: `Work item ${i + 1}`,
+                complexity: Math.random() * 100
+            }));
+            
+            await this.sendWorkToWorkers(workItems);
+            
+            // Run for a while
+            console.log('Running demo for 30 seconds...');
+            await new Promise(resolve => setTimeout(resolve, 30000));
+            
+        } catch (error) {
+            console.error('Demo failed:', error);
+            throw error;
+        } finally {
+            this.isRunning = false;
+            await this.stopAllWorkers();
+        }
+    }
+}
+
+// Usage
+async function main() {
+    const demo = new ProcessManagerDemo();
+    await demo.runDemo();
+}
+
+// Run if this is the main module
+if (import.meta.url === `file://${process.argv[1]}`) {
+    main().catch(error => {
+        console.error('Fatal error:', error);
+        process.exit(1);
+    });
+}
+
+export { ProcessManagerDemo };</code></pre>
+                    </div>
+                </section>
+
+                <!-- Networking -->
+                <section class="content-section">
+                    <h2>Network Operations</h2>
+                    <p>Network programming with JavaScript on MultiOS:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Web Server Example</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-javascript">import { Server, Socket } from '@multios/core';
+import { createServer } from 'http';
+import { URL } from 'url';
+
+class WebServer {
+    constructor(port = 8080) {
+        this.port = port;
+        this.server = null;
+        this.routes = new Map();
+        this.middleware = [];
+        this.isRunning = false;
+        this.requestCount = 0;
+    }
+
+    // Middleware system
+    use(middleware) {
+        this.middleware.push(middleware);
+    }
+
+    // Routing system
+    get(path, handler) {
+        this.routes.set(`GET:${path}`, handler);
+    }
+
+    post(path, handler) {
+        this.routes.set(`POST:${path}`, handler);
+    }
+
+    put(path, handler) {
+        this.routes.set(`PUT:${path}`, handler);
+    }
+
+    delete(path, handler) {
+        this.routes.set(`DELETE:${path}`, handler);
+    }
+
+    // Request handler
+    async handleRequest(req, res) {
+        try {
+            this.requestCount++;
+            
+            // Apply middleware
+            for (const middleware of this.middleware) {
+                await middleware(req, res, () => {});
+            }
+            
+            // Parse URL
+            const url = new URL(req.url, `http://${req.headers.host}`);
+            const method = req.method;
+            const routeKey = `${method}:${url.pathname}`;
+            
+            console.log(`${method} ${url.pathname} - Request #${this.requestCount}`);
+            
+            // Find route handler
+            const handler = this.routes.get(routeKey);
+            
+            if (!handler) {
+                await this.send404(res, url.pathname);
+                return;
+            }
+            
+            // Parse request body if needed
+            let body = null;
+            if (['POST', 'PUT', 'PATCH'].includes(method)) {
+                body = await this.parseBody(req);
+            }
+            
+            // Create context
+            const ctx = {
+                req,
+                res,
+                url,
+                method,
+                body,
+                path: url.pathname,
+                query: Object.fromEntries(url.searchParams),
+                params: {},
+                headers: req.headers,
+                startTime: Date.now()
+            };
+            
+            // Call handler
+            await handler(ctx);
+            
+        } catch (error) {
+            console.error('Request handling error:', error);
+            await this.send500(res, error);
+        }
+    }
+
+    async parseBody(req) {
+        return new Promise((resolve, reject) => {
+            let body = '';
+            
+            req.on('data', chunk => {
+                body += chunk.toString();
+            });
+            
+            req.on('end', () => {
+                try {
+                    const contentType = req.headers['content-type'] || '';
+                    
+                    if (contentType.includes('application/json')) {
+                        resolve(JSON.parse(body));
+                    } else if (contentType.includes('application/x-www-form-urlencoded')) {
+                        const params = new URLSearchParams(body);
+                        resolve(Object.fromEntries(params));
+                    } else {
+                        resolve(body);
+                    }
+                } catch (error) {
+                    reject(error);
+                }
+            });
+            
+            req.on('error', reject);
+        });
+    }
+
+    // Response helpers
+    sendJSON(res, statusCode, data) {
+        const response = {
+            statusCode,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+            },
+            body: JSON.stringify(data)
+        };
+        
+        res.writeHead(statusCode, response.headers);
+        res.end(response.body);
+        
+        console.log(`Response: ${statusCode} - ${JSON.stringify(data)}`);
+    }
+
+    sendHTML(res, statusCode, html) {
+        res.writeHead(statusCode, {
+            'Content-Type': 'text/html',
+            'Access-Control-Allow-Origin': '*'
+        });
+        res.end(html);
+    }
+
+    send404(res, path) {
+        this.sendJSON(res, 404, {
+            error: 'Not Found',
+            message: `Route ${path} not found`,
+            timestamp: new Date().toISOString()
+        });
+    }
+
+    send500(res, error) {
+        this.sendJSON(res, 500, {
+            error: 'Internal Server Error',
+            message: error.message,
+            timestamp: new Date().toISOString()
+        });
+    }
+
+    // Setup routes
+    setupRoutes() {
+        // CORS middleware
+        this.use(async (req, res, next) => {
+            if (req.method === 'OPTIONS') {
+                res.writeHead(200, {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+                });
+                res.end();
+                return;
+            }
+            await next();
+        });
+
+        // Logging middleware
+        this.use(async (req, res, next) => {
+            const start = Date.now();
+            console.log(`${req.method} ${req.url} - ${new Date().toISOString()}`);
+            
+            // Wrap res.end to log response time
+            const originalEnd = res.end;
+            res.end = function(...args) {
+                const duration = Date.now() - start;
+                console.log(`${req.method} ${req.url} - ${res.statusCode} - ${duration}ms`);
+                originalEnd.apply(res, args);
+            };
+            
+            await next();
+        });
+
+        // Routes
+        this.get('/', async (ctx) => {
+            const html = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>MultiOS JavaScript Web Server</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 40px; }
+                        .container { max-width: 800px; margin: 0 auto; }
+                        .status { background: #e8f5e8; padding: 20px; border-radius: 5px; }
+                        .endpoint { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 3px; }
+                        code { background: #f0f0f0; padding: 2px 4px; border-radius: 2px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h1>🚀 MultiOS JavaScript Web Server</h1>
+                        <div class="status">
+                            <h3>Server Status: Running</h3>
+                            <p>Server started at: ${new Date().toISOString()}</p>
+                            <p>Requests served: ${this.requestCount}</p>
+                        </div>
+                        
+                        <h3>Available Endpoints:</h3>
+                        <div class="endpoint">
+                            <strong>GET /</strong> - This page
+                        </div>
+                        <div class="endpoint">
+                            <strong>GET /api/status</strong> - Server status
+                        </div>
+                        <div class="endpoint">
+                            <strong>GET /api/echo?message=Hello</strong> - Echo a message
+                        </div>
+                        <div class="endpoint">
+                            <strong>POST /api/data</strong> - Submit data
+                        </div>
+                        <div class="endpoint">
+                            <strong>GET /api/time</strong> - Current server time
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            this.sendHTML(ctx.res, 200, html);
+        });
+
+        this.get('/api/status', async (ctx) => {
+            this.sendJSON(ctx.res, 200, {
+                status: 'running',
+                server: 'MultiOS JavaScript Web Server',
+                version: '1.0.0',
+                uptime: Date.now() - (this.startTime || Date.now()),
+                requests: this.requestCount,
+                timestamp: new Date().toISOString(),
+                environment: {
+                    node: process.version,
+                    platform: process.platform,
+                    arch: process.arch
+                }
+            });
+        });
+
+        this.get('/api/echo', async (ctx) => {
+            const message = ctx.query.message || 'No message provided';
+            
+            this.sendJSON(ctx.res, 200, {
+                echo: message,
+                timestamp: new Date().toISOString(),
+                requestId: this.requestCount
+            });
+        });
+
+        this.post('/api/data', async (ctx) => {
+            if (!ctx.body) {
+                this.sendJSON(ctx.res, 400, {
+                    error: 'Bad Request',
+                    message: 'Request body is required'
+                });
+                return;
+            }
+            
+            this.sendJSON(ctx.res, 201, {
+                message: 'Data received',
+                data: ctx.body,
+                timestamp: new Date().toISOString(),
+                requestId: this.requestCount
+            });
+        });
+
+        this.get('/api/time', async (ctx) => {
+            this.sendJSON(ctx.res, 200, {
+                serverTime: new Date().toISOString(),
+                timestamp: Date.now(),
+                timezone: 'UTC',
+                requestId: this.requestCount
+            });
+        });
+    }
+
+    // Start server
+    async start() {
+        return new Promise((resolve, reject) => {
+            try {
+                // Create HTTP server
+                this.server = createServer((req, res) => {
+                    this.handleRequest(req, res);
+                });
+
+                // Setup routes
+                this.setupRoutes();
+
+                // Start listening
+                this.server.listen(this.port, () => {
+                    this.isRunning = true;
+                    this.startTime = Date.now();
+                    
+                    console.log(`🌐 Web server started on port ${this.port}`);
+                    console.log(`📖 Open http://localhost:${this.port} to view the server`);
+                    console.log(`📊 Status: http://localhost:${this.port}/api/status`);
+                    
+                    resolve();
+                });
+
+                // Error handling
+                this.server.on('error', (error) => {
+                    console.error('Server error:', error);
+                    reject(error);
+                });
+
+                // Graceful shutdown
+                process.on('SIGINT', async () => {
+                    console.log('\n🛑 Shutting down server...');
+                    await this.stop();
+                    process.exit(0);
+                });
+
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    // Stop server
+    async stop() {
+        return new Promise((resolve) => {
+            if (!this.server) {
+                resolve();
+                return;
+            }
+
+            this.isRunning = false;
+            
+            this.server.close(() => {
+                console.log('✅ Server stopped');
+                resolve();
+            });
+
+            // Force close after timeout
+            setTimeout(() => {
+                console.log('⚠️  Force closing server');
+                resolve();
+            }, 5000);
+        });
+    }
+}
+
+// Usage
+async function main() {
+    const server = new WebServer(8080);
+    
+    try {
+        await server.start();
+        
+        // Keep server running
+        console.log('Press Ctrl+C to stop the server');
+        
+        // Keep the process alive
+        while (server.isRunning) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+        
+    } catch (error) {
+        console.error('Failed to start server:', error);
+        process.exit(1);
+    }
+}
+
+// Run if this is the main module
+if (import.meta.url === `file://${process.argv[1]}`) {
+    main().catch(error => {
+        console.error('Fatal error:', error);
+        process.exit(1);
+    });
+}
+
+export { WebServer };</code></pre>
+                    </div>
+                </section>
+
+                <!-- GUI Development -->
+                <section class="content-section">
+                    <h2>GUI Development</h2>
+                    <p>Create modern GUIs with JavaScript on MultiOS:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Todo App with Modern GUI</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-javascript">import { GUI, Window, Widget } from '@multios/core';
+
+class ModernTodoApp {
+    constructor() {
+        this.gui = new GUI();
+        this.window = null;
+        this.todos = new Map();
+        this.currentFilter = 'all'; // all, active, completed
+        this.nextId = 1;
+        
+        // UI components
+        this.components = {};
+    }
+
+    async initialize() {
+        try {
+            // Create modern window
+            this.window = await this.gui.createWindow({
+                title: 'Modern Todo App',
+                width: 900,
+                height: 700,
+                minWidth: 600,
+                minHeight: 400,
+                resizable: true,
+                theme: 'modern'
+            });
+
+            // Setup UI
+            await this.setupModernUI();
+            
+            // Load persisted todos
+            await this.loadTodos();
+
+            console.log('Todo app initialized successfully');
+
+        } catch (error) {
+            console.error('Failed to initialize todo app:', error);
+            throw error;
+        }
+    }
+
+    async setupModernUI() {
+        // Header with modern styling
+        const header = await this.window.createContainer({
+            style: {
+                padding: '20px',
+                backgroundColor: '#2563eb',
+                color: 'white',
+                borderRadius: '8px 8px 0 0'
+            },
+            layout: 'vbox',
+            spacing: 10
+        });
+
+        // App title
+        const title = await header.createLabel({
+            text: '📝 Modern Todo App',
+            style: {
+                fontSize: '24px',
+                fontWeight: 'bold'
+            }
+        });
+
+        // Stats display
+        const stats = await header.createLabel({
+            text: '0 todos, 0 completed',
+            style: {
+                fontSize: '14px',
+                opacity: 0.9
+            }
+        });
+
+        // Main content area
+        const content = await this.window.createContainer({
+            style: {
+                padding: '20px',
+                backgroundColor: '#f8fafc'
+            },
+            layout: 'vbox',
+            spacing: 20
+        });
+
+        // Add new todo section
+        await this.setupAddTodoSection(content);
+
+        // Filter buttons
+        await this.setupFilterSection(content);
+
+        // Todo list
+        await this.setupTodoList(content);
+
+        // Store references
+        this.components = {
+            header,
+            title,
+            stats,
+            content,
+            ...this.components
+        };
+    }
+
+    async setupAddTodoSection(container) {
+        const addSection = await container.createContainer({
+            style: {
+                padding: '15px',
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+            },
+            layout: 'hbox',
+            spacing: 10
+        });
+
+        // New todo input
+        this.components.newTodoInput = await addSection.createTextField({
+            placeholder: 'What needs to be done?',
+            style: {
+                flexGrow: 1,
+                padding: '12px',
+                border: '2px solid #e2e8f0',
+                borderRadius: '6px',
+                fontSize: '16px'
+            }
+        });
+
+        // Add button
+        this.components.addButton = await addSection.createButton({
+            text: 'Add Todo',
+            style: {
+                padding: '12px 20px',
+                backgroundColor: '#2563eb',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                fontSize: '16px',
+                fontWeight: '500',
+                cursor: 'pointer'
+            }
+        });
+
+        // Enter key support
+        this.components.newTodoInput.onKeyPress((key) => {
+            if (key === 'Enter') {
+                this.addTodo();
+            }
+        });
+
+        this.components.addButton.onClick(() => {
+            this.addTodo();
+        });
+    }
+
+    async setupFilterSection(container) {
+        const filterSection = await container.createContainer({
+            layout: 'hbox',
+            spacing: 10
+        });
+
+        const filters = [
+            { key: 'all', text: 'All', count: 0 },
+            { key: 'active', text: 'Active', count: 0 },
+            { key: 'completed', text: 'Completed', count: 0 }
+        ];
+
+        this.components.filterButtons = new Map();
+
+        for (const filter of filters) {
+            const button = await filterSection.createButton({
+                text: `${filter.text} (${filter.count})`,
+                style: {
+                    padding: '8px 16px',
+                    backgroundColor: this.currentFilter === filter.key ? '#2563eb' : '#e2e8f0',
+                    color: this.currentFilter === filter.key ? 'white' : '#374151',
+                    border: 'none',
+                    borderRadius: '6px',
+                    fontSize: '14px',
+                    cursor: 'pointer'
+                }
+            });
+
+            button.onClick(() => {
+                this.setFilter(filter.key);
+            });
+
+            this.components.filterButtons.set(filter.key, button);
+        }
+
+        // Clear completed button
+        this.components.clearButton = await filterSection.createButton({
+            text: 'Clear Completed',
+            style: {
+                marginLeft: 'auto',
+                padding: '8px 16px',
+                backgroundColor: '#ef4444',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                fontSize: '14px',
+                cursor: 'pointer'
+            }
+        });
+
+        this.components.clearButton.onClick(() => {
+            this.clearCompleted();
+        });
+    }
+
+    async setupTodoList(container) {
+        const listContainer = await container.createContainer({
+            style: {
+                flexGrow: 1,
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                overflow: 'hidden'
+            },
+            layout: 'vbox',
+            spacing: 0
+        });
+
+        // Todo list area
+        this.components.todoList = await listContainer.createScrollArea({
+            style: {
+                flexGrow: 1
+            }
+        });
+
+        // Empty state
+        this.components.emptyState = await this.components.todoList.createContainer({
+            layout: 'vbox',
+            alignment: 'center',
+            style: {
+                padding: '40px',
+                textAlign: 'center'
+            }
+        });
+
+        const emptyIcon = await this.components.emptyState.createLabel({
+            text: '📋',
+            style: {
+                fontSize: '48px',
+                marginBottom: '16px'
+            }
+        });
+
+        const emptyText = await this.components.emptyState.createLabel({
+            text: 'No todos found',
+            style: {
+                fontSize: '18px',
+                color: '#6b7280',
+                marginBottom: '8px'
+            }
+        });
+
+        const emptySubtext = await this.components.emptyState.createLabel({
+            text: 'Add a new todo above to get started',
+            style: {
+                fontSize: '14px',
+                color: '#9ca3af'
+            }
+        });
+
+        // Initially show empty state
+        await this.components.emptyState.show();
+    }
+
+    async addTodo() {
+        const text = this.components.newTodoInput.getText().trim();
+        
+        if (!text) {
+            return;
+        }
+
+        const todo = {
+            id: this.nextId++,
+            text: text,
+            completed: false,
+            createdAt: Date.now(),
+            updatedAt: Date.now()
+        };
+
+        this.todos.set(todo.id, todo);
+
+        // Clear input
+        this.components.newTodoInput.setText('');
+
+        // Create UI for todo
+        await this.createTodoItem(todo);
+
+        // Update display
+        await this.updateDisplay();
+
+        // Save to storage
+        await this.saveTodos();
+    }
+
+    async createTodoItem(todo) {
+        const todoContainer = await this.components.todoList.createContainer({
+            style: {
+                padding: '16px',
+                borderBottom: '1px solid #e5e7eb',
+                transition: 'background-color 0.2s'
+            },
+            layout: 'hbox',
+            spacing: 12
+        });
+
+        // Checkbox
+        const checkbox = await todoContainer.createCheckbox({
+            checked: todo.completed,
+            style: {
+                width: '20px',
+                height: '20px'
+            }
+        });
+
+        checkbox.onChange((checked) => {
+            this.toggleTodo(todo.id, checked);
+        });
+
+        // Todo text
+        const textContainer = await todoContainer.createContainer({
+            style: {
+                flexGrow: 1
+            },
+            layout: 'vbox'
+        });
+
+        const textLabel = await textContainer.createLabel({
+            text: todo.text,
+            style: {
+                fontSize: '16px',
+                color: todo.completed ? '#9ca3af' : '#111827',
+                textDecoration: todo.completed ? 'line-through' : 'none'
+            }
+        });
+
+        const metaLabel = await textContainer.createLabel({
+            text: `Created ${new Date(todo.createdAt).toLocaleDateString()}`,
+            style: {
+                fontSize: '12px',
+                color: '#6b7280',
+                marginTop: '4px'
+            }
+        });
+
+        // Delete button
+        const deleteButton = await todoContainer.createButton({
+            text: '🗑️',
+            style: {
+                padding: '8px',
+                backgroundColor: 'transparent',
+                border: 'none',
+                borderRadius: '4px',
+                fontSize: '16px',
+                cursor: 'pointer'
+            }
+        });
+
+        deleteButton.onClick(() => {
+            this.deleteTodo(todo.id);
+        });
+
+        // Store UI references
+        todo.ui = {
+            container: todoContainer,
+            checkbox,
+            textLabel,
+            metaLabel,
+            deleteButton
+        };
+    }
+
+    async toggleTodo(todoId, completed) {
+        const todo = this.todos.get(todoId);
+        
+        if (!todo) {
+            return;
+        }
+
+        todo.completed = completed;
+        todo.updatedAt = Date.now();
+
+        // Update UI
+        if (todo.ui) {
+            await todo.ui.textLabel.setStyle({
+                color: completed ? '#9ca3af' : '#111827',
+                textDecoration: completed ? 'line-through' : 'none'
+            });
+        }
+
+        // Update display
+        await this.updateDisplay();
+
+        // Save to storage
+        await this.saveTodos();
+    }
+
+    async deleteTodo(todoId) {
+        const todo = this.todos.get(todoId);
+        
+        if (!todo) {
+            return;
+        }
+
+        // Remove from data
+        this.todos.delete(todoId);
+
+        // Remove UI
+        if (todo.ui) {
+            await todo.ui.container.hide();
+        }
+
+        // Update display
+        await this.updateDisplay();
+
+        // Save to storage
+        await this.saveTodos();
+    }
+
+    setFilter(filter) {
+        this.currentFilter = filter;
+        this.updateDisplay();
+    }
+
+    clearCompleted() {
+        const completedIds = Array.from(this.todos.values())
+            .filter(todo => todo.completed)
+            .map(todo => todo.id);
+
+        for (const id of completedIds) {
+            this.deleteTodo(id);
+        }
+    }
+
+    async updateDisplay() {
+        const totalTodos = this.todos.size;
+        const completedTodos = Array.from(this.todos.values())
+            .filter(todo => todo.completed).length;
+        const activeTodos = totalTodos - completedTodos;
+
+        // Update stats
+        await this.components.stats.setText(
+            `${totalTodos} todos, ${completedTodos} completed`
+        );
+
+        // Update filter buttons
+        for (const [key, button] of this.components.filterButtons) {
+            let count = 0;
+            switch (key) {
+                case 'all':
+                    count = totalTodos;
+                    break;
+                case 'active':
+                    count = activeTodos;
+                    break;
+                case 'completed':
+                    count = completedTodos;
+                    break;
+            }
+
+            await button.setText(
+                `${key.charAt(0).toUpperCase() + key.slice(1)} (${count})`
+            );
+
+            await button.setStyle({
+                backgroundColor: this.currentFilter === key ? '#2563eb' : '#e2e8f0',
+                color: this.currentFilter === key ? 'white' : '#374151'
+            });
+        }
+
+        // Update todo list visibility based on filter
+        for (const todo of this.todos.values()) {
+            if (!todo.ui) continue;
+
+            let shouldShow = true;
+            
+            switch (this.currentFilter) {
+                case 'active':
+                    shouldShow = !todo.completed;
+                    break;
+                case 'completed':
+                    shouldShow = todo.completed;
+                    break;
+            }
+
+            await todo.ui.container.setVisible(shouldShow);
+        }
+
+        // Show/hide empty state
+        const visibleTodos = Array.from(this.todos.values()).filter(todo => {
+            if (!todo.ui) return false;
+            
+            switch (this.currentFilter) {
+                case 'all':
+                    return true;
+                case 'active':
+                    return !todo.completed;
+                case 'completed':
+                    return todo.completed;
+                default:
+                    return true;
+            }
+        });
+
+        await this.components.emptyState.setVisible(visibleTodos.length === 0);
+    }
+
+    async saveTodos() {
+        try {
+            const todoData = Array.from(this.todos.values()).map(todo => ({
+                ...todo,
+                ui: undefined // Remove UI references
+            }));
+
+            // In a real app, save to file or database
+            console.log('Saving todos:', todoData.length);
+            
+        } catch (error) {
+            console.error('Failed to save todos:', error);
+        }
+    }
+
+    async loadTodos() {
+        try {
+            // In a real app, load from file or database
+            // For demo, add some sample todos
+            const sampleTodos = [
+                { text: 'Learn MultiOS JavaScript integration', completed: true },
+                { text: 'Build a modern GUI application', completed: false },
+                { text: 'Test networking features', completed: false },
+                { text: 'Explore advanced UI components', completed: false }
+            ];
+
+            for (const todo of sampleTodos) {
+                const newTodo = {
+                    id: this.nextId++,
+                    text: todo.text,
+                    completed: todo.completed,
+                    createdAt: Date.now(),
+                    updatedAt: Date.now()
+                };
+
+                this.todos.set(newTodo.id, newTodo);
+                await this.createTodoItem(newTodo);
+            }
+
+            await this.updateDisplay();
+            
+        } catch (error) {
+            console.error('Failed to load todos:', error);
+        }
+    }
+
+    async run() {
+        try {
+            await this.initialize();
+            
+            // Show window
+            await this.window.show();
+
+            console.log('Todo app running...');
+            
+            // Keep app running
+            while (this.window.isVisible()) {
+                await new Promise(resolve => setTimeout(resolve, 16)); // ~60fps
+            }
+
+        } catch (error) {
+            console.error('Todo app failed:', error);
+            throw error;
+        }
+    }
+}
+
+// Usage
+async function main() {
+    const app = new ModernTodoApp();
+    await app.run();
+}
+
+// Run if this is the main module
+if (import.meta.url === `file://${process.argv[1]}`) {
+    main().catch(error => {
+        console.error('Fatal error:', error);
+        process.exit(1);
+    });
+}
+
+export { ModernTodoApp };</code></pre>
+                    </div>
+                </section>
+
+                <!-- Performance and Best Practices -->
+                <section class="content-section">
+                    <h2>Performance and Best Practices</h2>
+                    
+                    <h3>Performance Optimization</h3>
+                    <ul>
+                        <li><strong>Async/Await patterns:</strong> Use async/await for all asynchronous operations</li>
+                        <li><strong>Event-driven architecture:</strong> Leverage JavaScript's event-driven nature for responsive UIs</li>
+                        <li><strong>Efficient DOM updates:</strong> Batch UI updates to avoid unnecessary redraws</li>
+                        <li><strong>Memory management:</strong> Clean up event listeners and references</li>
+                    </ul>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Performance Patterns</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-javascript">import { EventEmitter } from '@multios/core';
+
+class PerformanceOptimizedApp {
+    constructor() {
+        this.eventEmitter = new EventEmitter();
+        this.updateQueue = new Set();
+        this.isUpdating = false;
+        this.updateScheduled = false;
+    }
+
+    // Debounced updates for UI
+    scheduleUpdate(component) {
+        this.updateQueue.add(component);
+        
+        if (!this.updateScheduled) {
+            this.updateScheduled = true;
+            // Schedule update for next animation frame
+            requestAnimationFrame(() => {
+                this.processUpdates();
+            });
+        }
+    }
+
+    async processUpdates() {
+        if (this.isUpdating) return;
+        
+        this.isUpdating = true;
+        
+        try {
+            // Batch process all queued updates
+            const components = Array.from(this.updateQueue);
+            this.updateQueue.clear();
+            
+            // Process updates concurrently
+            await Promise.all(
+                components.map(component => component.update())
+            );
+            
+        } finally {
+            this.isUpdating = false;
+            this.updateScheduled = false;
+            
+            // Process any new updates that arrived
+            if (this.updateQueue.size > 0) {
+                this.scheduleUpdate(null);
+            }
+        }
+    }
+
+    // Event delegation for better performance
+    setupEventDelegation(container) {
+        container.onClick((event) => {
+            // Handle click events efficiently
+            const target = event.target;
+            
+            // Use event delegation pattern
+            if (target.matches('.todo-item')) {
+                this.handleTodoClick(target);
+            } else if (target.matches('.delete-button')) {
+                this.handleDeleteClick(target);
+            }
+        });
+    }
+
+    // Memory-efficient data structures
+    setupMemoryEfficientData() {
+        // Use WeakMap for object-to-value mappings
+        this.componentData = new WeakMap();
+        
+        // Use Set for unique collections
+        this.activeAnimations = new Set();
+        
+        // Use Map for key-value pairs
+        this.uiRegistry = new Map();
+    }
+
+    // Cleanup patterns
+    addCleanupHandler(component, cleanup) {
+        this.eventEmitter.on('cleanup', cleanup);
+    }
+
+    async cleanup() {
+        // Remove all event listeners
+        this.eventEmitter.removeAllListeners();
+        
+        // Clear data structures
+        this.updateQueue.clear();
+        this.activeAnimations.clear();
+        this.uiRegistry.clear();
+        
+        // Trigger cleanup handlers
+        this.eventEmitter.emit('cleanup');
+    }
+}
+
+// Usage pattern
+async function main() {
+    const app = new PerformanceOptimizedApp();
+    
+    try {
+        await app.run();
+    } finally {
+        await app.cleanup();
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Error Handling Patterns</h3>
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Error Handling</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-javascript">import { MultiOSError, FileSystemError, NetworkError } from '@multios/core';
+
+class AppError extends Error {
+    constructor(message, code, cause = null) {
+        super(message);
+        this.name = 'AppError';
+        this.code = code;
+        this.cause = cause;
+        this.timestamp = new Date().toISOString();
+    }
+}
+
+class ErrorHandler {
+    constructor() {
+        this.errorHandlers = new Map();
+        this.setupDefaultHandlers();
+    }
+
+    setupDefaultHandlers() {
+        this.registerHandler(FileSystemError, (error) => {
+            console.error('File system error:', error);
+            // Show user-friendly message
+            this.showUserMessage('File operation failed', 'Please check file permissions');
+        });
+
+        this.registerHandler(NetworkError, (error) => {
+            console.error('Network error:', error);
+            // Show retry option
+            this.showUserMessage('Network error', 'Would you like to retry?', {
+                retry: true,
+                cancel: true
+            });
+        });
+
+        this.registerHandler(AppError, (error) => {
+            console.error('Application error:', error);
+            // Log to file for debugging
+            this.logErrorToFile(error);
+        });
+    }
+
+    registerHandler(errorType, handler) {
+        this.errorHandlers.set(errorType.name, handler);
+    }
+
+    async handleError(error) {
+        try {
+            const handler = this.errorHandlers.get(error.constructor.name);
+            
+            if (handler) {
+                await handler(error);
+            } else {
+                // Default error handling
+                console.error('Unhandled error:', error);
+                this.showUserMessage('An error occurred', 'Please restart the application');
+            }
+            
+        } catch (handlerError) {
+            console.error('Error handler failed:', handlerError);
+        }
+    }
+
+    showUserMessage(title, message, options = {}) {
+        // Implementation depends on GUI framework
+        console.log(`User Message: ${title} - ${message}`);
+    }
+
+    logErrorToFile(error) {
+        // Implementation for error logging
+        console.log('Error logged to file:', error.message);
+    }
+}
+
+// Usage with try-catch patterns
+async function safeOperation(operation, errorHandler) {
+    try {
+        return await operation();
+    } catch (error) {
+        await errorHandler.handleError(error);
+        throw error; // Re-throw if caller needs to handle
+    }
+}
+
+// Example usage
+async function main() {
+    const errorHandler = new ErrorHandler();
+
+    try {
+        await safeOperation(async () => {
+            // Risky operation here
+            throw new FileSystemError('Permission denied');
+        }, errorHandler);
+        
+    } catch (error) {
+        console.log('Operation failed after error handling');
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Debugging -->
+                <section class="content-section">
+                    <h2>Debugging and Development</h2>
+                    <p>Debug JavaScript applications on MultiOS:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Debug Configuration</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash"># Enable debug mode
+export MULTIOS_JS_DEBUG=1
+
+# Run with debugging
+node --inspect-brk my_app.js
+
+# Enable verbose logging
+export MULTIOS_JS_LOG_LEVEL=debug
+node my_app.js</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Debug Utilities</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-javascript">import { Debug } from '@multios/core';
+
+class DebugTools {
+    constructor() {
+        this.debug = new Debug();
+        this.performanceMarks = new Map();
+        this.observers = [];
+    }
+
+    // Performance monitoring
+    startPerformanceMark(name) {
+        this.performanceMarks.set(name, {
+            startTime: performance.now(),
+            startMemory: this.debug.getMemoryUsage()
+        });
+    }
+
+    endPerformanceMark(name) {
+        const mark = this.performanceMarks.get(name);
+        if (!mark) return;
+
+        const endTime = performance.now();
+        const endMemory = this.debug.getMemoryUsage();
+        
+        const duration = endTime - mark.startTime;
+        const memoryDelta = endMemory - mark.startMemory;
+        
+        console.log(`Performance [${name}]: ${duration.toFixed(2)}ms, Memory: ${memoryDelta} bytes`);
+        
+        this.performanceMarks.delete(name);
+        return { duration, memoryDelta };
+    }
+
+    // Memory profiling
+    profileMemoryUsage(label) {
+        const usage = this.debug.getMemoryUsage();
+        const heapStats = this.debug.getHeapStats();
+        
+        console.log(`Memory Profile [${label}]:`, {
+            total: usage,
+            heapUsed: heapStats.used,
+            heapTotal: heapStats.total,
+            external: heapStats.external
+        });
+    }
+
+    // Component debugging
+    createComponentDebugger(componentName) {
+        return {
+            mount() {
+                console.log(`🔧 [${componentName}] Component mounted`);
+            },
+            
+            update(props, state) {
+                console.log(`🔧 [${componentName}] Updating:`, { props, state });
+            },
+            
+            unmount() {
+                console.log(`🔧 [${componentName}] Component unmounted`);
+            },
+            
+            error(error) {
+                console.error(`❌ [${componentName}] Error:`, error);
+            }
+        };
+    }
+
+    // Event debugging
+    setupEventDebugging(target) {
+        const events = ['click', 'keypress', 'focus', 'blur'];
+        
+        for (const event of events) {
+            target.on(event, (eventData) => {
+                console.log(`📡 [${event}] Event:`, {
+                    type: eventData.type,
+                    target: eventData.target,
+                    data: eventData
+                });
+            });
+        }
+    }
+
+    // Network debugging
+    setupNetworkDebugging() {
+        const originalFetch = globalThis.fetch;
+        
+        globalThis.fetch = async (...args) => {
+            const startTime = Date.now();
+            console.log(`🌐 [Network] Request:`, args);
+            
+            try {
+                const response = await originalFetch(...args);
+                const duration = Date.now() - startTime;
+                
+                console.log(`🌐 [Network] Response:`, {
+                    url: args[0],
+                    status: response.status,
+                    duration: `${duration}ms`
+                });
+                
+                return response;
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                console.error(`🌐 [Network] Error:`, {
+                    url: args[0],
+                    error: error.message,
+                    duration: `${duration}ms`
+                });
+                throw error;
+            }
+        };
+    }
+
+    // React-style dev tools (simplified)
+    setupDevTools() {
+        if (process.env.NODE_ENV !== 'development') {
+            return;
+        }
+
+        // Global error handler
+        process.on('uncaughtException', (error) => {
+            console.error('🚨 Uncaught Exception:', error);
+        });
+
+        process.on('unhandledRejection', (reason, promise) => {
+            console.error('🚨 Unhandled Rejection:', reason);
+        });
+
+        // Performance observer for long tasks
+        if (typeof PerformanceObserver !== 'undefined') {
+            const observer = new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                    console.warn(`⚠️  Long Task Detected:`, {
+                        name: entry.name,
+                        duration: `${entry.duration.toFixed(2)}ms`,
+                        startTime: entry.startTime
+                    });
+                }
+            });
+
+            observer.observe({ entryTypes: ['longtask'] });
+            this.observers.push(observer);
+        }
+    }
+
+    // Cleanup debug tools
+    cleanup() {
+        for (const observer of this.observers) {
+            observer.disconnect();
+        }
+        this.observers = [];
+        this.performanceMarks.clear();
+    }
+}
+
+// Usage in application
+class DebuggableApp {
+    constructor() {
+        this.debugTools = new DebugTools();
+    }
+
+    async initialize() {
+        // Setup debugging
+        this.debugTools.setupDevTools();
+        this.debugTools.setupNetworkDebugging();
+        
+        // Profile initialization
+        this.debugTools.startPerformanceMark('app-init');
+        
+        try {
+            // Application initialization
+            await this.setupApplication();
+            
+        } finally {
+            this.debugTools.endPerformanceMark('app-init');
+            this.debugTools.profileMemoryUsage('after-init');
+        }
+    }
+
+    async setupApplication() {
+        // Your application setup code here
+        console.log('Application setup complete');
+    }
+
+    async cleanup() {
+        this.debugTools.cleanup();
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Conclusion -->
+                <section class="content-section">
+                    <h2>Summary</h2>
+                    <p>JavaScript integration with MultiOS provides:</p>
+                    <ul>
+                        <li>Native JavaScript runtime optimized for MultiOS</li>
+                        <li>Modern GUI framework with responsive design</li>
+                        <li>Event-driven programming model</li>
+                        <li>Rich networking and WebSocket support</li>
+                        <li>Performance optimization and debugging tools</li>
+                        <li>Seamless integration with other MultiOS languages</li>
+                    </ul>
+                    
+                    <div class="next-steps">
+                        <h3>Next Steps</h3>
+                        <ul>
+                            <li>Explore the <a href="../../api_reference/index.html">API Reference</a> for detailed function documentation</li>
+                            <li>Try the <a href="../../tutorials/intermediate/index.html">Intermediate Tutorials</a> for more complex examples</li>
+                            <li>Check out <a href="../rust.html">Rust Integration</a> for performance-critical components</li>
+                            <li>Use the <a href="../../api-explorer.html">API Explorer</a> for interactive testing</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/search.js"></script>
+    <script src="../../assets/js/theme.js"></script>
+    <script src="../../assets/js/interactive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

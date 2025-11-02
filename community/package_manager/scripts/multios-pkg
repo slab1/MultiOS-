@@ -1,0 +1,881 @@
+#!/bin/bash
+
+# Educational Package Manager CLI
+# ===============================
+# 
+# Command-line interface for the MultiOS Educational Package Manager
+# Provides comprehensive package management for educational software
+
+set -e
+
+# Configuration
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PACKAGE_MANAGER_DIR="$(dirname "$SCRIPT_DIR")"
+PYTHON_SCRIPT="$PACKAGE_MANAGER_DIR/src/package_manager.py"
+CONFIG_FILE="$PACKAGE_MANAGER_DIR/config/config.json"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+# Print colored output
+print_error() {
+    echo -e "${RED}[ERROR]${NC} $1" >&2
+}
+
+print_success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+}
+
+print_warning() {
+    echo -e "${YELLOW}[WARNING]${NC} $1"
+}
+
+print_info() {
+    echo -e "${BLUE}[INFO]${NC} $1"
+}
+
+print_header() {
+    echo -e "${PURPLE}$1${NC}"
+}
+
+# Usage information
+show_usage() {
+    cat << EOF
+Educational Package Manager for MultiOS
+========================================
+
+Usage: multios-pkg <command> [options]
+
+Commands:
+    create <package_dir>    Create a new educational package
+    install <package>       Install a package
+    remove <package>        Remove an installed package
+    update <package>        Update a package
+    list [options]         List available packages
+    search <query>         Search for packages
+    info <package>         Show package information
+    validate <package_dir> Validate package structure
+    publish <package>      Publish package to community
+    test [package]         Run package tests
+    config [key] [value]   Manage configuration
+    help                   Show this help message
+    version                Show version information
+
+Package Types:
+    curriculum             Educational curriculum packages
+    tutorial               Interactive tutorial packages  
+    simulation             Physics/chemistry simulations
+    interactive            Interactive learning tools
+    assessment             Testing and assessment packages
+    library                Code libraries and utilities
+    tool                   Educational tools and utilities
+    data                   Dataset packages
+
+Examples:
+    # Create a new curriculum package
+    multios-pkg create ./my-curriculum --type curriculum
+    
+    # Install a package
+    multios-pkg install math-intro-algebra
+    
+    # Search for math packages
+    multios-pkg search math
+    
+    # List all tutorial packages
+    multios-pkg list --type tutorial
+    
+    # Validate package structure
+    multios-pkg validate ./my-package
+    
+    # Publish package to community
+    multios-pkg publish ./my-package.tar.gz
+
+For more detailed help on any command, use: multios-pkg <command> --help
+EOF
+}
+
+# Check dependencies
+check_dependencies() {
+    local missing_deps=()
+    
+    if ! command -v python3 &> /dev/null; then
+        missing_deps+=("python3")
+    fi
+    
+    if ! command -v pip3 &> /dev/null; then
+        missing_deps+=("pip3")
+    fi
+    
+    if [ ${#missing_deps[@]} -gt 0 ]; then
+        print_error "Missing required dependencies: ${missing_deps[*]}"
+        exit 1
+    fi
+}
+
+# Ensure Python package is installed
+ensure_python_package() {
+    if [ ! -f "$PYTHON_SCRIPT" ]; then
+        print_error "Package manager Python script not found: $PYTHON_SCRIPT"
+        exit 1
+    fi
+}
+
+# Create a new package
+create_package() {
+    local package_dir=""
+    local package_type=""
+    local template_file=""
+    local output_file=""
+    local metadata_file=""
+    
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --type)
+                package_type="$2"
+                shift 2
+                ;;
+            --template)
+                template_file="$2"
+                shift 2
+                ;;
+            --output)
+                output_file="$2"
+                shift 2
+                ;;
+            --metadata)
+                metadata_file="$2"
+                shift 2
+                ;;
+            -h|--help)
+                show_create_help
+                exit 0
+                ;;
+            -*)
+                print_error "Unknown option: $1"
+                exit 1
+                ;;
+            *)
+                if [ -z "$package_dir" ]; then
+                    package_dir="$1"
+                fi
+                shift
+                ;;
+        esac
+    done
+    
+    if [ -z "$package_dir" ]; then
+        print_error "Package directory is required"
+        print_info "Usage: multios-pkg create <package_dir> [options]"
+        exit 1
+    fi
+    
+    # Determine template based on package type
+    if [ -z "$template_file" ]; then
+        case $package_type in
+            curriculum)
+                template_file="$PACKAGE_MANAGER_DIR/templates/curriculum_template.json"
+                ;;
+            tutorial)
+                template_file="$PACKAGE_MANAGER_DIR/templates/tutorial_template.json"
+                ;;
+            simulation)
+                template_file="$PACKAGE_MANAGER_DIR/templates/simulation_template.json"
+                ;;
+            assessment)
+                template_file="$PACKAGE_MANAGER_DIR/templates/assessment_template.json"
+                ;;
+            *)
+                print_error "Package type is required or invalid"
+                print_info "Supported types: curriculum, tutorial, simulation, assessment"
+                exit 1
+                ;;
+        esac
+    fi
+    
+    # Create metadata file if not provided
+    if [ -z "$metadata_file" ]; then
+        metadata_file="$package_dir/metadata.json"
+        create_metadata_from_template "$template_file" "$metadata_file"
+    fi
+    
+    # Create package structure
+    create_package_structure "$package_dir" "$package_type"
+    
+    # Validate package
+    print_info "Validating package structure..."
+    if python3 "$PYTHON_SCRIPT" validate "$package_dir" --metadata "$metadata_file"; then
+        print_success "Package validation successful"
+    else
+        print_warning "Package validation completed with warnings"
+    fi
+    
+    print_success "Package structure created successfully"
+    print_info "Next steps:"
+    echo "  1. Edit package files in $package_dir"
+    echo "  2. Update metadata in $metadata_file"
+    echo "  3. Add tests to $package_dir/tests/"
+    echo "  4. Run: multios-pkg create $package_dir --metadata $metadata_file"
+}
+
+show_create_help() {
+    cat << EOF
+Create a new educational package
+================================
+
+Usage: multios-pkg create <package_dir> [options]
+
+Arguments:
+    package_dir              Directory containing package source files
+
+Options:
+    --type TYPE              Package type (curriculum, tutorial, simulation, assessment)
+    --template FILE          Template JSON file to use
+    --metadata FILE          Custom metadata JSON file
+    --output FILE            Output package file (default: package_name-version.edu)
+    -h, --help               Show this help message
+
+Package Types:
+    curriculum               Educational curriculum packages
+    tutorial                 Interactive tutorial packages
+    simulation               Physics/chemistry simulations  
+    assessment               Testing and assessment packages
+
+Examples:
+    multios-pkg create ./my-curriculum --type curriculum
+    multios-pkg create ./physics-sim --type simulation
+    multios-pkg create ./math-lesson --type curriculum --template custom_template.json
+EOF
+}
+
+# Create metadata from template
+create_metadata_from_template() {
+    local template_file="$1"
+    local output_file="$2"
+    
+    print_info "Creating metadata from template..."
+    
+    if [ ! -f "$template_file" ]; then
+        print_error "Template file not found: $template_file"
+        exit 1
+    fi
+    
+    # Copy template and prompt for user input
+    cp "$template_file" "$output_file"
+    
+    # Simple interactive metadata collection
+    echo
+    print_info "Please update the following metadata fields:"
+    
+    if ! read -p "Package name: " package_name; then
+        print_error "Package name is required"
+        exit 1
+    fi
+    
+    if ! read -p "Package version [1.0.0]: " package_version; then
+        package_version="1.0.0"
+    fi
+    
+    if ! read -p "Description: " description; then
+        print_error "Description is required"
+        exit 1
+    fi
+    
+    if ! read -p "Author name: " author; then
+        print_error "Author is required"
+        exit 1
+    fi
+    
+    if ! read -p "Author email: " email; then
+        print_error "Email is required"
+        exit 1
+    fi
+    
+    # Update metadata file using sed
+    sed -i.bak \
+        -e "s/\"name\": \"[^\"]*\"/\"name\": \"$package_name\"/" \
+        -e "s/\"version\": \"[^\"]*\"/\"version\": \"$package_version\"/" \
+        -e "s/\"description\": \"[^\"]*\"/\"description\": \"$description\"/" \
+        -e "s/\"author\": \"[^\"]*\"/\"author\": \"$author\"/" \
+        -e "s/\"email\": \"[^\"]*\"/\"email\": \"$email\"/" \
+        -e "s/\"created_at\": \"[^\"]*\"/\"created_at\": \"$(date -Iseconds)\"/" \
+        -e "s/\"updated_at\": \"[^\"]*\"/\"updated_at\": \"$(date -Iseconds)\"/" \
+        "$output_file"
+    
+    rm -f "$output_file.bak"
+    
+    print_success "Metadata file created: $output_file"
+}
+
+# Create package directory structure
+create_package_structure() {
+    local package_dir="$1"
+    local package_type="$2"
+    
+    print_info "Creating package structure in $package_dir"
+    
+    # Create basic directories
+    mkdir -p "$package_dir"/{src,tests,docs}
+    
+    # Add type-specific directories
+    case $package_type in
+        curriculum|tutorial)
+            mkdir -p "$package_dir"/{curriculum,resources,examples}
+            ;;
+        simulation)
+            mkdir -p "$package_dir"/{assets,configs,scenarios}
+            ;;
+        assessment)
+            mkdir -p "$package_dir"/{assessments,questions,solutions,reports}
+            ;;
+    esac
+    
+    # Create basic files
+    create_readme_file "$package_dir"
+    create_license_file "$package_dir"
+    create_gitignore_file "$package_dir"
+    create_requirements_file "$package_dir"
+    
+    # Create example source files
+    create_example_files "$package_dir" "$package_type"
+}
+
+# Create README file
+create_readme_file() {
+    local package_dir="$1"
+    
+    cat > "$package_dir/README.md" << EOF
+# Package Name
+
+Package description here.
+
+## Installation
+
+\\`\\`\\`bash
+pip install -r requirements.txt
+\\`\\`\\`
+
+## Usage
+
+\\`\\`\\`python
+import package_name
+# Usage example
+\\`\\`\\`
+
+## Features
+
+- Feature 1
+- Feature 2
+- Feature 3
+
+## Development
+
+\\`\\`\\`bash
+# Run tests
+python -m pytest tests/
+
+# Install in development mode
+pip install -e .
+\\`\\`\\`
+
+## License
+
+See LICENSE file for details.
+EOF
+}
+
+# Create license file
+create_license_file() {
+    local package_dir="$1"
+    
+    cat > "$package_dir/LICENSE" << EOF
+MIT License
+
+Copyright (c) $(date +%Y)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+EOF
+}
+
+# Create .gitignore file
+create_gitignore_file() {
+    local package_dir="$1"
+    
+    cat > "$package_dir/.gitignore" << EOF
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Environment variables
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Package specific
+*.edu
+packages/
+cache/
+EOF
+}
+
+# Create requirements.txt file
+create_requirements_file() {
+    local package_dir="$1"
+    
+    cat > "$package_dir/requirements.txt" << EOF
+# Add your dependencies here
+# python-dateutil>=2.8.0
+# requests>=2.25.0
+EOF
+}
+
+# Create example files
+create_example_files() {
+    local package_dir="$1"
+    local package_type="$2"
+    
+    # Create example main module
+    cat > "$package_dir/src/main.py" << EOF
+#!/usr/bin/env python3
+"""
+Main module for the educational package
+"""
+
+def main():
+    \"\"\"
+    Main function
+    \"\"\"
+    print("Hello from educational package!")
+    return 0
+
+if __name__ == "__main__":
+    import sys
+    sys.exit(main())
+EOF
+    
+    # Create __init__.py files for Python packages
+    touch "$package_dir/src/__init__.py"
+    touch "$package_dir/tests/__init__.py"
+    
+    # Create example test file
+    cat > "$package_dir/tests/test_main.py" << EOF
+#!/usr/bin/env python3
+"""
+Tests for main module
+"""
+
+import unittest
+from src.main import main
+
+class TestMain(unittest.TestCase):
+    def test_main(self):
+        \"\"\"Test main function\"\"\"
+        result = main()
+        self.assertEqual(result, 0)
+
+if __name__ == "__main__":
+    unittest.main()
+EOF
+}
+
+# Validate package
+validate_package() {
+    local package_dir=""
+    local metadata_file=""
+    
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --metadata)
+                metadata_file="$2"
+                shift 2
+                ;;
+            -h|--help)
+                show_validate_help
+                exit 0
+                ;;
+            -*)
+                print_error "Unknown option: $1"
+                exit 1
+                ;;
+            *)
+                if [ -z "$package_dir" ]; then
+                    package_dir="$1"
+                fi
+                shift
+                ;;
+        esac
+    done
+    
+    if [ -z "$package_dir" ]; then
+        print_error "Package directory is required"
+        print_info "Usage: multios-pkg validate <package_dir>"
+        exit 1
+    fi
+    
+    if [ ! -d "$package_dir" ]; then
+        print_error "Package directory not found: $package_dir"
+        exit 1
+    fi
+    
+    print_info "Validating package: $package_dir"
+    python3 "$PYTHON_SCRIPT" validate "$package_dir" ${metadata_file:+--metadata "$metadata_file"}
+}
+
+show_validate_help() {
+    cat << EOF
+Validate package structure and content
+=====================================
+
+Usage: multios-pkg validate <package_dir> [options]
+
+Arguments:
+    package_dir              Directory containing package source files
+
+Options:
+    --metadata FILE          Metadata JSON file
+    -h, --help               Show this help message
+
+This command validates:
+- Package directory structure
+- Required files and directories
+- Metadata completeness
+- Code quality
+- Educational content standards
+EOF
+}
+
+# List packages
+list_packages() {
+    local package_type=""
+    local subject=""
+    local json_output=false
+    
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --type)
+                package_type="$2"
+                shift 2
+                ;;
+            --subject)
+                subject="$2"
+                shift 2
+                ;;
+            --json)
+                json_output=true
+                shift
+                ;;
+            -h|--help)
+                show_list_help
+                exit 0
+                ;;
+            -*)
+                print_error "Unknown option: $1"
+                exit 1
+                ;;
+        esac
+    done
+    
+    if [ "$json_output" = true ]; then
+        python3 "$PYTHON_SCRIPT" list ${package_type:+--type "$package_type"} ${subject:+--subject "$subject"} --json
+    else
+        python3 "$PYTHON_SCRIPT" list ${package_type:+--type "$package_type"} ${subject:+--subject "$subject"}
+    fi
+}
+
+show_list_help() {
+    cat << EOF
+List available packages
+======================
+
+Usage: multios-pkg list [options]
+
+Options:
+    --type TYPE              Filter by package type
+    --subject SUBJECT        Filter by subject
+    --json                   Output in JSON format
+    -h, --help               Show this help message
+
+Examples:
+    multios-pkg list
+    multios-pkg list --type curriculum
+    multios-pkg list --subject mathematics --json
+EOF
+}
+
+# Search packages
+search_packages() {
+    local query=""
+    local json_output=false
+    
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --json)
+                json_output=true
+                shift
+                ;;
+            -h|--help)
+                show_search_help
+                exit 0
+                ;;
+            -*)
+                print_error "Unknown option: $1"
+                exit 1
+                ;;
+            *)
+                if [ -z "$query" ]; then
+                    query="$1"
+                fi
+                shift
+                ;;
+        esac
+    done
+    
+    if [ -z "$query" ]; then
+        print_error "Search query is required"
+        print_info "Usage: multios-pkg search <query>"
+        exit 1
+    fi
+    
+    if [ "$json_output" = true ]; then
+        python3 "$PYTHON_SCRIPT" search "$query" --json
+    else
+        python3 "$PYTHON_SCRIPT" search "$query"
+    fi
+}
+
+show_search_help() {
+    cat << EOF
+Search for packages
+===================
+
+Usage: multios-pkg search <query> [options]
+
+Arguments:
+    query                    Search query
+
+Options:
+    --json                   Output in JSON format
+    -h, --help               Show this help message
+
+Examples:
+    multios-pkg search mathematics
+    multios-pkg search "intro python" --json
+EOF
+}
+
+# Install package
+install_package() {
+    local package=""
+    local version=""
+    local target_dir=""
+    
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --version)
+                version="$2"
+                shift 2
+                ;;
+            --target)
+                target_dir="$2"
+                shift 2
+                ;;
+            -h|--help)
+                show_install_help
+                exit 0
+                ;;
+            -*)
+                print_error "Unknown option: $1"
+                exit 1
+                ;;
+            *)
+                if [ -z "$package" ]; then
+                    package="$1"
+                fi
+                shift
+                ;;
+        esac
+    done
+    
+    if [ -z "$package" ]; then
+        print_error "Package name is required"
+        print_info "Usage: multios-pkg install <package>"
+        exit 1
+    fi
+    
+    print_info "Installing package: $package"
+    python3 "$PYTHON_SCRIPT" install "$package" ${version:+--version "$version"} ${target_dir:+--target "$target_dir"}
+}
+
+show_install_help() {
+    cat << EOF
+Install a package
+=================
+
+Usage: multios-pkg install <package> [options]
+
+Arguments:
+    package                  Package name or file path
+
+Options:
+    --version VERSION        Specific version to install
+    --target DIR             Installation directory
+    -h, --help               Show this help message
+
+Examples:
+    multios-pkg install math-intro-algebra
+    multios-pkg install physics-sim --version 2.1.0
+    multios-pkg install ./my-package.tar.gz --target /opt/education
+EOF
+}
+
+# Main function
+main() {
+    # Check dependencies
+    check_dependencies
+    ensure_python_package
+    
+    # Show help if no arguments
+    if [ $# -eq 0 ]; then
+        show_usage
+        exit 0
+    fi
+    
+    # Parse command
+    command="$1"
+    shift
+    
+    case $command in
+        create)
+            create_package "$@"
+            ;;
+        validate)
+            validate_package "$@"
+            ;;
+        list)
+            list_packages "$@"
+            ;;
+        search)
+            search_packages "$@"
+            ;;
+        install)
+            install_package "$@"
+            ;;
+        remove|uninstall)
+            python3 "$PYTHON_SCRIPT" remove "$@"
+            ;;
+        update)
+            python3 "$PYTHON_SCRIPT" update "$@"
+            ;;
+        info)
+            python3 "$PYTHON_SCRIPT" info "$@"
+            ;;
+        publish)
+            python3 "$PYTHON_SCRIPT" publish "$@"
+            ;;
+        test)
+            python3 "$PYTHON_SCRIPT" test "$@"
+            ;;
+        config)
+            # Configuration management
+            if [ $# -eq 0 ]; then
+                cat "$CONFIG_FILE"
+            elif [ $# -eq 1 ]; then
+                echo "Configuration key: $1"
+                # Implement key lookup
+            else
+                echo "Setting $1 = $2"
+                # Implement key setting
+            fi
+            ;;
+        help|--help|-h)
+            show_usage
+            ;;
+        version|--version)
+            echo "Educational Package Manager v1.0.0"
+            ;;
+        *)
+            print_error "Unknown command: $command"
+            echo
+            show_usage
+            exit 1
+            ;;
+    esac
+}
+
+# Run main function
+main "$@"

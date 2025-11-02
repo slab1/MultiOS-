@@ -1,0 +1,3625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Integration Guide - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar">
+            <div class="nav-content">
+                <div class="nav-section">
+                    <h3>API Reference</h3>
+                    <ul>
+                        <li><a href="../../api_reference/kernel.html" class="nav-link">Kernel API</a></li>
+                        <li><a href="../../api_reference/memory.html" class="nav-link">Memory Management</a></li>
+                        <li><a href="../../api_reference/process.html" class="nav-link">Process Management</a></li>
+                        <li><a href="../../api_reference/filesystem.html" class="nav-link">File System</a></li>
+                        <li><a href="../../api_reference/networking.html" class="nav-link">Network</a></li>
+                        <li><a href="../../api_reference/drivers.html" class="nav-link">Driver API</a></li>
+                        <li><a href="../../api_reference/gui.html" class="nav-link">GUI Framework</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Tutorials</h3>
+                    <ul>
+                        <li><a href="../../tutorials/beginner/index.html" class="nav-link">Beginner</a></li>
+                        <li><a href="../../tutorials/intermediate/index.html" class="nav-link">Intermediate</a></li>
+                        <li><a href="../../tutorials/advanced/index.html" class="nav-link">Advanced</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Guides</h3>
+                    <ul>
+                        <li><a href="rust.html" class="nav-link">Rust Integration</a></li>
+                        <li><a href="c.html" class="nav-link">C Integration</a></li>
+                        <li><a href="python.html" class="nav-link">Python Integration</a></li>
+                        <li><a href="javascript.html" class="nav-link">JavaScript Integration</a></li>
+                        <li><a href="cpp.html" class="nav-link">C++ Integration</a></li>
+                        <li><a href="go.html" class="nav-link active">Go Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="content-header">
+                    <h1>Go Integration Guide</h1>
+                    <p class="lead">Complete guide for building MultiOS applications in Go</p>
+                    <div class="content-meta">
+                        <span class="badge badge-language">Go</span>
+                        <span class="badge badge-difficulty">All Levels</span>
+                        <span class="badge badge-ecosystem">Native</span>
+                    </div>
+                </div>
+
+                <!-- Language Overview -->
+                <section class="content-section">
+                    <h2>Why Go with MultiOS?</h2>
+                    <p>Go offers simplicity, concurrency, and fast compilation. Perfect for network services, APIs, and system utilities on MultiOS with excellent performance and ease of development.</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Fast Compilation</h3>
+                                <p>Quick build times and efficient compilation to native binaries.</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Concurrency</h3>
+                                <p>Goroutines and channels for efficient concurrent programming.</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Memory Safety</h3>
+                                <p>Built-in memory safety with garbage collection and pointers.</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-network-wired"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Network Programming</h3>
+                                <p>Excellent standard library for networking and web services.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Installation -->
+                <section class="content-section">
+                    <h2>Installation and Setup</h2>
+                    <p>Set up Go development for MultiOS applications:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Installing Go SDK</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash"># Install MultiOS Go SDK
+cargo install multios-go-sdk
+
+# Install Go development tools
+cargo install multios-go-tools
+
+# Create new Go project
+multios-go new my_app
+cd my_app
+
+# Initialize Go module
+go mod init github.com/myuser/my_app
+go mod tidy</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Project Structure</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash">my_app/
+├── go.mod                      # Go module file
+├── main.go                     # Main application
+├── internal/
+│   ├── app/
+│   │   ├── app.go              # Application logic
+│   │   └── config.go           # Configuration
+│   ├── filesystem/
+│   │   └── filesystem.go       # File system operations
+│   ├── network/
+│   │   └── network.go          # Network operations
+│   └── gui/
+│       └── gui.go              # GUI operations
+├── pkg/
+│   └── utils/                  # Shared utilities
+├── cmd/
+│   └── my_app/
+│       └── main.go             # Entry point
+└── assets/
+    └── config/                 # Configuration files</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>go.mod</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-gomod">module github.com/myuser/my_app
+
+go 1.21
+
+require (
+    github.com/multios/go-sdk v1.0.0
+    github.com/multios/gui v1.0.0
+)
+
+require (
+    golang.org/x/sys v0.0.0-00010101000000-000000000000 // indirect
+    golang.org/x/net v0.0.0-00010101000000-000000000000 // indirect
+)</code></pre>
+                    </div>
+                </section>
+
+                <!-- Basic Usage -->
+                <section class="content-section">
+                    <h2>Basic Go Application</h2>
+                    <p>Create a simple Go application for MultiOS:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>main.go</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-go">package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
+	"github.com/multios/go-sdk"
+)
+
+// SimpleApp represents the main application
+type SimpleApp struct {
+	gui     *gui.GUI
+	window  *gui.Window
+	label   *gui.Label
+	button  *gui.Button
+	status  *gui.Label
+	config  *Config
+}
+
+// Config represents application configuration
+type Config struct {
+	Title       string
+	Width       int
+	Height      int
+	LogLevel    string
+	DataPath    string
+}
+
+// NewConfig creates a default configuration
+func NewConfig() *Config {
+	return &Config{
+		Title:    "Simple Go App",
+		Width:    800,
+		Height:   600,
+		LogLevel: "info",
+		DataPath: "/tmp/simple_app",
+	}
+}
+
+// NewSimpleApp creates a new application instance
+func NewSimpleApp() *SimpleApp {
+	return &SimpleApp{
+		config: NewConfig(),
+	}
+}
+
+// Initialize sets up the application
+func (app *SimpleApp) Initialize() error {
+	log.Println("Initializing SimpleApp...")
+
+	// Initialize MultiOS
+	if err := multios.Init(); err != nil {
+		return fmt.Errorf("failed to initialize MultiOS: %w", err)
+	}
+
+	// Create GUI
+	app.gui = gui.New()
+	if app.gui == nil {
+		return fmt.Errorf("failed to create GUI")
+	}
+
+	// Create window configuration
+	windowConfig := &gui.WindowConfig{
+		Title:     app.config.Title,
+		Width:     app.config.Width,
+		Height:    app.config.Height,
+		Resizable: true,
+		Visible:   false,
+	}
+
+	// Create main window
+	app.window, err = app.gui.CreateWindow(windowConfig)
+	if err != nil {
+		return fmt.Errorf("failed to create window: %w", err)
+	}
+
+	// Setup UI components
+	if err := app.setupUI(); err != nil {
+		return fmt.Errorf("failed to setup UI: %w", err)
+	}
+
+	log.Println("SimpleApp initialized successfully")
+	return nil
+}
+
+// setupUI creates and configures the user interface
+func (app *SimpleApp) setupUI() error {
+	// Create title label
+	app.label, err = app.window.CreateLabel(&gui.LabelConfig{
+		Text: "Hello, MultiOS Go!",
+		FontSize: 24,
+		FontWeight: gui.FontWeightBold,
+		Color: "#333333",
+	})
+	if err != nil {
+		return err
+	}
+
+	// Create button
+	app.button, err = app.window.CreateButton(&gui.ButtonConfig{
+		Text: "Click Me",
+		Width: 120,
+		Height: 40,
+		OnClick: app.onButtonClick,
+	})
+	if err != nil {
+		return err
+	}
+
+	// Create status label
+	app.status, err = app.window.CreateLabel(&gui.LabelConfig{
+		Text: "Ready",
+		Color: "#666666",
+	})
+	if err != nil {
+		return err
+	}
+
+	// Setup layout
+	layoutConfig := &gui.LayoutConfig{
+		Type:     gui.LayoutVBox,
+		Spacing:  20,
+		Padding:  20,
+		Children: []gui.ChildWidget{
+			{Widget: app.label, Alignment: gui.AlignmentCenter},
+			{Widget: app.button, Alignment: gui.AlignmentCenter},
+			{Widget: app.status, Alignment: gui.AlignmentCenter},
+		},
+	}
+
+	return app.window.SetLayout(layoutConfig)
+}
+
+// onButtonClick handles button click events
+func (app *SimpleApp) onButtonClick() {
+	log.Println("Button clicked!")
+
+	// Update status
+	app.status.SetText("Button was clicked!")
+	app.status.SetColor("#0066cc")
+
+	// Show notification
+	notification := &multios.Notification{
+		Title:   "SimpleApp",
+		Message: "Button clicked successfully!",
+		Type:    multios.NotificationTypeInfo,
+	}
+	multios.ShowNotification(notification)
+
+	// Create log entry
+	if err := app.createLogEntry(); err != nil {
+		log.Printf("Failed to create log entry: %v", err)
+	}
+}
+
+// createLogEntry creates a log entry
+func (app *SimpleApp) createLogEntry() error {
+	fs, err := multios.NewFileSystem()
+	if err != nil {
+		return fmt.Errorf("failed to create filesystem: %w", err)
+	}
+
+	logPath := multios.JoinPath(app.config.DataPath, "simple_app.log")
+	timestamp := time.Now().Format(time.RFC3339)
+	logEntry := fmt.Sprintf("[%s] Button clicked\n", timestamp)
+
+	return fs.AppendFile(logPath, logEntry)
+}
+
+// Run starts the application main loop
+func (app *SimpleApp) Run() error {
+	log.Println("Starting SimpleApp...")
+
+	// Show window
+	if err := app.window.Show(); err != nil {
+		return fmt.Errorf("failed to show window: %w", err)
+	}
+
+	// Setup signal handling for graceful shutdown
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+
+	// Main event loop
+	for {
+		select {
+		case <-ctx.Done():
+			log.Println("Application shutting down...")
+			return nil
+		case sig := <-sigChan:
+			log.Printf("Received signal: %v", sig)
+			return nil
+		default:
+			// Process events
+			if err := app.processEvents(); err != nil {
+				log.Printf("Error processing events: %v", err)
+				return err
+			}
+			
+			// Sleep briefly to prevent busy waiting
+			time.Sleep(16 * time.Millisecond) // ~60 FPS
+		}
+	}
+}
+
+// processEvents handles application events
+func (app *SimpleApp) processEvents() error {
+	// Process GUI events
+	if err := app.gui.ProcessEvents(); err != nil {
+		return err
+	}
+
+	// Check if window is still visible
+	if !app.window.IsVisible() {
+		return multios.ErrApplicationClosed
+	}
+
+	return nil
+}
+
+// Shutdown performs cleanup operations
+func (app *SimpleApp) Shutdown() {
+	log.Println("Shutting down SimpleApp...")
+
+	// Hide window
+	if app.window != nil {
+		app.window.Hide()
+	}
+
+	// Shutdown MultiOS
+	multios.Shutdown()
+
+	log.Println("SimpleApp shutdown complete")
+}
+
+// main is the application entry point
+func main() {
+	app := NewSimpleApp()
+
+	// Initialize application
+	if err := app.Initialize(); err != nil {
+		log.Fatalf("Failed to initialize application: %v", err)
+	}
+	defer app.Shutdown()
+
+	// Run application
+	if err := app.Run(); err != nil {
+		log.Fatalf("Application error: %v", err)
+	}
+
+	log.Println("Application exited successfully")
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- File System Operations -->
+                <section class="content-section">
+                    <h2>File System Operations</h2>
+                    <p>Work with the MultiOS file system from Go:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>filesystem.go</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-go">package filesystem
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"io"
+	"os"
+	"path/filepath"
+	"sort"
+	"strings"
+	"sync"
+	"time"
+
+	"github.com/multios/go-sdk"
+)
+
+// FileSystem provides file system operations
+type FileSystem struct {
+	mu sync.RWMutex
+}
+
+// FileInfo represents file information
+type FileInfo struct {
+	Name         string                 `json:"name"`
+	Path         string                 `json:"path"`
+	IsDir        bool                   `json:"is_dir"`
+	Size         int64                  `json:"size"`
+	Modified     time.Time              `json:"modified"`
+	Created      time.Time              `json:"created"`
+	Permissions  string                 `json:"permissions"`
+	Owner        string                 `json:"owner"`
+	Group        string                 `json:"group"`
+	Extension    string                 `json:"extension"`
+	Metadata     map[string]interface{} `json:"metadata,omitempty"`
+}
+
+// DirStats represents directory statistics
+type DirStats struct {
+	TotalSize      int64   `json:"total_size"`
+	FileCount      int     `json:"file_count"`
+	DirCount       int     `json:"dir_count"`
+	LargestFile    int64   `json:"largest_file"`
+	AverageFile    float64 `json:"average_file"`
+	HiddenCount    int     `json:"hidden_count"`
+	ExtensionStats map[string]int `json:"extension_stats"`
+}
+
+// NewFileSystem creates a new FileSystem instance
+func NewFileSystem() *FileSystem {
+	return &FileSystem{}
+}
+
+// CreateFile creates a new file
+func (fs *FileSystem) CreateFile(path string, data []byte, perm os.FileMode) error {
+	fs.mu.Lock()
+	defer fs.mu.Unlock()
+
+	// Ensure parent directory exists
+	if err := fs.createParentDirs(path); err != nil {
+		return fmt.Errorf("failed to create parent directories: %w", err)
+	}
+
+	// Create file with error handling
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, perm)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %w", err)
+	}
+	defer file.Close()
+
+	// Write data
+	if _, err := file.Write(data); err != nil {
+		return fmt.Errorf("failed to write data: %w", err)
+	}
+
+	return nil
+}
+
+// ReadFile reads the entire contents of a file
+func (fs *FileSystem) ReadFile(path string) ([]byte, error) {
+	fs.mu.RLock()
+	defer fs.mu.RUnlock()
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read file: %w", err)
+	}
+
+	return data, nil
+}
+
+// AppendFile appends data to a file
+func (fs *FileSystem) AppendFile(path string, data []byte) error {
+	fs.mu.Lock()
+	defer fs.mu.Unlock()
+
+	// Ensure parent directory exists
+	if err := fs.createParentDirs(path); err != nil {
+		return fmt.Errorf("failed to create parent directories: %w", err)
+	}
+
+	// Open file for appending
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	if err != nil {
+		return fmt.Errorf("failed to open file for append: %w", err)
+	}
+	defer file.Close()
+
+	// Append data
+	if _, err := file.Write(data); err != nil {
+		return fmt.Errorf("failed to append data: %w", err)
+	}
+
+	return nil
+}
+
+// DeleteFile removes a file
+func (fs *FileSystem) DeleteFile(path string) error {
+	fs.mu.Lock()
+	defer fs.mu.Unlock()
+
+	if err := os.Remove(path); err != nil {
+		return fmt.Errorf("failed to delete file: %w", err)
+	}
+
+	return nil
+}
+
+// CopyFile copies a file from source to destination
+func (fs *FileSystem) CopyFile(src, dst string) error {
+	fs.mu.Lock()
+	defer fs.mu.Unlock()
+
+	// Open source file
+	srcFile, err := os.Open(src)
+	if err != nil {
+		return fmt.Errorf("failed to open source file: %w", err)
+	}
+	defer srcFile.Close()
+
+	// Ensure parent directory exists
+	if err := fs.createParentDirs(dst); err != nil {
+		return fmt.Errorf("failed to create parent directories: %w", err)
+	}
+
+	// Create destination file
+	dstFile, err := os.Create(dst)
+	if err != nil {
+		return fmt.Errorf("failed to create destination file: %w", err)
+	}
+	defer dstFile.Close()
+
+	// Copy file contents
+	if _, err := io.Copy(dstFile, srcFile); err != nil {
+		return fmt.Errorf("failed to copy file contents: %w", err)
+	}
+
+	// Copy permissions
+	if err := fs.copyFilePermissions(src, dst); err != nil {
+		return fmt.Errorf("failed to copy file permissions: %w", err)
+	}
+
+	return nil
+}
+
+// MoveFile moves a file from source to destination
+func (fs *FileSystem) MoveFile(src, dst string) error {
+	fs.mu.Lock()
+	defer fs.mu.Unlock()
+
+	if err := os.Rename(src, dst); err != nil {
+		return fmt.Errorf("failed to move file: %w", err)
+	}
+
+	return nil
+}
+
+// CreateDirectory creates a new directory
+func (fs *FileSystem) CreateDirectory(path string, perm os.FileMode) error {
+	fs.mu.Lock()
+	defer fs.mu.Unlock()
+
+	if err := os.MkdirAll(path, perm); err != nil {
+		return fmt.Errorf("failed to create directory: %w", err)
+	}
+
+	return nil
+}
+
+// DeleteDirectory removes a directory and its contents
+func (fs *FileSystem) DeleteDirectory(path string, recursive bool) error {
+	fs.mu.Lock()
+	defer fs.mu.Unlock()
+
+	if recursive {
+		return os.RemoveAll(path)
+	}
+
+	return os.Remove(path)
+}
+
+// ListDirectory returns file information for a directory
+func (fs *FileSystem) ListDirectory(path string) ([]FileInfo, error) {
+	fs.mu.RLock()
+	defer fs.mu.RUnlock()
+
+	entries, err := os.ReadDir(path)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read directory: %w", err)
+	}
+
+	var fileInfos []FileInfo
+	for _, entry := range entries {
+		info, err := fs.getFileInfo(filepath.Join(path, entry.Name()))
+		if err != nil {
+			// Skip files that can't be read
+			continue
+		}
+		fileInfos = append(fileInfos, info)
+	}
+
+	// Sort by name
+	sort.Slice(fileInfos, func(i, j int) bool {
+		if fileInfos[i].IsDir != fileInfos[j].IsDir {
+			return fileInfos[i].IsDir && !fileInfos[j].IsDir // Directories first
+		}
+		return strings.ToLower(fileInfos[i].Name) < strings.ToLower(fileInfos[j].Name)
+	})
+
+	return fileInfos, nil
+}
+
+// GetFileInfo returns detailed information about a file
+func (fs *FileSystem) GetFileInfo(path string) (*FileInfo, error) {
+	fs.mu.RLock()
+	defer fs.mu.RUnlock()
+
+	return fs.getFileInfo(path)
+}
+
+// getFileInfo is the internal implementation of GetFileInfo
+func (fs *FileSystem) getFileInfo(path string) (*FileInfo, error) {
+	stat, err := os.Stat(path)
+	if err != nil {
+		return nil, fmt.Errorf("failed to stat file: %w", err)
+	}
+
+	info := &FileInfo{
+		Name:      stat.Name(),
+		Path:      path,
+		IsDir:     stat.IsDir(),
+		Size:      stat.Size(),
+		Modified:  stat.ModTime(),
+		Created:   stat.ModTime(), // Note: creation time not available on all systems
+		Extension: getFileExtension(path),
+	}
+
+	// Get additional file info if it's a regular file
+	if stat.Mode()&os.ModeType == 0 {
+		if perm := stat.Mode().Perm(); perm != 0 {
+			info.Permissions = perm.String()
+		}
+	}
+
+	return info, nil
+}
+
+// GetDirectoryStats returns statistics about a directory
+func (fs *FileSystem) GetDirectoryStats(path string) (*DirStats, error) {
+	fs.mu.RLock()
+	defer fs.mu.RUnlock()
+
+	var stats DirStats
+	stats.ExtensionStats = make(map[string]int)
+
+	err := filepath.WalkDir(path, func(fullPath string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if d.IsDir() {
+			stats.DirCount++
+			return nil
+		}
+
+		// Get file info
+		info, err := fs.getFileInfo(fullPath)
+		if err != nil {
+			return nil // Skip files that can't be read
+		}
+
+		// Update statistics
+		stats.FileCount++
+		stats.TotalSize += info.Size
+		stats.LargestFile = max(stats.LargestFile, info.Size)
+
+		// Count hidden files
+		if strings.HasPrefix(info.Name, ".") {
+			stats.HiddenCount++
+		}
+
+		// Extension statistics
+		ext := info.Extension
+		if ext == "" {
+			ext = "no_extension"
+		}
+		stats.ExtensionStats[ext]++
+
+		return nil
+	})
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to calculate directory statistics: %w", err)
+	}
+
+	// Calculate average file size
+	if stats.FileCount > 0 {
+		stats.AverageFile = float64(stats.TotalSize) / float64(stats.FileCount)
+	}
+
+	return &stats, nil
+}
+
+// SearchFiles searches for files matching a pattern
+func (fs *FileSystem) SearchFiles(root, pattern string) ([]string, error) {
+	fs.mu.RLock()
+	defer fs.mu.RUnlock()
+
+	var results []string
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return nil // Skip problematic files
+		}
+
+		// Check if filename matches pattern
+		if matched, err := filepath.Match(pattern, info.Name()); err != nil {
+			return nil
+		} else if matched {
+			results = append(results, path)
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to search files: %w", err)
+	}
+
+	return results, nil
+}
+
+// WatchFile watches a file for changes
+func (fs *FileSystem) WatchFile(path string, callback func(event multios.FileEvent)) error {
+	// This would typically use inotify on Linux or similar mechanisms
+	// Implementation depends on MultiOS file watching capabilities
+	return fmt.Errorf("file watching not yet implemented")
+}
+
+// ReadJSONFile reads and parses a JSON file
+func (fs *FileSystem) ReadJSONFile(path string, v interface{}) error {
+	data, err := fs.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	return json.Unmarshal(data, v)
+}
+
+// WriteJSONFile writes data to a JSON file with formatting
+func (fs *FileSystem) WriteJSONFile(path string, v interface{}, indent string) error {
+	data, err := json.MarshalIndent(v, "", indent)
+	if err != nil {
+		return fmt.Errorf("failed to marshal JSON: %w", err)
+	}
+
+	return fs.CreateFile(path, data, 0644)
+}
+
+// BackupFile creates a backup of a file with timestamp
+func (fs *FileSystem) BackupFile(path string) (string, error) {
+	fs.mu.Lock()
+	defer fs.mu.Unlock()
+
+	// Get file extension and base name
+	ext := filepath.Ext(path)
+	base := strings.TrimSuffix(path, ext)
+	
+	// Create backup path with timestamp
+	timestamp := time.Now().Format("20060102_150405")
+	backupPath := fmt.Sprintf("%s_backup_%s%s", base, timestamp, ext)
+
+	// Copy original file to backup
+	if err := fs.CopyFile(path, backupPath); err != nil {
+		return "", fmt.Errorf("failed to create backup: %w", err)
+	}
+
+	return backupPath, nil
+}
+
+// Helper functions
+
+func (fs *FileSystem) createParentDirs(path string) error {
+	dir := filepath.Dir(path)
+	return os.MkdirAll(dir, 0755)
+}
+
+func (fs *FileSystem) copyFilePermissions(src, dst string) error {
+	srcStat, err := os.Stat(src)
+	if err != nil {
+		return err
+	}
+
+	return os.Chmod(dst, srcStat.Mode())
+}
+
+func getFileExtension(path string) string {
+	ext := filepath.Ext(path)
+	if len(ext) > 0 {
+		return ext[1:] // Remove leading dot
+	}
+	return ""
+}
+
+func max(a, b int64) int64 {
+	if a > b {
+		return a
+	}
+	return b
+}</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Usage Example</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><parameter name="language-go">package main
+
+import (
+	"fmt"
+	"log"
+	"os"
+	"time"
+
+	"github.com/myuser/my_app/internal/filesystem"
+)
+
+type Config struct {
+	AppName  string `json:"app_name"`
+	Version  string `json:"version"`
+	LogLevel string `json:"log_level"`
+}
+
+func main() {
+	fs := filesystem.NewFileSystem()
+
+	// Create configuration
+	config := &Config{
+		AppName:  "FileManager",
+		Version:  "1.0.0",
+		LogLevel: "info",
+	}
+
+	// Write config file
+	configPath := "/tmp/file_manager_config.json"
+	if err := fs.WriteJSONFile(configPath, config, "  "); err != nil {
+		log.Fatalf("Failed to write config: %v", err)
+	}
+	fmt.Printf("Created config file: %s\n", configPath)
+
+	// Create some sample files
+	sampleDir := "/tmp/file_manager_samples"
+	if err := fs.CreateDirectory(sampleDir, 0755); err != nil {
+		log.Fatalf("Failed to create directory: %v", err)
+	}
+
+	// Create sample files
+	files := []struct {
+		name string
+		data string
+	}{
+		{"data.csv", "name,age,city\nJohn,25,NYC\nJane,30,LA"},
+		{"readme.txt", "Sample Files\n\nThis is a sample text file."},
+		{"config.yaml", "database:\n  host: localhost\n  port: 5432"},
+	}
+
+	for _, file := range files {
+		filePath := filesystem.JoinPath(sampleDir, file.name)
+		if err := fs.CreateFile(filePath, []byte(file.data), 0644); err != nil {
+			log.Printf("Failed to create %s: %v", file.name, err)
+			continue
+		}
+		fmt.Printf("Created file: %s\n", filePath)
+	}
+
+	// List directory contents
+	fmt.Println("\nDirectory contents:")
+	entries, err := fs.ListDirectory(sampleDir)
+	if err != nil {
+		log.Fatalf("Failed to list directory: %v", err)
+	}
+
+	for _, entry := range entries {
+		fmt.Printf("  %s (%s) - %d bytes\n", 
+			entry.Name, 
+			func() string { if entry.IsDir { return "DIR" } else { return "FILE" } }(),
+			entry.Size)
+	}
+
+	// Get directory statistics
+	stats, err := fs.GetDirectoryStats(sampleDir)
+	if err != nil {
+		log.Fatalf("Failed to get directory stats: %v", err)
+	}
+
+	fmt.Printf("\nDirectory Statistics:\n")
+	fmt.Printf("  Files: %d\n", stats.FileCount)
+	fmt.Printf("  Directories: %d\n", stats.DirCount)
+	fmt.Printf("  Total Size: %d bytes\n", stats.TotalSize)
+	fmt.Printf("  Largest File: %d bytes\n", stats.LargestFile)
+	fmt.Printf("  Average File: %.2f bytes\n", stats.AverageFile)
+
+	// Search for specific files
+	fmt.Println("\nSearching for .txt files:")
+	txtFiles, err := fs.SearchFiles(sampleDir, "*.txt")
+	if err != nil {
+		log.Fatalf("Failed to search files: %v", err)
+	}
+
+	for _, file := range txtFiles {
+		fmt.Printf("  Found: %s\n", file)
+	}
+
+	// Create backup
+	fmt.Println("\nCreating backup...")
+	backupPath, err := fs.BackupFile(configPath)
+	if err != nil {
+		log.Fatalf("Failed to create backup: %v", err)
+	}
+	fmt.Printf("Backup created: %s\n", backupPath)
+
+	fmt.Println("\nFile manager demo completed successfully!")
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Process Management -->
+                <section class="content-section">
+                    <h2>Process Management</h2>
+                    <p>Create and manage processes from Go:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>process.go</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-go">package process
+
+import (
+	"context"
+	"fmt"
+	"os"
+	"os/exec"
+	"os/signal"
+	"strconv"
+	"sync"
+	"syscall"
+	"time"
+
+	"github.com/multios/go-sdk"
+)
+
+// Status represents process status
+type Status string
+
+const (
+	StatusCreated   Status = "created"
+	StatusRunning   Status = "running"
+	StatusPaused    Status = "paused"
+	StatusStopped   Status = "stopped"
+	StatusTerminated Status = "terminated"
+	StatusCrashed   Status = "crashed"
+)
+
+// Process represents a running process
+type Process struct {
+	ID           uint32           `json:"id"`
+	Name         string           `json:"name"`
+	Command      string           `json:"command"`
+	Args         []string         `json:"args"`
+	PID          int              `json:"pid"`
+	Status       Status           `json:"status"`
+	StartTime    time.Time        `json:"start_time"`
+	EndTime      *time.Time       `json:"end_time,omitempty"`
+	ExitCode     *int             `json:"exit_code,omitempty"`
+	WorkingDir   string           `json:"working_dir"`
+	Environment  []string         `json:"environment"`
+	
+	// Internal fields
+	cmd          *exec.Cmd
+	mu           sync.RWMutex
+	onExit       func(*Process)
+	onCrash      func(*Process, error)
+	stdout       []byte
+	stderr       []byte
+}
+
+// ProcessConfig holds process configuration
+type ProcessConfig struct {
+	Name         string            `json:"name"`
+	Command      string            `json:"command"`
+	Args         []string          `json:"args"`
+	WorkingDir   string            `json:"working_dir"`
+	Env          map[string]string `json:"env"`
+	Detached     bool              `json:"detached"`
+	UsePipe      bool              `json:"use_pipe"`
+	
+	// Callbacks
+	OnStdout     func(string)      `json:"-"`
+	OnStderr     func(string)      `json:"-"`
+	OnExit       func(*Process)    `json:"-"`
+	OnCrash      func(*Process, error) `json:"-"`
+}
+
+// ProcessManager manages multiple processes
+type ProcessManager struct {
+	mu        sync.RWMutex
+	processes map[uint32]*Process
+	nextID    uint32
+	ctx       context.Context
+	cancel    context.CancelFunc
+}
+
+// NewProcess creates a new Process instance
+func NewProcess(config *ProcessConfig) *Process {
+	p := &Process{
+		Name:         config.Name,
+		Command:      config.Command,
+		Args:         config.Args,
+		Status:       StatusCreated,
+		StartTime:    time.Now(),
+		WorkingDir:   config.WorkingDir,
+		Environment:  envSlice(config.Env),
+		onExit:       config.OnExit,
+		onCrash:      config.OnCrash,
+		stdout:       make([]byte, 0),
+		stderr:       make([]byte, 0),
+	}
+
+	// Create command
+	p.cmd = exec.Command(config.Command, config.Args...)
+	
+	if config.WorkingDir != "" {
+		p.cmd.Dir = config.WorkingDir
+	}
+	
+	if len(p.Environment) > 0 {
+		p.cmd.Env = p.Environment
+	}
+
+	// Setup I/O
+	if config.UsePipe {
+		p.cmd.Stdout = &processWriter{p, true}
+		p.cmd.Stderr = &processWriter{p, false}
+	}
+
+	return p
+}
+
+// Start starts the process
+func (p *Process) Start() error {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	if p.Status != StatusCreated && p.Status != StatusStopped {
+		return fmt.Errorf("process already started or running")
+	}
+
+	// Start the command
+	if err := p.cmd.Start(); err != nil {
+		p.Status = StatusCrashed
+		if p.onCrash != nil {
+			p.onCrash(p, err)
+		}
+		return fmt.Errorf("failed to start process: %w", err)
+	}
+
+	p.PID = p.cmd.Process.Pid
+	p.Status = StatusRunning
+	p.StartTime = time.Now()
+
+	// Start goroutine to wait for process completion
+	go p.waitForCompletion()
+
+	return nil
+}
+
+// Stop stops the process gracefully
+func (p *Process) Stop(timeout time.Duration) error {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	if p.Status != StatusRunning {
+		return fmt.Errorf("process not running")
+	}
+
+	// Send SIGTERM
+	if p.cmd.Process != nil {
+		if err := p.cmd.Process.Signal(syscall.SIGTERM); err != nil {
+			return fmt.Errorf("failed to send SIGTERM: %w", err)
+		}
+
+		// Wait for graceful shutdown
+		done := make(chan struct{})
+		go func() {
+			p.cmd.Wait()
+			close(done)
+		}()
+
+		select {
+		case <-done:
+			// Process terminated gracefully
+		case <-time.After(timeout):
+			// Force kill
+			if err := p.cmd.Process.Kill(); err != nil {
+				return fmt.Errorf("failed to force kill process: %w", err)
+			}
+		}
+	}
+
+	return nil
+}
+
+// Kill forcefully terminates the process
+func (p *Process) Kill() error {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	if p.Status != StatusRunning {
+		return fmt.Errorf("process not running")
+	}
+
+	if p.cmd.Process != nil {
+		if err := p.cmd.Process.Kill(); err != nil {
+			return fmt.Errorf("failed to kill process: %w", err)
+		}
+	}
+
+	return nil
+}
+
+// Pause suspends the process
+func (p *Process) Pause() error {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	if p.Status != StatusRunning {
+		return fmt.Errorf("process not running")
+	}
+
+	if p.cmd.Process != nil {
+		if err := p.cmd.Process.Signal(syscall.SIGSTOP); err != nil {
+			return fmt.Errorf("failed to pause process: %w", err)
+		}
+	}
+
+	p.Status = StatusPaused
+	return nil
+}
+
+// Resume resumes a paused process
+func (p *Process) Resume() error {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	if p.Status != StatusPaused {
+		return fmt.Errorf("process not paused")
+	}
+
+	if p.cmd.Process != nil {
+		if err := p.cmd.Process.Signal(syscall.SIGCONT); err != nil {
+			return fmt.Errorf("failed to resume process: %w", err)
+		}
+	}
+
+	p.Status = StatusRunning
+	return nil
+}
+
+// IsRunning returns true if the process is running
+func (p *Process) IsRunning() bool {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+	return p.Status == StatusRunning
+}
+
+// GetStatus returns the current process status
+func (p *Process) GetStatus() Status {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+	return p.Status
+}
+
+// GetPID returns the process ID
+func (p *Process) GetPID() int {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+	return p.PID
+}
+
+// GetExitCode returns the exit code if the process has terminated
+func (p *Process) GetExitCode() *int {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+	return p.ExitCode
+}
+
+// GetStdout returns the standard output
+func (p *Process) GetStdout() string {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+	return string(p.stdout)
+}
+
+// GetStderr returns the standard error
+func (p *Process) GetStderr() string {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+	return string(p.stderr)
+}
+
+// Restart restarts the process
+func (p *Process) Restart() error {
+	if err := p.Stop(5 * time.Second); err != nil {
+		return fmt.Errorf("failed to stop process for restart: %w", err)
+	}
+
+	return p.Start()
+}
+
+// SetOnExit sets the exit callback
+func (p *Process) SetOnExit(callback func(*Process)) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.onExit = callback
+}
+
+// SetOnCrash sets the crash callback
+func (p *Process) SetOnCrash(callback func(*Process, error)) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.onCrash = callback
+}
+
+// waitForCompletion waits for the process to complete
+func (p *Process) waitForCompletion() {
+	err := p.cmd.Wait()
+	
+	p.mu.Lock()
+	p.Status = StatusStopped
+	now := time.Now()
+	p.EndTime = &now
+	
+	if err != nil {
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			exitCode := exitErr.ExitCode()
+			p.ExitCode = &exitCode
+		} else {
+			p.Status = StatusCrashed
+		}
+	} else {
+		exitCode := 0
+		p.ExitCode = &exitCode
+	}
+	p.mu.Unlock()
+
+	// Call callbacks
+	if err != nil && p.onCrash != nil {
+		p.onCrash(p, err)
+	}
+	
+	if p.onExit != nil {
+		p.onExit(p)
+	}
+}
+
+// NewProcessManager creates a new ProcessManager
+func NewProcessManager() *ProcessManager {
+	ctx, cancel := context.WithCancel(context.Background())
+	return &ProcessManager{
+		processes: make(map[uint32]*Process),
+		ctx:       ctx,
+		cancel:    cancel,
+	}
+}
+
+// Spawn creates and starts a new process
+func (pm *ProcessManager) Spawn(config *ProcessConfig) (*Process, error) {
+	pm.mu.Lock()
+	defer pm.mu.Unlock()
+
+	// Create process
+	process := NewProcess(config)
+	process.ID = pm.nextID
+	pm.nextID++
+
+	// Start the process
+	if err := process.Start(); err != nil {
+		return nil, fmt.Errorf("failed to start process: %w", err)
+	}
+
+	// Store in manager
+	pm.processes[process.ID] = process
+
+	return process, nil
+}
+
+// GetProcess returns a process by ID
+func (pm *ProcessManager) GetProcess(id uint32) (*Process, bool) {
+	pm.mu.RLock()
+	defer pm.mu.RUnlock()
+	process, exists := pm.processes[id]
+	return process, exists
+}
+
+// ListProcesses returns all managed processes
+func (pm *ProcessManager) ListProcesses() []*Process {
+	pm.mu.RLock()
+	defer pm.mu.RUnlock()
+
+	processes := make([]*Process, 0, len(pm.processes))
+	for _, process := range pm.processes {
+		processes = append(processes, process)
+	}
+
+	return processes
+}
+
+// StopProcess stops a process by ID
+func (pm *ProcessManager) StopProcess(id uint32, timeout time.Duration) error {
+	pm.mu.Lock()
+	defer pm.mu.Unlock()
+
+	process, exists := pm.processes[id]
+	if !exists {
+		return fmt.Errorf("process %d not found", id)
+	}
+
+	return process.Stop(timeout)
+}
+
+// KillProcess kills a process by ID
+func (pm *ProcessManager) KillProcess(id uint32) error {
+	pm.mu.Lock()
+	defer pm.mu.Unlock()
+
+	process, exists := pm.processes[id]
+	if !exists {
+		return fmt.Errorf("process %d not found", id)
+	}
+
+	return process.Kill()
+}
+
+// RemoveProcess removes a process from management
+func (pm *ProcessManager) RemoveProcess(id uint32) error {
+	pm.mu.Lock()
+	defer pm.mu.Unlock()
+
+	if _, exists := pm.processes[id]; !exists {
+		return fmt.Errorf("process %d not found", id)
+	}
+
+	delete(pm.processes, id)
+	return nil
+}
+
+// Shutdown stops all managed processes
+func (pm *ProcessManager) Shutdown(timeout time.Duration) error {
+	pm.mu.Lock()
+	defer pm.mu.Unlock()
+
+	var errors []error
+	for id, process := range pm.processes {
+		if err := process.Stop(timeout); err != nil {
+			errors = append(errors, fmt.Errorf("failed to stop process %d: %w", id, err))
+		}
+	}
+
+	pm.processes = make(map[uint32]*Process)
+	pm.cancel()
+
+	if len(errors) > 0 {
+		return fmt.Errorf("errors during shutdown: %v", errors)
+	}
+
+	return nil
+}
+
+// MonitorProcess starts monitoring a process
+func (pm *ProcessManager) MonitorProcess(id uint32, interval time.Duration, callback func(*Process)) error {
+	process, exists := pm.GetProcess(id)
+	if !exists {
+		return fmt.Errorf("process %d not found", id)
+	}
+
+	go func() {
+		ticker := time.NewTicker(interval)
+		defer ticker.Stop()
+
+		for {
+			select {
+			case <-pm.ctx.Done():
+				return
+			case <-ticker.C:
+				callback(process)
+			}
+		}
+	}()
+
+	return nil
+}
+
+// processWriter implements io.Writer for capturing process output
+type processWriter struct {
+	process   *Process
+	isStdout  bool
+	mu        sync.Mutex
+}
+
+// Write implements io.Writer
+func (w *processWriter) Write(p []byte) (n int, err error) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+
+	n = len(p)
+	
+	// Store output
+	if w.isStdout {
+		w.process.stdout = append(w.process.stdout, p...)
+	} else {
+		w.process.stderr = append(w.process.stderr, p...)
+	}
+
+	// Call callback if set
+	if w.isStdout && w.process.onExit != nil {
+		w.process.onExit(w.process)
+	}
+
+	return n, nil
+}
+
+// Helper functions
+
+func envSlice(envMap map[string]string) []string {
+	env := make([]string, 0, len(envMap))
+	for k, v := range envMap {
+		env = append(env, k+"="+v)
+	}
+	return env
+}
+
+// Demonstrate process management
+func DemonstrateProcessManager() {
+	pm := NewProcessManager()
+	defer pm.Shutdown(5 * time.Second)
+
+	// Create a simple worker process
+	config := &ProcessConfig{
+		Name:     "Worker",
+		Command:  "sleep",
+		Args:     []string{"10"},
+		UsePipe:  true,
+		OnStdout: func(output string) { fmt.Printf("Worker: %s", output) },
+		OnStderr: func(output string) { fmt.Printf("Worker ERROR: %s", output) },
+		OnExit: func(p *Process) { fmt.Printf("Process %s exited with code %v\n", p.Name, p.GetExitCode()) },
+	}
+
+	// Spawn process
+	process, err := pm.Spawn(config)
+	if err != nil {
+		log.Fatalf("Failed to spawn process: %v", err)
+	}
+
+	fmt.Printf("Spawned process %s with PID %d\n", process.Name, process.GetPID())
+
+	// Monitor process
+	pm.MonitorProcess(process.ID, time.Second, func(p *Process) {
+		fmt.Printf("Process %s status: %s\n", p.Name, p.GetStatus())
+	})
+
+	// Let it run for a bit
+	time.Sleep(3 * time.Second)
+
+	// Pause process
+	if err := process.Pause(); err != nil {
+		log.Printf("Failed to pause process: %v", err)
+	} else {
+		fmt.Println("Process paused")
+	}
+
+	time.Sleep(2 * time.Second)
+
+	// Resume process
+	if err := process.Resume(); err != nil {
+		log.Printf("Failed to resume process: %v", err)
+	} else {
+		fmt.Println("Process resumed")
+	}
+
+	// List all processes
+	fmt.Println("All managed processes:")
+	for _, p := range pm.ListProcesses() {
+		fmt.Printf("  %s (ID: %d, PID: %d, Status: %s)\n", 
+			p.Name, p.ID, p.GetPID(), p.GetStatus())
+	}
+
+	// Stop process gracefully
+	fmt.Println("Stopping process...")
+	if err := pm.StopProcess(process.ID, 5*time.Second); err != nil {
+		log.Fatalf("Failed to stop process: %v", err)
+	}
+
+	fmt.Println("Process management demonstration completed")
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Networking -->
+                <section class="content-section">
+                    <h2>Network Operations</h2>
+                    <p>Network programming with Go on MultiOS:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>SimpleHTTPServer.go</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-go">package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"strconv"
+	"strings"
+	"sync"
+	"time"
+
+	"github.com/multios/go-sdk"
+)
+
+// Server represents the HTTP server
+type Server struct {
+	addr         string
+	mux          *http.ServeMux
+	server       *http.Server
+	routes       map[string]http.HandlerFunc
+	logger       *log.Logger
+	isRunning    bool
+	mu           sync.RWMutex
+	startTime    time.Time
+	requestCount int64
+}
+
+// RouteConfig represents route configuration
+type RouteConfig struct {
+	Pattern string            `json:"pattern"`
+	Methods []string          `json:"methods"`
+	Handler http.HandlerFunc  `json:"-"`
+}
+
+// Middleware represents HTTP middleware
+type Middleware func(http.HandlerFunc) http.HandlerFunc
+
+// Response represents a standard API response
+type Response struct {
+	Success bool        `json:"success"`
+	Data    interface{} `json:"data,omitempty"`
+	Error   string      `json:"error,omitempty"`
+	Meta    struct {
+		Timestamp time.Time `json:"timestamp"`
+		RequestID string    `json:"request_id"`
+		Version   string    `json:"version"`
+	} `json:"meta"`
+}
+
+// NewServer creates a new HTTP server
+func NewServer(addr string) *Server {
+	mux := http.NewServeMux()
+	server := &http.Server{
+		Addr:         addr,
+		Handler:      mux,
+		ReadTimeout:  30 * time.Second,
+		WriteTimeout: 30 * time.Second,
+		IdleTimeout:  60 * time.Second,
+	}
+
+	s := &Server{
+		addr:      addr,
+		mux:       mux,
+		server:    server,
+		routes:    make(map[string]http.HandlerFunc),
+		logger:    log.New(log.Writer(), "[HTTP] ", log.LstdFlags|log.Lshortfile),
+		startTime: time.Now(),
+	}
+
+	// Setup default routes
+	s.setupDefaultRoutes()
+
+	return s
+}
+
+// setupDefaultRoutes configures default routes
+func (s *Server) setupDefaultRoutes() {
+	// Logging middleware
+	loggingMiddleware := func(next http.HandlerFunc) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			start := time.Now()
+			
+			// Create response writer wrapper
+			rw := &responseWriter{ResponseWriter: w, statusCode: 200}
+			
+			// Call next handler
+			next(rw, r)
+			
+			// Log request
+			duration := time.Since(start)
+			s.logger.Printf("%s %s %d %s %s", 
+				r.Method, r.URL.Path, rw.statusCode, 
+				r.RemoteAddr, duration)
+			
+			// Update request count
+			s.mu.Lock()
+			s.requestCount++
+			s.mu.Unlock()
+		}
+	}
+
+	// CORS middleware
+	corsMiddleware := func(next http.HandlerFunc) http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			// Set CORS headers
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+			
+			// Handle preflight requests
+			if r.Method == http.MethodOptions {
+				w.WriteHeader(http.StatusOK)
+				return
+			}
+			
+			next(w, r)
+		}
+	}
+
+	// Apply middleware to all routes
+	defaultMiddleware := func(next http.HandlerFunc) http.HandlerFunc {
+		return loggingMiddleware(corsMiddleware(next))
+	}
+
+	// Setup routes
+	s.routes["/"] = s.handleRoot(defaultMiddleware)
+	s.routes["/status"] = s.handleStatus(defaultMiddleware)
+	s.routes["/echo"] = s.handleEcho(defaultMiddleware)
+	s.routes["/api/data"] = s.handleData(defaultMiddleware)
+	s.routes["/api/time"] = s.handleTime(defaultMiddleware)
+	s.routes["/api/metrics"] = s.handleMetrics(defaultMiddleware)
+
+	// Register routes with mux
+	for pattern, handler := range s.routes {
+		s.mux.HandleFunc(pattern, handler)
+	}
+}
+
+// Handle registers a new route
+func (s *Server) Handle(pattern string, handler http.HandlerFunc) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.routes[pattern] = handler
+	s.mux.HandleFunc(pattern, handler)
+}
+
+// HandleFunc registers a route with a handler function
+func (s *Server) HandleFunc(pattern string, fn http.HandlerFunc) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.routes[pattern] = fn
+	s.mux.HandleFunc(pattern, fn)
+}
+
+// Start starts the server
+func (s *Server) Start(ctx context.Context) error {
+	s.mu.Lock()
+	if s.isRunning {
+		s.mu.Unlock()
+		return fmt.Errorf("server already running")
+	}
+	s.isRunning = true
+	s.mu.Unlock()
+
+	s.logger.Printf("Starting HTTP server on %s", s.addr)
+
+	// Create context for server
+	serverCtx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	// Start server in goroutine
+	errChan := make(chan error, 1)
+	go func() {
+		errChan <- s.server.ListenAndServe()
+	}()
+
+	// Wait for either server error or context cancellation
+	select {
+	case err := <-errChan:
+		if err != nil && err != http.ErrServerClosed {
+			return fmt.Errorf("server error: %w", err)
+		}
+	case <-serverCtx.Done():
+		s.logger.Println("Shutting down server...")
+		shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer shutdownCancel()
+		
+		return s.server.Shutdown(shutdownCtx)
+	}
+
+	return nil
+}
+
+// Stop stops the server
+func (s *Server) Stop(timeout time.Duration) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	
+	if !s.isRunning {
+		return fmt.Errorf("server not running")
+	}
+
+	s.logger.Printf("Stopping HTTP server on %s", s.addr)
+	
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	
+	return s.server.Shutdown(shutdownCtx)
+}
+
+// IsRunning returns true if the server is running
+func (s *Server) IsRunning() bool {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	return s.isRunning
+}
+
+// GetMetrics returns server metrics
+func (s *Server) GetMetrics() map[string]interface{} {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	
+	uptime := time.Since(s.startTime).Seconds()
+	requestsPerSecond := float64(s.requestCount) / uptime
+
+	return map[string]interface{}{
+		"address":           s.addr,
+		"is_running":        s.isRunning,
+		"uptime_seconds":    uptime,
+		"request_count":     s.requestCount,
+		"requests_per_second": requestsPerSecond,
+		"start_time":        s.startTime,
+		"active_routes":     len(s.routes),
+	}
+}
+
+// Route handlers
+
+func (s *Server) handleRoot(middleware Middleware) http.HandlerFunc {
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			http.NotFound(w, r)
+			return
+		}
+
+		html := s.generateHTMLPage("🚀 MultiOS Go HTTP Server", `
+			<div class="container">
+				<div class="header">
+					<h1>🚀 MultiOS Go HTTP Server</h1>
+					<p>Server is running successfully!</p>
+				</div>
+				<div class="content">
+					<h3>Available Endpoints:</h3>
+					<div class="endpoint">
+						<strong>GET /</strong> - This page
+					</div>
+					<div class="endpoint">
+						<strong>GET /status</strong> - Server status
+					</div>
+					<div class="endpoint">
+						<strong>GET /echo?message=Hello</strong> - Echo a message
+					</div>
+					<div class="endpoint">
+						<strong>POST /api/data</strong> - Submit JSON data
+					</div>
+					<div class="endpoint">
+						<strong>GET /api/time</strong> - Current server time
+					</div>
+					<div class="endpoint">
+						<strong>GET /api/metrics</strong> - Server metrics
+					</div>
+					<h3>Server Information:</h3>
+					<p><strong>Address:</strong> ` + s.addr + `</p>
+					<p><strong>Uptime:</strong> ` + fmt.Sprintf("%.1f", time.Since(s.startTime).Seconds()) + ` seconds</p>
+					<p><strong>Requests Served:</strong> ` + fmt.Sprintf("%d", s.requestCount) + `</p>
+				</div>
+			</div>
+		`)
+
+		w.Header().Set("Content-Type", "text/html")
+		io.WriteString(w, html)
+	}
+	
+	return middleware(handler)
+}
+
+func (s *Server) handleStatus(middleware Middleware) http.HandlerFunc {
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		response := Response{
+			Success: true,
+			Data: map[string]interface{}{
+				"status":    "running",
+				"server":    "MultiOS Go HTTP Server",
+				"version":   "1.0.0",
+				"address":   s.addr,
+				"uptime":    time.Since(s.startTime).String(),
+				"timestamp": time.Now(),
+			},
+			Meta: struct {
+				Timestamp time.Time `json:"timestamp"`
+				RequestID string    `json:"request_id"`
+				Version   string    `json:"version"`
+			}{
+				Timestamp: time.Now(),
+				RequestID: generateRequestID(),
+				Version:   "1.0.0",
+			},
+		}
+
+		s.writeJSON(w, http.StatusOK, response)
+	}
+	
+	return middleware(handler)
+}
+
+func (s *Server) handleEcho(middleware Middleware) http.HandlerFunc {
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		message := r.URL.Query().Get("message")
+		if message == "" {
+			message = "No message provided"
+		}
+
+		response := Response{
+			Success: true,
+			Data: map[string]interface{}{
+				"echo":      message,
+				"timestamp": time.Now(),
+				"request_id": generateRequestID(),
+			},
+			Meta: struct {
+				Timestamp time.Time `json:"timestamp"`
+				RequestID string    `json:"request_id"`
+				Version   string    `json:"version"`
+			}{
+				Timestamp: time.Now(),
+				RequestID: generateRequestID(),
+				Version:   "1.0.0",
+			},
+		}
+
+		s.writeJSON(w, http.StatusOK, response)
+	}
+	
+	return middleware(handler)
+}
+
+func (s *Server) handleData(middleware Middleware) http.HandlerFunc {
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		// Read request body
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Failed to read request body", http.StatusBadRequest)
+			return
+		}
+
+		// Parse JSON if content type is JSON
+		var data interface{}
+		if strings.Contains(r.Header.Get("Content-Type"), "application/json") {
+			if err := json.Unmarshal(body, &data); err != nil {
+				http.Error(w, "Invalid JSON", http.StatusBadRequest)
+				return
+			}
+		} else {
+			data = string(body)
+		}
+
+		response := Response{
+			Success: true,
+			Data: map[string]interface{}{
+				"message":     "Data received successfully",
+				"data":        data,
+				"content_type": r.Header.Get("Content-Type"),
+				"content_length": len(body),
+				"timestamp":   time.Now(),
+			},
+			Meta: struct {
+				Timestamp time.Time `json:"timestamp"`
+				RequestID string    `json:"request_id"`
+				Version   string    `json:"version"`
+			}{
+				Timestamp: time.Now(),
+				RequestID: generateRequestID(),
+				Version:   "1.0.0",
+			},
+		}
+
+		s.writeJSON(w, http.StatusCreated, response)
+	}
+	
+	return middleware(handler)
+}
+
+func (s *Server) handleTime(middleware Middleware) http.HandlerFunc {
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		now := time.Now()
+		
+		response := Response{
+			Success: true,
+			Data: map[string]interface{}{
+				"server_time": now,
+				"unix_time":   now.Unix(),
+				"iso8601":     now.Format(time.RFC3339),
+				"rfc3339":     now.Format(time.RFC3339),
+				"timestamp":   now,
+			},
+			Meta: struct {
+				Timestamp time.Time `json:"timestamp"`
+				RequestID string    `json:"request_id"`
+				Version   string    `json:"version"`
+			}{
+				Timestamp: time.Now(),
+				RequestID: generateRequestID(),
+				Version:   "1.0.0",
+			},
+		}
+
+		s.writeJSON(w, http.StatusOK, response)
+	}
+	
+	return middleware(handler)
+}
+
+func (s *Server) handleMetrics(middleware Middleware) http.HandlerFunc {
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		response := Response{
+			Success: true,
+			Data:    s.GetMetrics(),
+			Meta: struct {
+				Timestamp time.Time `json:"timestamp"`
+				RequestID string    `json:"request_id"`
+				Version   string    `json:"version"`
+			}{
+				Timestamp: time.Now(),
+				RequestID: generateRequestID(),
+				Version:   "1.0.0",
+			},
+		}
+
+		s.writeJSON(w, http.StatusOK, response)
+	}
+	
+	return middleware(handler)
+}
+
+// Helper methods
+
+func (s *Server) writeJSON(w http.ResponseWriter, statusCode int, response Response) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(statusCode)
+	
+	json.NewEncoder(w).Encode(response)
+}
+
+func (s *Server) generateHTMLPage(title, content string) string {
+	return `<!DOCTYPE html>
+<html>
+<head>
+    <title>` + title + `</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f8fafc; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header { background: #2563eb; color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .content { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .endpoint { background: #f8fafc; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 4px solid #2563eb; }
+        code { background: #f1f5f9; padding: 2px 6px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    ` + content + `
+</body>
+</html>`
+}
+
+// responseWriter wraps http.ResponseWriter to capture status code
+type responseWriter struct {
+	http.ResponseWriter
+	statusCode int
+}
+
+// WriteHeader captures status code
+func (rw *responseWriter) WriteHeader(code int) {
+	rw.statusCode = code
+	rw.ResponseWriter.WriteHeader(code)
+}
+
+// Helper functions
+
+func generateRequestID() string {
+	return "req_" + strconv.FormatInt(time.Now().UnixNano(), 36)
+}
+
+// Main application
+
+func main() {
+	ctx := context.Background()
+	
+	// Create server
+	server := NewServer(":8080")
+	
+	// Setup signal handling for graceful shutdown
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+	
+	// Start server in goroutine
+	errChan := make(chan error, 1)
+	go func() {
+		errChan <- server.Start(ctx)
+	}()
+	
+	// Wait for signals or errors
+	select {
+	case err := <-errChan:
+		if err != nil {
+			log.Fatalf("Server error: %v", err)
+		}
+	case sig := <-sigChan:
+		log.Printf("Received signal: %v", sig)
+	}
+	
+	// Stop server
+	if err := server.Stop(10 * time.Second); err != nil {
+		log.Printf("Error stopping server: %v", err)
+	}
+	
+	log.Println("Server shutdown complete")
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Performance and Best Practices -->
+                <section class="content-section">
+                    <h2>Performance and Best Practices</h2>
+                    
+                    <h3>Go Performance Optimization</h3>
+                    <ul>
+                        <li><strong>Concurrency patterns:</strong> Use goroutines and channels effectively for concurrent operations</li>
+                        <li><strong>Memory pooling:</strong> Use sync.Pool for frequently allocated objects</li>
+                        <li><strong>Efficient I/O:</strong> Use bufio for buffered I/O operations</li>
+                        <li><strong>String building:</strong> Use strings.Builder instead of string concatenation</li>
+                        <li><strong>Interface optimization:</strong> Use concrete types where possible to avoid runtime overhead</li>
+                    </ul>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Performance Patterns</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-go">package performance
+
+import (
+	"bytes"
+	"context"
+	"runtime"
+	"sort"
+	"sync"
+	"sync/atomic"
+	"time"
+)
+
+// ObjectPool provides a pool of objects to reduce allocations
+type ObjectPool struct {
+	pool sync.Pool
+}
+
+func NewObjectPool(newFunc func() interface{}) *ObjectPool {
+	return &ObjectPool{
+		pool: sync.Pool{
+			New: newFunc,
+		},
+	}
+}
+
+func (p *ObjectPool) Get() interface{} {
+	return p.pool.Get()
+}
+
+func (p *ObjectPool) Put(obj interface{}) {
+	p.pool.Put(obj)
+}
+
+// StringBuilder demonstrates efficient string building
+type StringBuilder struct {
+	builder strings.Builder
+}
+
+func (sb *StringBuilder) AppendLine(line string) {
+	sb.builder.WriteString(line)
+	sb.builder.WriteByte('\n')
+}
+
+func (sb *StringBuilder) AppendFormat(format string, args ...interface{}) {
+	sb.builder.WriteString(fmt.Sprintf(format, args...))
+}
+
+func (sb *StringBuilder) String() string {
+	return sb.builder.String()
+}
+
+func (sb *StringBuilder) Reset() {
+	sb.builder.Reset()
+}
+
+// BatchProcessor processes items in batches
+type BatchProcessor struct {
+	batchSize int
+	workers   int
+	processor func([]interface{}) error
+}
+
+func NewBatchProcessor(batchSize, workers int, processor func([]interface{}) error) *BatchProcessor {
+	return &BatchProcessor{
+		batchSize: batchSize,
+		workers:   workers,
+		processor: processor,
+	}
+}
+
+func (bp *BatchProcessor) Process(ctx context.Context, items <-chan interface{}) error {
+	// Create worker pool
+	workerCh := make(chan struct{}, bp.workers)
+	for i := 0; i < bp.workers; i++ {
+		workerCh <- struct{}{}
+	}
+
+	// Process items in batches
+	var wg sync.WaitGroup
+	batch := make([]interface{}, 0, bp.batchSize)
+
+	for item := range items {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+		}
+
+		batch = append(batch, item)
+
+		if len(batch) >= bp.batchSize {
+			wg.Add(1)
+			go func(b []interface{}) {
+				defer wg.Done()
+				<-workerCh
+				defer func() { workerCh <- struct{}{} }()
+				
+				if err := bp.processor(b); err != nil {
+					// Handle error appropriately
+					fmt.Printf("Batch processing error: %v\n", err)
+				}
+			}(batch)
+			
+			batch = make([]interface{}, 0, bp.batchSize)
+		}
+	}
+
+	// Process remaining items
+	if len(batch) > 0 {
+		wg.Add(1)
+		go func(b []interface{}) {
+			defer wg.Done()
+			if err := bp.processor(b); err != nil {
+				fmt.Printf("Final batch processing error: %v\n", err)
+			}
+		}(batch)
+	}
+
+	wg.Wait()
+	return nil
+}
+
+// RateLimiter provides rate limiting functionality
+type RateLimiter struct {
+	rate     float64
+	capacity int64
+	mu       sync.Mutex
+	tokens   int64
+	lastTime time.Time
+}
+
+func NewRateLimiter(rate float64, capacity int64) *RateLimiter {
+	return &RateLimiter{
+		rate:     rate,
+		capacity: capacity,
+		tokens:   capacity,
+		lastTime: time.Now(),
+	}
+}
+
+func (rl *RateLimiter) Allow() bool {
+	rl.mu.Lock()
+	defer rl.mu.Unlock()
+
+	now := time.Now()
+	elapsed := now.Sub(rl.lastTime).Seconds()
+
+	// Add tokens based on elapsed time
+	rl.tokens += int64(elapsed * rl.rate)
+	if rl.tokens > rl.capacity {
+		rl.tokens = rl.capacity
+	}
+
+	rl.lastTime = now
+
+	if rl.tokens >= 1 {
+		rl.tokens--
+		return true
+	}
+
+	return false
+}
+
+// WorkerPool manages a pool of worker goroutines
+type WorkerPool struct {
+	workers   int
+	taskCh    chan func()
+	resultCh  chan error
+	ctx       context.Context
+	cancel    context.CancelFunc
+}
+
+func NewWorkerPool(workers int) *WorkerPool {
+	ctx, cancel := context.WithCancel(context.Background())
+	return &WorkerPool{
+		workers:  workers,
+		taskCh:   make(chan func(), workers*2),
+		resultCh: make(chan error, workers*2),
+		ctx:      ctx,
+		cancel:   cancel,
+	}
+}
+
+func (wp *WorkerPool) Start() {
+	for i := 0; i < wp.workers; i++ {
+		go wp.worker()
+	}
+}
+
+func (wp *WorkerPool) worker() {
+	for {
+		select {
+		case task := <-wp.taskCh:
+			err := task()
+			select {
+			case wp.resultCh <- err:
+			case <-wp.ctx.Done():
+				return
+			}
+		case <-wp.ctx.Done():
+			return
+		}
+	}
+}
+
+func (wp *WorkerPool) Submit(task func() error) error {
+	select {
+	case wp.taskCh <- task:
+		return nil
+	case <-wp.ctx.Done():
+		return wp.ctx.Err()
+	}
+}
+
+func (wp *WorkerPool) GetResult() error {
+	select {
+	case err := <-wp.resultCh:
+		return err
+	case <-wp.ctx.Done():
+		return wp.ctx.Err()
+	}
+}
+
+func (wp *WorkerPool) Stop() {
+	wp.cancel()
+	close(wp.taskCh)
+}
+
+// PerformanceMonitor monitors performance metrics
+type PerformanceMonitor struct {
+	mu              sync.RWMutex
+	operations      int64
+	totalDuration   time.Duration
+	minDuration     time.Duration
+	maxDuration     time.Duration
+	errors          int64
+	startTime       time.Time
+}
+
+func NewPerformanceMonitor() *PerformanceMonitor {
+	return &PerformanceMonitor{
+		startTime:   time.Now(),
+		minDuration: time.Duration(1<<63 - 1), // Max int64
+	}
+}
+
+func (pm *PerformanceMonitor) RecordOperation(duration time.Duration, err error) {
+	pm.mu.Lock()
+	defer pm.mu.Unlock()
+
+	pm.operations++
+	pm.totalDuration += duration
+
+	if duration < pm.minDuration {
+		pm.minDuration = duration
+	}
+
+	if duration > pm.maxDuration {
+		pm.maxDuration = duration
+	}
+
+	if err != nil {
+		pm.errors++
+	}
+}
+
+func (pm *PerformanceMonitor) GetStats() map[string]interface{} {
+	pm.mu.RLock()
+	defer pm.mu.RUnlock()
+
+	totalOps := pm.operations
+	var avgDuration time.Duration
+	if totalOps > 0 {
+		avgDuration = pm.totalDuration / time.Duration(totalOps)
+	}
+
+	uptime := time.Since(pm.startTime)
+	opsPerSecond := float64(totalOps) / uptime.Seconds()
+	errorRate := float64(pm.errors) / float64(totalOps) * 100
+
+	return map[string]interface{}{
+		"operations":         totalOps,
+		"average_duration":   avgDuration.String(),
+		"min_duration":       pm.minDuration.String(),
+		"max_duration":       pm.maxDuration.String(),
+		"total_duration":     pm.totalDuration.String(),
+		"uptime":            uptime.String(),
+		"operations_per_second": opsPerSecond,
+		"error_count":       pm.errors,
+		"error_rate":        fmt.Sprintf("%.2f%%", errorRate),
+	}
+}
+
+// Memory-efficient data structures
+
+type MemoryEfficientMap struct {
+	mu      sync.RWMutex
+	items   map[string]interface{}
+	keys    []string // Cache keys for iteration
+	version int64
+}
+
+func NewMemoryEfficientMap() *MemoryEfficientMap {
+	return &MemoryEfficientMap{
+		items: make(map[string]interface{}),
+		keys:  make([]string, 0),
+	}
+}
+
+func (m *MemoryEfficientMap) Set(key string, value interface{}) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	if _, exists := m.items[key]; !exists {
+		m.keys = append(m.keys, key)
+	}
+	m.items[key] = value
+	m.version++
+}
+
+func (m *MemoryEfficientMap) Get(key string) (interface{}, bool) {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	value, exists := m.items[key]
+	return value, exists
+}
+
+func (m *MemoryEfficientMap) Keys() []string {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	return append([]string(nil), m.keys...)
+}
+
+func (m *MemoryEfficientMap) Delete(key string) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	if _, exists := m.items[key]; exists {
+		delete(m.items, key)
+		// Remove from keys slice (this is O(n), acceptable for moderate sizes)
+		for i, k := range m.keys {
+			if k == key {
+				m.keys = append(m.keys[:i], m.keys[i+1:]...)
+				break
+			}
+		}
+		m.version++
+	}
+}
+
+// Usage examples
+
+func demonstratePerformancePatterns() {
+	// Object pooling
+	pool := NewObjectPool(func() interface{} {
+		return make([]byte, 0, 1024) // 1KB buffer
+	})
+
+	// Get object from pool
+	buf := pool.Get().([]byte)
+	buf = buf[:0] // Reset for reuse
+	buf = append(buf, "Hello, World!"...)
+	
+	// Return to pool
+	pool.Put(buf)
+
+	// String building
+	var sb StringBuilder
+	sb.AppendLine("Line 1")
+	sb.AppendLine("Line 2")
+	sb.AppendFormat("Line %d", 3)
+	
+	result := sb.String()
+	fmt.Println(result)
+	sb.Reset()
+
+	// Batch processing
+	batchProcessor := NewBatchProcessor(10, 4, func(batch []interface{}) error {
+		fmt.Printf("Processing batch of %d items\n", len(batch))
+		time.Sleep(10 * time.Millisecond) // Simulate work
+		return nil
+	})
+
+	ctx := context.Background()
+	items := make(chan interface{}, 100)
+	
+	// Add items
+	for i := 0; i < 100; i++ {
+		items <- i
+	}
+	close(items)
+
+	if err := batchProcessor.Process(ctx, items); err != nil {
+		fmt.Printf("Batch processing error: %v\n", err)
+	}
+
+	// Worker pool
+	workerPool := NewWorkerPool(4)
+	workerPool.Start()
+	
+	defer workerPool.Stop()
+
+	// Submit tasks
+	for i := 0; i < 10; i++ {
+		taskID := i
+		task := func() error {
+			fmt.Printf("Processing task %d\n", taskID)
+			time.Sleep(100 * time.Millisecond) // Simulate work
+			return nil
+		}
+		
+		if err := workerPool.Submit(task); err != nil {
+			fmt.Printf("Failed to submit task %d: %v\n", taskID, err)
+		}
+	}
+
+	// Wait for results
+	for i := 0; i < 10; i++ {
+		if err := workerPool.GetResult(); err != nil {
+			fmt.Printf("Task error: %v\n", err)
+		}
+	}
+
+	// Performance monitoring
+	monitor := NewPerformanceMonitor()
+	
+	for i := 0; i < 1000; i++ {
+		start := time.Now()
+		// Simulate operation
+		time.Sleep(time.Microsecond * 100)
+		duration := time.Since(start)
+		
+		var err error
+		if i%100 == 0 {
+			err = fmt.Errorf("simulated error")
+		}
+		
+		monitor.RecordOperation(duration, err)
+	}
+
+	stats := monitor.GetStats()
+	fmt.Printf("Performance Stats: %+v\n", stats)
+}</code></pre>
+                    </div>
+
+                    <h3>Error Handling Patterns</h3>
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Error Handling</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-go">package errorhandling
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"log"
+	"net/http"
+	"time"
+)
+
+// Custom error types
+type ErrorType string
+
+const (
+	ErrTypeValidation ErrorType = "validation"
+	ErrTypeNotFound   ErrorType = "not_found"
+	ErrTypePermission ErrorType = "permission"
+	ErrTypeSystem     ErrorType = "system"
+	ErrTypeNetwork    ErrorType = "network"
+)
+
+// AppError represents a custom application error
+type AppError struct {
+	Type        ErrorType `json:"type"`
+	Code        string    `json:"code"`
+	Message     string    `json:"message"`
+	Cause       error     `json:"-"`
+	Timestamp   time.Time `json:"timestamp"`
+	RequestID   string    `json:"request_id,omitempty"`
+	StackTrace  string    `json:"-"`
+}
+
+func (e *AppError) Error() string {
+	if e.Cause != nil {
+		return fmt.Sprintf("%s: %s (caused by: %v)", e.Code, e.Message, e.Cause)
+	}
+	return fmt.Sprintf("%s: %s", e.Code, e.Message)
+}
+
+func (e *AppError) Unwrap() error {
+	return e.Cause
+}
+
+// Error constructors
+func NewValidationError(code, message string, cause error) *AppError {
+	return &AppError{
+		Type:      ErrTypeValidation,
+		Code:      code,
+		Message:   message,
+		Cause:     cause,
+		Timestamp: time.Now(),
+	}
+}
+
+func NewNotFoundError(resource string) *AppError {
+	return &AppError{
+		Type:      ErrTypeNotFound,
+		Code:      "NOT_FOUND",
+		Message:   fmt.Sprintf("Resource '%s' not found", resource),
+		Timestamp: time.Now(),
+	}
+}
+
+func NewPermissionError(operation string) *AppError {
+	return &AppError{
+		Type:      ErrTypePermission,
+		Code:      "PERMISSION_DENIED",
+		Message:   fmt.Sprintf("Permission denied for operation: %s", operation),
+		Timestamp: time.Now(),
+	}
+}
+
+func NewSystemError(code, message string, cause error) *AppError {
+	return &AppError{
+		Type:      ErrTypeSystem,
+		Code:      code,
+		Message:   message,
+		Cause:     cause,
+		Timestamp: time.Now(),
+	}
+}
+
+func NewNetworkError(operation string, cause error) *AppError {
+	return &AppError{
+		Type:      ErrTypeNetwork,
+		Code:      "NETWORK_ERROR",
+		Message:   fmt.Sprintf("Network error during %s: %v", operation, cause),
+		Cause:     cause,
+		Timestamp: time.Now(),
+	}
+}
+
+// Error handler interface
+type ErrorHandler interface {
+	Handle(error) *AppError
+	HandleWithContext(context.Context, error) *AppError
+}
+
+// Default error handler
+type DefaultErrorHandler struct {
+	requestID string
+}
+
+func NewErrorHandler(requestID string) *DefaultErrorHandler {
+	return &DefaultErrorHandler{
+		requestID: requestID,
+	}
+}
+
+func (h *DefaultErrorHandler) Handle(err error) *AppError {
+	return h.HandleWithContext(context.Background(), err)
+}
+
+func (h *DefaultErrorHandler) HandleWithContext(ctx context.Context, err error) *AppError {
+	if appErr, ok := err.(*AppError); ok {
+		appErr.RequestID = h.requestID
+		return appErr
+	}
+
+	// Handle standard Go errors
+	switch {
+	case errors.Is(err, context.Canceled):
+		return &AppError{
+			Type:      ErrTypeSystem,
+			Code:      "CANCELED",
+			Message:   "Operation was canceled",
+			Cause:     err,
+			Timestamp: time.Now(),
+			RequestID: h.requestID,
+		}
+	case errors.Is(err, context.DeadlineExceeded):
+		return &AppError{
+			Type:      ErrTypeSystem,
+			Code:      "TIMEOUT",
+			Message:   "Operation timed out",
+			Cause:     err,
+			Timestamp: time.Now(),
+			RequestID: h.requestID,
+		}
+	default:
+		return &AppError{
+			Type:      ErrTypeSystem,
+			Code:      "UNKNOWN_ERROR",
+			Message:   "An unexpected error occurred",
+			Cause:     err,
+			Timestamp: time.Now(),
+			RequestID: h.requestID,
+		}
+	}
+}
+
+// Safe operation wrapper
+func SafeExecute[T any](fn func() (T, error), handlers ...ErrorHandler) (T, *AppError) {
+	var result T
+	err := func() (err error) {
+		defer func() {
+			if r := recover(); r != nil {
+				err = fmt.Errorf("panic recovered: %v", r)
+			}
+		}()
+		
+		result, err = fn()
+		return err
+	}()
+
+	if err == nil {
+		return result, nil
+	}
+
+	// Use first error handler or default
+	var handler ErrorHandler
+	if len(handlers) > 0 {
+		handler = handlers[0]
+	} else {
+		handler = NewErrorHandler("")
+	}
+
+	appErr := handler.Handle(err)
+	return result, appErr
+}
+
+// HTTP error response
+type HTTPErrorResponse struct {
+	Success bool        `json:"success"`
+	Error   *AppError   `json:"error"`
+	Meta    struct {
+		Timestamp time.Time `json:"timestamp"`
+		RequestID string    `json:"request_id"`
+	} `json:"meta"`
+}
+
+func WriteHTTPError(w http.ResponseWriter, statusCode int, appErr *AppError) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(statusCode)
+	
+	response := HTTPErrorResponse{
+		Success: false,
+		Error:   appErr,
+		Meta: struct {
+			Timestamp time.Time `json:"timestamp"`
+			RequestID string    `json:"request_id"`
+		}{
+			Timestamp: appErr.Timestamp,
+			RequestID: appErr.RequestID,
+		},
+	}
+	
+	// In real implementation, use json.NewEncoder
+	fmt.Printf("HTTP Error: %+v\n", response)
+}
+
+// Repository pattern with error handling
+
+type User struct {
+	ID   uint64 `json:"id"`
+	Name string `json:"name"`
+	Email string `json:"email"`
+}
+
+type UserRepository interface {
+	GetByID(id uint64) (*User, *AppError)
+	Create(user *User) *AppError
+	Update(user *User) *AppError
+	Delete(id uint64) *AppError
+}
+
+type InMemoryUserRepository struct {
+	users  map[uint64]*User
+	nextID uint64
+	mu     sync.RWMutex
+}
+
+func NewInMemoryUserRepository() *InMemoryUserRepository {
+	return &InMemoryUserRepository{
+		users: make(map[uint64]*User),
+	}
+}
+
+func (r *InMemoryUserRepository) GetByID(id uint64) (*User, *AppError) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+	
+	user, exists := r.users[id]
+	if !exists {
+		return nil, NewNotFoundError(fmt.Sprintf("user %d", id))
+	}
+	
+	return user, nil
+}
+
+func (r *InMemoryUserRepository) Create(user *User) *AppError {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	
+	// Check if user already exists
+	for _, u := range r.users {
+		if u.Email == user.Email {
+			return NewValidationError("EMAIL_EXISTS", "User with this email already exists", nil)
+		}
+	}
+	
+	// Assign ID
+	user.ID = r.nextID
+	r.nextID++
+	
+	// Store user
+	r.users[user.ID] = user
+	
+	return nil
+}
+
+func (r *InMemoryUserRepository) Update(user *User) *AppError {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	
+	_, exists := r.users[user.ID]
+	if !exists {
+		return NewNotFoundError(fmt.Sprintf("user %d", user.ID))
+	}
+	
+	r.users[user.ID] = user
+	return nil
+}
+
+func (r *InMemoryUserRepository) Delete(id uint64) *AppError {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	
+	_, exists := r.users[id]
+	if !exists {
+		return NewNotFoundError(fmt.Sprintf("user %d", id))
+	}
+	
+	delete(r.users, id)
+	return nil
+}
+
+// Service layer with error handling
+
+type UserService struct {
+	repo UserRepository
+}
+
+func NewUserService(repo UserRepository) *UserService {
+	return &UserService{
+		repo: repo,
+	}
+}
+
+func (s *UserService) CreateUser(name, email string) (*User, *AppError) {
+	// Validation
+	if name == "" {
+		return nil, NewValidationError("INVALID_NAME", "Name cannot be empty", nil)
+	}
+	
+	if email == "" {
+		return nil, NewValidationError("INVALID_EMAIL", "Email cannot be empty", nil)
+	}
+	
+	// Create user
+	user := &User{
+		Name:  name,
+		Email: email,
+	}
+	
+	if appErr := s.repo.Create(user); appErr != nil {
+		return nil, appErr
+	}
+	
+	return user, nil
+}
+
+func (s *UserService) GetUser(id uint64) (*User, *AppError) {
+	return s.repo.GetByID(id)
+}
+
+func demonstrateErrorHandling() {
+	// Create user service
+	repo := NewInMemoryUserRepository()
+	service := NewUserService(repo)
+	
+	// Create user with error handling
+	result, appErr := SafeExecute(func() (*User, error) {
+		return service.CreateUser("John Doe", "john@example.com")
+	})
+	
+	if appErr != nil {
+		log.Printf("Error creating user: %v", appErr)
+		return
+	}
+	
+	log.Printf("Created user: %+v", result)
+	
+	// Get user with error handling
+	result, appErr = SafeExecute(func() (*User, error) {
+		return service.GetUser(1)
+	})
+	
+	if appErr != nil {
+		log.Printf("Error getting user: %v", appErr)
+		return
+	}
+	
+	log.Printf("Retrieved user: %+v", result)
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Debugging -->
+                <section class="content-section">
+                    <h2>Debugging and Development</h2>
+                    <p>Debug Go applications on MultiOS:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Debug Configuration</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash"># Debug build
+go build -gcflags="-N -l" -o my_app_debug my_app.go
+
+# Run with Delve debugger
+dlv debug my_app.go
+
+# Run with race detector
+go build -race -o my_app_race my_app.go
+./my_app_race
+
+# Profile CPU usage
+go build -cpuprofile=cpu.prof -o my_app my_app.go
+./my_app
+go tool pprof my_app cpu.prof
+
+# Profile memory usage
+go build -memprofile=mem.prof -o my_app my_app.go
+./my_app
+go tool pprof my_app mem.prof
+
+# Trace execution
+go build -trace=trace.out -o my_app my_app.go
+./my_app
+go tool trace trace.out</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Debug Utilities</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-go">package debug
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"os"
+	"runtime"
+	"runtime/debug"
+	"runtime/pprof"
+	"sync"
+	"time"
+)
+
+// Logger provides structured logging
+type Logger struct {
+	mu       sync.Mutex
+	level    LogLevel
+	writer   *log.Logger
+	context  map[string]interface{}
+}
+
+type LogLevel int
+
+const (
+	LevelDebug LogLevel = iota
+	LevelInfo
+	LevelWarning
+	LevelError
+	LevelFatal
+)
+
+func NewLogger(level LogLevel, writer *os.File) *Logger {
+	return &Logger{
+		level:  level,
+		writer: log.New(writer, "", log.LstdFlags|log.Lshortfile),
+		context: make(map[string]interface{}),
+	}
+}
+
+func (l *Logger) WithContext(key, value string) *Logger {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	
+	newLogger := &Logger{
+		level:  l.level,
+		writer: l.writer,
+		context: make(map[string]interface{}),
+	}
+	
+	for k, v := range l.context {
+		newLogger.context[k] = v
+	}
+	newLogger.context[key] = value
+	
+	return newLogger
+}
+
+func (l *Logger) Debug(msg string, args ...interface{}) {
+	if l.level <= LevelDebug {
+		l.log(LevelDebug, msg, args...)
+	}
+}
+
+func (l *Logger) Info(msg string, args ...interface{}) {
+	if l.level <= LevelInfo {
+		l.log(LevelInfo, msg, args...)
+	}
+}
+
+func (l *Logger) Warning(msg string, args ...interface{}) {
+	if l.level <= LevelWarning {
+		l.log(LevelWarning, msg, args...)
+	}
+}
+
+func (l *Logger) Error(msg string, args ...interface{}) {
+	if l.level <= LevelError {
+		l.log(LevelError, msg, args...)
+	}
+}
+
+func (l *Logger) Fatal(msg string, args ...interface{}) {
+	l.log(LevelFatal, msg, args...)
+	os.Exit(1)
+}
+
+func (l *Logger) log(level LogLevel, msg string, args ...interface{}) {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	
+	// Add context to log message
+	format := msg
+	if len(l.context) > 0 {
+		format = fmt.Sprintf("%s | context: %v", msg, l.context)
+	}
+	
+	// Add timestamp and level
+	timestamp := time.Now().Format("2006-01-02 15:04:05.000")
+	levelStr := []string{"DEBUG", "INFO", "WARNING", "ERROR", "FATAL"}[level]
+	
+	fullMsg := fmt.Sprintf("[%s] [%s] %s", timestamp, levelStr, format)
+	
+	if len(args) > 0 {
+		fullMsg += fmt.Sprintf(" | args: %v", args)
+	}
+	
+	l.writer.Println(fullMsg)
+}
+
+// Profiler for performance monitoring
+type Profiler struct {
+	mu          sync.RWMutex
+	operations  int64
+	totalTime   time.Duration
+	minTime     time.Duration
+	maxTime     time.Duration
+	startTime   time.Time
+	isProfiling bool
+}
+
+func NewProfiler() *Profiler {
+	return &Profiler{
+		startTime: time.Now(),
+		minTime:   time.Duration(1<<63 - 1), // Max int64
+	}
+}
+
+func (p *Profiler) Start() {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.isProfiling = true
+}
+
+func (p *Profiler) Stop() {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.isProfiling = false
+}
+
+func (p *Profiler) Record(operation string, duration time.Duration) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	
+	if !p.isProfiling {
+		return
+	}
+	
+	p.operations++
+	p.totalTime += duration
+	
+	if duration < p.minTime {
+		p.minTime = duration
+	}
+	
+	if duration > p.maxTime {
+		p.maxTime = duration
+	}
+	
+	// Log operation if it takes too long
+	if duration > 100*time.Millisecond {
+		fmt.Printf("SLOW OPERATION: %s took %v\n", operation, duration)
+	}
+}
+
+func (p *Profiler) GetStats() map[string]interface{} {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+	
+	totalOps := p.operations
+	var avgDuration time.Duration
+	if totalOps > 0 {
+		avgDuration = p.totalTime / time.Duration(totalOps)
+	}
+	
+	uptime := time.Since(p.startTime)
+	opsPerSecond := float64(totalOps) / uptime.Seconds()
+	
+	return map[string]interface{}{
+		"operations":              totalOps,
+		"total_time":              p.totalTime.String(),
+		"average_duration":        avgDuration.String(),
+		"min_duration":            p.minTime.String(),
+		"max_duration":            p.maxTime.String(),
+		"uptime":                  uptime.String(),
+		"operations_per_second":   opsPerSecond,
+		"is_profiling":           p.isProfiling,
+	}
+}
+
+// MemoryTracker tracks memory usage
+type MemoryTracker struct {
+	mu             sync.RWMutex
+	allocations    map[uintptr]sizeInfo
+	totalAlloc     int64
+	totalFreed     int64
+	currentAlloc   int64
+	allocationCount int64
+}
+
+type sizeInfo struct {
+	size int
+	stamp time.Time
+}
+
+func NewMemoryTracker() *MemoryTracker {
+	mt := &MemoryTracker{
+		allocations: make(map[uintptr]sizeInfo),
+	}
+	
+	// Hook into runtime memory events
+	runtime.SetGCStats(&runtime.GCStats{})
+	
+	return mt
+}
+
+func (mt *MemoryTracker) Allocate(size int) uintptr {
+	ptr := make([]byte, size) // This will be GC'd, but we track before
+	
+	mt.mu.Lock()
+	defer mt.mu.Unlock()
+	
+	addr := uintptr(unsafe.Pointer(&ptr[0]))
+	mt.allocations[addr] = sizeInfo{
+		size:  size,
+		stamp: time.Now(),
+	}
+	
+	mt.totalAlloc += int64(size)
+	mt.currentAlloc += int64(size)
+	mt.allocationCount++
+	
+	return addr
+}
+
+func (mt *MemoryTracker) Deallocate(ptr uintptr) bool {
+	mt.mu.Lock()
+	defer mt.mu.Unlock()
+	
+	info, exists := mt.allocations[ptr]
+	if !exists {
+		return false
+	}
+	
+	delete(mt.allocations, ptr)
+	mt.totalFreed += int64(info.size)
+	mt.currentAlloc -= int64(info.size)
+	
+	return true
+}
+
+func (mt *MemoryTracker) GetStats() map[string]interface{} {
+	mt.mu.RLock()
+	defer mt.mu.RUnlock()
+	
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	
+	return map[string]interface{}{
+		"tracked_allocations": len(mt.allocations),
+		"total_allocated":     mt.totalAlloc,
+		"total_freed":        mt.totalFreed,
+		"current_tracked":    mt.currentAlloc,
+		"allocation_count":   mt.allocationCount,
+		"goroutines":         runtime.NumGoroutine(),
+		"gc_pause_total":     fmt.Sprintf("%v", time.Duration(m.PauseTotalNs)),
+		"heap_alloc":         m.HeapAlloc,
+		"heap_sys":          m.HeapSys,
+		"num_gc":             m.NumGC,
+	}
+}
+
+func (mt *MemoryTracker) PrintLeakedAllocations() {
+	mt.mu.RLock()
+	defer mt.mu.RUnlock()
+	
+	if len(mt.allocations) == 0 {
+		fmt.Println("No memory leaks detected")
+		return
+	}
+	
+	fmt.Printf("Potential memory leaks (%d allocations):\n", len(mt.allocations))
+	for addr, info := range mt.allocations {
+		age := time.Since(info.stamp)
+		if age > time.Minute {
+			fmt.Printf("  Leaked %d bytes allocated %v ago at %p\n", 
+				info.size, age, unsafe.Pointer(addr))
+		}
+	}
+}
+
+// StackTracer captures stack traces
+type StackTracer struct {
+	mu     sync.Mutex
+	traces []stackInfo
+}
+
+type stackInfo struct {
+	timestamp time.Time
+	stack     []byte
+	reason    string
+}
+
+func NewStackTracer() *StackTracer {
+	return &StackTracer{}
+}
+
+func (st *StackTracer) Capture(reason string) {
+	st.mu.Lock()
+	defer st.mu.Unlock()
+	
+	stack := make([]byte, 4096)
+	n := runtime.Stack(stack, true)
+	
+	st.traces = append(st.traces, stackInfo{
+		timestamp: time.Now(),
+		stack:     stack[:n],
+		reason:    reason,
+	})
+}
+
+func (st *StackTracer) PrintTraces() {
+	st.mu.Lock()
+	defer st.mu.Unlock()
+	
+	for i, trace := range st.traces {
+		fmt.Printf("=== Stack Trace %d (%v ago) ===\n", 
+			i+1, time.Since(trace.timestamp))
+		fmt.Printf("Reason: %s\n", trace.reason)
+		fmt.Printf("Stack:\n%s\n", trace.stack)
+		fmt.Println()
+	}
+}
+
+// Benchmark runner
+type Benchmark struct {
+	name        string
+	iterations  int
+	mu          sync.Mutex
+	results     []time.Duration
+	startTime   time.Time
+}
+
+func NewBenchmark(name string, iterations int) *Benchmark {
+	return &Benchmark{
+		name:       name,
+		iterations: iterations,
+		results:    make([]time.Duration, 0, iterations),
+	}
+}
+
+func (b *Benchmark) Run(fn func()) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	
+	b.startTime = time.Now()
+	
+	for i := 0; i < b.iterations; i++ {
+		start := time.Now()
+		fn()
+		duration := time.Since(start)
+		b.results = append(b.results, duration)
+	}
+}
+
+func (b *Benchmark) GetStats() map[string]interface{} {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	
+	if len(b.results) == 0 {
+		return map[string]interface{}{}
+	}
+	
+	// Calculate statistics
+	var total time.Duration
+	min := b.results[0]
+	max := b.results[0]
+	
+	for _, duration := range b.results {
+		total += duration
+		if duration < min {
+			min = duration
+		}
+		if duration > max {
+			max = duration
+		}
+	}
+	
+	avg := total / time.Duration(len(b.results))
+	
+	return map[string]interface{}{
+		"name":       b.name,
+		"iterations": len(b.results),
+		"total_time": total.String(),
+		"average":    avg.String(),
+		"min":        min.String(),
+		"max":        max.String(),
+	}
+}
+
+// HTTP middleware for debugging
+type DebugMiddleware struct {
+	logger    *Logger
+	profiler  *Profiler
+}
+
+func NewDebugMiddleware(logger *Logger, profiler *Profiler) *DebugMiddleware {
+	return &DebugMiddleware{
+		logger:   logger,
+		profiler: profiler,
+	}
+}
+
+func (dm *DebugMiddleware) Wrap(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		
+		// Log request
+		dm.logger.Info("Request started", 
+			"method", r.Method, 
+			"path", r.URL.Path,
+			"remote_addr", r.RemoteAddr)
+		
+		// Capture any panics
+		defer func() {
+			if r := recover(); r != nil {
+				dm.logger.Error("Panic recovered", "panic", r)
+				http.Error(w, "Internal Server Error", 500)
+			}
+		}()
+		
+		// Call next handler
+		next(w, r)
+		
+		// Record performance
+		duration := time.Since(start)
+		dm.profiler.Record("http_request", duration)
+		
+		// Log response
+		dm.logger.Info("Request completed", 
+			"method", r.Method,
+			"path", r.URL.Path,
+			"duration", duration.String())
+	}
+}
+
+// usage examples
+
+func demonstrateDebugTools() {
+	// Create logger
+	logger := NewLogger(LevelDebug, os.Stdout)
+	logger = logger.WithContext("app", "demo")
+	
+	// Create profiler
+	profiler := NewProfiler()
+	profiler.Start()
+	defer profiler.Stop()
+	
+	// Create memory tracker
+	mt := NewMemoryTracker()
+	defer mt.PrintLeakedAllocations()
+	
+	// Create stack tracer
+	st := NewStackTracer()
+	
+	// Benchmark operations
+	benchmark := NewBenchmark("String Concatenation", 1000)
+	
+	benchmark.Run(func() {
+		// Test operation
+		result := ""
+		for i := 0; i < 100; i++ {
+			result += fmt.Sprintf("item%d ", i)
+		}
+		_ = result
+	})
+	
+	// Print benchmark results
+	stats := benchmark.GetStats()
+	fmt.Printf("Benchmark Results: %+v\n", stats)
+	
+	// Print profiler stats
+	profStats := profiler.GetStats()
+	fmt.Printf("Profiler Stats: %+v\n", profStats)
+	
+	// Print memory stats
+	memStats := mt.GetStats()
+	fmt.Printf("Memory Stats: %+v\n", memStats)
+	
+	// Log some messages
+	logger.Debug("Debug message", "value", 42)
+	logger.Info("Info message", "status", "ok")
+	logger.Warning("Warning message", "issue", "something might be wrong")
+	logger.Error("Error message", "error", fmt.Errorf("sample error"))
+	
+	// Capture stack trace
+	st.Capture("Testing stack capture")
+	st.PrintTraces()
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Conclusion -->
+                <section class="content-section">
+                    <h2>Summary</h2>
+                    <p>Go integration with MultiOS provides:</p>
+                    <ul>
+                        <li>Fast compilation and efficient native binaries</li>
+                        <li>Built-in concurrency with goroutines and channels</li>
+                        <li>Memory safety with garbage collection</li>
+                        <li>Excellent networking and web framework support</li>
+                        <li>Comprehensive error handling and debugging tools</li>
+                        <li>Simple, readable code with strong tooling ecosystem</li>
+                    </ul>
+                    
+                    <div class="next-steps">
+                        <h3>Next Steps</h3>
+                        <ul>
+                            <li>Explore the <a href="../../api_reference/index.html">API Reference</a> for detailed function documentation</li>
+                            <li>Try the <a href="../../tutorials/intermediate/index.html">Intermediate Tutorials</a> for hands-on examples</li>
+                            <li>Check out <a href="../rust.html">Rust Integration</a> for performance-critical components</li>
+                            <li>Use the <a href="../../api-explorer.html">API Explorer</a> for interactive testing</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/search.js"></script>
+    <script src="../../assets/js/theme.js"></script>
+    <script src="../../assets/js/interactive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

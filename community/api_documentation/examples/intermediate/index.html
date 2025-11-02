@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intermediate Examples - MultiOS API Documentation</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/interactive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="themeToggle" class="btn-icon">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h1><i class="fas fa-microchip"></i> MultiOS API</h1>
+                <button class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../../index.html" class="nav-link">
+                    <i class="fas fa-home"></i> Overview
+                </a></li>
+                <li><a href="../../api_reference/index.html" class="nav-link">
+                    <i class="fas fa-book"></i> API Reference
+                </a></li>
+                <li><a href="../beginner/index.html" class="nav-link">
+                    <i class="fas fa-play-circle"></i> Beginner Examples
+                </a></li>
+                <li><a href="index.html" class="nav-link active">
+                    <i class="fas fa-code"></i> Intermediate Examples
+                </a></li>
+                <li><a href="../advanced/index.html" class="nav-link">
+                    <i class="fas fa-fire"></i> Advanced Examples
+                </a></li>
+                <li><a href="../../tutorials/index.html" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i> Tutorials
+                </a></li>
+                <li><a href="../../guides/index.html" class="nav-link">
+                    <i class="fas fa-bookmark"></i> Integration Guides
+                </a></li>
+                <li><a href="../../interactive/api-explorer.html" class="nav-link">
+                    <i class="fas fa-search"></i> API Explorer
+                </a></li>
+                <li><a href="../../search/index.html" class="nav-link">
+                    <i class="fas fa-search"></i> Search
+                </a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="page-header">
+                <div class="breadcrumb">
+                    <a href="../../index.html">Home</a>
+                    <span class="separator">/</span>
+                    <a href="../beginner/index.html">Examples</a>
+                    <span class="separator">/</span>
+                    <span class="current">Intermediate</span>
+                </div>
+                <h1 class="page-title">
+                    <i class="fas fa-code"></i>
+                    Intermediate Examples
+                </h1>
+                <p class="page-description">
+                    Advanced API usage examples demonstrating MultiOS capabilities with complex integrations, multi-threading, and real-world applications.
+                </p>
+            </header>
+
+            <div class="examples-categories">
+                <div class="category-filter">
+                    <button class="category-btn active" data-category="all">All Examples</button>
+                    <button class="category-btn" data-category="system">System Integration</button>
+                    <button class="category-btn" data-category="performance">Performance Optimization</button>
+                    <button class="category-btn" data-category="security">Security & Authentication</button>
+                    <button class="category-btn" data-category="io">Advanced I/O</button>
+                    <button class="category-btn" data-category="concurrency">Concurrency</button>
+                    <button class="category-btn" data-category="network">Network Programming</button>
+                </div>
+
+                <div class="examples-grid">
+                    <!-- System Integration Examples -->
+                    <div class="example-card" data-category="system">
+                        <div class="example-header">
+                            <h3><i class="fas fa-cogs"></i> System Service Integration</h3>
+                            <span class="difficulty-badge intermediate">Intermediate</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                Integrating with system services, managing daemons, and handling system configuration. Demonstrates registry access and service orchestration.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">Rust</span>
+                                <span class="language-tag">C</span>
+                                <span class="language-tag">Python</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-rust">// System Service Manager
+use multios::system::ServiceManager;
+use multios::registry::Registry;
+
+async fn manage_system_services() -> Result<(), MultiOSError> {
+    let service_manager = ServiceManager::new();
+    
+    // Create service configuration
+    let config = ServiceConfig::builder()
+        .name("my_service")
+        .executable("/usr/local/bin/myservice")
+        .auto_restart(true)
+        .restart_delay(Duration::from_secs(5))
+        .build()?;
+    
+    // Install and start service
+    service_manager.install_service(&config).await?;
+    service_manager.start_service("my_service").await?;
+    
+    // Monitor service status
+    let status = service_manager.get_service_status("my_service").await?;
+    println!("Service status: {:?}", status);
+    
+    Ok(())
+}</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('system-service-integration')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('system-service-integration')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="example-card" data-category="system">
+                        <div class="example-header">
+                            <h3><i class="fas fa-database"></i> Database Integration Layer</h3>
+                            <span class="difficulty-badge intermediate">Intermediate</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                Building a robust database abstraction layer with connection pooling, transaction management, and error handling.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">Rust</span>
+                                <span class="language-tag">C++</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-rust">// Database Abstraction Layer
+use multios::database::{Database, ConnectionPool, Transaction};
+use multios::sql::QueryBuilder;
+
+struct DatabaseLayer {
+    pool: ConnectionPool,
+    metrics: Arc<DatabaseMetrics>,
+}
+
+impl DatabaseLayer {
+    async fn execute_transaction<F, T>(&self, func: F) -> Result<T, DatabaseError>
+    where
+        F: FnOnce(&mut Transaction) -> Result<T, DatabaseError>,
+    {
+        let mut tx = self.pool.begin_transaction().await?;
+        
+        let start_time = Instant::now();
+        let result = func(&mut tx).await;
+        let duration = start_time.elapsed();
+        
+        match &result {
+            Ok(_) => {
+                tx.commit().await?;
+                self.metrics.record_success(duration);
+                Ok(result?)
+            }
+            Err(e) => {
+                tx.rollback().await?;
+                self.metrics.record_error(e);
+                Err(e)
+            }
+        }
+    }
+    
+    async fn query_with_timeout(&self, sql: &str, timeout: Duration) -> Result<Vec<Row>, DatabaseError> {
+        tokio::time::timeout(timeout, self.query(sql)).await?
+    }
+}</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('database-integration')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('database-integration')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Optimization Examples -->
+                    <div class="example-card" data-category="performance">
+                        <div class="example-header">
+                            <h3><i class="fas fa-tachometer-alt"></i> Memory Pool Management</h3>
+                            <span class="difficulty-badge intermediate">Intermediate</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                Implementing custom memory pools for high-performance applications. Shows memory optimization techniques and pool allocation strategies.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">C</span>
+                                <span class="language-tag">Rust</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-c">// Memory Pool Implementation
+#include <multios/memory.h>
+#include <multios/thread.h>
+#include <stdlib.h>
+
+typedef struct memory_pool {
+    void* start_addr;
+    size_t block_size;
+    size_t num_blocks;
+    pthread_mutex_t lock;
+    uint8_t* free_list;
+    size_t free_count;
+} memory_pool_t;
+
+memory_pool_t* memory_pool_create(size_t block_size, size_t num_blocks) {
+    memory_pool_t* pool = malloc(sizeof(memory_pool_t));
+    if (!pool) return NULL;
+    
+    size_t total_size = block_size * num_blocks;
+    pool->start_addr = mmap(NULL, total_size, 
+                           PROT_READ | PROT_WRITE,
+                           MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+    
+    if (pool->start_addr == MAP_FAILED) {
+        free(pool);
+        return NULL;
+    }
+    
+    pool->block_size = block_size;
+    pool->num_blocks = num_blocks;
+    pool->free_list = malloc(num_blocks * sizeof(uint8_t));
+    
+    for (size_t i = 0; i < num_blocks; i++) {
+        pool->free_list[i] = (uint8_t)i;
+    }
+    pool->free_count = num_blocks;
+    
+    pthread_mutex_init(&pool->lock, NULL);
+    return pool;
+}
+
+void* memory_pool_alloc(memory_pool_t* pool) {
+    if (!pool || pool->free_count == 0) return NULL;
+    
+    pthread_mutex_lock(&pool->lock);
+    size_t block_index = pool->free_list[--pool->free_count];
+    pthread_mutex_unlock(&pool->lock);
+    
+    return (uint8_t*)pool->start_addr + (block_index * pool->block_size);
+}
+
+void memory_pool_free(memory_pool_t* pool, void* ptr) {
+    if (!pool || !ptr) return;
+    
+    pthread_mutex_lock(&pool->lock);
+    size_t block_index = ((uint8_t*)ptr - (uint8_t*)pool->start_addr) / pool->block_size;
+    pool->free_list[pool->free_count++] = (uint8_t)block_index;
+    pthread_mutex_unlock(&pool->lock);
+}</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('memory-pool')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('memory-pool')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="example-card" data-category="performance">
+                        <div class="example-header">
+                            <h3><i class="fas fa-stream"></i> High-Performance Streaming</h3>
+                            <span class="difficulty-badge intermediate">Intermediate</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                Building efficient data streaming pipelines with batch processing, backpressure handling, and zero-copy operations.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">Rust</span>
+                                <span class="language-tag">C++</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-rust">// High-Performance Stream Processor
+use multios::io::{Stream, StreamConfig, BatchProcessor};
+use multios::memory::ZeroCopyBuffer;
+
+struct StreamProcessor {
+    input: Stream<DataFrame>,
+    processor: BatchProcessor<DataFrame>,
+    output: Stream<DataFrame>,
+    buffer_pool: Arc<BufferPool>,
+}
+
+impl StreamProcessor {
+    async fn run(&self) -> Result<(), StreamError> {
+        let mut batch = Vec::new();
+        let mut current_batch_size = 0;
+        
+        loop {
+            // Read with backpressure
+            let frame = match self.input.recv().await {
+                Ok(frame) => frame,
+                Err(_) => break,
+            };
+            
+            batch.push(frame);
+            current_batch_size += 1;
+            
+            // Process in batches for efficiency
+            if current_batch_size >= 1000 {
+                self.process_batch(&batch).await?;
+                batch.clear();
+                current_batch_size = 0;
+            }
+        }
+        
+        // Process remaining items
+        if !batch.is_empty() {
+            self.process_batch(&batch).await?;
+        }
+        
+        Ok(())
+    }
+    
+    async fn process_batch(&self, batch: &Vec<DataFrame>) -> Result<(), StreamError> {
+        // Zero-copy operations where possible
+        let processed_batch = self.processor.process_batch(batch).await?;
+        
+        for frame in processed_batch.into_iter() {
+            self.output.send(frame).await?;
+        }
+        
+        Ok(())
+    }
+}</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('streaming-processor')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('streaming-processor')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security & Authentication Examples -->
+                    <div class="example-card" data-category="security">
+                        <div class="example-header">
+                            <h3><i class="fas fa-shield-alt"></i> Token-Based Authentication</h3>
+                            <span class="difficulty-badge intermediate">Intermediate</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                Implementing secure token-based authentication with JWT, refresh tokens, and session management.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">Rust</span>
+                                <span class="language-tag">Python</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-rust">// JWT Authentication Service
+use multios::security::{JWTService, TokenManager, Claims};
+use multios::crypto::{HashService, SigningKey};
+
+struct AuthService {
+    jwt_service: JWTService,
+    token_manager: TokenManager,
+    hash_service: HashService,
+    key_rotation_interval: Duration,
+}
+
+impl AuthService {
+    async fn authenticate_user(&self, credentials: UserCredentials) -> Result<AuthResponse, AuthError> {
+        // Verify credentials
+        let user = self.validate_credentials(&credentials).await?;
+        
+        // Generate tokens
+        let access_token = self.jwt_service.generate_token(&Claims::new(user.id))?;
+        let refresh_token = self.generate_refresh_token(user.id).await?;
+        
+        // Store session
+        self.token_manager.store_session(user.id, &refresh_token).await?;
+        
+        Ok(AuthResponse {
+            access_token,
+            refresh_token,
+            expires_in: 3600,
+            token_type: "Bearer".to_string(),
+        })
+    }
+    
+    async fn refresh_access_token(&self, refresh_token: &str) -> Result<String, AuthError> {
+        let claims = self.jwt_service.validate_token(refresh_token)?;
+        
+        // Verify refresh token is still valid
+        let stored_token = self.token_manager.get_session(claims.user_id).await?;
+        if stored_token != refresh_token {
+            return Err(AuthError::InvalidRefreshToken);
+        }
+        
+        // Generate new access token
+        self.jwt_service.generate_token(&Claims::new(claims.user_id))
+    }
+    
+    async fn revoke_token(&self, user_id: UserId) -> Result<(), AuthError> {
+        self.token_manager.revoke_session(user_id).await?;
+        Ok(())
+    }
+}</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('jwt-auth')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('jwt-auth')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced I/O Examples -->
+                    <div class="example-card" data-category="io">
+                        <div class="example-header">
+                            <h3><i class="fas fa-exchange-alt"></i> Zero-Copy File Operations</h3>
+                            <span class="difficulty-badge intermediate">Intermediate</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                Advanced file I/O techniques including memory-mapped files, splice operations, and direct I/O for maximum performance.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">C</span>
+                                <span class="language-tag">Rust</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-c">// Zero-Copy File Operations
+#include <multios/io.h>
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+typedef struct file_operations {
+    int fd;
+    void* mapped_region;
+    size_t file_size;
+    size_t mapped_size;
+} file_ops_t;
+
+file_ops_t* file_ops_open(const char* filepath, size_t max_mapping_size) {
+    file_ops_t* ops = malloc(sizeof(file_ops_t));
+    if (!ops) return NULL;
+    
+    ops->fd = open(filepath, O_RDWR);
+    if (ops->fd < 0) {
+        free(ops);
+        return NULL;
+    }
+    
+    struct stat st;
+    if (fstat(ops->fd, &st) < 0) {
+        close(ops->fd);
+        free(ops);
+        return NULL;
+    }
+    
+    ops->file_size = st.st_size;
+    ops->mapped_size = min(st.st_size, max_mapping_size);
+    
+    // Memory map the file
+    ops->mapped_region = mmap(NULL, ops->mapped_size,
+                             PROT_READ | PROT_WRITE,
+                             MAP_SHARED, ops->fd, 0);
+    
+    if (ops->mapped_region == MAP_FAILED) {
+        close(ops->fd);
+        free(ops);
+        return NULL;
+    }
+    
+    return ops;
+}
+
+int file_ops_splice_to_pipe(file_ops_t* ops, int pipefd, size_t max_bytes) {
+    size_t bytes_to_splice = min(ops->mapped_size - ops->current_pos, max_bytes);
+    
+    if (bytes_to_splice == 0) return 0;
+    
+    // Splice directly from memory to pipe (zero-copy)
+    ssize_t bytes_spliced = splice(ops->fd, &ops->current_pos,
+                                  pipefd, NULL,
+                                  bytes_to_splice,
+                                  SPLICE_F_MOVE | SPLICE_F_NONBLOCK);
+    
+    return bytes_spliced;
+}
+
+void file_ops_close(file_ops_t* ops) {
+    if (ops) {
+        if (ops->mapped_region && ops->mapped_region != MAP_FAILED) {
+            munmap(ops->mapped_region, ops->mapped_size);
+        }
+        if (ops->fd >= 0) {
+            close(ops->fd);
+        }
+        free(ops);
+    }
+}</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('zero-copy-io')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('zero-copy-io')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Concurrency Examples -->
+                    <div class="example-card" data-category="concurrency">
+                        <div class="example-header">
+                            <h3><i class="fas fa-users"></i> Actor System Implementation</h3>
+                            <span class="difficulty-badge intermediate">Intermediate</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                Building a message-passing actor system with supervision trees, message routing, and error handling.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">Rust</span>
+                                <span class="language-tag">Go</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-rust">// Actor System Implementation
+use multios::actor::{Actor, ActorRef, Message, ActorSystem, SupervisorStrategy};
+use std::sync::{Arc, Mutex};
+
+#[derive(Message)]
+enum WorkerMessage {
+    ProcessData(Vec<u8>),
+    Shutdown,
+}
+
+struct WorkerActor {
+    id: WorkerId,
+    message_count: Arc<Mutex<u64>>,
+}
+
+impl Actor for WorkerActor {
+    type Message = WorkerMessage;
+    
+    async fn receive(&mut self, message: Self::Message) {
+        match message {
+            WorkerMessage::ProcessData(data) => {
+                self.process_data(&data).await;
+                
+                let mut count = self.message_count.lock().unwrap();
+                *count += 1;
+                println!("Worker {} processed data, total: {}", self.id, count);
+            }
+            WorkerMessage::Shutdown => {
+                println!("Worker {} shutting down", self.id);
+            }
+        }
+    }
+}
+
+struct Supervisor {
+    workers: Vec<ActorRef<WorkerMessage>>,
+    max_workers: usize,
+}
+
+impl Actor for Supervisor {
+    type Message = WorkerMessage;
+    
+    async fn receive(&mut self, message: Self::Message) {
+        // Route message to available worker (simple round-robin)
+        if let Some(worker) = self.workers.first() {
+            worker.send(message).await;
+        }
+    }
+    
+    async fn child_crashed(&mut self, child_id: usize, error: ActorError) {
+        println!("Worker {} crashed: {:?}", child_id, error);
+        
+        // Implement restart strategy
+        if self.should_restart_worker(child_id) {
+            self.restart_worker(child_id).await;
+        }
+    }
+}
+
+impl Supervisor {
+    async fn new(max_workers: usize) -> ActorRef<WorkerMessage> {
+        let mut workers = Vec::new();
+        
+        for i in 0..max_workers {
+            let worker = WorkerActor {
+                id: WorkerId(i),
+                message_count: Arc::new(Mutex::new(0)),
+            };
+            
+            let worker_ref = ActorSystem::spawn(worker).await;
+            workers.push(worker_ref);
+        }
+        
+        let supervisor = Supervisor {
+            workers,
+            max_workers,
+        };
+        
+        ActorSystem::spawn_supervised(supervisor, SupervisorStrategy::OneForOne).await
+    }
+}</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('actor-system')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('actor-system')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Network Programming Examples -->
+                    <div class="example-card" data-category="network">
+                        <div class="example-header">
+                            <h3><i class="fas fa-network-wired"></i> Asynchronous HTTP Client</h3>
+                            <span class="difficulty-badge intermediate">Intermediate</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                Building a high-performance asynchronous HTTP client with connection pooling, request queuing, and retry logic.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">Rust</span>
+                                <span class="language-tag">Python</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-rust">// Asynchronous HTTP Client
+use multios::network::{HttpClient, HttpRequest, HttpResponse, ConnectionPool};
+use multios::concurrency::{RateLimiter, Semaphore};
+use std::time::{Duration, Instant};
+
+struct AsyncHttpClient {
+    client: HttpClient,
+    connection_pool: ConnectionPool,
+    rate_limiter: RateLimiter,
+    request_semaphore: Semaphore,
+    retry_policy: RetryPolicy,
+}
+
+impl AsyncHttpClient {
+    async fn new(base_url: &str, max_connections: usize, max_concurrent_requests: usize) -> Self {
+        let connection_pool = ConnectionPool::new(max_connections);
+        let rate_limiter = RateLimiter::new(100, Duration::from_secs(1)); // 100 req/sec
+        let request_semaphore = Semaphore::new(max_concurrent_requests);
+        
+        let client = HttpClient::new(base_url, connection_pool.clone());
+        
+        AsyncHttpClient {
+            client,
+            connection_pool,
+            rate_limiter,
+            request_semaphore,
+            retry_policy: RetryPolicy::default(),
+        }
+    }
+    
+    async fn request(&self, mut request: HttpRequest) -> Result<HttpResponse, HttpError> {
+        // Apply rate limiting
+        self.rate_limiter.acquire().await;
+        
+        // Limit concurrent requests
+        let _permit = self.request_semaphore.acquire().await;
+        
+        let mut attempt = 0;
+        let max_attempts = self.retry_policy.max_attempts();
+        
+        loop {
+            attempt += 1;
+            
+            match self.execute_request(&request).await {
+                Ok(response) => {
+                    if response.is_success() {
+                        return Ok(response);
+                    } else if self.retry_policy.should_retry(response.status(), attempt) {
+                        let delay = self.retry_policy.retry_delay(attempt);
+                        tokio::time::sleep(delay).await;
+                        continue;
+                    } else {
+                        return Ok(response);
+                    }
+                }
+                Err(error) => {
+                    if attempt < max_attempts && self.retry_policy.should_retry_error(&error) {
+                        let delay = self.retry_policy.retry_delay(attempt);
+                        tokio::time::sleep(delay).await;
+                        continue;
+                    } else {
+                        return Err(error);
+                    }
+                }
+            }
+        }
+    }
+    
+    async fn batch_request(&self, requests: Vec<HttpRequest>) -> Vec<Result<HttpResponse, HttpError>> {
+        let mut results = Vec::with_capacity(requests.len());
+        
+        // Process requests in parallel with connection pool limits
+        for request in requests {
+            let result = self.request(request).await;
+            results.push(result);
+        }
+        
+        results
+    }
+}</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('async-http-client')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('async-http-client')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/interactive.js"></script>
+    <script>
+        // Initialize intermediate examples
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeThemeToggle();
+            initializeSidebar();
+            initializeExampleFilters();
+            initializeCodeExamples();
+        });
+
+        function initializeExampleFilters() {
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const exampleCards = document.querySelectorAll('.example-card');
+
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // Update active button
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter examples
+                    exampleCards.forEach(card => {
+                        const cardCategory = card.getAttribute('data-category');
+                        
+                        if (category === 'all' || cardCategory === category) {
+                            card.style.display = 'block';
+                            card.classList.add('fade-in');
+                        } else {
+                            card.style.display = 'none';
+                            card.classList.remove('fade-in');
+                        }
+                    });
+                });
+            });
+        }
+
+        function initializeCodeExamples() {
+            // Enhance code blocks with copy functionality
+            Prism.highlightAll();
+            
+            // Add copy buttons to code blocks
+            const codeBlocks = document.querySelectorAll('pre code');
+            codeBlocks.forEach(block => {
+                const wrapper = block.parentElement;
+                const copyButton = document.createElement('button');
+                copyButton.className = 'code-block-action';
+                copyButton.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                copyButton.addEventListener('click', function() {
+                    navigator.clipboard.writeText(block.textContent).then(() => {
+                        this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        setTimeout(() => {
+                            this.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                        }, 2000);
+                    });
+                });
+                
+                wrapper.parentElement.insertBefore(copyButton, wrapper);
+            });
+        }
+
+        function openCodeExample(exampleId) {
+            // This would open a modal or navigate to full example
+            console.log(`Opening code example: ${exampleId}`);
+            // Implementation would depend on your specific needs
+        }
+
+        function runExample(exampleId) {
+            // This would execute the example in a sandbox
+            console.log(`Running example: ${exampleId}`);
+            
+            // Show loading state
+            const button = event.target.closest('.btn-enhanced');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Running...';
+            button.disabled = true;
+            
+            // Simulate example execution
+            setTimeout(() => {
+                button.innerHTML = '<i class="fas fa-check"></i> Completed!';
+                button.classList.remove('btn-enhanced');
+                button.classList.add('btn-success');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    button.classList.remove('btn-success');
+                    button.classList.add('btn-enhanced');
+                }, 3000);
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

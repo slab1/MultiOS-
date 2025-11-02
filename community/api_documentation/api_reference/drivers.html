@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver API - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar">
+            <div class="nav-content">
+                <div class="nav-section">
+                    <h3>API Reference</h3>
+                    <ul>
+                        <li><a href="kernel.html" class="nav-link">Kernel API</a></li>
+                        <li><a href="memory.html" class="nav-link">Memory Management</a></li>
+                        <li><a href="process.html" class="nav-link">Process Management</a></li>
+                        <li><a href="filesystem.html" class="nav-link">File System</a></li>
+                        <li><a href="networking.html" class="nav-link">Network</a></li>
+                        <li><a href="drivers.html" class="nav-link active">Driver API</a></li>
+                        <li><a href="gui.html" class="nav-link">GUI Framework</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Tutorials</h3>
+                    <ul>
+                        <li><a href="../tutorials/beginner/index.html" class="nav-link">Beginner</a></li>
+                        <li><a href="../tutorials/intermediate/index.html" class="nav-link">Intermediate</a></li>
+                        <li><a href="../tutorials/advanced/index.html" class="nav-link">Advanced</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Guides</h3>
+                    <ul>
+                        <li><a href="../guides/integration/rust.html" class="nav-link">Rust Integration</a></li>
+                        <li><a href="../guides/integration/c.html" class="nav-link">C Integration</a></li>
+                        <li><a href="../guides/integration/python.html" class="nav-link">Python Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="content-header">
+                    <h1>Driver API</h1>
+                    <p class="lead">Device driver development and management for MultiOS</p>
+                    <div class="content-meta">
+                        <span class="badge badge-version">v1.0</span>
+                        <span class="badge badge-module">drivers</span>
+                        <span class="badge badge-stability">Stable</span>
+                    </div>
+                </div>
+
+                <!-- Quick Start Section -->
+                <section class="content-section">
+                    <h2>Quick Start</h2>
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>Create a Simple Device Driver</h4>
+                                <div class="code-actions">
+                                    <button class="btn btn-sm btn-secondary run-example" data-example="driver-basic">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary copy-code" data-code="driver-basic">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                            </div>
+                            <pre><code class="language-rust">use multi::drivers::{DeviceDriver, DeviceType, DriverManager};
+
+// Define a custom device driver
+struct MyDeviceDriver {
+    device_id: u32,
+    base_address: usize,
+}
+
+impl DeviceDriver for MyDeviceDriver {
+    fn initialize(&mut self) -> Result&lt;(), DriverError&gt; {
+        println!("Initializing device at address: {:#x}", self.base_address);
+        
+        // Initialize hardware device
+        self.enable_device()?;
+        self.configure_device()?;
+        
+        Ok(())
+    }
+    
+    fn read(&mut self, offset: usize, buffer: &mut [u8]) -> Result&lt;usize, DriverError&gt; {
+        // Read from device registers
+        for (i, byte) in buffer.iter_mut().enumerate() {
+            *byte = self.read_register(offset + i)?;
+        }
+        Ok(buffer.len())
+    }
+    
+    fn write(&mut self, offset: usize, buffer: &[u8]) -> Result&lt;usize, DriverError&gt; {
+        // Write to device registers
+        for (i, &byte) in buffer.iter().enumerate() {
+            self.write_register(offset + i, byte)?;
+        }
+        Ok(buffer.len())
+    }
+}
+
+// Register the driver
+let mut driver_manager = DriverManager::new();
+let device_driver = MyDeviceDriver {
+    device_id: 0x1234,
+    base_address: 0x1000,
+};
+
+driver_manager.register_driver(Box::new(device_driver))?;
+println!("Device driver registered successfully");</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Driver Framework -->
+                <section class="content-section">
+                    <h2>Driver Framework</h2>
+                    <p>MultiOS provides a comprehensive framework for developing and managing device drivers.</p>
+                    
+                    <div class="api-section">
+                        <h3>DeviceDriver Trait</h3>
+                        <div class="api-description">
+                            <p>Base trait that all device drivers must implement.</p>
+                        </div>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Implement DeviceDriver</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::drivers::{DeviceDriver, DriverError, DeviceType, DeviceState};
+
+pub trait DeviceDriver {
+    // Initialize the device
+    fn initialize(&mut self) -> Result&lt;(), DriverError&gt;;
+    
+    // Read data from device
+    fn read(&mut self, offset: usize, buffer: &mut [u8]) -> Result&lt;usize, DriverError&gt;;
+    
+    // Write data to device
+    fn write(&mut self, offset: usize, buffer: &[u8]) -> Result&lt;usize, DriverError&gt;;
+    
+    // Handle interrupts
+    fn handle_interrupt(&mut self) -> Result&lt;(), DriverError&gt; {
+        Ok(()) // Default implementation
+    }
+    
+    // Get device information
+    fn get_device_info(&self) -> DeviceInfo {
+        DeviceInfo {
+            device_type: DeviceType::Unknown,
+            vendor_id: 0,
+            device_id: 0,
+            revision: 0,
+        }
+    }
+    
+    // Cleanup resources
+    fn shutdown(&mut self) -> Result&lt;(), DriverError&gt; {
+        Ok(()) // Default implementation
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>DriverManager</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Manage Multiple Drivers</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::drivers::{DriverManager, DriverManagerConfig};
+
+// Create driver manager
+let mut manager = DriverManager::new();
+
+// Configure driver loading
+let config = DriverManagerConfig {
+    auto_load: true,
+    hot_plug_support: true,
+    interrupt_handling: true,
+};
+
+manager.configure(config)?;
+
+// Register device driver
+manager.register_driver(Box::new(my_driver))?;
+
+// Load driver from file
+manager.load_driver_from_file("/drivers/custom_driver.so")?;
+
+// Find driver by device ID
+let driver = manager.find_driver(0x1234, 0x5678)?;
+
+// List all loaded drivers
+let drivers = manager.list_drivers();
+for driver_info in &drivers {
+    println!("Driver: {}", driver_info.name);
+    println!("Device Type: {:?}", driver_info.device_type);
+    println!("Status: {:?}", driver_info.state);
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Character Device Drivers -->
+                <section class="content-section">
+                    <h2>Character Device Drivers</h2>
+                    <p>Develop character devices for stream-oriented data access.</p>
+                    
+                    <div class="api-section">
+                        <h3>CharDevice</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Create Character Device</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::drivers::char::{CharDevice, CharDeviceConfig};
+
+struct SerialPortDriver {
+    port_address: usize,
+    buffer: Vec<u8>,
+    buffer_index: usize,
+}
+
+impl CharDevice for SerialPortDriver {
+    fn write(&mut self, data: &[u8]) -> Result&lt;usize, DriverError&gt; {
+        for &byte in data {
+            // Write to serial port
+            self.write_serial_byte(byte);
+            self.buffer.push(byte);
+        }
+        Ok(data.len())
+    }
+    
+    fn read(&mut self, buffer: &mut [u8]) -> Result&lt;usize, DriverError&gt; {
+        let mut bytes_read = 0;
+        
+        for byte in buffer.iter_mut() {
+            if self.buffer_index < self.buffer.len() {
+                *byte = self.buffer[self.buffer_index];
+                self.buffer_index += 1;
+                bytes_read += 1;
+            } else {
+                break;
+            }
+        }
+        
+        Ok(bytes_read)
+    }
+    
+    fn flush(&mut self) -> Result&lt;(), DriverError&gt; {
+        // Flush serial port output buffer
+        while !self.is_transmit_empty() {
+            std::thread::sleep(Duration::from_micros(100));
+        }
+        Ok(())
+    }
+    
+    fn set_config(&mut self, config: CharDeviceConfig) -> Result&lt;(), DriverError&gt; {
+        // Configure serial port parameters
+        self.configure_baud_rate(config.baud_rate)?;
+        self.configure_data_bits(config.data_bits)?;
+        self.configure_stop_bits(config.stop_bits)?;
+        Ok(())
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Block Device Drivers -->
+                <section class="content-section">
+                    <h2>Block Device Drivers</h2>
+                    <p>Implement block devices for random access storage operations.</p>
+                    
+                    <div class="api-section">
+                        <h3>BlockDevice</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Create Block Device Driver</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::drivers::block::{BlockDevice, BlockDeviceInfo, SectorInfo};
+
+// Example: SATA disk driver
+struct SataDiskDriver {
+    controller_port: usize,
+    disk_id: u8,
+    total_sectors: u64,
+    sector_size: usize,
+}
+
+impl BlockDevice for SataDiskDriver {
+    fn read_blocks(
+        &mut self, 
+        start_sector: u64, 
+        sectors: usize, 
+        buffer: &mut [u8]
+    ) -> Result&lt;usize, DriverError&gt; {
+        let total_bytes = sectors * self.sector_size;
+        
+        if buffer.len() < total_bytes {
+            return Err(DriverError::BufferTooSmall);
+        }
+        
+        // Configure disk for reading
+        self.select_sector(start_sector)?;
+        self.set_read_command()?;
+        
+        // Read data from disk
+        for sector in 0..sectors {
+            let sector_offset = sector * self.sector_size;
+            let data = &mut buffer[sector_offset..sector_offset + self.sector_size];
+            self.read_sector_data(data)?;
+        }
+        
+        Ok(total_bytes)
+    }
+    
+    fn write_blocks(
+        &mut self, 
+        start_sector: u64, 
+        sectors: usize, 
+        buffer: &[u8]
+    ) -> Result&lt;usize, DriverError&gt; {
+        let total_bytes = sectors * self.sector_size;
+        
+        if buffer.len() < total_bytes {
+            return Err(DriverError::BufferTooSmall);
+        }
+        
+        // Configure disk for writing
+        self.select_sector(start_sector)?;
+        self.set_write_command()?;
+        
+        // Write data to disk
+        for sector in 0..sectors {
+            let sector_offset = sector * self.sector_size;
+            let data = &buffer[sector_offset..sector_offset + self.sector_size];
+            self.write_sector_data(data)?;
+        }
+        
+        Ok(total_bytes)
+    }
+    
+    fn get_device_info(&self) -> BlockDeviceInfo {
+        BlockDeviceInfo {
+            total_sectors: self.total_sectors,
+            sector_size: self.sector_size,
+            is_read_only: false,
+            supports_trim: true,
+            max_transfer_size: 1024 * 1024, // 1MB
+        }
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Network Device Drivers -->
+                <section class="content-section">
+                    <h2>Network Device Drivers</h2>
+                    <p>Develop network interface drivers for communication hardware.</p>
+                    
+                    <div class="api-section">
+                        <h3>NetDevice</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Create Network Device Driver</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::drivers::net::{NetDevice, NetPacket, MacAddress};
+
+// Ethernet device driver example
+struct EthernetDriver {
+    base_address: usize,
+    mac_address: MacAddress,
+    rx_ring: Vec&lt;NetPacket&gt;,
+    tx_ring: Vec&lt;NetPacket&gt;,
+}
+
+impl NetDevice for EthernetDriver {
+    fn send_packet(&mut self, packet: &NetPacket) -> Result&lt;(), DriverError&gt; {
+        // Add packet to transmission ring
+        self.tx_ring.push(packet.clone());
+        
+        // Start transmission if not already transmitting
+        if !self.is_transmitting() {
+            self.start_transmission()?;
+        }
+        
+        Ok(())
+    }
+    
+    fn receive_packet(&mut self) -> Result&lt;Option&lt;NetPacket&gt;, DriverError&gt; {
+        // Check for received packets
+        if self.has_received_packet() {
+            let packet = self.read_received_packet()?;
+            Ok(Some(packet))
+        } else {
+            Ok(None)
+        }
+    }
+    
+    fn get_mac_address(&self) -> MacAddress {
+        self.mac_address
+    }
+    
+    fn set_promiscuous_mode(&mut self, enabled: bool) -> Result&lt;(), DriverError&gt; {
+        if enabled {
+            self.enable_promiscuous_mode()?;
+        } else {
+            self.disable_promiscuous_mode()?;
+        }
+        Ok(())
+    }
+    
+    fn configure_interrupt(&mut self, interrupt: InterruptConfig) -> Result&lt;(), DriverError&gt; {
+        self.setup_interrupt_handler(interrupt.vector)?;
+        self.enable_interrupts(interrupt.mask)?;
+        Ok(())
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interrupt Handling -->
+                <section class="content-section">
+                    <h2>Interrupt Handling</h2>
+                    <p>Manage hardware interrupts for responsive device communication.</p>
+                    
+                    <div class="api-section">
+                        <h3>Interrupt Management</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Handle Device Interrupts</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::drivers::interrupt::{InterruptHandler, InterruptConfig, IrqNumber};
+
+// Implement interrupt handler
+struct MyInterruptHandler {
+    device_id: u32,
+    interrupt_count: u32,
+}
+
+impl InterruptHandler for MyInterruptHandler {
+    fn handle_interrupt(&mut self, irq: IrqNumber) -> Result&lt;bool, DriverError&gt; {
+        println!("Interrupt {} received for device {}", irq.0, self.device_id);
+        self.interrupt_count += 1;
+        
+        // Process interrupt
+        match irq {
+            IrqNumber(33) => {
+                // Data ready interrupt
+                self.process_data_ready()?;
+                Ok(true) // Interrupt was handled
+            }
+            IrqNumber(34) => {
+                // Error interrupt
+                self.process_error()?;
+                Ok(true)
+            }
+            _ => Ok(false), // Not our interrupt
+        }
+    }
+    
+    fn get_priority(&self) -> InterruptPriority {
+        InterruptPriority::High
+    }
+}
+
+// Register interrupt handler
+let mut interrupt_manager = InterruptManager::new();
+let handler = MyInterruptHandler {
+    device_id: 0x1234,
+    interrupt_count: 0,
+};
+
+interrupt_manager.register_handler(IrqNumber(33), Box::new(handler))?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Direct Memory Access -->
+                <section class="content-section">
+                    <h2>Direct Memory Access</h2>
+                    <p>Implement DMA operations for high-performance data transfers.</p>
+                    
+                    <div class="api-section">
+                        <h3>DMA Operations</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Implement DMA Transfers</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::drivers::dma::{DmaController, DmaChannel, DmaTransfer};
+
+// DMA transfer configuration
+struct DmaTransferConfig {
+    channel: DmaChannel,
+    source_address: usize,
+    destination_address: usize,
+    transfer_size: usize,
+    transfer_mode: DmaMode,
+}
+
+// Set up DMA controller
+let mut dma_controller = DmaController::new(0x1000);
+
+// Configure DMA channel
+let config = DmaTransferConfig {
+    channel: DmaChannel::Channel0,
+    source_address: 0x8000,
+    destination_address: 0x9000,
+    transfer_size: 4096,
+    transfer_mode: DmaMode::MemoryToMemory,
+};
+
+let mut transfer = DmaTransfer::new(config)?;
+
+// Start DMA transfer
+transfer.start()?;
+
+// Wait for transfer completion
+while !transfer.is_complete() {
+    std::thread::sleep(Duration::from_millis(1));
+}
+
+// Check for errors
+if let Some(error) = transfer.get_error() {
+    println!("DMA transfer error: {:?}", error);
+}
+
+println!("DMA transfer completed successfully");</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interactive Driver Monitor -->
+                <section class="content-section">
+                    <h2>Interactive Driver Monitor</h2>
+                    <div class="interactive-demo">
+                        <div class="demo-controls">
+                            <button class="btn btn-primary" id="load-driver">
+                                <i class="fas fa-download"></i> Load Driver
+                            </button>
+                            <button class="btn btn-secondary" id="unload-driver">
+                                <i class="fas fa-eject"></i> Unload Driver
+                            </button>
+                            <button class="btn btn-secondary" id="test-device">
+                                <i class="fas fa-play"></i> Test Device
+                            </button>
+                            <button class="btn btn-warning" id="simulate-error">
+                                <i class="fas fa-exclamation-triangle"></i> Simulate Error
+                            </button>
+                        </div>
+                        <div class="demo-visualization" id="driver-visualization">
+                            <div class="driver-list" id="driver-list"></div>
+                        </div>
+                        <div class="demo-stats" id="demo-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Active Drivers:</span>
+                                <span class="stat-value" id="active-drivers">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Interrupts Handled:</span>
+                                <span class="stat-value" id="interrupts-handled">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">DMA Transfers:</span>
+                                <span class="stat-value" id="dma-transfers">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Power Management -->
+                <section class="content-section">
+                    <h2>Power Management</h2>
+                    <p>Implement power management features for energy-efficient device operation.</p>
+                    
+                    <div class="api-section">
+                        <h3>Device Power States</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Manage Device Power States</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::drivers::power::{PowerManager, PowerState, DevicePowerConfig};
+
+// Power management for device drivers
+impl DevicePowerManagement for MyDeviceDriver {
+    fn set_power_state(&mut self, state: PowerState) -> Result&lt;(), DriverError&gt; {
+        match state {
+            PowerState::Active => {
+                // Enable device and full functionality
+                self.enable_device()?;
+                self.enable_interrupts()?;
+                Ok(())
+            }
+            PowerState::Standby => {
+                // Reduce power but keep device accessible
+                self.disable_interrupts()?;
+                self.enable_low_power_mode()?;
+                Ok(())
+            }
+            PowerState::Sleep => {
+                // Suspend device operations
+                self.save_device_state()?;
+                self.disable_device()?;
+                Ok(())
+            }
+            PowerState::Off => {
+                // Complete shutdown
+                self.shutdown_device()?;
+                Ok(())
+            }
+        }
+    }
+    
+    fn get_power_consumption(&self) -> PowerConsumption {
+        PowerConsumption {
+            active: 5000,  // 5W when active
+            standby: 100,  // 100mW in standby
+            sleep: 10,     // 10mW in sleep
+            off: 0,        // 0W when off
+        }
+    }
+}
+
+// Configure power management
+let mut power_manager = PowerManager::new();
+power_manager.register_device_power_management(Box::new(my_driver))?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Driver Testing -->
+                <section class="content-section">
+                    <h2>Driver Testing and Debugging</h2>
+                    <p>Comprehensive testing framework for device drivers.</p>
+                    
+                    <div class="api-section">
+                        <h3>Driver Testing Framework</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Test Device Driver</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::drivers::testing::{DriverTest, TestResult, TestSuite};
+
+// Create test suite for driver
+let mut test_suite = TestSuite::new("MyDeviceDriver Tests");
+
+// Add basic functionality tests
+test_suite.add_test(DriverTest::new("Basic Initialization", |driver| {
+    let result = driver.initialize();
+    assert!(result.is_ok());
+    TestResult::Passed
+}));
+
+test_suite.add_test(DriverTest::new("Read Write Operations", |driver| {
+    let test_data = [0x12, 0x34, 0x56, 0x78];
+    
+    let written = driver.write(0, &test_data)?;
+    assert_eq!(written, test_data.len());
+    
+    let mut read_data = [0u8; 4];
+    let read = driver.read(0, &mut read_data)?;
+    assert_eq!(read, 4);
+    assert_eq!(read_data, test_data);
+    
+    TestResult::Passed
+}));
+
+// Run test suite
+let results = test_suite.run_all_tests(&mut my_driver)?;
+for result in &results {
+    println!("Test {}: {:?}", result.test_name, result.status);
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Error Handling -->
+                <section class="content-section">
+                    <h2>Error Handling</h2>
+                    <p>Comprehensive error handling and debugging for driver operations.</p>
+                    
+                    <div class="api-section">
+                        <h3>DriverError Types</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Handle Driver Errors</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::drivers::{DriverError, ErrorType};
+
+fn robust_driver_operation() -> Result&lt;(), String&gt; {
+    let mut driver = MyDeviceDriver::new();
+    
+    match driver.initialize() {
+        Ok(_) => println!("Device initialized successfully"),
+        Err(error) => {
+            match error.error_type {
+                ErrorType::DeviceNotFound => {
+                    return Err("Device hardware not found".to_string());
+                }
+                ErrorType::InitializationFailed => {
+                    return Err("Device initialization failed".to_string());
+                }
+                ErrorType::PermissionDenied => {
+                    return Err("Insufficient permissions to access device".to_string());
+                }
+                ErrorType::ResourceBusy => {
+                    return Err("Device is currently busy".to_string());
+                }
+                ErrorType::InterruptFailure => {
+                    return Err("Failed to configure interrupt handling".to_string());
+                }
+                _ => return Err(format!("Unexpected driver error: {}", error))
+            }
+        }
+    }
+    
+    // Continue with driver operations
+    Ok(())
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>Best Practices</h2>
+                    <div class="best-practices">
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Resource Management</h4>
+                            <p>Properly allocate and release device resources to prevent leaks.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Error Handling</h4>
+                            <p>Implement comprehensive error handling for all device operations.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Interrupt Safety</h4>
+                            <p>Ensure interrupt handlers are safe and don't cause race conditions.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Testing</h4>
+                            <p>Thoroughly test drivers with the provided testing framework.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/search.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/interactive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Driver specific interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            let drivers = [];
+            let interruptsHandled = 0;
+            let dmaTransfers = 0;
+            
+            function updateDriverVisualization() {
+                const listContainer = document.getElementById('driver-list');
+                listContainer.innerHTML = '';
+                
+                drivers.forEach(driver => {
+                    const driverElement = document.createElement('div');
+                    driverElement.className = `driver-item ${driver.status.toLowerCase()}`;
+                    driverElement.innerHTML = `
+                        <div class="driver-header">
+                            <i class="fas fa-${getDriverIcon(driver.type)}"></i>
+                            <span class="driver-name">${driver.name}</span>
+                            <span class="driver-status ${driver.status.toLowerCase()}">${driver.status}</span>
+                        </div>
+                        <div class="driver-info">
+                            <span class="driver-type">${driver.type}</span>
+                            <span class="driver-version">v${driver.version}</span>
+                        </div>
+                    `;
+                    listContainer.appendChild(driverElement);
+                });
+                
+                document.getElementById('active-drivers').textContent = drivers.filter(d => d.status === 'Loaded').length;
+                document.getElementById('interrupts-handled').textContent = interruptsHandled;
+                document.getElementById('dma-transfers').textContent = dmaTransfers;
+            }
+            
+            function getDriverIcon(type) {
+                const icons = {
+                    'Block Device': 'hdd',
+                    'Character Device': 'terminal',
+                    'Network Device': 'network-wired',
+                    'Graphics Device': 'desktop',
+                    'Audio Device': 'volume-up',
+                    'USB Device': 'usb'
+                };
+                return icons[type] || 'microchip';
+            }
+            
+            const driverTypes = ['Block Device', 'Character Device', 'Network Device', 'Graphics Device', 'Audio Device', 'USB Device'];
+            const driverNames = ['SATA Controller', 'Serial Port', 'Ethernet Adapter', 'GPU Driver', 'Audio Codec', 'USB Hub'];
+            
+            document.getElementById('load-driver').addEventListener('click', function() {
+                const type = driverTypes[Math.floor(Math.random() * driverTypes.length)];
+                const name = driverNames[Math.floor(Math.random() * driverNames.length)];
+                
+                drivers.push({
+                    name: `${name} ${Math.floor(Math.random() * 255)}`,
+                    type: type,
+                    version: '1.0.' + Math.floor(Math.random() * 10),
+                    status: 'Loaded'
+                });
+                
+                updateDriverVisualization();
+            });
+            
+            document.getElementById('unload-driver').addEventListener('click', function() {
+                const loadedDriverIndex = drivers.findIndex(d => d.status === 'Loaded');
+                if (loadedDriverIndex !== -1) {
+                    drivers.splice(loadedDriverIndex, 1);
+                    updateDriverVisualization();
+                }
+            });
+            
+            document.getElementById('test-device').addEventListener('click', function() {
+                if (drivers.length > 0) {
+                    const activeDriver = drivers.find(d => d.status === 'Loaded');
+                    if (activeDriver) {
+                        activeDriver.status = 'Testing';
+                        updateDriverVisualization();
+                        
+                        setTimeout(() => {
+                            activeDriver.status = 'Loaded';
+                            interruptsHandled += Math.floor(Math.random() * 10) + 1;
+                            updateDriverVisualization();
+                        }, 1000);
+                    }
+                }
+            });
+            
+            document.getElementById('simulate-error').addEventListener('click', function() {
+                if (drivers.length > 0) {
+                    const driverIndex = Math.floor(Math.random() * drivers.length);
+                    drivers[driverIndex].status = 'Error';
+                    
+                    setTimeout(() => {
+                        drivers[driverIndex].status = 'Loaded';
+                        updateDriverVisualization();
+                    }, 2000);
+                }
+            });
+            
+            // Periodically simulate interrupts
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    interruptsHandled++;
+                    updateDriverVisualization();
+                }
+            }, 500);
+            
+            // Initialize
+            updateDriverVisualization();
+        });
+    </script>
+</body>
+</html>

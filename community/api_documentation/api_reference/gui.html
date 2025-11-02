@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUI Framework API - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar">
+            <div class="nav-content">
+                <div class="nav-section">
+                    <h3>API Reference</h3>
+                    <ul>
+                        <li><a href="kernel.html" class="nav-link">Kernel API</a></li>
+                        <li><a href="memory.html" class="nav-link">Memory Management</a></li>
+                        <li><a href="process.html" class="nav-link">Process Management</a></li>
+                        <li><a href="filesystem.html" class="nav-link">File System</a></li>
+                        <li><a href="networking.html" class="nav-link">Network</a></li>
+                        <li><a href="drivers.html" class="nav-link">Driver API</a></li>
+                        <li><a href="gui.html" class="nav-link active">GUI Framework</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Tutorials</h3>
+                    <ul>
+                        <li><a href="../tutorials/beginner/index.html" class="nav-link">Beginner</a></li>
+                        <li><a href="../tutorials/intermediate/index.html" class="nav-link">Intermediate</a></li>
+                        <li><a href="../tutorials/advanced/index.html" class="nav-link">Advanced</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Guides</h3>
+                    <ul>
+                        <li><a href="../guides/integration/rust.html" class="nav-link">Rust Integration</a></li>
+                        <li><a href="../guides/integration/c.html" class="nav-link">C Integration</a></li>
+                        <li><a href="../guides/integration/python.html" class="nav-link">Python Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="content-header">
+                    <h1>GUI Framework API</h1>
+                    <p class="lead">Create modern, responsive graphical user interfaces for MultiOS</p>
+                    <div class="content-meta">
+                        <span class="badge badge-version">v1.0</span>
+                        <span class="badge badge-module">gui</span>
+                        <span class="badge badge-stability">Stable</span>
+                    </div>
+                </div>
+
+                <!-- Quick Start Section -->
+                <section class="content-section">
+                    <h2>Quick Start</h2>
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>Create Your First Window</h4>
+                                <div class="code-actions">
+                                    <button class="btn btn-sm btn-secondary run-example" data-example="gui-basic">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary copy-code" data-code="gui-basic">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                            </div>
+                            <pre><code class="language-rust">use multi::gui::{Application, Window, Button, Label};
+
+// Create application instance
+let mut app = Application::new("My First MultiOS App")?;
+
+// Create main window
+let mut window = Window::builder()
+    .title("Hello MultiOS")
+    .size(800, 600)
+    .centered(true)
+    .build()?;
+
+// Create a label
+let mut label = Label::builder()
+    .text("Welcome to MultiOS GUI!")
+    .font_size(24)
+    .text_color(Color::from_rgb(0, 100, 200))
+    .position(50, 50)
+    .build()?;
+
+// Create a button
+let mut button = Button::builder()
+    .text("Click Me!")
+    .size(150, 50)
+    .position(50, 150)
+    .build()?;
+
+// Add event handler
+button.on_click(Box::new(|| {
+    println!("Button clicked!");
+}));
+
+// Add widgets to window
+window.add_widget(&mut label);
+window.add_widget(&mut button);
+
+// Show window
+window.show()?;
+
+// Run application
+app.run()?;</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Application Framework -->
+                <section class="content-section">
+                    <h2>Application Framework</h2>
+                    <p>MultiOS provides a comprehensive application framework for GUI development.</p>
+                    
+                    <div class="api-section">
+                        <h3>Application</h3>
+                        <div class="api-description">
+                            <p>Main application container that manages windows and event processing.</p>
+                        </div>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Create and Run Application</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::gui::{Application, ApplicationConfig, EventLoop};
+
+// Application configuration
+let config = ApplicationConfig {
+    title: "MultiOS Desktop App",
+    window_count: 5,
+    enable_menus: true,
+    enable_keyboard_shortcuts: true,
+};
+
+// Create application with custom config
+let mut app = Application::with_config(config)?;
+
+// Set application-wide event handlers
+app.on_menu_event(Box::new(|event| {
+    match event {
+        MenuEvent::Exit => app.quit(),
+        MenuEvent::About => show_about_dialog(),
+        _ => {}
+    }
+}));
+
+app.on_window_close(Box::new(|window| {
+    println!("Window {} closed", window.title());
+    true // Allow window to close
+}));
+
+// Run the application
+let exit_code = app.run_event_loop()?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>Window Management</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Window Creation and Management</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::gui::{Window, WindowConfig, WindowState};
+
+// Create window with advanced configuration
+let mut window = Window::builder()
+    .title("Advanced Window")
+    .size(1200, 800)
+    .min_size(400, 300)
+    .resizable(true)
+    .minimizable(true)
+    .maximizable(true)
+    .closable(true)
+    .always_on_top(false)
+    .transparent(false)
+    .fullscreen(false)
+    .build()?;
+
+// Window state management
+window.show()?;
+window.minimize()?;
+window.maximize()?;
+window.restore()?;
+window.set_fullscreen(true)?;
+
+// Position and size control
+window.set_position(100, 100)?;
+window.set_size(800, 600)?;
+window.center_on_screen()?;
+
+// Window events
+window.on_close(Box::new(|| {
+    println!("Window closing...");
+}));
+
+window.on_resize(Box::new(|width, height| {
+    println!("Window resized to {}x{}", width, height);
+}));</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Widget System -->
+                <section class="content-section">
+                    <h2>Widget System</h2>
+                    <p>Rich set of widgets for building interactive user interfaces.</p>
+                    
+                    <div class="api-section">
+                        <h3>Basic Widgets</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Create Basic UI Elements</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::gui::{Button, Label, TextEdit, CheckBox, RadioButton, ComboBox};
+
+// Button with custom styling
+let mut button = Button::builder()
+    .text("Custom Button")
+    .size(200, 40)
+    .font(Font::bold(14))
+    .background_color(Color::from_rgb(70, 130, 180))
+    .foreground_color(Color::White)
+    .border_radius(5)
+    .build()?;
+
+// Text input
+let mut text_input = TextEdit::builder()
+    .placeholder("Enter text here...")
+    .max_length(100)
+    .read_only(false)
+    .multiline(true)
+    .size(300, 100)
+    .build()?;
+
+// Check box
+let mut checkbox = CheckBox::builder()
+    .text("Enable feature")
+    .checked(true)
+    .build()?;
+
+// Radio buttons
+let mut radio1 = RadioButton::builder()
+    .text("Option 1")
+    .group_id("options")
+    .checked(true)
+    .build()?;
+
+let mut radio2 = RadioButton::builder()
+    .text("Option 2")
+    .group_id("options")
+    .checked(false)
+    .build()?;
+
+// Dropdown combo box
+let mut combo_box = ComboBox::builder()
+    .items(&["Red", "Green", "Blue", "Yellow"])
+    .selected_index(0)
+    .size(150, 30)
+    .build()?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>Container Widgets</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Layout and Container Widgets</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::gui::{Panel, VBoxLayout, HBoxLayout, GridLayout, TabControl};
+
+// Vertical box layout
+let mut vbox = VBoxLayout::builder()
+    .spacing(10)
+    .padding(20)
+    .build()?;
+
+// Horizontal box layout
+let mut hbox = HBoxLayout::builder()
+    .spacing(15)
+    .alignment(Align::Center)
+    .build()?;
+
+// Grid layout
+let mut grid = GridLayout::builder()
+    .rows(3)
+    .columns(2)
+    .spacing(8)
+    .build()?;
+
+// Tab control
+let mut tab_control = TabControl::builder()
+    .size(600, 400)
+    .build()?;
+
+// Create panels
+let mut panel1 = Panel::builder()
+    .title("General Settings")
+    .border_style(BorderStyle::Raised)
+    .build()?;
+
+let mut panel2 = Panel::builder()
+    .title("Advanced Options")
+    .border_style(BorderStyle::Sunken)
+    .build()?;
+
+// Add tabs
+tab_control.add_tab("Settings", &mut panel1)?;
+tab_control.add_tab("Advanced", &mut panel2)?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Advanced Widgets -->
+                <section class="content-section">
+                    <h2>Advanced Widgets</h2>
+                    <p>Sophisticated widgets for complex user interactions.</p>
+                    
+                    <div class="api-section">
+                        <h3>List and Tree Views</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Data Display Widgets</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::gui::{ListView, TreeView, ListItem, TreeNode, TableView};
+
+// List view with custom items
+let mut list_view = ListView::builder()
+    .size(300, 400)
+    .selection_mode(SelectionMode::Multiple)
+    .show_headers(true)
+    .build()?;
+
+// Add columns
+list_view.add_column("Name", 150)?;
+list_view.add_column("Size", 100)?;
+list_view.add_column("Type", 80)?;
+
+// Add list items
+for i in 0..10 {
+    let mut item = ListItem::new();
+    item.add_cell(format!("File {}", i));
+    item.add_cell(format!("{} KB", i * 100));
+    item.add_cell("Document");
+    list_view.add_item(item)?;
+}
+
+// Tree view with hierarchical data
+let mut tree_view = TreeView::builder()
+    .size(400, 300)
+    .show_root(true)
+    .build()?;
+
+// Create tree nodes
+let mut root = TreeNode::new("Root");
+let mut child1 = TreeNode::new("Child 1");
+let mut child2 = TreeNode::new("Child 2");
+
+child1.add_child(TreeNode::new("Grandchild 1"));
+child1.add_child(TreeNode::new("Grandchild 2"));
+
+root.add_child(child1);
+root.add_child(child2);
+
+tree_view.set_root_node(root)?;
+
+// Table view for structured data
+let mut table = TableView::builder()
+    .size(500, 300)
+    .sortable(true)
+    .resizable_columns(true)
+    .build()?;
+
+table.add_column("Name", ColumnType::String)?;
+table.add_column("Age", ColumnType::Integer)?;
+table.add_column("Score", ColumnType::Float)?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>Graphics and Drawing</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Custom Drawing and Graphics</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::gui::{Canvas, PaintBrush, Color, Point, Rect};
+
+// Custom drawing canvas
+let mut canvas = Canvas::builder()
+    .size(400, 300)
+    .background_color(Color::White)
+    .build()?;
+
+// Drawing operations
+canvas.clear(Color::White)?;
+canvas.draw_line(Point::new(10, 10), Point::new(390, 290), Color::Black, 2)?;
+canvas.draw_rect(Rect::new(50, 50, 100, 80), Color::Red)?;
+canvas.fill_rect(Rect::new(60, 60, 80, 60), Color::Blue)?;
+canvas.draw_circle(Point::new(200, 150), 50, Color::Green)?;
+canvas.fill_circle(Point::new(200, 150), 40, Color::Yellow)?;
+
+// Text drawing
+canvas.draw_text(
+    Point::new(10, 20), 
+    "MultiOS Graphics", 
+    Font::bold(16), 
+    Color::Black
+)?;
+
+// Custom paint brush
+let brush = PaintBrush::new()
+    .color(Color::from_rgb(255, 100, 50))
+    .brush_size(8)
+    .opacity(0.8);
+
+canvas.draw_with_brush(
+    &brush, 
+    &[
+        Point::new(100, 100),
+        Point::new(120, 80),
+        Point::new(140, 100),
+        Point::new(160, 80),
+    ]
+)?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Event System -->
+                <section class="content-section">
+                    <h2>Event System</h2>
+                    <p>Comprehensive event handling for interactive user interfaces.</p>
+                    
+                    <div class="api-section">
+                        <h3>Event Handling</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Handle Widget Events</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::gui::{WidgetEvent, EventHandler, MouseEvent, KeyEvent};
+
+// Button click handling
+button.on_click(Box::new(|| {
+    println!("Button was clicked!");
+    // Update UI, process data, etc.
+}));
+
+// Text input changes
+text_input.on_text_changed(Box::new(|text| {
+    println!("Text changed: {}", text);
+    // Validate input, auto-save, etc.
+}));
+
+// Mouse events
+canvas.on_mouse_down(Box::new(|event| {
+    match event {
+        MouseEvent::LeftDown(pos) => {
+            println!("Mouse down at {:?}", pos);
+            start_drawing(pos);
+        }
+        MouseEvent::RightDown(pos) => {
+            show_context_menu(pos);
+        }
+        _ => {}
+    }
+}));
+
+canvas.on_mouse_move(Box::new(|pos| {
+    if is_drawing() {
+        continue_drawing(pos);
+    }
+}));
+
+// Keyboard events
+window.on_key_down(Box::new(|event| {
+    match event.key {
+        Key::Escape => window.close(),
+        Key::F1 => show_help_dialog(),
+        Key::Enter if event.ctrl_key => save_document(),
+        _ => {}
+    }
+}));
+
+// Focus events
+text_input.on_focus_gained(Box::new(|| {
+    text_input.set_background_color(Color::LightBlue);
+}));
+
+text_input.on_focus_lost(Box::new(|| {
+    text_input.set_background_color(Color::White);
+}));</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Styles and Themes -->
+                <section class="content-section">
+                    <h2>Styles and Themes</h2>
+                    <p>Customize the appearance of widgets with styles and themes.</p>
+                    
+                    <div class="api-section">
+                        <h3>Widget Styling</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Apply Custom Styles</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::gui::{Style, Theme, ColorScheme, Font};
+
+// Create custom style
+let mut button_style = Style::new()
+    .background_color(Color::from_rgb(52, 152, 219))
+    .foreground_color(Color::White)
+    .border_color(Color::from_rgb(41, 128, 185))
+    .border_width(2)
+    .border_radius(8)
+    .padding(Padding::new(12, 16, 8, 16))
+    .font(Font::bold(14))
+    .shadow(Shadow::new(2, 2, Color::Black, 0.3));
+
+// Apply style to button
+button.set_style(button_style)?;
+
+// Create theme
+let mut theme = Theme::new()
+    .name("Dark Theme")
+    .color_scheme(ColorScheme::Dark)
+    .set_color("button.bg", Color::from_rgb(45, 45, 48))
+    .set_color("button.fg", Color::White)
+    .set_color("window.bg", Color::from_rgb(30, 30, 30))
+    .set_font("default", Font::regular(12))
+    .set_font("heading", Font::bold(18));
+
+// Apply theme to application
+app.set_theme(theme)?;
+
+// Built-in themes
+app.use_light_theme()?;
+app.use_dark_theme()?;
+app.use_high_contrast_theme()?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interactive GUI Designer -->
+                <section class="content-section">
+                    <h2>Interactive GUI Designer</h2>
+                    <div class="interactive-demo">
+                        <div class="demo-controls">
+                            <button class="btn btn-primary" id="add-button">
+                                <i class="fas fa-mouse-pointer"></i> Add Button
+                            </button>
+                            <button class="btn btn-secondary" id="add-label">
+                                <i class="fas fa-font"></i> Add Label
+                            </button>
+                            <button class="btn btn-secondary" id="add-input">
+                                <i class="fas fa-keyboard"></i> Add Input
+                            </button>
+                            <button class="btn btn-warning" id="clear-canvas">
+                                <i class="fas fa-eraser"></i> Clear Canvas
+                            </button>
+                        </div>
+                        <div class="demo-visualization" id="gui-visualization">
+                            <div class="gui-canvas" id="gui-canvas">
+                                <div class="gui-window">
+                                    <div class="gui-window-header">
+                                        <div class="window-controls">
+                                            <span class="control close"></span>
+                                            <span class="control minimize"></span>
+                                            <span class="control maximize"></span>
+                                        </div>
+                                        <div class="window-title">MultiOS Application</div>
+                                    </div>
+                                    <div class="gui-window-content" id="gui-content">
+                                        <!-- Widgets will be added here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="demo-stats" id="demo-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Widgets:</span>
+                                <span class="stat-value" id="widget-count">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Layout Type:</span>
+                                <span class="stat-value" id="layout-type">Manual</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Theme:</span>
+                                <span class="stat-value" id="current-theme">Default</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Animation and Effects -->
+                <section class="content-section">
+                    <h2>Animation and Effects</h2>
+                    <p>Create engaging user interfaces with smooth animations and visual effects.</p>
+                    
+                    <div class="api-section">
+                        <h3>Widget Animations</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Animate Widget Properties</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::gui::{Animation, Easing, AnimationConfig};
+
+// Create fade-in animation
+let fade_in = Animation::new()
+    .property("opacity")
+    .from(0.0)
+    .to(1.0)
+    .duration(Duration::from_millis(500))
+    .easing(Easing::CubicOut)
+    .delay(Duration::from_millis(100));
+
+button.animate(fade_in)?;
+
+// Move animation
+let slide_in = Animation::new()
+    .property("position")
+    .from(Point::new(-200, 0))
+    .to(Point::new(50, 100))
+    .duration(Duration::from_millis(800))
+    .easing(Easing::ElasticOut);
+
+label.animate(slide_in)?;
+
+// Scale animation
+let scale_up = Animation::new()
+    .property("scale")
+    .from(0.5)
+    .to(1.0)
+    .duration(Duration::from_millis(600))
+    .easing(Easing::BackOut);
+
+window.animate(scale_up)?;
+
+// Color animation
+let color_change = Animation::new()
+    .property("background_color")
+    .from(Color::Red)
+    .to(Color::Blue)
+    .duration(Duration::from_secs(2))
+    .easing(Easing::Linear);
+
+panel.animate(color_change)?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>Transition Effects</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Window and Widget Transitions</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::gui::{Transition, TransitionType};
+
+// Fade transition between widgets
+let fade_transition = Transition::new()
+    .type_(TransitionType::Fade)
+    .duration(Duration::from_millis(300));
+
+tab_control.transition_to("Settings", fade_transition)?;
+
+// Slide transition
+let slide_transition = Transition::new()
+    .type_(TransitionType::SlideLeft)
+    .duration(Duration::from_millis(500))
+    .easing(Easing::QuartOut);
+
+window.transition_to_view(&mut new_view, slide_transition)?;
+
+// Zoom transition
+let zoom_transition = Transition::new()
+    .type_(TransitionType::Zoom)
+    .duration(Duration::from_millis(400))
+    .scale_factor(1.2);
+
+dialog.transition_in(zoom_transition)?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Responsive Design -->
+                <section class="content-section">
+                    <h2>Responsive Design</h2>
+                    <p>Build adaptive interfaces that work across different screen sizes and resolutions.</p>
+                    
+                    <div class="api-section">
+                        <h3>Flexible Layouts</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Create Responsive Layouts</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::gui::{ResponsiveLayout, Breakpoint, SizeClass};
+
+// Responsive layout with breakpoints
+let mut layout = ResponsiveLayout::builder()
+    .breakpoints(vec![
+        Breakpoint::new("mobile", 0, 600),
+        Breakpoint::new("tablet", 600, 1024),
+        Breakpoint::new("desktop", 1024, u32::MAX),
+    ])
+    .build()?;
+
+// Configure layout for different screen sizes
+layout.on_breakpoint("mobile", |layout| {
+    layout.set_columns(1);
+    layout.set_spacing(8);
+    layout.set_padding(Padding::new(10, 10, 10, 10));
+});
+
+layout.on_breakpoint("tablet", |layout| {
+    layout.set_columns(2);
+    layout.set_spacing(12);
+    layout.set_padding(Padding::new(15, 15, 15, 15));
+});
+
+layout.on_breakpoint("desktop", |layout| {
+    layout.set_columns(3);
+    layout.set_spacing(16);
+    layout.set_padding(Padding::new(20, 20, 20, 20));
+});
+
+// Size-aware widgets
+let mut responsive_button = Button::builder()
+    .text("Responsive Button")
+    .min_width(100)
+    .max_width(300)
+    .preferred_width(SizeClass::Flexible)
+    .size_mode(SizeMode::Fill)
+    .build()?;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Accessibility -->
+                <section class="content-section">
+                    <h2>Accessibility</h2>
+                    <p>Build inclusive interfaces that work for users with disabilities.</p>
+                    
+                    <div class="api-section">
+                        <h3>Accessible Widgets</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Implement Accessibility Features</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::gui::{AccessibilityRole, AriaLabel, ScreenReader};
+
+// Set accessibility roles and labels
+button.set_accessibility_role(AccessibilityRole::Button);
+button.set_aria_label(AriaLabel::new("Submit form button"));
+button.set_accessible_name("Submit");
+
+// Screen reader support
+let mut label = Label::builder()
+    .text("Username")
+    .accessibility_role(AccessibilityRole::Label)
+    .aria_label(AriaLabel::new("Enter your username"))
+    .accessible_description("Required field for user identification")
+    .build()?;
+
+// Keyboard navigation
+button.set_tab_index(0);
+input_field.set_tab_index(1);
+checkbox.set_tab_index(2);
+
+// High contrast support
+if app.is_high_contrast_mode() {
+    button.set_high_contrast_style(true);
+    label.set_bold(true);
+}
+
+// Screen reader integration
+let mut screen_reader = ScreenReader::new();
+screen_reader.read_text("Welcome to the MultiOS application. Press Tab to navigate.")?;
+
+// Announce dynamic content changes
+label.on_text_changed(Box::new(|new_text| {
+    screen_reader.announce(format!("Text updated to: {}", new_text))?;
+}));</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Error Handling -->
+                <section class="content-section">
+                    <h2>Error Handling</h2>
+                    <p>Comprehensive error handling for GUI operations.</p>
+                    
+                    <div class="api-section">
+                        <h3>GUI Error Types</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Handle GUI Errors</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::gui::{GuiError, ErrorKind};
+
+fn create_robust_ui() -> Result&lt;Window, String&gt; {
+    match Window::builder()
+        .title("Robust UI")
+        .size(800, 600)
+        .build()
+    {
+        Ok(mut window) => {
+            // Handle widget creation errors
+            match Label::builder().text("Test").build() {
+                Ok(mut label) => {
+                    match window.add_widget(&mut label) {
+                        Ok(_) => println!("Widget added successfully"),
+                        Err(e) => {
+                            match e.error_type {
+                                ErrorKind::WidgetCapacityExceeded => {
+                                    return Err("Too many widgets in window".to_string());
+                                }
+                                ErrorKind::InvalidWidget => {
+                                    return Err("Invalid widget configuration".to_string());
+                                }
+                                _ => return Err(format!("Widget error: {}", e))
+                            }
+                        }
+                    }
+                }
+                Err(e) => return Err(format!("Label creation failed: {}", e))
+            }
+            
+            // Handle window operation errors
+            match window.show() {
+                Ok(_) => Ok(window),
+                Err(e) => match e.error_type {
+                    ErrorKind::DisplayError => Err("Display connection failed".to_string()),
+                    ErrorKind::PermissionDenied => Err("Window creation denied".to_string()),
+                    _ => Err(format!("Window error: {}", e))
+                }
+            }
+        }
+        Err(e) => Err(format!("Failed to create window: {}", e))
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>Best Practices</h2>
+                    <div class="best-practices">
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Responsive Design</h4>
+                            <p>Design interfaces that work across different screen sizes and resolutions.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Accessibility</h4>
+                            <p>Implement accessibility features to make your applications inclusive.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Performance</h4>
+                            <p>Optimize rendering and minimize redraws for smooth user experience.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Error Handling</h4>
+                            <p>Handle GUI errors gracefully with appropriate user feedback.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/search.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/interactive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // GUI specific interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            let widgetCount = 0;
+            let currentTheme = 'Default';
+            let layoutType = 'Manual';
+            
+            function updateStats() {
+                document.getElementById('widget-count').textContent = widgetCount;
+                document.getElementById('layout-type').textContent = layoutType;
+                document.getElementById('current-theme').textContent = currentTheme;
+            }
+            
+            function createButton() {
+                const button = document.createElement('button');
+                button.className = 'demo-button';
+                button.textContent = `Button ${widgetCount + 1}`;
+                button.style.cssText = `
+                    padding: 8px 16px;
+                    margin: 5px;
+                    background-color: #3498db;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 14px;
+                `;
+                
+                button.addEventListener('click', function() {
+                    this.style.backgroundColor = '#2ecc71';
+                    setTimeout(() => {
+                        this.style.backgroundColor = '#3498db';
+                    }, 200);
+                });
+                
+                return button;
+            }
+            
+            function createLabel() {
+                const label = document.createElement('div');
+                label.className = 'demo-label';
+                label.textContent = `Label ${widgetCount + 1}`;
+                label.style.cssText = `
+                    padding: 4px 8px;
+                    margin: 5px;
+                    color: #2c3e50;
+                    font-weight: bold;
+                `;
+                
+                return label;
+            }
+            
+            function createInput() {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = `Input ${widgetCount + 1}`;
+                input.style.cssText = `
+                    padding: 6px 12px;
+                    margin: 5px;
+                    border: 1px solid #bdc3c7;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    width: 120px;
+                `;
+                
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#3498db';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.style.borderColor = '#bdc3c7';
+                });
+                
+                return input;
+            }
+            
+            document.getElementById('add-button').addEventListener('click', function() {
+                const content = document.getElementById('gui-content');
+                const button = createButton();
+                content.appendChild(button);
+                widgetCount++;
+                updateStats();
+            });
+            
+            document.getElementById('add-label').addEventListener('click', function() {
+                const content = document.getElementById('gui-content');
+                const label = createLabel();
+                content.appendChild(label);
+                widgetCount++;
+                updateStats();
+            });
+            
+            document.getElementById('add-input').addEventListener('click', function() {
+                const content = document.getElementById('gui-content');
+                const input = createInput();
+                content.appendChild(input);
+                widgetCount++;
+                updateStats();
+            });
+            
+            document.getElementById('clear-canvas').addEventListener('click', function() {
+                const content = document.getElementById('gui-content');
+                content.innerHTML = '';
+                widgetCount = 0;
+                updateStats();
+            });
+            
+            // Initialize
+            updateStats();
+        });
+    </script>
+</body>
+</html>

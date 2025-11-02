@@ -1,0 +1,81 @@
+{
+  "name": "programming-intro-python",
+  "version": "1.5.2",
+  "description": "Complete introduction to Python programming with interactive exercises and projects",
+  "author": "Code Academy Team",
+  "email": "contact@codeacademy.edu",
+  "type": "tutorial",
+  "compatibility": "beginner",
+  "subjects": ["Computer Science", "Programming"],
+  "grade_levels": ["Grade 9", "Grade 10", "Grade 11", "Grade 12"],
+  "prerequisites": ["Basic computer literacy"],
+  "dependencies": {
+    "python-3.8+": ">=3.8",
+    "jupyter": ">=1.0.0",
+    "requests": ">=2.25.0"
+  },
+  "size": 157286400,
+  "checksum": "sha256-placeholder",
+  "created_at": "2025-11-03T05:34:19Z",
+  "updated_at": "2025-11-03T05:34:19Z",
+  "license": "MIT",
+  "homepage": "https://python-intro.example.com",
+  "repository": "https://github.com/codeacademy/python-intro",
+  "tags": ["python", "programming", "tutorial", "beginner", "interactive"],
+  "files": [
+    "src/",
+    "tests/",
+    "docs/",
+    "tutorials/",
+    "projects/",
+    "data/",
+    "README.md",
+    "LICENSE",
+    "requirements.txt"
+  ],
+  "scripts": {
+    "pre_install": "scripts/pre_install.sh",
+    "post_install": "scripts/post_install.sh",
+    "start_tutorial": "start_tutorial.py",
+    "launch_notebooks": "jupyter_notebook.py"
+  },
+  "tutorial_structure": {
+    "modules": [
+      {
+        "title": "Getting Started with Python",
+        "lessons": 5,
+        "exercises": 15,
+        "project": "Hello World Program"
+      },
+      {
+        "title": "Variables and Data Types",
+        "lessons": 6,
+        "exercises": 20,
+        "project": "Personal Info Collector"
+      },
+      {
+        "title": "Control Structures",
+        "lessons": 8,
+        "exercises": 25,
+        "project": "Number Guessing Game"
+      },
+      {
+        "title": "Functions and Modules",
+        "lessons": 7,
+        "exercises": 18,
+        "project": "Calculator App"
+      }
+    ],
+    "total_lessons": 26,
+    "total_exercises": 78,
+    "total_projects": 4
+  },
+  "interactive_features": [
+    "code_editor",
+    "syntax_highlighting",
+    "auto_completion",
+    "real_time_feedback",
+    "progress_tracking",
+    "hint_system"
+  ]
+}

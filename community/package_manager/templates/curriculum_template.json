@@ -1,0 +1,82 @@
+{
+  "name": "math-intro-algebra",
+  "version": "1.0.0",
+  "description": "Introduction to Algebra - Interactive lessons and exercises for students learning basic algebraic concepts",
+  "author": "John Doe",
+  "email": "john.doe@school.edu",
+  "type": "curriculum",
+  "compatibility": "beginner",
+  "subjects": ["Mathematics"],
+  "grade_levels": ["Grade 7", "Grade 8"],
+  "prerequisites": ["Basic arithmetic"],
+  "dependencies": {
+    "python-3.8+": ">=3.8",
+    "numpy": ">=1.20.0",
+    "matplotlib": ">=3.3.0"
+  },
+  "size": 52428800,
+  "checksum": "sha256-placeholder",
+  "created_at": "2025-11-03T05:34:19Z",
+  "updated_at": "2025-11-03T05:34:19Z",
+  "license": "MIT",
+  "homepage": "https://math-intro-algebra.example.com",
+  "repository": "https://github.com/school/math-intro-algebra",
+  "tags": ["algebra", "mathematics", "interactive", "lessons", "exercises"],
+  "files": [
+    "src/",
+    "tests/",
+    "docs/",
+    "curriculum/",
+    "resources/",
+    "README.md",
+    "LICENSE",
+    "requirements.txt"
+  ],
+  "scripts": {
+    "pre_install": "scripts/pre_install.sh",
+    "post_install": "scripts/post_install.sh",
+    "pre_uninstall": "scripts/pre_uninstall.sh"
+  },
+  "curriculum": {
+    "learning_objectives": [
+      "Understand basic algebraic concepts",
+      "Solve simple linear equations",
+      "Graph linear functions",
+      "Apply algebra to real-world problems"
+    ],
+    "standards": [
+      {
+        "code": "CCSS.MATH.7.EE.4",
+        "description": "Use variables to represent quantities in real-world problems"
+      },
+      {
+        "code": "CCSS.MATH.8.EE.7",
+        "description": "Solve linear equations in one variable"
+      }
+    ],
+    "assessments": [
+      {
+        "type": "quiz",
+        "title": "Algebra Fundamentals Quiz",
+        "description": "Test understanding of basic algebraic concepts"
+      },
+      {
+        "type": "project",
+        "title": "Real-World Algebra Application",
+        "description": "Apply algebra to solve real-world problems"
+      }
+    ],
+    "resources": [
+      {
+        "type": "interactive",
+        "title": "Equation Balance Scale",
+        "description": "Visual tool for understanding equation balance"
+      },
+      {
+        "type": "video",
+        "title": "Introduction to Variables",
+        "description": "Video explanation of variables in algebra"
+      }
+    ]
+  }
+}

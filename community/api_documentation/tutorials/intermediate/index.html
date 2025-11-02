@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intermediate Tutorials - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar">
+            <div class="nav-content">
+                <div class="nav-section">
+                    <h3>API Reference</h3>
+                    <ul>
+                        <li><a href="../api_reference/kernel.html" class="nav-link">Kernel API</a></li>
+                        <li><a href="../api_reference/memory.html" class="nav-link">Memory Management</a></li>
+                        <li><a href="../api_reference/process.html" class="nav-link">Process Management</a></li>
+                        <li><a href="../api_reference/filesystem.html" class="nav-link">File System</a></li>
+                        <li><a href="../api_reference/networking.html" class="nav-link">Network</a></li>
+                        <li><a href="../api_reference/drivers.html" class="nav-link">Driver API</a></li>
+                        <li><a href="../api_reference/gui.html" class="nav-link">GUI Framework</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Tutorials</h3>
+                    <ul>
+                        <li><a href="beginner/index.html" class="nav-link">Beginner</a></li>
+                        <li><a href="intermediate/index.html" class="nav-link active">Intermediate</a></li>
+                        <li><a href="advanced/index.html" class="nav-link">Advanced</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Guides</h3>
+                    <ul>
+                        <li><a href="../guides/integration/rust.html" class="nav-link">Rust Integration</a></li>
+                        <li><a href="../guides/integration/c.html" class="nav-link">C Integration</a></li>
+                        <li><a href="../guides/integration/python.html" class="nav-link">Python Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="content-header">
+                    <h1>Intermediate Tutorials</h1>
+                    <p class="lead">Build on the fundamentals with practical, real-world examples</p>
+                    <div class="content-meta">
+                        <span class="badge badge-level">Intermediate</span>
+                        <span class="badge badge-duration">4-6 hours</span>
+                        <span class="badge badge-prerequisites">Completion of Beginner tutorials</span>
+                    </div>
+                </div>
+
+                <!-- Tutorial Overview -->
+                <section class="content-section">
+                    <h2>Tutorial Overview</h2>
+                    <p>These intermediate tutorials will teach you how to build complete applications using MultiOS APIs. You'll work on practical projects that combine multiple APIs and demonstrate real-world development patterns.</p>
+                    
+                    <div class="tutorial-grid">
+                        <div class="tutorial-card">
+                            <div class="tutorial-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="tutorial-content">
+                                <h3>Building a Web Server</h3>
+                                <p>Create a multi-threaded HTTP server using MultiOS networking and process management APIs.</p>
+                                <div class="tutorial-details">
+                                    <span><i class="fas fa-clock"></i> 2 hours</span>
+                                    <span><i class="fas fa-book"></i> Network, Process APIs</span>
+                                </div>
+                                <a href="#web-server-tutorial" class="btn btn-primary">Start Tutorial</a>
+                            </div>
+                        </div>
+
+                        <div class="tutorial-card">
+                            <div class="tutorial-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="tutorial-content">
+                                <h3>File-Based Database</h3>
+                                <p>Implement a simple key-value database using MultiOS file system and memory management.</p>
+                                <div class="tutorial-details">
+                                    <span><i class="fas fa-clock"></i> 1.5 hours</span>
+                                    <span><i class="fas fa-book"></i> File System, Memory APIs</span>
+                                </div>
+                                <a href="#database-tutorial" class="btn btn-primary">Start Tutorial</a>
+                            </div>
+                        </div>
+
+                        <div class="tutorial-card">
+                            <div class="tutorial-icon">
+                                <i class="fas fa-desktop"></i>
+                            </div>
+                            <div class="tutorial-content">
+                                <h3>Desktop File Manager</h3>
+                                <p>Build a complete file manager application with GUI, file operations, and system integration.</p>
+                                <div class="tutorial-details">
+                                    <span><i class="fas fa-clock"></i> 3 hours</span>
+                                    <span><i class="fas fa-book"></i> GUI, File System APIs</span>
+                                </div>
+                                <a href="#filemanager-tutorial" class="btn btn-primary">Start Tutorial</a>
+                            </div>
+                        </div>
+
+                        <div class="tutorial-card">
+                            <div class="tutorial-icon">
+                                <i class="fas fa-network-wired"></i>
+                            </div>
+                            <div class="tutorial-content">
+                                <h3>Network Monitoring Tool</h3>
+                                <p>Develop a network monitoring application with real-time statistics and alerting.</p>
+                                <div class="tutorial-details">
+                                    <span><i class="fas fa-clock"></i> 2.5 hours</span>
+                                    <span><i class="fas fa-book"></i> Network, GUI APIs</span>
+                                </div>
+                                <a href="#network-monitor-tutorial" class="btn btn-primary">Start Tutorial</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Web Server Tutorial -->
+                <section class="content-section tutorial-content" id="web-server-tutorial">
+                    <h2>Tutorial 1: Building a Web Server</h2>
+                    <div class="tutorial-progress">
+                        <div class="progress-steps">
+                            <span class="step completed">1. Setup</span>
+                            <span class="step completed">2. Basic Server</span>
+                            <span class="step active">3. Request Handling</span>
+                            <span class="step">4. Response Generation</span>
+                            <span class="step">5. Thread Management</span>
+                            <span class="step">6. Testing</span>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Step 1: Project Setup</h3>
+                        <p>Set up your project structure and dependencies for building the web server.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Create Project Structure</h4>
+                                </div>
+                                <pre><code class="language-bash"># Create project directory
+mkdir multi_web_server
+cd multi_web_server
+
+# Initialize Cargo project
+cargo init --bin
+
+# Add dependencies
+cargo add multi_networking
+cargo add multi_filesystem
+cargo add multi_process
+cargo add serde_json
+cargo add tokio --features="full"</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Cargo.toml Configuration</h4>
+                                </div>
+                                <pre><code class="language-toml">[package]
+name = "multi_web_server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+multi_networking = { path = "../path/to/multi_networking" }
+multi_filesystem = { path = "../path/to/multi_filesystem" }
+multi_process = { path = "../path/to/multi_process" }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["full"] }
+
+[features]
+default = []
+logging = ["multi_networking/logging"]</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Step 2: Basic Server Implementation</h3>
+                        <p>Create the basic web server structure with listening capabilities.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Web Server Core</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi_networking::{TcpListener, TcpStream};
+use multi_process::{ProcessManager, ProcessPriority};
+use std::collections::HashMap;
+use tokio::sync::Mutex;
+use std::sync::Arc;
+
+#[derive(Debug, Clone)]
+pub struct HttpRequest {
+    method: String,
+    path: String,
+    version: String,
+    headers: HashMap<String, String>,
+    body: Vec<u8>,
+}
+
+#[derive(Debug, Clone)]
+pub struct HttpResponse {
+    status_code: u16,
+    status_text: String,
+    headers: HashMap<String, String>,
+    body: Vec<u8>,
+}
+
+pub struct WebServer {
+    port: u16,
+    document_root: String,
+    running: Arc<Mutex<bool>>,
+    request_count: Arc<Mutex<u64>>,
+}
+
+impl WebServer {
+    pub fn new(port: u16, document_root: String) -> Self {
+        WebServer {
+            port,
+            document_root,
+            running: Arc::new(Mutex::new(true)),
+            request_count: Arc::new(Mutex::new(0)),
+        }
+    }
+    
+    pub async fn start(&self) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        let listener = TcpListener::bind(format!("0.0.0.0:{}", self.port))?;
+        println!("Web server listening on port {}", self.port);
+        
+        loop {
+            let (stream, addr) = listener.accept().await?;
+            
+            // Clone shared state for each connection
+            let running = Arc::clone(&self.running);
+            let request_count = Arc::clone(&self.request_count);
+            let document_root = self.document_root.clone();
+            
+            // Handle each connection in a separate task
+            tokio::spawn(async move {
+                if let Err(e) = self.handle_connection(
+                    stream, 
+                    addr, 
+                    document_root, 
+                    running, 
+                    request_count
+                ).await {
+                    eprintln!("Connection error: {}", e);
+                }
+            });
+        }
+    }
+    
+    async fn handle_connection(
+        &self,
+        mut stream: TcpStream,
+        addr: String,
+        document_root: String,
+        running: Arc&lt;Mutex&lt;bool&gt;&gt;,
+        request_count: Arc&lt;Mutex&lt;u64&gt;&gt;,
+    ) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        // Check if server is still running
+        let is_running = *running.lock().await;
+        if !is_running {
+            return Ok(());
+        }
+        
+        // Read HTTP request
+        let mut buffer = [0; 8192];
+        let bytes_read = stream.read(&mut buffer).await?;
+        if bytes_read == 0 {
+            return Ok(());
+        }
+        
+        // Parse request
+        let request_data = String::from_utf8_lossy(&buffer[..bytes_read]);
+        let request = self.parse_http_request(&request_data)?;
+        
+        // Increment request counter
+        let mut count = request_count.lock().await;
+        *count += 1;
+        println!("Request {}: {} {} from {}", count, request.method, request.path, addr);
+        
+        // Generate response
+        let response = self.generate_response(&request, &document_root).await?;
+        
+        // Send response
+        stream.write_all(&response.serialize()).await?;
+        stream.flush().await?;
+        
+        Ok(())
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Step 3: Request Parsing</h3>
+                        <p>Implement HTTP request parsing to handle different types of requests.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>HTTP Request Parser</h4>
+                                </div>
+                                <pre><code class="language-rust">impl WebServer {
+    fn parse_http_request(&self, data: &str) -> Result&lt;HttpRequest, Box&lt;dyn std::error::Error&gt;&gt; {
+        let lines: Vec&lt;&str&gt; = data.lines().collect();
+        
+        if lines.is_empty() {
+            return Err("Empty request".into());
+        }
+        
+        // Parse request line (e.g., "GET /path HTTP/1.1")
+        let request_line: Vec&lt;&str&gt; = lines[0].split_whitespace().collect();
+        if request_line.len() != 3 {
+            return Err("Invalid request line".into());
+        }
+        
+        let method = request_line[0].to_string();
+        let path = request_line[1].to_string();
+        let version = request_line[2].to_string();
+        
+        // Parse headers
+        let mut headers = HashMap::new();
+        let mut body_start = 1;
+        
+        for (i, line) in lines.iter().enumerate() {
+            if line.trim().is_empty() {
+                body_start = i + 1;
+                break;
+            }
+            
+            if let Some(colon_pos) = line.find(':') {
+                let key = line[..colon_pos].trim().to_string();
+                let value = line[colon_pos + 1..].trim().to_string();
+                headers.insert(key, value);
+            }
+        }
+        
+        // Extract body
+        let body_lines = &lines[body_start..];
+        let body = body_lines.join("\n").into_bytes();
+        
+        Ok(HttpRequest {
+            method,
+            path,
+            version,
+            headers,
+            body,
+        })
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Step 4: Response Generation</h3>
+                        <p>Generate appropriate HTTP responses for different types of requests.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Response Generator</h4>
+                                </div>
+                                <pre><code class="language-rust">impl WebServer {
+    async fn generate_response(
+        &self,
+        request: &HttpRequest,
+        document_root: &str,
+    ) -> Result&lt;HttpResponse, Box&lt;dyn std::error::Error&gt;&gt; {
+        match request.method.as_str() {
+            "GET" => self.handle_get_request(request, document_root).await,
+            "POST" => self.handle_post_request(request, document_root).await,
+            "HEAD" => self.handle_head_request(request, document_root).await,
+            _ => Ok(self.create_error_response(501, "Not Implemented")),
+        }
+    }
+    
+    async fn handle_get_request(
+        &self,
+        request: &HttpRequest,
+        document_root: &str,
+    ) -> Result&lt;HttpResponse, Box&lt;dyn std::error::Error&gt;&gt; {
+        let path = if request.path == "/" {
+            "/index.html"
+        } else {
+            &request.path
+        };
+        
+        // Sanitize path to prevent directory traversal
+        let file_path = format!("{}{}", document_root, self.sanitize_path(path)?);
+        
+        // Check if file exists and read it
+        match self.read_file(&file_path).await {
+            Ok((content, mime_type)) => {
+                Ok(HttpResponse {
+                    status_code: 200,
+                    status_text: "OK".to_string(),
+                    headers: {
+                        let mut headers = HashMap::new();
+                        headers.insert("Content-Type".to_string(), mime_type);
+                        headers.insert("Content-Length".to_string(), content.len().to_string());
+                        headers.insert("Server".to_string(), "MultiOS-WebServer/1.0".to_string());
+                        headers
+                    },
+                    body: content,
+                })
+            }
+            Err(_) => Ok(self.create_error_response(404, "Not Found")),
+        }
+    }
+    
+    async fn handle_post_request(
+        &self,
+        request: &HttpRequest,
+        _document_root: &str,
+    ) -> Result&lt;HttpResponse, Box&lt;dyn std::error::Error&gt;&gt; {
+        // Handle POST data
+        let response_body = format!(
+            "Received POST data: {} bytes",
+            request.body.len()
+        );
+        
+        Ok(HttpResponse {
+            status_code: 200,
+            status_text: "OK".to_string(),
+            headers: {
+                let mut headers = HashMap::new();
+                headers.insert("Content-Type".to_string(), "text/plain".to_string());
+                headers.insert("Content-Length".to_string(), response_body.len().to_string());
+                headers
+            },
+            body: response_body.into_bytes(),
+        })
+    }
+    
+    fn create_error_response(&self, status_code: u16, status_text: &str) -> HttpResponse {
+        let body = format!(
+            "&lt;html&gt;&lt;body&gt;&lt;h1&gt;{} {}&lt;/h1&gt;&lt;p&gt;Error {} occurred&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;",
+            status_code, status_text, status_code
+        );
+        
+        HttpResponse {
+            status_code,
+            status_text: status_text.to_string(),
+            headers: {
+                let mut headers = HashMap::new();
+                headers.insert("Content-Type".to_string(), "text/html".to_string());
+                headers.insert("Content-Length".to_string(), body.len().to_string());
+                headers.insert("Server".to_string(), "MultiOS-WebServer/1.0".to_string());
+                headers
+            },
+            body: body.into_bytes(),
+        }
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Step 5: Main Application</h3>
+                        <p>Create the main application entry point and add the ability to serve static files.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Main Application</h4>
+                                </div>
+                                <pre><code class="language-rust">#[tokio::main]
+async fn main() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Parse command line arguments
+    let args: Vec&lt;String&gt; = std::env::args().collect();
+    let port = args.get(1)
+        .and_then(|p| p.parse::&lt;u16&gt;().ok())
+        .unwrap_or(8080);
+    
+    let document_root = args.get(2)
+        .cloned()
+        .unwrap_or_else(|| "./www".to_string());
+    
+    // Create server
+    let server = WebServer::new(port, document_root);
+    
+    // Start server
+    server.start().await?;
+    
+    Ok(())
+}
+
+// Helper implementations
+impl HttpRequest {
+    fn parse(data: &str) -> Result&lt;HttpRequest, Box&lt;dyn std::error::Error&gt;&gt; {
+        // Implementation already shown above
+        unimplemented!()
+    }
+}
+
+impl HttpResponse {
+    fn serialize(&self) -> Vec&lt;u8&gt; {
+        let mut response = format!(
+            "HTTP/1.1 {} {}\r\n",
+            self.status_code, self.status_text
+        );
+        
+        // Add headers
+        for (key, value) in &self.headers {
+            response.push_str(&format!("{}: {}\r\n", key, value));
+        }
+        
+        // End headers
+        response.push_str("\r\n");
+        
+        // Add body
+        response.push_str(&String::from_utf8_lossy(&self.body));
+        
+        response.into_bytes()
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Step 6: Testing and Running</h3>
+                        <p>Test your web server and learn how to extend it further.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Test and Run</h4>
+                                </div>
+                                <pre><code class="language-bash"># Build the project
+cargo build --release
+
+# Create web directory
+mkdir -p www
+echo "&lt;h1&gt;Welcome to MultiOS Web Server&lt;/h1&gt;" > www/index.html
+echo "&lt;p&gt;This is a test page.&lt;/p&gt;" >> www/index.html
+
+# Run the server
+./target/release/multi_web_server 8080 ./www
+
+# Test with curl
+curl http://localhost:8080/
+curl http://localhost:8080/index.html
+curl -X POST http://localhost:8080/test -d "Hello World"</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="tutorial-challenge">
+                            <h4><i class="fas fa-trophy"></i> Challenge</h4>
+                            <p>Extend your web server with these features:</p>
+                            <ul>
+                                <li>Add support for HTTP/1.1 persistent connections</li>
+                                <li>Implement file upload handling with POST</li>
+                                <li>Add basic HTTP authentication</li>
+                                <li>Create a simple directory listing page</li>
+                                <li>Add logging to files with rotation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Database Tutorial -->
+                <section class="content-section tutorial-content" id="database-tutorial">
+                    <h2>Tutorial 2: File-Based Database</h2>
+                    <div class="tutorial-progress">
+                        <div class="progress-steps">
+                            <span class="step completed">1. Design</span>
+                            <span class="step completed">2. Storage Engine</span>
+                            <span class="step active">3. Indexing</span>
+                            <span class="step">4. API Layer</span>
+                            <span class="step">5. Transactions</span>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Database Design</h3>
+                        <p>Design a simple key-value database with persistent storage.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Database Core Structure</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi_filesystem::{FileSystem, File};
+use multi_memory::{MemoryManager, MemoryPool};
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
+use serde::{Serialize, Deserialize};
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DatabaseRecord {
+    pub key: String,
+    pub value: Vec<u8>,
+    pub timestamp: u64,
+    pub version: u64,
+}
+
+pub struct SimpleDatabase {
+    fs: FileSystem,
+    data_file: String,
+    index_file: String,
+    memory_manager: MemoryManager,
+    cache: Arc&lt;Mutex&lt;HashMap&lt;String, Vec&lt;u8&gt;&gt;&gt;&gt;,
+    current_version: Arc&lt;Mutex&lt;u64&gt;&gt;,
+}
+
+impl SimpleDatabase {
+    pub fn new(data_dir: &str, db_name: &str) -> Result&lt;Self, Box&lt;dyn std::error::Error&gt;&gt; {
+        let fs = FileSystem::new(data_dir)?;
+        let data_file = format!("{}.data", db_name);
+        let index_file = format!("{}.index", db_name);
+        
+        let mut memory_manager = MemoryManager::new();
+        let memory_pool = MemoryPool::new(100, 1024); // 100 blocks of 1KB each
+        
+        Ok(SimpleDatabase {
+            fs,
+            data_file,
+            index_file,
+            memory_manager,
+            cache: Arc::new(Mutex::new(HashMap::new())),
+            current_version: Arc::new(Mutex::new(1)),
+        })
+    }
+    
+    pub fn set(&mut self, key: &str, value: &[u8]) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        // Update cache
+        {
+            let mut cache = self.cache.lock().unwrap();
+            cache.insert(key.to_string(), value.to_vec());
+        }
+        
+        // Update version
+        {
+            let mut version = self.current_version.lock().unwrap();
+            *version += 1;
+        }
+        
+        // Write to disk
+        let record = DatabaseRecord {
+            key: key.to_string(),
+            value: value.to_vec(),
+            timestamp: std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)?
+                .as_secs(),
+            version: *self.current_version.lock().unwrap(),
+        };
+        
+        self.write_record(&record)?;
+        
+        Ok(())
+    }
+    
+    pub fn get(&self, key: &str) -> Result&lt;Option&lt;Vec&lt;u8&gt;&gt;, Box&lt;dyn std::error::Error&gt;&gt; {
+        // Check cache first
+        {
+            let cache = self.cache.lock().unwrap();
+            if let Some(value) = cache.get(key) {
+                return Ok(Some(value.clone()));
+            }
+        }
+        
+        // Load from disk if not in cache
+        self.load_from_disk(key)
+    }
+    
+    pub fn delete(&mut self, key: &str) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        // Remove from cache
+        {
+            let mut cache = self.cache.lock().unwrap();
+            cache.remove(key);
+        }
+        
+        // Mark as deleted in the data file (tombstone)
+        let record = DatabaseRecord {
+            key: key.to_string(),
+            value: vec![],
+            timestamp: std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)?
+                .as_secs(),
+            version: 0, // 0 indicates deletion
+        };
+        
+        self.write_record(&record)?;
+        
+        Ok(())
+    }
+    
+    pub fn list_keys(&self) -> Result&lt;Vec&lt;String&gt;, Box&lt;dyn std::error::Error&gt;&gt; {
+        let cache = self.cache.lock().unwrap();
+        Ok(cache.keys().cloned().collect())
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>Storage and Retrieval</h3>
+                        <p>Implement the storage engine that handles reading and writing to disk.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Storage Engine Implementation</h4>
+                                </div>
+                                <pre><code class="language-rust">impl SimpleDatabase {
+    fn write_record(&mut self, record: &DatabaseRecord) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        // Serialize record
+        let serialized = serde_json::to_string(record)?;
+        let data = serialized.as_bytes();
+        
+        // Append to data file
+        let mut file = self.fs.open_file_append(&self.data_file)?;
+        file.write_all(&[b'\n'])?; // Record separator
+        file.write_all(data)?;
+        file.sync_all()?;
+        
+        // Update in-memory index
+        self.update_index(record)?;
+        
+        Ok(())
+    }
+    
+    fn load_from_disk(&self, key: &str) -> Result&lt;Option&lt;Vec&lt;u8&gt;&gt;, Box&lt;dyn std::error::Error&gt;&gt; {
+        let mut file = self.fs.open_file(&self.data_file)?;
+        
+        let mut buffer = String::new();
+        file.read_to_string(&mut buffer)?;
+        
+        // Parse all records and find the latest version of the key
+        let mut latest_record: Option&lt;DatabaseRecord&gt; = None;
+        
+        for line in buffer.lines() {
+            if let Ok(record) = serde_json::from_str::&lt;DatabaseRecord&gt;(line) {
+                if record.key == key {
+                    if latest_record.is_none() || record.version > latest_record.as_ref().unwrap().version {
+                        latest_record = Some(record);
+                    }
+                }
+            }
+        }
+        
+        match latest_record {
+            Some(record) if record.version > 0 => Ok(Some(record.value)),
+            Some(_) | None => Ok(None), // Deleted or not found
+        }
+    }
+    
+    fn update_index(&self, record: &DatabaseRecord) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        // Simple in-memory index for this example
+        // In production, you'd want a more sophisticated index
+        {
+            let mut cache = self.cache.lock().unwrap();
+            if record.version > 0 {
+                cache.insert(record.key.clone(), record.value.clone());
+            } else {
+                cache.remove(&record.key);
+            }
+        }
+        
+        Ok(())
+    }
+    
+    pub fn compact(&mut self) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        // Create a new, compacted data file
+        let temp_file = format!("{}.temp", self.data_file);
+        
+        // Read all valid records
+        let mut records = Vec::new();
+        if let Ok(mut file) = self.fs.open_file(&self.data_file) {
+            let mut buffer = String::new();
+            file.read_to_string(&mut buffer)?;
+            
+            let mut latest_records = HashMap::new();
+            
+            for line in buffer.lines() {
+                if let Ok(record) = serde_json::from_str::&lt;DatabaseRecord&gt;(line) {
+                    let existing = latest_records.get(&record.key);
+                    if existing.is_none() || record.version > existing.unwrap().version {
+                        latest_records.insert(record.key.clone(), record);
+                    }
+                }
+            }
+            
+            // Write compacted file
+            let mut file = self.fs.create_file(&temp_file)?;
+            for record in latest_records.values() {
+                if record.version > 0 { // Skip deleted records
+                    let serialized = serde_json::to_string(record)?;
+                    file.write_all(serialized.as_bytes())?;
+                    file.write_all(b"\n")?;
+                }
+            }
+            file.sync_all()?;
+        }
+        
+        // Replace old file with new one
+        if self.fs.path_exists(&self.data_file) {
+            self.fs.remove_file(&self.data_file)?;
+        }
+        self.fs.move_file(&temp_file, &self.data_file)?;
+        
+        Ok(())
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- File Manager Tutorial -->
+                <section class="content-section tutorial-content" id="filemanager-tutorial">
+                    <h2>Tutorial 3: Desktop File Manager</h2>
+                    <p>Build a complete file manager application with GUI interface.</p>
+                    
+                    <div class="tutorial-step">
+                        <h3>GUI Application Structure</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>File Manager Main Application</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi_gui::{Application, Window, TreeView, ListView, MenuBar, ContextMenu};
+use multi_filesystem::{FileSystem, Directory, File};
+use std::collections::HashMap;
+
+pub struct FileManager {
+    application: Application,
+    main_window: Window,
+    tree_view: TreeView,
+    list_view: ListView,
+    current_path: String,
+    file_system: FileSystem,
+}
+
+impl FileManager {
+    pub fn new() -> Result&lt;Self, Box&lt;dyn std::error::Error&gt;&gt; {
+        // Create application
+        let mut application = Application::new("MultiOS File Manager")?;
+        
+        // Create main window
+        let mut main_window = Window::builder()
+            .title("File Manager")
+            .size(1000, 700)
+            .resizable(true)
+            .build()?;
+        
+        // Create tree view for navigation
+        let mut tree_view = TreeView::builder()
+            .size(250, 600)
+            .show_root(true)
+            .build()?;
+        
+        // Create list view for file display
+        let mut list_view = ListView::builder()
+            .size(700, 600)
+            .selection_mode(multi_gui::SelectionMode::Multiple)
+            .show_headers(true)
+            .build()?;
+        
+        // Add columns to list view
+        list_view.add_column("Name", 300)?;
+        list_view.add_column("Size", 100)?;
+        list_view.add_column("Type", 100)?;
+        list_view.add_column("Modified", 150)?;
+        
+        // Create file system instance
+        let file_system = FileSystem::new("/")?;
+        
+        // Build UI
+        main_window.add_widget(&mut tree_view)?;
+        main_window.add_widget(&mut list_view)?;
+        
+        // Setup menu bar
+        FileManager::setup_menu_bar(&mut application)?;
+        
+        Ok(FileManager {
+            application,
+            main_window,
+            tree_view,
+            list_view,
+            current_path: "/".to_string(),
+            file_system,
+        })
+    }
+    
+    fn setup_menu_bar(app: &mut Application) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        let mut menu_bar = MenuBar::builder().build()?;
+        
+        // File menu
+        let mut file_menu = app.create_menu("File")?;
+        file_menu.add_item("New Folder", Box::new(|| {
+            println!("New folder action");
+        }))?;
+        file_menu.add_separator()?;
+        file_menu.add_item("Exit", Box::new(|| {
+            println!("Exit application");
+        }))?;
+        
+        // Edit menu
+        let mut edit_menu = app.create_menu("Edit")?;
+        edit_menu.add_item("Copy", Box::new(|| {
+            println!("Copy action");
+        }))?;
+        edit_menu.add_item("Paste", Box::new(|| {
+            println!("Paste action");
+        }))?;
+        edit_menu.add_item("Delete", Box::new(|| {
+            println!("Delete action");
+        }))?;
+        
+        // View menu
+        let mut view_menu = app.create_menu("View")?;
+        view_menu.add_item("Refresh", Box::new(|| {
+            println!("Refresh view");
+        }))?;
+        
+        app.set_menu_bar(menu_bar)?;
+        
+        Ok(())
+    }
+    
+    pub fn run(&mut self) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        // Populate tree view with system directories
+        self.populate_tree_view()?;
+        
+        // Setup event handlers
+        self.setup_event_handlers()?;
+        
+        // Show main window
+        self.main_window.show()?;
+        
+        // Run application
+        self.application.run()?;
+        
+        Ok(())
+    }
+    
+    fn populate_tree_view(&mut self) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        // Add root directories
+        let mut root = self.tree_view.get_root_node()?;
+        
+        // Add standard directories
+        self.add_directory_node(&mut root, "/home", "Home")?;
+        self.add_directory_node(&mut root, "/usr", "System")?;
+        self.add_directory_node(&mut root, "/var", "Variable Data")?;
+        
+        Ok(())
+    }
+    
+    fn add_directory_node(
+        &self,
+        parent: &mut multi_gui::TreeNode,
+        path: &str,
+        display_name: &str,
+    ) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        let mut node = multi_gui::TreeNode::new(display_name);
+        node.set_user_data(path.to_string());
+        parent.add_child(node)?;
+        
+        Ok(())
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step">
+                        <h3>File Operations</h3>
+                        <p>Implement file operations like copy, move, delete, and create folders.</p>
+                        
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>File Operation Handlers</h4>
+                                </div>
+                                <pre><code class="language-rust">impl FileManager {
+    fn setup_event_handlers(&mut self) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        // Tree view selection change
+        self.tree_view.on_selection_changed(Box::new(|path| {
+            println!("Tree selection changed to: {}", path);
+        }))?;
+        
+        // List view double-click
+        self.list_view.on_double_click(Box::new(|file_name| {
+            println!("Double clicked: {}", file_name);
+        }))?;
+        
+        // Context menu for files
+        self.setup_context_menu()?;
+        
+        Ok(())
+    }
+    
+    fn setup_context_menu(&self) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        let mut context_menu = ContextMenu::builder().build()?;
+        
+        context_menu.add_item("Open", Box::new(|files| {
+            println!("Open files: {:?}", files);
+        }))?;
+        
+        context_menu.add_item("Copy", Box::new(|files| {
+            println!("Copy files: {:?}", files);
+        }))?;
+        
+        context_menu.add_item("Move", Box::new(|files| {
+            println!("Move files: {:?}", files);
+        }))?;
+        
+        context_menu.add_separator()?;
+        
+        context_menu.add_item("Delete", Box::new(|files| {
+            println!("Delete files: {:?}", files);
+        }))?;
+        
+        self.list_view.set_context_menu(context_menu)?;
+        
+        Ok(())
+    }
+    
+    fn copy_files(&self, source_files: Vec&lt;String&gt;, destination: &str) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        for source_file in source_files {
+            let source_path = format!("{}/{}", self.current_path, source_file);
+            let dest_path = format!("{}/{}", destination, source_file);
+            
+            let source_metadata = self.file_system.get_metadata(&source_path)?;
+            
+            if source_metadata.is_file() {
+                // Copy file
+                self.file_system.copy_file(&source_path, &dest_path)?;
+            } else if source_metadata.is_directory() {
+                // Copy directory recursively
+                self.copy_directory_recursive(&source_path, &dest_path)?;
+            }
+        }
+        
+        println!("Copied {} files to {}", source_files.len(), destination);
+        Ok(())
+    }
+    
+    fn copy_directory_recursive(
+        &self,
+        source: &str,
+        destination: &str,
+    ) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        // Create destination directory
+        self.file_system.create_directories(destination)?;
+        
+        // List and copy contents
+        let entries = self.file_system.list_directory(source)?;
+        for entry in entries {
+            let source_entry = format!("{}/{}", source, entry.name);
+            let dest_entry = format!("{}/{}", destination, entry.name);
+            
+            if entry.entry_type == multi_filesystem::DirEntryType::Directory {
+                self.copy_directory_recursive(&source_entry, &dest_entry)?;
+            } else {
+                self.file_system.copy_file(&source_entry, &dest_entry)?;
+            }
+        }
+        
+        Ok(())
+    }
+    
+    fn delete_files(&self, files: Vec&lt;String&gt;) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        for file in files {
+            let file_path = format!("{}/{}", self.current_path, file);
+            let metadata = self.file_system.get_metadata(&file_path)?;
+            
+            if metadata.is_directory() {
+                self.file_system.remove_directory_all(&file_path)?;
+            } else {
+                self.file_system.remove_file(&file_path)?;
+            }
+        }
+        
+        println!("Deleted {} files", files.len());
+        Ok(())
+    }
+    
+    fn create_new_folder(&self, name: &str) -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+        let folder_path = format!("{}/{}", self.current_path, name);
+        self.file_system.create_directory(&folder_path)?;
+        println!("Created folder: {}", folder_path);
+        Ok(())
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Next Steps -->
+                <section class="content-section">
+                    <h2>Next Steps</h2>
+                    <div class="next-steps">
+                        <div class="step-card">
+                            <div class="step-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>Continue Learning</h3>
+                                <p>Move on to the <a href="advanced/index.html">Advanced tutorials</a> to learn about kernel modules, device drivers, and system programming.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>Build Projects</h3>
+                                <p>Apply what you've learned by building your own projects using the MultiOS APIs. Check out the <a href="../guides/integration/rust.html">integration guides</a> for more examples.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="step-content">
+                                <h3>Join Community</h3>
+                                <p>Connect with other MultiOS developers, share your projects, and get help on the community forum.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/search.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/interactive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

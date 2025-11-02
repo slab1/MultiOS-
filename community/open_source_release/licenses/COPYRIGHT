@@ -1,0 +1,46 @@
+Copyright (c) 2024 MultiOS Contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this project except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+=================================================================
+
+Copyright Notice for Contributors:
+
+Individual contributors to the MultiOS project hold copyright to their
+contributions. By making a contribution to this project, you certify that:
+
+1. The contribution was created in whole or in part by you and you
+   have the right to submit it under the Apache License 2.0; OR
+
+2. The contribution is based upon previous work that, to the best
+   of your knowledge, is covered under an appropriate license and you
+   have the right under that license to submit that work with
+   modifications, acknowledging that in the Apache License 2.0, you
+   grant additional rights for such contributions; OR
+
+3. You understand and agree that this project is a collective work,
+   that multiple contributors contribute to the overall project, and
+   that multiple contributors collectively hold copyright to the
+   overall work; OR
+
+4. You certify that you are legally entitled to grant this license,
+   and that no third-party copyright or other intellectual property
+   claims would be violated by your contribution.
+
+All contributors retain rights to their contributions and may be
+contacted regarding license and IP matters.
+
+For contribution guidelines, see:
+https://github.com/multios/multios/blob/main/contributing.md
+
+For copyright inquiries, contact: copyright@multios.org

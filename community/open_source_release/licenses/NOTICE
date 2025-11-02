@@ -1,0 +1,45 @@
+MultiOS Operating System
+Copyright 2024 MultiOS Contributors
+
+This product bundles the following third-party software components:
+
+Third-Party Software and Licenses:
+
+1. Rust Programming Language
+   Copyright (c) 2009-2024 The Rust Project Developers
+   License: MIT or Apache-2.0
+   
+2. LLVM Compiler Infrastructure  
+   Copyright (c) 2003-2024 University of Illinois at Urbana-Champaign
+   License: Apache-2.0 with LLVM Exceptions
+
+3. QEMU (Quick Emulator)
+   Copyright (c) 2003-2024 Fabrice Bellard and the QEMU Team
+   License: LGPL-2.1 and GPL-2
+
+4. GNU GRUB (Grand Unified Bootloader)
+   Copyright (C) 1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019 Free Software Foundation, Inc
+   License: GPL-3.0
+
+5. UEFI Development Kit (EDK II)
+   Copyright (c) 2004-2014 Intel Corporation
+   License: BSD-2-Clause and various other open source licenses
+
+6. musl libc
+   Copyright © 2005-2014 Rich Felker and contributors
+   License: MIT
+
+7. OpenSSL
+   Copyright (c) 1998-2024 The OpenSSL Project Authors
+   Copyright (c) 1995-1998 Eric Young (eay@cryptsoft.com)
+   License: OpenSSL License and SSLeay License
+
+8. zlib compression library
+   Copyright (C) 1995-2024 Jean-loup Gailly and Mark Adler
+   License: zlib License
+
+This software may utilize additional third-party components. 
+See individual component LICENSE files in the source distribution 
+for specific license terms.
+
+For questions about licensing, contact legal@multios.org

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Management API - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar">
+            <div class="nav-content">
+                <div class="nav-section">
+                    <h3>API Reference</h3>
+                    <ul>
+                        <li><a href="kernel.html" class="nav-link">Kernel API</a></li>
+                        <li><a href="memory.html" class="nav-link active">Memory Management</a></li>
+                        <li><a href="process.html" class="nav-link">Process Management</a></li>
+                        <li><a href="filesystem.html" class="nav-link">File System</a></li>
+                        <li><a href="networking.html" class="nav-link">Network</a></li>
+                        <li><a href="drivers.html" class="nav-link">Driver API</a></li>
+                        <li><a href="gui.html" class="nav-link">GUI Framework</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Tutorials</h3>
+                    <ul>
+                        <li><a href="../tutorials/beginner/index.html" class="nav-link">Beginner</a></li>
+                        <li><a href="../tutorials/intermediate/index.html" class="nav-link">Intermediate</a></li>
+                        <li><a href="../tutorials/advanced/index.html" class="nav-link">Advanced</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Guides</h3>
+                    <ul>
+                        <li><a href="../guides/integration/rust.html" class="nav-link">Rust Integration</a></li>
+                        <li><a href="../guides/integration/c.html" class="nav-link">C Integration</a></li>
+                        <li><a href="../guides/integration/python.html" class="nav-link">Python Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="content-header">
+                    <h1>Memory Management API</h1>
+                    <p class="lead">Comprehensive memory management utilities for MultiOS kernel and applications</p>
+                    <div class="content-meta">
+                        <span class="badge badge-version">v1.0</span>
+                        <span class="badge badge-module">memory</span>
+                        <span class="badge badge-stability">Stable</span>
+                    </div>
+                </div>
+
+                <!-- Quick Start Section -->
+                <section class="content-section">
+                    <h2>Quick Start</h2>
+                    <div class="code-example-container">
+                        <div class="code-example">
+                            <div class="code-header">
+                                <h4>Basic Memory Allocation</h4>
+                                <div class="code-actions">
+                                    <button class="btn btn-sm btn-secondary run-example" data-example="memory-basic">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary copy-code" data-code="memory-basic">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                            </div>
+                            <pre><code class="language-rust">use multi::memory::{alloc, dealloc, MemoryManager};
+
+// Basic allocation
+let mut memory_manager = MemoryManager::new();
+let buffer = memory_manager.allocate(1024);
+
+// Allocate with specific alignment
+let aligned_buffer = memory_manager.allocate_aligned(4096, 4096);
+
+// Check allocation status
+println!("Allocated: {} bytes", buffer.len());
+println!("Aligned: {} bytes", aligned_buffer.len());
+
+// Manual cleanup
+memory_manager.deallocate(buffer);
+memory_manager.deallocate(aligned_buffer);</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Memory Allocation Section -->
+                <section class="content-section">
+                    <h2>Memory Allocation</h2>
+                    <p>The memory allocation API provides various methods for allocating and managing memory in MultiOS.</p>
+                    
+                    <div class="api-section">
+                        <h3>allocate()</h3>
+                        <div class="api-description">
+                            <p>Allocate a block of memory with the specified size.</p>
+                        </div>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Allocate Memory</h4>
+                                </div>
+                                <pre><code class="language-rust">// Function signature
+fn allocate(&mut self, size: usize) -> Result&lt;Vec&lt;u8&gt;, MemoryError&gt;
+
+// Usage example
+let mut mm = MemoryManager::new();
+match mm.allocate(1024) {
+    Ok(buffer) => {
+        // Fill buffer with data
+        for byte in &mut buffer {
+            *byte = 0x42;
+        }
+        println!("Allocated {} bytes", buffer.len());
+    }
+    Err(e) => {
+        println!("Allocation failed: {}", e);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                        <div class="parameters">
+                            <h4>Parameters</h4>
+                            <table class="api-table">
+                                <thead>
+                                    <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>size</td><td>usize</td><td>Number of bytes to allocate</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="returns">
+                            <h4>Returns</h4>
+                            <p>Result&lt;Vec&lt;u8&gt;, MemoryError&gt; - A buffer containing the allocated memory, or an error if allocation failed.</p>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>allocate_aligned()</h3>
+                        <div class="api-description">
+                            <p>Allocate memory with specific alignment requirements.</p>
+                        </div>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Allocate Aligned Memory</h4>
+                                </div>
+                                <pre><code class="language-rust">// Function signature
+fn allocate_aligned(&mut self, size: usize, alignment: usize) 
+    -> Result&lt;Vec&lt;u8&gt;, MemoryError&gt;
+
+// Usage example
+let mut mm = MemoryManager::new();
+// Allocate 4KB page-aligned buffer
+let page_buffer = mm.allocate_aligned(4096, 4096)?;
+
+// Allocate 16-byte aligned buffer
+let cache_line_buffer = mm.allocate_aligned(64, 16)?;</code></pre>
+                            </div>
+                        </div>
+                        <div class="parameters">
+                            <h4>Parameters</h4>
+                            <table class="api-table">
+                                <thead>
+                                    <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>size</td><td>usize</td><td>Number of bytes to allocate</td></tr>
+                                    <tr><td>alignment</td><td>usize</td><td>Alignment boundary (must be power of 2)</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Memory Pool Management -->
+                <section class="content-section">
+                    <h2>Memory Pool Management</h2>
+                    <p>Efficient memory allocation using pre-allocated pools for high-performance scenarios.</p>
+                    
+                    <div class="api-section">
+                        <h3>MemoryPool</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Create and Use Memory Pool</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::memory::MemoryPool;
+
+// Create a pool with 32 blocks of 256 bytes each
+let mut pool = MemoryPool::new(32, 256);
+
+// Allocate from pool
+let block1 = pool.allocate_block();
+let block2 = pool.allocate_block();
+
+// Check pool statistics
+let stats = pool.get_stats();
+println!("Used blocks: {}", stats.used_blocks);
+println!("Free blocks: {}", stats.free_blocks);
+println!("Total capacity: {} bytes", stats.total_capacity);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>FastAlloc</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Fast Memory Allocation</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::memory::FastAlloc;
+
+// Fast allocator for frequently allocated/deallocated objects
+let mut fast_alloc = FastAlloc::new(1024);
+
+// Allocate and deallocate frequently
+for i in 0..100 {
+    let mut obj = fast_alloc.allocate::<u64>()?;
+    *obj = i as u64;
+    fast_alloc.deallocate(obj);
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Memory Protection -->
+                <section class="content-section">
+                    <h2>Memory Protection</h2>
+                    <p>Protect and manage memory regions for security and stability.</p>
+                    
+                    <div class="api-section">
+                        <h3>MemoryProtection</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Set Memory Permissions</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::memory::{MemoryProtection, ProtectionFlags};
+
+// Create memory region with specific protections
+let mut mem_prot = MemoryProtection::new();
+let address = 0x1000;
+let size = 4096;
+
+// Set read-only protection
+mem_prot.set_protection(address, size, ProtectionFlags::READ)?;
+
+// Set read-write protection
+mem_prot.set_protection(address, size, ProtectionFlags::READ | ProtectionFlags::WRITE)?;
+
+// Set read-write-execute protection
+mem_prot.set_protection(address, size, 
+    ProtectionFlags::READ | ProtectionFlags::WRITE | ProtectionFlags::EXECUTE)?;</code></pre>
+                            </div>
+                        </div>
+                        <div class="parameters">
+                            <h4>ProtectionFlags</h4>
+                            <table class="api-table">
+                                <thead>
+                                    <tr><th>Flag</th><th>Value</th><th>Description</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>READ</td><td>0x1</td><td>Allow reading from memory</td></tr>
+                                    <tr><td>WRITE</td><td>0x2</td><td>Allow writing to memory</td></tr>
+                                    <tr><td>EXECUTE</td><td>0x4</td><td>Allow execution from memory</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Memory Statistics -->
+                <section class="content-section">
+                    <h2>Memory Statistics</h2>
+                    <p>Monitor and analyze memory usage patterns.</p>
+                    
+                    <div class="api-section">
+                        <h3>MemoryStats</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Monitor Memory Usage</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::memory::get_memory_stats;
+
+// Get comprehensive memory statistics
+let stats = get_memory_stats();
+
+println!("Total Memory: {} MB", stats.total_memory / (1024 * 1024));
+println!("Used Memory: {} MB", stats.used_memory / (1024 * 1024));
+println!("Free Memory: {} MB", stats.free_memory / (1024 * 1024));
+println!("Available Memory: {} MB", stats.available_memory / (1024 * 1024));
+
+// Memory fragmentation info
+println!("Fragmentation: {}%", stats.fragmentation_percent);
+println!("Largest free block: {} KB", stats.largest_free_block / 1024);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interactive Demo -->
+                <section class="content-section">
+                    <h2>Interactive Memory Simulator</h2>
+                    <div class="interactive-demo">
+                        <div class="demo-controls">
+                            <button class="btn btn-primary" id="simulate-allocation">
+                                <i class="fas fa-plus"></i> Simulate Allocation
+                            </button>
+                            <button class="btn btn-secondary" id="simulate-deallocation">
+                                <i class="fas fa-minus"></i> Simulate Deallocation
+                            </button>
+                            <button class="btn btn-secondary" id="simulate-compact">
+                                <i class="fas fa-compress"></i> Compact Memory
+                            </button>
+                        </div>
+                        <div class="demo-visualization" id="memory-visualization">
+                            <div class="memory-blocks" id="memory-blocks"></div>
+                        </div>
+                        <div class="demo-stats" id="demo-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Used:</span>
+                                <span class="stat-value" id="used-memory">0 KB</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Free:</span>
+                                <span class="stat-value" id="free-memory">100 KB</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Fragmentation:</span>
+                                <span class="stat-value" id="fragmentation">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Error Handling -->
+                <section class="content-section">
+                    <h2>Error Handling</h2>
+                    <p>The memory management API provides detailed error information for troubleshooting.</p>
+                    
+                    <div class="api-section">
+                        <h3>MemoryError</h3>
+                        <div class="code-example-container">
+                            <div class="code-example">
+                                <div class="code-header">
+                                    <h4>Handle Memory Errors</h4>
+                                </div>
+                                <pre><code class="language-rust">use multi::memory::{MemoryError, ErrorType};
+
+// Handle different memory error types
+fn handle_allocation(size: usize) -> Result&lt;Vec&lt;u8&gt;, String&gt; {
+    let mut mm = MemoryManager::new();
+    
+    match mm.allocate(size) {
+        Ok(buffer) => Ok(buffer),
+        Err(error) => {
+            match error.error_type {
+                ErrorType::OutOfMemory => {
+                    println!("Out of memory - try allocating less");
+                    Err("Out of memory".to_string())
+                }
+                ErrorType::InvalidSize => {
+                    println!("Invalid allocation size: {}", size);
+                    Err("Invalid size".to_string())
+                }
+                ErrorType::AlignmentError => {
+                    println!("Alignment error for size: {}", size);
+                    Err("Alignment error".to_string())
+                }
+                _ => Err(format!("Memory error: {}", error))
+            }
+        }
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Best Practices -->
+                <section class="content-section">
+                    <h2>Best Practices</h2>
+                    <div class="best-practices">
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Pool Allocation</h4>
+                            <p>Use memory pools for frequently allocated objects to reduce fragmentation and improve performance.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Alignment</h4>
+                            <p>Always specify appropriate alignment for performance-critical data structures.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Error Handling</h4>
+                            <p>Always check allocation results and handle errors gracefully.</p>
+                        </div>
+                        <div class="practice-item">
+                            <h4><i class="fas fa-check-circle text-success"></i> Statistics Monitoring</h4>
+                            <p>Monitor memory statistics regularly to detect leaks and optimize usage.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/search.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/interactive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Memory Management specific interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Memory visualization simulator
+            let memoryBlocks = [];
+            let totalMemory = 100; // KB
+            let usedMemory = 0;
+            
+            function updateMemoryVisualization() {
+                const container = document.getElementById('memory-blocks');
+                container.innerHTML = '';
+                
+                memoryBlocks.forEach((block, index) => {
+                    const blockElement = document.createElement('div');
+                    blockElement.className = `memory-block ${block.allocated ? 'allocated' : 'free'}`;
+                    blockElement.style.width = `${block.size}%`;
+                    blockElement.title = `${block.allocated ? 'Allocated' : 'Free'}: ${block.size}KB`;
+                    container.appendChild(blockElement);
+                });
+                
+                // Update statistics
+                document.getElementById('used-memory').textContent = `${usedMemory} KB`;
+                document.getElementById('free-memory').textContent = `${totalMemory - usedMemory} KB`;
+                
+                const fragmentation = calculateFragmentation();
+                document.getElementById('fragmentation').textContent = `${fragmentation}%`;
+            }
+            
+            function calculateFragmentation() {
+                let freeBlocks = memoryBlocks.filter(block => !block.allocated);
+                if (freeBlocks.length <= 1) return 0;
+                
+                // Simplified fragmentation calculation
+                let externalFragmentation = (freeBlocks.length - 1) * 10;
+                return Math.min(externalFragmentation, 50);
+            }
+            
+            // Initialize memory blocks
+            for (let i = 0; i < 10; i++) {
+                memoryBlocks.push({ allocated: false, size: Math.random() * 5 + 1 });
+            }
+            
+            document.getElementById('simulate-allocation').addEventListener('click', function() {
+                let freeBlockIndex = memoryBlocks.findIndex(block => !block.allocated);
+                if (freeBlockIndex !== -1) {
+                    memoryBlocks[freeBlockIndex].allocated = true;
+                    usedMemory += memoryBlocks[freeBlockIndex].size;
+                    updateMemoryVisualization();
+                }
+            });
+            
+            document.getElementById('simulate-deallocation').addEventListener('click', function() {
+                let allocatedBlockIndex = memoryBlocks.findIndex(block => block.allocated);
+                if (allocatedBlockIndex !== -1) {
+                    memoryBlocks[allocatedBlockIndex].allocated = false;
+                    usedMemory -= memoryBlocks[allocatedBlockIndex].size;
+                    updateMemoryVisualization();
+                }
+            });
+            
+            document.getElementById('simulate-compact').addEventListener('click', function() {
+                // Simulate memory compaction
+                memoryBlocks = memoryBlocks.sort((a, b) => {
+                    if (a.allocated && !b.allocated) return -1;
+                    if (!a.allocated && b.allocated) return 1;
+                    return 0;
+                });
+                updateMemoryVisualization();
+            });
+            
+            // Initialize visualization
+            updateMemoryVisualization();
+        });
+    </script>
+</body>
+</html>

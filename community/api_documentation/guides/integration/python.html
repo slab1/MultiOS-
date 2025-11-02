@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Integration Guide - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sidebar">
+            <div class="nav-content">
+                <div class="nav-section">
+                    <h3>API Reference</h3>
+                    <ul>
+                        <li><a href="../../api_reference/kernel.html" class="nav-link">Kernel API</a></li>
+                        <li><a href="../../api_reference/memory.html" class="nav-link">Memory Management</a></li>
+                        <li><a href="../../api_reference/process.html" class="nav-link">Process Management</a></li>
+                        <li><a href="../../api_reference/filesystem.html" class="nav-link">File System</a></li>
+                        <li><a href="../../api_reference/networking.html" class="nav-link">Network</a></li>
+                        <li><a href="../../api_reference/drivers.html" class="nav-link">Driver API</a></li>
+                        <li><a href="../../api_reference/gui.html" class="nav-link">GUI Framework</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Tutorials</h3>
+                    <ul>
+                        <li><a href="../../tutorials/beginner/index.html" class="nav-link">Beginner</a></li>
+                        <li><a href="../../tutorials/intermediate/index.html" class="nav-link">Intermediate</a></li>
+                        <li><a href="../../tutorials/advanced/index.html" class="nav-link">Advanced</a></li>
+                    </ul>
+                </div>
+                <div class="nav-section">
+                    <h3>Guides</h3>
+                    <ul>
+                        <li><a href="rust.html" class="nav-link">Rust Integration</a></li>
+                        <li><a href="c.html" class="nav-link">C Integration</a></li>
+                        <li><a href="python.html" class="nav-link active">Python Integration</a></li>
+                        <li><a href="javascript.html" class="nav-link">JavaScript Integration</a></li>
+                        <li><a href="cpp.html" class="nav-link">C++ Integration</a></li>
+                        <li><a href="go.html" class="nav-link">Go Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="content-header">
+                    <h1>Python Integration Guide</h1>
+                    <p class="lead">Complete guide for building MultiOS applications in Python</p>
+                    <div class="content-meta">
+                        <span class="badge badge-language">Python</span>
+                        <span class="badge badge-difficulty">All Levels</span>
+                        <span class="badge badge-ecosystem">Scripting</span>
+                    </div>
+                </div>
+
+                <!-- Language Overview -->
+                <section class="content-section">
+                    <h2>Why Python with MultiOS?</h2>
+                    <p>Python offers rapid development, extensive libraries, and excellent readability, making it perfect for automation, scripting, and application development on MultiOS. This guide covers native Python integration and Python-to-Rust interoperability.</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Rapid Development</h3>
+                                <p>Fast prototyping and development with Python's expressive syntax and extensive standard library.</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-puzzle-piece"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Rich Ecosystem</h3>
+                                <p>Access to thousands of Python packages and modules for rapid development.</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-plug"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>FFI Integration</h3>
+                                <p>Seamless integration with Rust components through ctypes and native extensions.</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h3>Easy Learning</h3>
+                                <p>Beginner-friendly syntax that reduces development complexity and time.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Installation -->
+                <section class="content-section">
+                    <h2>Installation and Setup</h2>
+                    <p>Set up Python development for MultiOS applications:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Installing Python for MultiOS</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash"># Install MultiOS Python runtime
+cargo install multios-python-runtime
+
+# Install Python development tools
+cargo install multios-python-devtools
+
+# Create new Python project
+multios-python new my_app
+cd my_app</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Project Structure</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash">my_app/
+├── Cargo.toml              # Rust dependencies
+├── pyproject.toml          # Python configuration
+├── src/
+│   └── main.rs             # Rust entry point
+├── python/
+│   ├── __init__.py         # Python package init
+│   └── main.py             # Python application
+├── assets/
+└── README.md</code></pre>
+                    </div>
+                </section>
+
+                <!-- Basic Usage -->
+                <section class="content-section">
+                    <h2>Basic Python Application</h2>
+                    <p>Create a simple Python application for MultiOS:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>main.py</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-python">#!/usr/bin/env python3
+"""
+Simple MultiOS Python Application
+"""
+import sys
+import os
+from pathlib import Path
+
+# MultiOS Python bindings
+import multios
+from multios import FileSystem, Process, Network, GUI
+
+class SimpleApp:
+    def __init__(self):
+        self.app_name = "SimpleApp"
+        print(f"Starting {self.app_name}")
+    
+    def run(self):
+        """Main application loop"""
+        try:
+            # Initialize GUI
+            gui = GUI()
+            window = gui.create_window(
+                title=self.app_name,
+                width=800,
+                height=600
+            )
+            
+            # Create a simple UI
+            label = window.create_label("Hello, MultiOS!")
+            button = window.create_button("Click Me", self.on_button_click)
+            
+            # Event loop
+            window.show()
+            
+        except Exception as e:
+            print(f"Error: {e}")
+            return 1
+        
+        return 0
+    
+    def on_button_click(self):
+        """Button click handler"""
+        multios.show_notification("Button clicked!")
+        print("Button clicked!")
+
+if __name__ == "__main__":
+    app = SimpleApp()
+    exit_code = app.run()
+    sys.exit(exit_code)</code></pre>
+                    </div>
+                </section>
+
+                <!-- File System Integration -->
+                <section class="content-section">
+                    <h2>File System Operations</h2>
+                    <p>Work with the MultiOS file system from Python:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>File System Example</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-python">from multios import FileSystem, Path
+import json
+
+def file_system_demo():
+    """Demonstrate file system operations"""
+    fs = FileSystem()
+    
+    # Working directory
+    current_dir = fs.get_current_dir()
+    print(f"Current directory: {current_dir}")
+    
+    # Create directories
+    app_dir = Path("/apps/my_app")
+    fs.create_directory(app_dir, recursive=True)
+    
+    # Write data
+    config = {
+        "app_name": "My App",
+        "version": "1.0.0",
+        "settings": {
+            "theme": "dark",
+            "language": "en"
+        }
+    }
+    
+    config_path = app_dir / "config.json"
+    with fs.open(config_path, "w") as f:
+        json.dump(config, f, indent=2)
+    
+    # Read data
+    with fs.open(config_path, "r") as f:
+        loaded_config = json.load(f)
+    
+    print(f"Loaded config: {loaded_config}")
+    
+    # List directory
+    files = fs.list_directory(app_dir)
+    for file in files:
+        print(f"File: {file.name} ({file.size} bytes)")
+    
+    # File operations
+    fs.copy(config_path, app_dir / "config_backup.json")
+    fs.move(app_dir / "config_backup.json", app_dir / "old_config.json")
+    
+    return app_dir
+
+def directory_traversal():
+    """Advanced directory operations"""
+    fs = FileSystem()
+    
+    # Walk directory tree
+    for root, dirs, files in fs.walk("/apps"):
+        print(f"Directory: {root}")
+        for file in files:
+            file_path = Path(root) / file
+            file_info = fs.get_file_info(file_path)
+            print(f"  {file}: {file_info.size} bytes, modified {file_info.modified}")
+
+# Usage
+if __name__ == "__main__":
+    app_dir = file_system_demo()
+    directory_traversal()</code></pre>
+                    </div>
+                </section>
+
+                <!-- Process Management -->
+                <section class="content-section">
+                    <h2>Process Management</h2>
+                    <p>Create and manage processes from Python:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Process Management</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-python">import time
+import threading
+from multios import Process, ProcessManager
+
+class WorkerProcess:
+    def __init__(self):
+        self.pm = ProcessManager()
+        self.running = False
+    
+    def start_worker(self, worker_id):
+        """Start a worker process"""
+        def worker():
+            worker_process = Process.get_current()
+            worker_process.set_name(f"Worker-{worker_id}")
+            
+            print(f"Worker {worker_id} started with PID: {worker_process.pid}")
+            
+            self.running = True
+            counter = 0
+            while self.running:
+                print(f"Worker {worker_id}: {counter}")
+                counter += 1
+                time.sleep(1)
+            
+            print(f"Worker {worker_id} stopped")
+        
+        # Start worker in background
+        thread = threading.Thread(target=worker)
+        thread.daemon = True
+        thread.start()
+        
+        return thread
+    
+    def spawn_subprocess(self, command):
+        """Spawn a subprocess"""
+        try:
+            process = self.pm.spawn(command)
+            print(f"Subprocess started: {process.pid}")
+            return process
+        except Exception as e:
+            print(f"Failed to spawn subprocess: {e}")
+            return None
+    
+    def monitor_processes(self):
+        """Monitor all running processes"""
+        processes = self.pm.list_processes()
+        
+        print("Running processes:")
+        for proc in processes:
+            print(f"  PID {proc.pid}: {proc.name} - {proc.status}")
+    
+    def run_example(self):
+        """Run process management example"""
+        # Start multiple workers
+        workers = []
+        for i in range(3):
+            worker = self.start_worker(i + 1)
+            workers.append(worker)
+        
+        # Run for a few seconds
+        time.sleep(5)
+        
+        # Stop workers
+        self.running = False
+        
+        # Spawn subprocess
+        subprocess = self.spawn_subprocess("echo 'Hello from subprocess'")
+        time.sleep(1)
+        
+        # Monitor processes
+        self.monitor_processes()
+
+# Usage
+if __name__ == "__main__":
+    worker_manager = WorkerProcess()
+    worker_manager.run_example()</code></pre>
+                    </div>
+                </section>
+
+                <!-- Networking -->
+                <section class="content-section">
+                    <h2>Network Operations</h2>
+                    <p>Network programming with Python on MultiOS:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Network Server</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-python">import json
+import threading
+import time
+from multios import Network, Socket, TCPServer
+
+class SimpleHTTPServer:
+    def __init__(self, host="127.0.0.1", port=8080):
+        self.host = host
+        self.port = port
+        self.running = False
+    
+    def handle_request(self, request):
+        """Handle incoming HTTP request"""
+        method = request.method
+        path = request.path
+        
+        # Simple routing
+        if path == "/":
+            return self.json_response(200, {
+                "message": "Hello from MultiOS Python!",
+                "method": method,
+                "timestamp": time.time()
+            })
+        elif path == "/status":
+            return self.json_response(200, {
+                "status": "running",
+                "uptime": time.time() - self.start_time
+            })
+        else:
+            return self.json_response(404, {"error": "Not found"})
+    
+    def json_response(self, status_code, data):
+        """Create JSON response"""
+        response = {
+            "status_code": status_code,
+            "headers": {"Content-Type": "application/json"},
+            "body": json.dumps(data, indent=2)
+        }
+        return response
+    
+    def start_server(self):
+        """Start the HTTP server"""
+        self.running = True
+        self.start_time = time.time()
+        
+        def handle_client(client_socket, address):
+            """Handle individual client connection"""
+            try:
+                # Receive request
+                request_data = client_socket.recv(1024)
+                if not request_data:
+                    return
+                
+                # Parse request (simplified)
+                request_lines = request_data.decode().split('\r\n')
+                request_line = request_lines[0]
+                parts = request_line.split(' ')
+                
+                if len(parts) >= 2:
+                    method = parts[0]
+                    path = parts[1]
+                    
+                    # Create request object
+                    class Request:
+                        def __init__(self, method, path):
+                            self.method = method
+                            self.path = path
+                    
+                    request = Request(method, path)
+                    
+                    # Handle request
+                    response = self.handle_request(request)
+                    
+                    # Send response
+                    response_data = f"HTTP/1.1 {response['status_code']} OK\r\n"
+                    response_data += f"Content-Type: {response['headers']['Content-Type']}\r\n"
+                    response_data += f"Content-Length: {len(response['body'])}\r\n"
+                    response_data += "\r\n"
+                    response_data += response['body']
+                    
+                    client_socket.send(response_data.encode())
+            except Exception as e:
+                print(f"Error handling client: {e}")
+            finally:
+                client_socket.close()
+        
+        # Create server socket
+        server_socket = Socket()
+        server_socket.bind((self.host, self.port))
+        server_socket.listen(5)
+        
+        print(f"Server started on {self.host}:{self.port}")
+        
+        try:
+            while self.running:
+                # Accept connection
+                client_socket, address = server_socket.accept()
+                
+                # Handle in separate thread
+                client_thread = threading.Thread(
+                    target=handle_client,
+                    args=(client_socket, address)
+                )
+                client_thread.daemon = True
+                client_thread.start()
+        except KeyboardInterrupt:
+            print("Server shutting down...")
+        finally:
+            server_socket.close()
+    
+    def stop_server(self):
+        """Stop the server"""
+        self.running = False
+
+# Usage
+if __name__ == "__main__":
+    server = SimpleHTTPServer()
+    
+    # Start server in background
+    server_thread = threading.Thread(target=server.start_server)
+    server_thread.daemon = True
+    server_thread.start()
+    
+    try:
+        # Keep main thread alive
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        server.stop_server()</code></pre>
+                    </div>
+                </section>
+
+                <!-- GUI Development -->
+                <section class="content-section">
+                    <h2>GUI Development</h2>
+                    <p>Create graphical interfaces with Python and MultiOS GUI:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>GUI Application</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-python">import time
+from multios.gui import Window, Button, Label, TextField, ListView, Dialog
+
+class TodoApp:
+    def __init__(self):
+        self.todos = []
+        self.current_edit = None
+        
+        # Create main window
+        self.window = Window(title="Todo App", width=800, height=600)
+        self.window.set_layout("border")
+        
+        # Create widgets
+        self.setup_ui()
+        
+        # Load saved todos
+        self.load_todos()
+    
+    def setup_ui(self):
+        """Setup the user interface"""
+        # Top panel - Add new todo
+        top_panel = self.window.create_panel("north")
+        
+        self.new_todo_input = TextField(width=300)
+        add_button = Button("Add", self.add_todo_clicked)
+        
+        top_panel.add_widget(self.new_todo_input)
+        top_panel.add_widget(add_button)
+        
+        # Center panel - Todo list
+        center_panel = self.window.create_panel("center")
+        
+        self.todo_list = ListView()
+        self.todo_list.set_selection_mode("single")
+        self.todo_list.add_double_click_listener(self.edit_todo_clicked)
+        center_panel.add_widget(self.todo_list)
+        
+        # Bottom panel - Actions
+        bottom_panel = self.window.create_panel("south")
+        
+        edit_button = Button("Edit", self.edit_todo_clicked)
+        delete_button = Button("Delete", self.delete_todo_clicked)
+        complete_button = Button("Toggle Complete", self.toggle_complete_clicked)
+        
+        bottom_panel.add_widget(edit_button)
+        bottom_panel.add_widget(delete_button)
+        bottom_panel.add_widget(complete_button)
+    
+    def add_todo_clicked(self):
+        """Handle add todo button click"""
+        text = self.new_todo_input.get_text().strip()
+        if text:
+            self.todos.append({
+                "id": len(self.todos),
+                "text": text,
+                "completed": False,
+                "created": time.time()
+            })
+            
+            self.refresh_list()
+            self.new_todo_input.clear()
+    
+    def edit_todo_clicked(self):
+        """Handle edit todo button click or double-click"""
+        selected = self.todo_list.get_selected_item()
+        if selected:
+            # Get selected todo
+            todo_id = selected.get_data()
+            todo = self.todos[todo_id]
+            
+            # Show edit dialog
+            dialog = Dialog(self.window, "Edit Todo", 400, 200)
+            text_field = TextField(width=350)
+            text_field.set_text(todo["text"])
+            
+            dialog.add_widget(text_field)
+            
+            def save_changes():
+                new_text = text_field.get_text().strip()
+                if new_text:
+                    todo["text"] = new_text
+                    self.refresh_list()
+                dialog.close()
+            
+            dialog.add_button("Save", save_changes)
+            dialog.add_button("Cancel", dialog.close)
+            dialog.show()
+    
+    def delete_todo_clicked(self):
+        """Handle delete todo button click"""
+        selected = self.todo_list.get_selected_item()
+        if selected:
+            todo_id = selected.get_data()
+            
+            confirm = Dialog.question(
+                self.window,
+                "Confirm Delete",
+                "Are you sure you want to delete this todo?"
+            )
+            
+            if confirm:
+                del self.todos[todo_id]
+                self.refresh_list()
+    
+    def toggle_complete_clicked(self):
+        """Handle toggle complete button click"""
+        selected = self.todo_list.get_selected_item()
+        if selected:
+            todo_id = selected.get_data()
+            todo = self.todos[todo_id]
+            todo["completed"] = not todo["completed"]
+            self.refresh_list()
+    
+    def refresh_list(self):
+        """Refresh the todo list display"""
+        self.todo_list.clear()
+        
+        for todo in self.todos:
+            item = self.todo_list.create_item()
+            item.set_text(f"[{'✓' if todo['completed'] else ' '}] {todo['text']}")
+            item.set_data(todo["id"])
+            
+            # Style completed todos
+            if todo["completed"]:
+                item.set_foreground("#888888")
+                item.set_strikethrough(True)
+            
+            self.todo_list.add_item(item)
+    
+    def load_todos(self):
+        """Load todos from persistent storage"""
+        try:
+            import json
+            from pathlib import Path
+            
+            # In a real implementation, load from file
+            # For demo purposes, use some sample data
+            self.todos = [
+                {"id": 0, "text": "Learn MultiOS Python integration", "completed": False, "created": time.time()},
+                {"id": 1, "text": "Build a GUI application", "completed": True, "created": time.time()},
+                {"id": 2, "text": "Test networking features", "completed": False, "created": time.time()}
+            ]
+            
+            self.refresh_list()
+        except Exception as e:
+            print(f"Error loading todos: {e}")
+    
+    def save_todos(self):
+        """Save todos to persistent storage"""
+        try:
+            # In a real implementation, save to file
+            pass
+        except Exception as e:
+            print(f"Error saving todos: {e}")
+    
+    def run(self):
+        """Run the application"""
+        try:
+            self.window.show()
+            self.window.set_close_listener(self.on_window_close)
+            
+            # Application main loop
+            while self.window.is_visible():
+                # Process events
+                self.window.process_events()
+                time.sleep(0.01)
+                
+        except Exception as e:
+            print(f"Application error: {e}")
+        finally:
+            self.save_todos()
+            print("Application closed")
+    
+    def on_window_close(self):
+        """Handle window close event"""
+        self.window.hide()
+        return True
+
+# Usage
+if __name__ == "__main__":
+    app = TodoApp()
+    app.run()</code></pre>
+                    </div>
+                </section>
+
+                <!-- Performance and Best Practices -->
+                <section class="content-section">
+                    <h2>Performance and Best Practices</h2>
+                    
+                    <h3>Performance Considerations</h3>
+                    <ul>
+                        <li><strong>Use native extensions:</strong> For performance-critical code, implement functions in Rust and call from Python</li>
+                        <li><strong>Avoid excessive object creation:</strong> Reuse objects and connections when possible</li>
+                        <li><strong>Batch operations:</strong> Group multiple operations to reduce system calls</li>
+                        <li><strong>Memory management:</strong> Use context managers and proper cleanup</li>
+                    </ul>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Performance Example</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-python">import time
+import threading
+from contextlib import contextmanager
+from multios import FileSystem, Network
+
+@contextmanager
+def file_context(fs, path, mode="r"):
+    """Context manager for file operations"""
+    file_handle = None
+    try:
+        file_handle = fs.open(path, mode)
+        yield file_handle
+    finally:
+        if file_handle:
+            file_handle.close()
+
+@contextmanager
+def network_context(host, port):
+    """Context manager for network operations"""
+    socket = None
+    try:
+        socket = Network.Socket()
+        socket.connect((host, port))
+        yield socket
+    finally:
+        if socket:
+            socket.close()
+
+def batch_file_operations():
+    """Perform batch file operations efficiently"""
+    fs = FileSystem()
+    directory = Path("/temp/batch_ops")
+    
+    # Create directory if it doesn't exist
+    fs.create_directory(directory, recursive=True)
+    
+    # Batch write
+    start_time = time.time()
+    
+    files_data = [
+        f"data_{i:04d}.txt" for i in range(1000)
+    ]
+    
+    # Write files in batch
+    for i, filename in enumerate(files_data):
+        file_path = directory / filename
+        with file_context(fs, file_path, "w") as f:
+            f.write(f"File {i} data\n" * 10)
+    
+    write_time = time.time() - start_time
+    print(f"Wrote {len(files_data)} files in {write_time:.2f} seconds")
+    
+    # Batch read
+    start_time = time.time()
+    
+    total_size = 0
+    for filename in files_data:
+        file_path = directory / filename
+        with file_context(fs, file_path, "r") as f:
+            content = f.read()
+            total_size += len(content)
+    
+    read_time = time.time() - start_time
+    print(f"Read {len(files_data)} files ({total_size} bytes) in {read_time:.2f} seconds")
+    
+    # Cleanup
+    fs.remove_directory(directory, recursive=True)
+
+def efficient_processing():
+    """Demonstrate efficient processing patterns"""
+    # Use threading for I/O operations
+    def io_worker(data_queue, result_queue):
+        while True:
+            try:
+                data = data_queue.get(timeout=1)
+                if data is None:  # Poison pill to stop
+                    break
+                
+                # Simulate I/O operation
+                time.sleep(0.1)
+                result = data * 2
+                result_queue.put(result)
+            except:
+                break
+    
+    # Create worker threads
+    data_queue = []
+    result_queue = []
+    
+    threads = []
+    for i in range(4):
+        thread = threading.Thread(target=io_worker, args=(data_queue, result_queue))
+        thread.start()
+        threads.append(thread)
+    
+    # Process data
+    for i in range(100):
+        data_queue.append(i)
+    
+    # Collect results
+    results = []
+    for i in range(100):
+        result = result_queue.get()
+        results.append(result)
+    
+    # Stop workers
+    for i in range(4):
+        data_queue.append(None)
+    
+    for thread in threads:
+        thread.join()
+    
+    print(f"Processed {len(results)} items")
+
+# Usage examples
+if __name__ == "__main__":
+    batch_file_operations()
+    efficient_processing()</code></pre>
+                    </div>
+
+                    <h3>Error Handling</h3>
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Error Handling Pattern</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-python">from multios import MultiOSError, FileSystemError, NetworkError
+
+class AppError(Exception):
+    """Base application error"""
+    pass
+
+class FileOperationError(AppError):
+    """File operation error"""
+    pass
+
+class NetworkOperationError(AppError):
+    """Network operation error"""
+    pass
+
+def safe_file_operation(fs, path, operation):
+    """Perform file operation with proper error handling"""
+    try:
+        return operation()
+    except FileSystemError as e:
+        raise FileOperationError(f"File operation failed: {e}")
+    except Exception as e:
+        raise AppError(f"Unexpected error: {e}")
+
+def safe_network_operation(operation):
+    """Perform network operation with proper error handling"""
+    try:
+        return operation()
+    except NetworkError as e:
+        raise NetworkOperationError(f"Network operation failed: {e}")
+    except Exception as e:
+        raise AppError(f"Unexpected error: {e}")
+
+# Usage
+try:
+    fs = FileSystem()
+    
+    def read_file():
+        with fs.open("/my_app/config.txt", "r") as f:
+            return f.read()
+    
+    content = safe_file_operation(fs, "/my_app/config.txt", read_file)
+    print("File content:", content)
+    
+except FileOperationError as e:
+    print(f"File error: {e}")
+except AppError as e:
+    print(f"App error: {e}")
+except Exception as e:
+    print(f"Unexpected error: {e}")</code></pre>
+                    </div>
+                </section>
+
+                <!-- Debugging -->
+                <section class="content-section">
+                    <h2>Debugging and Development</h2>
+                    <p>Debug Python applications on MultiOS:</p>
+                    
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Debug Configuration</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash"># Enable debug mode
+export MULTIOS_PYTHON_DEBUG=1
+
+# Run with debugging
+multios-python --debug my_app.py
+
+# Enable verbose logging
+export MULTIOS_PYTHON_LOG_LEVEL=debug
+python my_app.py</code></pre>
+                    </div>
+
+                    <div class="code-example">
+                        <div class="code-header">
+                            <span>Debug Utilities</span>
+                            <button class="btn-copy" onclick="copyCode(this)">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <pre><code class="language-python">import logging
+import sys
+from multios import Debug
+
+# Configure logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+
+logger = logging.getLogger("MyApp")
+
+class DebugApp:
+    def __init__(self):
+        self.debug = Debug()
+        self.debug.set_log_level("info")
+    
+    def run_with_debug(self):
+        """Run application with debugging"""
+        logger.info("Starting application")
+        
+        try:
+            # Your application code here
+            self.perform_operations()
+            
+        except Exception as e:
+            logger.exception(f"Application error: {e}")
+            self.debug.print_stack_trace()
+            raise
+        finally:
+            logger.info("Application ended")
+    
+    def perform_operations(self):
+        """Perform some operations"""
+        logger.debug("Starting operations")
+        
+        # Debug information
+        self.debug.log_memory_usage("After initialization")
+        
+        # Simulate some work
+        import time
+        for i in range(5):
+            logger.debug(f"Operation {i+1}")
+            time.sleep(0.1)
+        
+        logger.debug("Operations completed")
+        self.debug.log_memory_usage("After operations")
+    
+    def profile_function(self, func, *args, **kwargs):
+        """Profile a function call"""
+        import time
+        
+        start_time = time.time()
+        start_memory = self.debug.get_memory_usage()
+        
+        try:
+            result = func(*args, **kwargs)
+            return result
+        finally:
+            end_time = time.time()
+            end_memory = self.debug.get_memory_usage()
+            
+            logger.info(f"Function {func.__name__} took {end_time - start_time:.3f}s")
+            logger.info(f"Memory usage: {start_memory} -> {end_memory} bytes")
+
+# Usage
+if __name__ == "__main__":
+    app = DebugApp()
+    app.run_with_debug()</code></pre>
+                    </div>
+                </section>
+
+                <!-- Conclusion -->
+                <section class="content-section">
+                    <h2>Summary</h2>
+                    <p>Python integration with MultiOS provides:</p>
+                    <ul>
+                        <li>Native Python runtime for application development</li>
+                        <li>Rich API bindings for MultiOS subsystems</li>
+                        <li>Rapid development and prototyping capabilities</li>
+                        <li>Seamless integration with Rust components</li>
+                        <li>Extensive GUI and networking support</li>
+                        <li>Comprehensive debugging and development tools</li>
+                    </ul>
+                    
+                    <div class="next-steps">
+                        <h3>Next Steps</h3>
+                        <ul>
+                            <li>Explore the <a href="../../api_reference/index.html">API Reference</a> for detailed function documentation</li>
+                            <li>Try the <a href="../../tutorials/beginner/index.html">Beginner Tutorials</a> for hands-on learning</li>
+                            <li>Check out <a href="../rust.html">Rust Integration</a> for native development</li>
+                            <li>Use the <a href="../../api-explorer.html">API Explorer</a> for interactive testing</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/search.js"></script>
+    <script src="../../assets/js/theme.js"></script>
+    <script src="../../assets/js/interactive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

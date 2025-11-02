@@ -1,0 +1,136 @@
+{
+  "repositories": [
+    "https://packages.multios.edu/official",
+    "https://packages.multios.edu/community",
+    "https://packages.multios.edu/experimental"
+  ],
+  "security": {
+    "require_signature": true,
+    "scan_packages": true,
+    "max_file_size": 104857600,
+    "allowed_extensions": [".zip", ".tar.gz", ".tar.xz", ".edu"],
+    "virus_scan_enabled": true,
+    "virus_total_api_key": null,
+    "quarantine_suspicious": true,
+    "allowed_licenses": [
+      "MIT",
+      "Apache-2.0",
+      "GPL-3.0",
+      "BSD-3-Clause",
+      "CC-BY-4.0",
+      "Educational-Use-Only"
+    ]
+  },
+  "validation": {
+    "run_tests": true,
+    "check_curriculum": true,
+    "validate_metadata": true,
+    "min_test_coverage": 70,
+    "require_documentation": true,
+    "require_examples": true
+  },
+  "limits": {
+    "max_package_size": 524288000,
+    "max_dependencies": 20,
+    "max_package_name_length": 50,
+    "max_version_length": 20,
+    "max_description_length": 500
+  },
+  "community": {
+    "enable_sharing": true,
+    "auto_approve": false,
+    "moderation_required": true,
+    "min_rating_for_featured": 4.0,
+    "review_moderation": true,
+    "report_handling": true
+  },
+  "cache": {
+    "enabled": true,
+    "max_age_hours": 24,
+    "max_size_mb": 1024,
+    "cleanup_interval_hours": 6
+  },
+  "curriculum_frameworks": [
+    "common_core",
+    "ngss",
+    "iste",
+    "csta",
+    "math"
+  ],
+  "subjects": [
+    "Mathematics",
+    "Science",
+    "Computer Science",
+    "Language Arts",
+    "Social Studies",
+    "Art",
+    "Music",
+    "Physical Education",
+    "Foreign Language",
+    "Geography",
+    "History",
+    "Biology",
+    "Chemistry",
+    "Physics",
+    "Programming",
+    "Digital Literacy"
+  ],
+  "grade_levels": [
+    "Pre-K",
+    "Kindergarten",
+    "Grade 1",
+    "Grade 2",
+    "Grade 3",
+    "Grade 4",
+    "Grade 5",
+    "Grade 6",
+    "Grade 7",
+    "Grade 8",
+    "Grade 9",
+    "Grade 10",
+    "Grade 11",
+    "Grade 12",
+    "College",
+    "Adult"
+  ],
+  "compatibility_levels": [
+    "beginner",
+    "intermediate",
+    "advanced",
+    "expert"
+  ],
+  "logging": {
+    "level": "INFO",
+    "file": "/workspace/community/package_manager/logs/package_manager.log",
+    "max_size_mb": 50,
+    "backup_count": 5,
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  },
+  "api": {
+    "base_url": "https://api.multios.edu",
+    "timeout": 30,
+    "max_retries": 3,
+    "rate_limit_per_hour": 100
+  },
+  "storage": {
+    "packages_dir": "/workspace/community/package_manager/packages",
+    "cache_dir": "/workspace/community/package_manager/cache",
+    "temp_dir": "/tmp/multios-packages",
+    "quarantine_dir": "/workspace/community/package_manager/security/quarantine"
+  },
+  "features": {
+    "dependency_resolution": true,
+    "security_scanning": true,
+    "community_sharing": true,
+    "automated_testing": true,
+    "curriculum_validation": true,
+    "rating_system": true,
+    "package_signing": true
+  },
+  "development": {
+    "debug_mode": false,
+    "verbose_output": false,
+    "save_intermediate_files": false,
+    "test_mode": false
+  }
+}

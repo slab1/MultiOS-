@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beginner Tutorial Path - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search API, tutorials, examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Breadcrumb -->
+                <nav class="breadcrumb">
+                    <div class="breadcrumb-item">
+                        <a href="../index.html" class="breadcrumb-link">Home</a>
+                    </div>
+                    <div class="breadcrumb-item">
+                        <a href="index.html" class="breadcrumb-link">Tutorials</a>
+                    </div>
+                    <div class="breadcrumb-item">
+                        <span class="breadcrumb-current">Beginner Path</span>
+                    </div>
+                </nav>
+
+                <!-- Tutorial Path Header -->
+                <div class="tutorial-path-header">
+                    <div class="path-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="path-info">
+                        <h1>Beginner Tutorial Path</h1>
+                        <p class="path-description">
+                            Start your journey with MultiOS operating system development. This path is designed 
+                            for complete beginners and will take you from basic concepts to writing your first 
+                            MultiOS applications.
+                        </p>
+                        <div class="path-stats">
+                            <div class="stat">
+                                <div class="stat-number">10</div>
+                                <div class="stat-label">Tutorials</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">4-6</div>
+                                <div class="stat-label">Weeks</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">Beginner</div>
+                                <div class="stat-label">Level</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Path Overview -->
+                <div class="learning-path-overview">
+                    <h2>Learning Path Overview</h2>
+                    <div class="path-phases">
+                        <div class="phase">
+                            <div class="phase-number">Phase 1</div>
+                            <div class="phase-title">Getting Started</div>
+                            <div class="phase-description">Environment setup and basic concepts</div>
+                            <div class="phase-duration">Week 1</div>
+                        </div>
+                        <div class="phase">
+                            <div class="phase-number">Phase 2</div>
+                            <div class="phase-title">Core Concepts</div>
+                            <div class="phase-description">Memory, processes, and system calls</div>
+                            <div class="phase-duration">Week 2-3</div>
+                        </div>
+                        <div class="phase">
+                            <div class="phase-number">Phase 3</div>
+                            <div class="phase-title">Building Applications</div>
+                            <div class="phase-description">Creating your first MultiOS programs</div>
+                            <div class="phase-duration">Week 4</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tutorial Progress -->
+                <div class="tutorial-progress">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-text">0 of 10 tutorials completed</div>
+                </div>
+
+                <!-- Tutorial List -->
+                <div class="tutorial-list">
+                    <!-- Tutorial 1 -->
+                    <div class="tutorial-item">
+                        <div class="tutorial-header">
+                            <div class="tutorial-number">01</div>
+                            <div class="tutorial-info">
+                                <h3 class="tutorial-title">
+                                    <a href="beginner/tutorial-01-installation.html">Development Environment Setup</a>
+                                </h3>
+                                <p class="tutorial-description">
+                                    Set up your development environment with Rust, QEMU, and MultiOS tools. 
+                                    Learn how to build and run MultiOS in an emulator.
+                                </p>
+                                <div class="tutorial-meta">
+                                    <span class="tutorial-duration"><i class="fas fa-clock"></i> 45 minutes</span>
+                                    <span class="tutorial-difficulty beginner">Beginner</span>
+                                    <span class="tutorial-prerequisites">None</span>
+                                </div>
+                            </div>
+                            <div class="tutorial-status">
+                                <div class="status-indicator pending"></div>
+                                <button class="btn btn-sm btn-primary start-tutorial" onclick="startTutorial(1)">
+                                    Start
+                                </button>
+                            </div>
+                        </div>
+                        <div class="tutorial-content" id="tutorial-1" style="display: none;">
+                            <div class="tutorial-objectives">
+                                <h4>Learning Objectives</h4>
+                                <ul>
+                                    <li>Install Rust toolchain and development tools</li>
+                                    <li>Set up QEMU for system emulation</li>
+                                    <li>Configure MultiOS development environment</li>
+                                    <li>Build and run your first MultiOS instance</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="interactive-tutorial">
+                                <h4>Step-by-Step Guide</h4>
+                                
+                                <!-- Step 1 -->
+                                <div class="tutorial-step">
+                                    <div class="tutorial-step-header">
+                                        <div class="step-number">1</div>
+                                        <div class="tutorial-step-title">Install Rust Toolchain</div>
+                                        <div class="step-status">
+                                            <i class="fas fa-circle status-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tutorial-step-content">
+                                        <p>Install Rust using rustup, the official Rust toolchain installer:</p>
+                                        
+                                        <div class="code-block">
+                                            <pre><code class="language-bash">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
+rustup target add x86_64-unknown-none
+rustup target add aarch64-unknown-none
+rustup target add riscv64gc-unknown-none-elf</code></pre>
+                                        </div>
+                                        
+                                        <div class="interactive-controls">
+                                            <button class="btn btn-sm btn-primary run-code" onclick="runCommand(this, 'rustup --version')">
+                                                <i class="fas fa-play"></i> Test Installation
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="step-validation">
+                                            <p>Verify your installation:</p>
+                                            <div class="validation-command">
+                                                <code>rustc --version && cargo --version</code>
+                                                <button class="btn btn-sm btn-secondary" onclick="checkStep1()">Check</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 2 -->
+                                <div class="tutorial-step">
+                                    <div class="tutorial-step-header">
+                                        <div class="step-number">2</div>
+                                        <div class="tutorial-step-title">Install QEMU</div>
+                                        <div class="step-status">
+                                            <i class="fas fa-circle status-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tutorial-step-content">
+                                        <p>Install QEMU for system emulation across different architectures:</p>
+                                        
+                                        <div class="code-block">
+                                            <pre><code class="language-bash"># Ubuntu/Debian
+sudo apt update
+sudo apt install qemu-system-x86 qemu-system-arm qemu-system-riscv
+
+# macOS
+brew install qemu
+
+# Windows (using Chocolatey)
+choco install qemu</code></pre>
+                                        </div>
+                                        
+                                        <div class="interactive-controls">
+                                            <button class="btn btn-sm btn-primary run-code" onclick="runCommand(this, 'qemu-system-x86_64 --version')">
+                                                <i class="fas fa-play"></i> Test QEMU
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="callout callout-tip">
+                                            <div class="callout-title">💡 Pro Tip</div>
+                                            <p>QEMU allows you to test MultiOS on different architectures 
+                                            without needing actual hardware. This is perfect for learning!</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 3 -->
+                                <div class="tutorial-step">
+                                    <div class="tutorial-step-header">
+                                        <div class="step-number">3</div>
+                                        <div class="tutorial-step-title">Clone MultiOS Repository</div>
+                                        <div class="step-status">
+                                            <i class="fas fa-circle status-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tutorial-step-content">
+                                        <p>Get the MultiOS source code and explore the project structure:</p>
+                                        
+                                        <div class="code-block">
+                                            <pre><code class="language-bash">git clone https://github.com/multios/multios.git
+cd multios
+ls -la</code></pre>
+                                        </div>
+                                        
+                                        <div class="tutorial-explorer">
+                                            <h5>Project Structure Overview</h5>
+                                            <div class="structure-tree">
+                                                <ul>
+                                                    <li><i class="fas fa-folder"></i> multios/
+                                                        <ul>
+                                                            <li><i class="fas fa-folder"></i> kernel/ - Core kernel code</li>
+                                                            <li><i class="fas fa-folder"></i> bootloader/ - Bootloader implementation</li>
+                                                            <li><i class="fas fa-folder"></i> libraries/ - System libraries</li>
+                                                            <li><i class="fas fa-folder"></i> examples/ - Example applications</li>
+                                                            <li><i class="fas fa-folder"></i> docs/ - Documentation</li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 4 -->
+                                <div class="tutorial-step">
+                                    <div class="tutorial-step-header">
+                                        <div class="step-number">4</div>
+                                        <div class="tutorial-step-title">Build and Run MultiOS</div>
+                                        <div class="step-status">
+                                            <i class="fas fa-circle status-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tutorial-step-content">
+                                        <p>Build MultiOS and run it in QEMU:</p>
+                                        
+                                        <div class="code-block">
+                                            <pre><code class="language-bash"># Build MultiOS for x86_64
+make build-x86_64
+
+# Run in QEMU
+make run-x86_64</code></pre>
+                                        </div>
+                                        
+                                        <div class="interactive-controls">
+                                            <button class="btn btn-sm btn-primary" onclick="simulateBuild()">
+                                                <i class="fas fa-play"></i> Build MultiOS
+                                            </button>
+                                            <button class="btn btn-sm btn-secondary" onclick="simulateRun()">
+                                                <i class="fas fa-desktop"></i> Run in QEMU
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="success-milestone">
+                                            <h5>🎉 Milestone Achieved!</h5>
+                                            <p>If you see the MultiOS boot screen, congratulations! You've successfully set up your development environment.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tutorial-step-actions">
+                                    <button class="btn btn-secondary tutorial-prev" onclick="previousStep()">Previous</button>
+                                    <button class="btn btn-primary tutorial-next" onclick="nextStep()">Next Tutorial</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tutorial 2 -->
+                    <div class="tutorial-item">
+                        <div class="tutorial-header">
+                            <div class="tutorial-number">02</div>
+                            <div class="tutorial-info">
+                                <h3 class="tutorial-title">
+                                    <a href="beginner/tutorial-02-first-program.html">Your First MultiOS Program</a>
+                                </h3>
+                                <p class="tutorial-description">
+                                    Write, compile, and run your first MultiOS application using the process management APIs.
+                                </p>
+                                <div class="tutorial-meta">
+                                    <span class="tutorial-duration"><i class="fas fa-clock"></i> 60 minutes</span>
+                                    <span class="tutorial-difficulty beginner">Beginner</span>
+                                    <span class="tutorial-prerequisites">Tutorial 1</span>
+                                </div>
+                            </div>
+                            <div class="tutorial-status">
+                                <div class="status-indicator pending"></div>
+                                <button class="btn btn-sm btn-primary start-tutorial" onclick="startTutorial(2)">
+                                    Start
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tutorial 3 -->
+                    <div class="tutorial-item">
+                        <div class="tutorial-header">
+                            <div class="tutorial-number">03</div>
+                            <div class="tutorial-info">
+                                <h3 class="tutorial-title">
+                                    <a href="beginner/tutorial-03-memory-basics.html">Memory Management Basics</a>
+                                </h3>
+                                <p class="tutorial-description">
+                                    Learn about memory allocation, virtual memory concepts, and basic memory management in MultiOS.
+                                </p>
+                                <div class="tutorial-meta">
+                                    <span class="tutorial-duration"><i class="fas fa-clock"></i> 75 minutes</span>
+                                    <span class="tutorial-difficulty beginner">Beginner</span>
+                                    <span class="tutorial-prerequisites">Tutorial 2</span>
+                                </div>
+                            </div>
+                            <div class="tutorial-status">
+                                <div class="status-indicator pending"></div>
+                                <button class="btn btn-sm btn-primary start-tutorial" onclick="startTutorial(3)">
+                                    Start
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Continue for remaining tutorials... -->
+                    <div class="tutorial-placeholder">
+                        <p>More tutorials coming soon...</p>
+                        <div class="upcoming-tutorials">
+                            <span class="upcoming-tutorial">04. File System Operations</span>
+                            <span class="upcoming-tutorial">05. Network Programming Basics</span>
+                            <span class="upcoming-tutorial">06. Error Handling Patterns</span>
+                            <span class="upcoming-tutorial">07. Device Driver Introduction</span>
+                            <span class="upcoming-tutorial">08. GUI Programming Basics</span>
+                            <span class="upcoming-tutorial">09. Multi-threading Concepts</span>
+                            <span class="upcoming-tutorial">10. Final Project</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Steps -->
+                <div class="next-steps">
+                    <h2>What's Next?</h2>
+                    <div class="step-cards">
+                        <div class="step-card">
+                            <div class="step-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <h3>Intermediate Path</h3>
+                            <p>Ready for more advanced concepts? Continue with our intermediate tutorials covering kernel development and system programming.</p>
+                            <a href="../intermediate/index.html" class="btn btn-secondary">Continue Learning</a>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h3>Code Examples</h3>
+                            <p>Explore practical examples and real-world applications to see MultiOS concepts in action.</p>
+                            <a href="../examples/basic/index.html" class="btn btn-secondary">View Examples</a>
+                        </div>
+                        
+                        <div class="step-card">
+                            <div class="step-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h3>API Reference</h3>
+                            <p>Dive deep into the comprehensive API documentation for detailed function references and advanced usage.</p>
+                            <a href="../api_reference/index.html" class="btn btn-secondary">API Docs</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/search.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/interactive.js"></script>
+
+    <script>
+        let currentStep = 0;
+        let totalSteps = 4;
+
+        function startTutorial(tutorialNumber) {
+            const tutorial = document.getElementById(`tutorial-${tutorialNumber}`);
+            if (tutorial) {
+                tutorial.style.display = tutorial.style.display === 'none' ? 'block' : 'none';
+                
+                if (tutorial.style.display === 'block') {
+                    updateProgress();
+                    currentStep = 1;
+                    highlightCurrentStep();
+                }
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                highlightCurrentStep();
+                updateProgress();
+                
+                if (currentStep === totalSteps) {
+                    // Mark tutorial as completed
+                    markTutorialCompleted(1);
+                }
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                highlightCurrentStep();
+            }
+        }
+
+        function highlightCurrentStep() {
+            const steps = document.querySelectorAll('.tutorial-step');
+            steps.forEach((step, index) => {
+                const header = step.querySelector('.tutorial-step-header');
+                if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                    header.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            const progressBar = document.querySelector('.progress-bar-fill');
+            const progressText = document.querySelector('.progress-text');
+            
+            if (progressBar) {
+                progressBar.style.width = `${progress}%`;
+            }
+            
+            if (progressText) {
+                progressText.textContent = `${currentStep} of ${totalSteps} steps completed`;
+            }
+        }
+
+        function markTutorialCompleted(tutorialNumber) {
+            const tutorialItem = document.querySelector(`.tutorial-item:nth-child(${tutorialNumber})`);
+            const statusIndicator = tutorialItem.querySelector('.status-indicator');
+            const startButton = tutorialItem.querySelector('.start-tutorial');
+            
+            statusIndicator.className = 'status-indicator completed';
+            startButton.textContent = 'Completed';
+            startButton.disabled = true;
+        }
+
+        function runCommand(button, command) {
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Running...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                
+                // Show success message
+                showNotification('Command executed successfully!', 'success');
+            }, 2000);
+        }
+
+        function checkStep1() {
+            // Simulate checking if Rust is installed
+            const validationCommand = document.querySelector('.validation-command');
+            validationCommand.innerHTML = `
+                <div class="validation-result success">
+                    <i class="fas fa-check"></i> Rust installed successfully!
+                    <br><small>rustc 1.70.0 (ec8a8a0ca 2023-04-25) • cargo 1.70.0 (ec8a8a0ca 2023-04-25)</small>
+                </div>
+            `;
+        }
+
+        function simulateBuild() {
+            const buildOutput = document.createElement('div');
+            buildOutput.className = 'build-output';
+            buildOutput.innerHTML = `
+                <div class="build-log">
+                    <div class="log-line">Compiling multios-kernel v0.1.0</div>
+                    <div class="log-line">Compiling bootloader v0.1.0</div>
+                    <div class="log-line">Compiling multios-lib v0.1.0</div>
+                    <div class="log-line">Finished dev [unoptimized + debuginfo] target(s)</div>
+                    <div class="log-line success">Build completed successfully!</div>
+                </div>
+            `;
+            
+            button.parentElement.appendChild(buildOutput);
+            showNotification('MultiOS built successfully!', 'success');
+        }
+
+        function simulateRun() {
+            // This would normally launch QEMU
+            showNotification('QEMU would launch MultiOS in a real environment', 'info');
+        }
+
+        function showNotification(message, type = 'info') {
+            // Implementation would show a toast notification
+            console.log(`${type.toUpperCase()}: ${message}`);
+        }
+    </script>
+
+    <style>
+        .tutorial-path-header {
+            display: flex;
+            gap: var(--spacing-xl);
+            margin: var(--spacing-2xl) 0;
+            align-items: flex-start;
+        }
+
+        .path-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .path-info h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .path-description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.7;
+        }
+
+        .path-stats {
+            display: flex;
+            gap: var(--spacing-xl);
+        }
+
+        .learning-path-overview {
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .path-phases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .phase {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-align: center;
+        }
+
+        .phase-number {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .phase-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .phase-description {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .phase-duration {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--accent-primary);
+        }
+
+        .tutorial-item {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: var(--spacing-xl);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .tutorial-item:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow);
+        }
+
+        .tutorial-header {
+            display: flex;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-xl);
+            cursor: pointer;
+            align-items: flex-start;
+        }
+
+        .tutorial-number {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .tutorial-info {
+            flex: 1;
+        }
+
+        .tutorial-title a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            display: block;
+        }
+
+        .tutorial-title a:hover {
+            color: var(--accent-primary);
+        }
+
+        .tutorial-description {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.6;
+        }
+
+        .tutorial-meta {
+            display: flex;
+            gap: var(--spacing-lg);
+            font-size: 0.875rem;
+        }
+
+        .tutorial-meta span {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .tutorial-difficulty.beginner {
+            background: var(--success);
+            color: white;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .tutorial-status {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-md);
+            flex-shrink: 0;
+        }
+
+        .status-indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .status-indicator.pending {
+            background: var(--text-muted);
+        }
+
+        .status-indicator.completed {
+            background: var(--success);
+        }
+
+        .tutorial-content {
+            padding: 0 var(--spacing-xl) var(--spacing-xl);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .tutorial-objectives {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .tutorial-objectives h4 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .tutorial-objectives ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tutorial-objectives li {
+            padding: var(--spacing-sm) 0;
+            padding-left: var(--spacing-lg);
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .tutorial-objectives li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .tutorial-step {
+            margin-bottom: var(--spacing-xl);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .tutorial-step-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-lg);
+            background: var(--bg-secondary);
+            cursor: pointer;
+        }
+
+        .tutorial-step.expanded .tutorial-step-header,
+        .tutorial-step.active .tutorial-step-header {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .step-status-icon {
+            color: var(--text-muted);
+        }
+
+        .tutorial-step.expanded .step-status-icon,
+        .tutorial-step.active .step-status-icon {
+            color: white;
+        }
+
+        .tutorial-step-content {
+            padding: var(--spacing-xl);
+            display: none;
+        }
+
+        .tutorial-step.expanded .tutorial-step-content,
+        .tutorial-step.active .tutorial-step-content {
+            display: block;
+        }
+
+        .structure-tree {
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            padding: var(--spacing-md);
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            margin-top: var(--spacing-md);
+        }
+
+        .structure-tree ul {
+            list-style: none;
+            padding-left: var(--spacing-lg);
+        }
+
+        .structure-tree li {
+            margin: var(--spacing-xs) 0;
+        }
+
+        .success-milestone {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 8px;
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .success-milestone h5 {
+            color: var(--success);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .tutorial-placeholder {
+            background: var(--bg-secondary);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: var(--spacing-2xl);
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .upcoming-tutorials {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
+            justify-content: center;
+        }
+
+        .upcoming-tutorial {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .next-steps {
+            margin-top: var(--spacing-2xl);
+        }
+
+        .step-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .step-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: var(--spacing-xl);
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .step-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow);
+        }
+
+        .step-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            margin: 0 auto var(--spacing-md);
+        }
+
+        .step-card h3 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .step-card p {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.6;
+        }
+
+        .build-output {
+            margin-top: var(--spacing-lg);
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: var(--spacing-md);
+        }
+
+        .log-line {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            padding: var(--spacing-xs) 0;
+        }
+
+        .log-line.success {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .tutorial-path-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .path-stats {
+                justify-content: center;
+            }
+
+            .tutorial-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .tutorial-meta {
+                justify-content: center;
+            }
+        }
+    </style>
+</body>
+</html>

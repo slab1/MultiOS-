@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beginner Code Examples - MultiOS Documentation</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/interactive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <i class="fas fa-microchip"></i>
+                            <h1>MultiOS API Documentation</h1>
+                        </a>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="global-search" placeholder="Search code examples...">
+                            <div id="search-results" class="search-results"></div>
+                        </div>
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn-icon">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Breadcrumb -->
+                <nav class="breadcrumb">
+                    <div class="breadcrumb-item">
+                        <a href="../index.html" class="breadcrumb-link">Home</a>
+                    </div>
+                    <div class="breadcrumb-item">
+                        <a href="index.html" class="breadcrumb-link">Examples</a>
+                    </div>
+                    <div class="breadcrumb-item">
+                        <span class="breadcrumb-current">Beginner</span>
+                    </div>
+                </nav>
+
+                <!-- Examples Header -->
+                <div class="examples-header">
+                    <h1>Beginner Code Examples</h1>
+                    <p class="examples-description">
+                        Start building with MultiOS through practical, hands-on examples. These beginner-friendly 
+                        code samples will help you understand core concepts and APIs.
+                    </p>
+                    <div class="examples-stats">
+                        <div class="stat">
+                            <div class="stat-number">25+</div>
+                            <div class="stat-label">Code Examples</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">6</div>
+                            <div class="stat-label">Categories</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">Rust</div>
+                            <div class="stat-label">Language</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Language Filter -->
+                <div class="filter-section">
+                    <h3>Filter by Category</h3>
+                    <div class="category-filters">
+                        <button class="filter-btn active" data-category="all">
+                            <i class="fas fa-th"></i> All Examples
+                        </button>
+                        <button class="filter-btn" data-category="kernel">
+                            <i class="fas fa-microchip"></i> Kernel
+                        </button>
+                        <button class="filter-btn" data-category="memory">
+                            <i class="fas fa-memory"></i> Memory
+                        </button>
+                        <button class="filter-btn" data-category="process">
+                            <i class="fas fa-cogs"></i> Process
+                        </button>
+                        <button class="filter-btn" data-category="filesystem">
+                            <i class="fas fa-folder"></i> Filesystem
+                        </button>
+                        <button class="filter-btn" data-category="network">
+                            <i class="fas fa-network-wired"></i> Network
+                        </button>
+                        <button class="filter-btn" data-category="gui">
+                            <i class="fas fa-window-maximize"></i> GUI
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Examples Grid -->
+                <div class="examples-grid" id="examples-grid">
+                    <!-- Memory Management Examples -->
+                    <div class="example-card" data-category="memory">
+                        <div class="example-header">
+                            <div class="example-icon">
+                                <i class="fas fa-memory"></i>
+                            </div>
+                            <div class="example-info">
+                                <h3 class="example-title">Basic Memory Allocation</h3>
+                                <p class="example-description">Learn how to allocate and manage memory in MultiOS using the memory management API.</p>
+                                <div class="example-meta">
+                                    <span class="example-difficulty beginner">Beginner</span>
+                                    <span class="example-duration"><i class="fas fa-clock"></i> 15 min</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="example-code" data-example="memory-allocation">
+                            <div class="code-header">
+                                <span class="code-language">Rust</span>
+                                <div class="code-actions">
+                                    <button class="btn btn-sm btn-secondary" onclick="copyCode(this)">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" onclick="runExample('memory-allocation')">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-content">
+                                <pre><code class="language-rust">use multios_memory::alloc::{allocate, deallocate, MemoryRegion};
+
+// Allocate a new memory region
+fn allocate_example() -> Result&lt;MemoryRegion, Box&lt;dyn std::error::Error&gt;&gt; {
+    let region = allocate(1024, MemoryAlignment::PageAligned)?;
+    
+    // Write some data to the allocated memory
+    let data = "Hello, MultiOS!";
+    region.write(0, data.as_bytes())?;
+    
+    println!("Allocated memory region: {:?}", region);
+    println!("Data written: {}", String::from_utf8_lossy(&region.read(0, data.len())?));
+    
+    Ok(region)
+}
+
+fn main() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let region = allocate_example()?;
+    
+    // Clean up
+    deallocate(region)?;
+    println!("Memory deallocated successfully");
+    
+    Ok(())
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="example-output" style="display: none;">
+                            <div class="output-header">
+                                <i class="fas fa-terminal"></i> Output
+                            </div>
+                            <div class="output-content">
+                                <div class="output-line">Allocated memory region: MemoryRegion { base: 0x7FFF0000, size: 4096 }</div>
+                                <div class="output-line">Data written: Hello, MultiOS!</div>
+                                <div class="output-line">Memory deallocated successfully</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Process Management Examples -->
+                    <div class="example-card" data-category="process">
+                        <div class="example-header">
+                            <div class="example-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <div class="example-info">
+                                <h3 class="example-title">Create Your First Process</h3>
+                                <p class="example-description">Learn how to create, manage, and terminate processes in MultiOS.</p>
+                                <div class="example-meta">
+                                    <span class="example-difficulty beginner">Beginner</span>
+                                    <span class="example-duration"><i class="fas fa-clock"></i> 20 min</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="example-code" data-example="process-creation">
+                            <div class="code-header">
+                                <span class="code-language">Rust</span>
+                                <div class="code-actions">
+                                    <button class="btn btn-sm btn-secondary" onclick="copyCode(this)">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" onclick="runExample('process-creation')">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-content">
+                                <pre><code class="language-rust">use multios_process::{ProcessManager, ProcessId, ProcessCreateParams, ProcessPriority};
+
+fn main() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut process_manager = ProcessManager::new();
+    
+    // Create a simple process
+    let create_params = ProcessCreateParams {
+        name: "hello_world".to_string(),
+        command_line: vec!["hello_world".to_string()],
+        priority: ProcessPriority::Normal,
+        stack_size: 4096,
+        heap_size: 1024,
+        ..Default::default()
+    };
+    
+    let process_id = process_manager.create_process(create_params)?;
+    println!("Created process with ID: {:?}", process_id);
+    
+    // List all processes
+    let processes = process_manager.list_processes()?;
+    for process in processes {
+        println!("Process: {} - {}", process.id, process.name);
+    }
+    
+    // Wait for the process to complete
+    let exit_code = process_manager.wait_for_process(process_id)?;
+    println!("Process exited with code: {}", exit_code);
+    
+    Ok(())
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="example-output" style="display: none;">
+                            <div class="output-header">
+                                <i class="fas fa-terminal"></i> Output
+                            </div>
+                            <div class="output-content">
+                                <div class="output-line">Created process with ID: ProcessId(123)</div>
+                                <div class="output-line">Process: ProcessId(123) - hello_world</div>
+                                <div class="output-line">Process: ProcessId(456) - init</div>
+                                <div class="output-line">Process exited with code: 0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filesystem Examples -->
+                    <div class="example-card" data-category="filesystem">
+                        <div class="example-header">
+                            <div class="example-icon">
+                                <i class="fas fa-folder"></i>
+                            </div>
+                            <div class="example-info">
+                                <h3 class="example-title">File Operations</h3>
+                                <p class="example-description">Learn basic file operations including creating, reading, writing, and deleting files.</p>
+                                <div class="example-meta">
+                                    <span class="example-difficulty beginner">Beginner</span>
+                                    <span class="example-duration"><i class="fas fa-clock"></i> 25 min</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="example-code" data-example="file-operations">
+                            <div class="code-header">
+                                <span class="code-language">Rust</span>
+                                <div class="code-actions">
+                                    <button class="btn btn-sm btn-secondary" onclick="copyCode(this)">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" onclick="runExample('file-operations')">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-content">
+                                <pre><code class="language-rust">use multios_filesystem::{FileManager, FileOpenMode, Path};
+
+fn main() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut file_manager = FileManager::new();
+    
+    let file_path = Path::new("/tmp/hello_multios.txt");
+    
+    // Create and write to a file
+    {
+        let mut file = file_manager.create_file(
+            file_path,
+            FileOpenMode::Write | FileOpenMode::Create
+        )?;
+        
+        let content = "Hello from MultiOS filesystem!\nThis is a test file.";
+        file.write_all(content.as_bytes())?;
+        println!("File written: {}", file_path);
+    }
+    
+    // Read the file back
+    {
+        let mut file = file_manager.open_file(file_path, FileOpenMode::Read)?;
+        
+        let mut content = String::new();
+        file.read_to_string(&mut content)?;
+        
+        println!("File content:\n{}", content);
+    }
+    
+    // Check file exists
+    if file_manager.exists(file_path)? {
+        let metadata = file_manager.metadata(file_path)?;
+        println!("File size: {} bytes", metadata.size);
+    }
+    
+    // Clean up
+    file_manager.delete_file(file_path)?;
+    println!("File deleted: {}", file_path);
+    
+    Ok(())
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="example-output" style="display: none;">
+                            <div class="output-header">
+                                <i class="fas fa-terminal"></i> Output
+                            </div>
+                            <div class="output-content">
+                                <div class="output-line">File written: /tmp/hello_multios.txt</div>
+                                <div class="output-line">File content:</div>
+                                <div class="output-line">Hello from MultiOS filesystem!</div>
+                                <div class="output-line">This is a test file.</div>
+                                <div class="output-line">File size: 45 bytes</div>
+                                <div class="output-line">File deleted: /tmp/hello_multios.txt</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kernel API Examples -->
+                    <div class="example-card" data-category="kernel">
+                        <div class="example-header">
+                            <div class="example-icon">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <div class="example-info">
+                                <h3 class="example-title">System Information</h3>
+                                <p class="example-description">Retrieve system information using the kernel API.</p>
+                                <div class="example-meta">
+                                    <span class="example-difficulty beginner">Beginner</span>
+                                    <span class="example-duration"><i class="fas fa-clock"></i> 10 min</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="example-code" data-example="system-info">
+                            <div class="code-header">
+                                <span class="code-language">Rust</span>
+                                <div class="code-actions">
+                                    <button class="btn btn-sm btn-secondary" onclick="copyCode(this)">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" onclick="runExample('system-info')">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-content">
+                                <pre><code class="language-rust">use multios_kernel::{SystemInfo, CPUInfo, KernelVersion};
+
+fn main() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Get system information
+    let system_info = SystemInfo::get()?;
+    
+    println!("MultiOS System Information");
+    println!("=========================");
+    println!("OS Name: {}", system_info.os_name);
+    println!("Version: {}", system_info.version);
+    println!("Architecture: {}", system_info.architecture);
+    
+    // Get CPU information
+    let cpu_info = CPUInfo::get()?;
+    println!("CPU Vendor: {}", cpu_info.vendor);
+    println!("CPU Model: {}", cpu_info.model);
+    println!("CPU Cores: {}", cpu_info.core_count);
+    println!("CPU Features: {:?}", cpu_info.features);
+    
+    // Get memory information
+    println!("Total Memory: {} bytes", system_info.total_memory);
+    println!("Available Memory: {} bytes", system_info.available_memory);
+    
+    // Get kernel version
+    let kernel_version = KernelVersion::get()?;
+    println!("Kernel Version: {}", kernel_version);
+    
+    Ok(())
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="example-output" style="display: none;">
+                            <div class="output-header">
+                                <i class="fas fa-terminal"></i> Output
+                            </div>
+                            <div class="output-content">
+                                <div class="output-line">MultiOS System Information</div>
+                                <div class="output-line">=========================</div>
+                                <div class="output-line">OS Name: MultiOS</div>
+                                <div class="output-line">Version: 1.0.0</div>
+                                <div class="output-line">Architecture: x86_64</div>
+                                <div class="output-line">CPU Vendor: Intel</div>
+                                <div class="output-line">CPU Model: Core i7-9700K</div>
+                                <div class="output-line">CPU Cores: 8</div>
+                                <div class="output-line">CPU Features: ["SSE", "SSE2", "AVX", "AVX2"]</div>
+                                <div class="output-line">Total Memory: 16777216000 bytes</div>
+                                <div class="output-line">Available Memory: 8589934592 bytes</div>
+                                <div class="output-line">Kernel Version: 1.0.0 (x86_64-unknown-none)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Network Examples -->
+                    <div class="example-card" data-category="network">
+                        <div class="example-header">
+                            <div class="example-icon">
+                                <i class="fas fa-network-wired"></i>
+                            </div>
+                            <div class="example-info">
+                                <h3 class="example-title">Network Configuration</h3>
+                                <p class="example-description">Configure and query network interfaces using MultiOS networking APIs.</p>
+                                <div class="example-meta">
+                                    <span class="example-difficulty beginner">Beginner</span>
+                                    <span class="example-duration"><i class="fas fa-clock"></i> 20 min</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="example-code" data-example="network-config">
+                            <div class="code-header">
+                                <span class="code-language">Rust</span>
+                                <div class="code-actions">
+                                    <button class="btn btn-sm btn-secondary" onclick="copyCode(this)">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" onclick="runExample('network-config')">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-content">
+                                <pre><code class="language-rust">use multios_network::{NetworkManager, NetworkInterface, IPAddress};
+
+fn main() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let network_manager = NetworkManager::new();
+    
+    // List all network interfaces
+    let interfaces = network_manager.list_interfaces()?;
+    
+    println!("Network Interfaces:");
+    for interface in &interfaces {
+        println!("  Name: {}", interface.name);
+        println!("  Type: {}", interface.interface_type);
+        println!("  MAC Address: {}", interface.mac_address);
+        
+        if let Some(ip_address) = interface.ip_address {
+            println!("  IP Address: {}", ip_address);
+        }
+        
+        if let Some(netmask) = interface.netmask {
+            println!("  Netmask: {}", netmask);
+        }
+        
+        println!("  Status: {}", if interface.is_up { "Up" } else { "Down" });
+        println!();
+    }
+    
+    // Configure a static IP (if interface exists)
+    if let Some(eth0) = interfaces.iter().find(|i| i.name == "eth0") {
+        if !eth0.is_up {
+            network_manager.set_interface_up(&eth0.name)?;
+            println!("Interface {} is now up", eth0.name);
+        }
+        
+        // Set IP address
+        let new_ip = IPAddress::from_str("192.168.1.100")?;
+        network_manager.set_ip_address(&eth0.name, new_ip)?;
+        println!("Set IP address for {}: {}", eth0.name, new_ip);
+    }
+    
+    Ok(())
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="example-output" style="display: none;">
+                            <div class="output-header">
+                                <i class="fas fa-terminal"></i> Output
+                            </div>
+                            <div class="output-content">
+                                <div class="output-line">Network Interfaces:</div>
+                                <div class="output-line">  Name: lo</div>
+                                <div class="output-line">  Type: Loopback</div>
+                                <div class="output-line">  MAC Address: 00:00:00:00:00:00</div>
+                                <div class="output-line">  IP Address: 127.0.0.1</div>
+                                <div class="output-line">  Netmask: 255.0.0.0</div>
+                                <div class="output-line">  Status: Up</div>
+                                <div class="output-line"></div>
+                                <div class="output-line">  Name: eth0</div>
+                                <div class="output-line">  Type: Ethernet</div>
+                                <div class="output-line">  MAC Address: 52:54:00:12:34:56</div>
+                                <div class="output-line">  Status: Down</div>
+                                <div class="output-line">Interface eth0 is now up</div>
+                                <div class="output-line">Set IP address for eth0: 192.168.1.100</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GUI Examples -->
+                    <div class="example-card" data-category="gui">
+                        <div class="example-header">
+                            <div class="example-icon">
+                                <i class="fas fa-window-maximize"></i>
+                            </div>
+                            <div class="example-info">
+                                <h3 class="example-title">Create a Window</h3>
+                                <p class="example-description">Create your first GUI window using the MultiOS window manager.</p>
+                                <div class="example-meta">
+                                    <span class="example-difficulty beginner">Beginner</span>
+                                    <span class="example-duration"><i class="fas fa-clock"></i> 30 min</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="example-code" data-example="gui-window">
+                            <div class="code-header">
+                                <span class="code-language">Rust</span>
+                                <div class="code-actions">
+                                    <button class="btn btn-sm btn-secondary" onclick="copyCode(this)">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" onclick="runExample('gui-window')">
+                                        <i class="fas fa-play"></i> Run
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-content">
+                                <pre><code class="language-rust">use multios_gui::{
+    WindowManager, Window, WindowConfig, WindowFlags,
+    Color, Point, Size
+};
+
+fn main() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut window_manager = WindowManager::new()?;
+    
+    // Create a new window
+    let window_config = WindowConfig {
+        title: "My First MultiOS Window".to_string(),
+        position: Point { x: 100, y: 100 },
+        size: Size { width: 800, height: 600 },
+        flags: WindowFlags::RESIZEABLE | WindowFlags::DECORATED,
+        background_color: Color::from_rgb(240, 248, 255),
+        ..Default::default()
+    };
+    
+    let mut window = window_manager.create_window(window_config)?;
+    
+    // Add some content
+    window.draw_text(
+        Point { x: 50, y: 50 },
+        "Hello from MultiOS GUI!",
+        Color::from_rgb(0, 0, 0),
+        24
+    )?;
+    
+    // Add a button
+    window.draw_button(
+        Point { x: 50, y: 100 },
+        Size { width: 200, height: 40 },
+        "Click Me!",
+        Color::from_rgb(0, 123, 255),
+        Color::from_rgb(255, 255, 255)
+    )?;
+    
+    // Show the window
+    window.show()?;
+    window_manager.set_active_window(window.id())?;
+    
+    // Handle window events (simplified)
+    for event in window_manager.poll_events()? {
+        match event {
+            GUIEvent::WindowClosed(_) => {
+                println!("Window closed");
+                break;
+            }
+            GUIEvent::ButtonClicked(id) => {
+                println!("Button clicked: {:?}", id);
+                window.set_title("Button was clicked!")?;
+            }
+            _ => {}
+        }
+    }
+    
+    Ok(())
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="example-output" style="display: none;">
+                            <div class="output-header">
+                                <i class="fas fa-terminal"></i> Output
+                            </div>
+                            <div class="output-content">
+                                <div class="output-line">[GUI] Window created with ID: WindowId(1)</div>
+                                <div class="output-line">[GUI] Button created with ID: ButtonId(2)</div>
+                                <div class="output-line">[GUI] Window shown</div>
+                                <div class="output-line">[GUI] Waiting for events...</div>
+                                <div class="output-line">Button clicked: ButtonId(2)</div>
+                                <div class="output-line">[GUI] Window closed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Load More Button -->
+                <div class="load-more-section">
+                    <button class="btn btn-secondary" onclick="loadMoreExamples()">
+                        <i class="fas fa-plus"></i> Load More Examples
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/interactive.js"></script>
+
+    <script>
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Filter examples
+                const category = btn.dataset.category;
+                const examples = document.querySelectorAll('.example-card');
+                
+                examples.forEach(example => {
+                    if (category === 'all' || example.dataset.category === category) {
+                        example.style.display = 'block';
+                    } else {
+                        example.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Copy code functionality
+        function copyCode(button) {
+            const codeBlock = button.closest('.example-code').querySelector('code');
+            const text = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                button.style.backgroundColor = 'var(--success)';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.style.backgroundColor = '';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        // Run example functionality
+        function runExample(exampleId) {
+            const exampleCard = document.querySelector(`[data-example="${exampleId}"]`).closest('.example-card');
+            const output = exampleCard.querySelector('.example-output');
+            const runButton = event.target;
+            
+            // Show loading state
+            const originalText = runButton.innerHTML;
+            runButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Running...';
+            runButton.disabled = true;
+            
+            // Simulate running the code
+            setTimeout(() => {
+                output.style.display = 'block';
+                runButton.innerHTML = '<i class="fas fa-check"></i> Success!';
+                runButton.style.backgroundColor = 'var(--success)';
+                
+                setTimeout(() => {
+                    runButton.innerHTML = originalText;
+                    runButton.style.backgroundColor = '';
+                    runButton.disabled = false;
+                }, 2000);
+            }, 2000);
+        }
+
+        function loadMoreExamples() {
+            // This would load additional examples from a server
+            console.log('Loading more examples...');
+        }
+
+        // Initialize examples when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Beginner examples loaded');
+        });
+    </script>
+
+    <style>
+        .examples-header {
+            text-align: center;
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .examples-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .examples-description {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto var(--spacing-xl);
+            line-height: 1.7;
+        }
+
+        .examples-stats {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-xl);
+            flex-wrap: wrap;
+        }
+
+        .filter-section {
+            margin: var(--spacing-2xl) 0;
+            padding: var(--spacing-lg);
+            background: var(--bg-secondary);
+            border-radius: 12px;
+        }
+
+        .filter-section h3 {
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-primary);
+        }
+
+        .category-filters {
+            display: flex;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .examples-grid {
+            display: grid;
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .example-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .example-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow);
+        }
+
+        .example-header {
+            display: flex;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-xl);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .example-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .example-info {
+            flex: 1;
+        }
+
+        .example-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .example-description {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.6;
+        }
+
+        .example-meta {
+            display: flex;
+            gap: var(--spacing-lg);
+            font-size: 0.875rem;
+        }
+
+        .example-meta span {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .example-difficulty.beginner {
+            background: var(--success);
+            color: white;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .example-code {
+            background: var(--bg-tertiary);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .code-language {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .code-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .example-output {
+            background: var(--bg-primary);
+        }
+
+        .output-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .output-content {
+            padding: var(--spacing-lg);
+        }
+
+        .output-line {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            padding: var(--spacing-xs) 0;
+            color: var(--text-secondary);
+        }
+
+        .load-more-section {
+            text-align: center;
+            margin: var(--spacing-2xl) 0;
+        }
+
+        @media (max-width: 768px) {
+            .examples-header h1 {
+                font-size: 2rem;
+            }
+
+            .examples-stats {
+                justify-content: center;
+            }
+
+            .example-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .category-filters {
+                justify-content: center;
+            }
+        }
+    </style>
+</body>
+</html>

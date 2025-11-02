@@ -1,0 +1,2421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Examples - MultiOS API Documentation</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/interactive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="themeToggle" class="btn-icon">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h1><i class="fas fa-microchip"></i> MultiOS API</h1>
+                <button class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../../index.html" class="nav-link">
+                    <i class="fas fa-home"></i> Overview
+                </a></li>
+                <li><a href="../../api_reference/index.html" class="nav-link">
+                    <i class="fas fa-book"></i> API Reference
+                </a></li>
+                <li><a href="../beginner/index.html" class="nav-link">
+                    <i class="fas fa-play-circle"></i> Beginner Examples
+                </a></li>
+                <li><a href="../intermediate/index.html" class="nav-link">
+                    <i class="fas fa-code"></i> Intermediate Examples
+                </a></li>
+                <li><a href="index.html" class="nav-link active">
+                    <i class="fas fa-fire"></i> Advanced Examples
+                </a></li>
+                <li><a href="../../tutorials/index.html" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i> Tutorials
+                </a></li>
+                <li><a href="../../guides/index.html" class="nav-link">
+                    <i class="fas fa-bookmark"></i> Integration Guides
+                </a></li>
+                <li><a href="../../interactive/api-explorer.html" class="nav-link">
+                    <i class="fas fa-search"></i> API Explorer
+                </a></li>
+                <li><a href="../../search/index.html" class="nav-link">
+                    <i class="fas fa-search"></i> Search
+                </a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="page-header">
+                <div class="breadcrumb">
+                    <a href="../../index.html">Home</a>
+                    <span class="separator">/</span>
+                    <a href="../beginner/index.html">Examples</a>
+                    <span class="separator">/</span>
+                    <span class="current">Advanced</span>
+                </div>
+                <h1 class="page-title">
+                    <i class="fas fa-fire"></i>
+                    Advanced Examples
+                </h1>
+                <p class="page-description">
+                    Expert-level API implementations showcasing cutting-edge techniques, enterprise patterns, and production-ready architectures for MultiOS development.
+                </p>
+            </header>
+
+            <div class="examples-categories">
+                <div class="category-filter">
+                    <button class="category-btn active" data-category="all">All Examples</button>
+                    <button class="category-btn" data-category="distributed">Distributed Systems</button>
+                    <button class="category-btn" data-category="realtime">Real-time Systems</button>
+                    <button class="category-btn" data-category="ml">Machine Learning</button>
+                    <button class="category-btn" data-category="enterprise">Enterprise Architecture</button>
+                    <button class="category-btn" data-category="embedded">Embedded Systems</button>
+                    <button class="category-btn" data-category="quantum">Quantum Computing</button>
+                </div>
+
+                <div class="examples-grid">
+                    <!-- Distributed Systems Examples -->
+                    <div class="example-card" data-category="distributed">
+                        <div class="example-header">
+                            <h3><i class="fas fa-sitemap"></i> Distributed Consensus Protocol</h3>
+                            <span class="difficulty-badge advanced">Advanced</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                Implementation of a Raft-like consensus algorithm for distributed systems with leader election, log replication, and fault tolerance.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">Rust</span>
+                                <span class="language-tag">Go</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-rust">// Distributed Consensus Protocol Implementation
+use multios::cluster::{ClusterNode, ConsensusAlgorithm, LogEntry};
+use multios::network::{Message, NetworkTransport};
+use std::collections::HashMap;
+use tokio::sync::{Mutex, RwLock};
+use chrono::{DateTime, Utc};
+
+#[derive(Debug, Clone)]
+enum RaftState {
+    Follower,
+    Candidate,
+    Leader,
+}
+
+#[derive(Debug)]
+struct RaftNode {
+    id: NodeId,
+    cluster: ClusterNode,
+    state: RwLock<RaftState>,
+    current_term: Mutex<u64>,
+    voted_for: Mutex<Option<NodeId>>,
+    log: Mutex<Vec<LogEntry>>,
+    commit_index: RwLock<u64>,
+    last_applied: RwLock<u64>,
+    next_index: RwLock<HashMap<NodeId, u64>>,
+    match_index: RwLock<HashMap<NodeId, u64>>,
+    election_timeout: tokio::time::Interval,
+    heartbeat_interval: tokio::time::Interval,
+}
+
+impl RaftNode {
+    async fn new(id: NodeId, cluster: ClusterNode) -> Self {
+        let mut next_index = HashMap::new();
+        let mut match_index = HashMap::new();
+        
+        // Initialize next_index for all nodes except self
+        for peer_id in cluster.get_peer_ids() {
+            if peer_id != id {
+                next_index.insert(peer_id, 1);
+                match_index.insert(peer_id, 0);
+            }
+        }
+        
+        RaftNode {
+            id,
+            cluster,
+            state: RwLock::new(RaftState::Follower),
+            current_term: Mutex::new(0),
+            voted_for: Mutex::new(None),
+            log: Mutex::new(Vec::new()),
+            commit_index: RwLock::new(0),
+            last_applied: RwLock::new(0),
+            next_index: RwLock::new(next_index),
+            match_index: RwLock::new(match_index),
+            election_timeout: tokio::time::interval(Duration::from_millis(150)),
+            heartbeat_interval: tokio::time::interval(Duration::from_millis(50)),
+        }
+    }
+    
+    async fn start_election(&self) -> Result<(), ConsensusError> {
+        let mut term = self.current_term.lock().await;
+        *term += 1;
+        let current_term = *term;
+        
+        // Transition to candidate state
+        *self.state.write().await = RaftState::Candidate;
+        
+        // Vote for self
+        *self.voted_for.lock().await = Some(self.id);
+        let votes = Arc::new(Mutex::new(1));
+        let total_nodes = self.cluster.get_total_nodes();
+        let majority = (total_nodes / 2) + 1;
+        
+        // Request votes from all other nodes
+        let mut vote_requests = Vec::new();
+        for peer_id in self.cluster.get_peer_ids() {
+            if peer_id != self.id {
+                let request = VoteRequest {
+                    term: current_term,
+                    candidate_id: self.id,
+                    last_log_index: self.log.lock().await.len() as u64 - 1,
+                    last_log_term: self.get_last_log_term().await,
+                };
+                
+                let vote_request = self.cluster.send_vote_request(peer_id, request);
+                vote_requests.push(vote_request);
+            }
+        }
+        
+        // Wait for votes (with timeout)
+        let mut completed_requests = 0;
+        let mut granted_votes = 1; // Self vote
+        
+        for vote_request in vote_requests {
+            if let Ok(vote_response) = vote_request.await {
+                completed_requests += 1;
+                
+                if vote_response.term == current_term && vote_response.vote_granted {
+                    granted_votes += 1;
+                }
+            }
+            
+            // Check if we have majority
+            if granted_votes >= majority {
+                self.become_leader().await?;
+                return Ok(());
+            }
+        }
+        
+        // Failed to get majority, revert to follower
+        *self.state.write().await = RaftState::Follower;
+        *self.voted_for.lock().await = None;
+        
+        Ok(())
+    }
+    
+    async fn append_entry(&self, entry: LogEntry) -> Result<bool, ConsensusError> {
+        let state = self.state.read().await;
+        match *state {
+            RaftState::Leader => {
+                drop(state);
+                
+                // Add entry to local log
+                let mut log = self.log.lock().await;
+                let entry_index = log.len() as u64;
+                let entry_with_index = LogEntry {
+                    term: *self.current_term.lock().await,
+                    index: entry_index,
+                    data: entry.data,
+                };
+                log.push(entry_with_index);
+                
+                // Send AppendEntries to followers
+                self.replicate_log().await;
+                
+                Ok(true)
+            }
+            _ => Ok(false), // Not leader, cannot append
+        }
+    }
+    
+    async fn replicate_log(&self) -> Result<(), ConsensusError> {
+        let peers = self.cluster.get_peer_ids();
+        let mut replication_futures = Vec::new();
+        
+        for peer_id in peers {
+            if peer_id != self.id {
+                let replication = self.replicate_to_peer(peer_id);
+                replication_futures.push(replication);
+            }
+        }
+        
+        // Wait for replication to complete or timeout
+        let results = futures::future::join_all(replication_futures).await;
+        
+        // Count successful replications
+        let mut successful_replications = 1; // Self
+        for result in results {
+            if result.is_ok() {
+                successful_replications += 1;
+            }
+        }
+        
+        let total_nodes = self.cluster.get_total_nodes();
+        let majority = (total_nodes / 2) + 1;
+        
+        // Update commit index if majority has replicated
+        if successful_replications >= majority {
+            let mut commit_index = self.commit_index.write().await;
+            let log_len = self.log.lock().await.len() as u64;
+            if log_len > *commit_index {
+                *commit_index = log_len - 1;
+            }
+        }
+        
+        Ok(())
+    }
+}</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('raft-consensus')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('raft-consensus')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="example-card" data-category="distributed">
+                        <div class="example-header">
+                            <h3><i class="fas fa-cloud"></i> Distributed Cache System</h3>
+                            <span class="difficulty-badge advanced">Advanced</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                High-performance distributed cache with consistent hashing, automatic failover, and multi-level cache hierarchy.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">Rust</span>
+                                <span class="language-tag">C++</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-rust">// Distributed Cache Implementation
+use multios::distributed::{ConsistentHash, RingNode, CacheNode};
+use multios::network::{ClusterManager, ReplicationFactor};
+use multios::persistence::{PersistenceLayer, SnapshotManager};
+use std::collections::{HashMap, BTreeMap};
+use tokio::sync::{RwLock, Mutex};
+
+struct DistributedCache {
+    consistent_hash: ConsistentHash,
+    cluster_manager: ClusterManager,
+    local_cache: Arc<RwLock<HashMap<String, CacheEntry>>>,
+    replication_factor: ReplicationFactor,
+    eviction_policy: EvictionPolicy,
+    persistence: Option<PersistenceLayer>,
+}
+
+#[derive(Debug, Clone)]
+struct CacheEntry {
+    value: Vec<u8>,
+    ttl: Option<Duration>,
+    created_at: Instant,
+    access_count: AtomicU64,
+    last_access: Instant,
+}
+
+impl DistributedCache {
+    async fn new(cluster_nodes: Vec<RingNode>, replication_factor: u32) -> Self {
+        let consistent_hash = ConsistentHash::new(cluster_nodes, 150); // 150 virtual nodes
+        let cluster_manager = ClusterManager::new();
+        
+        DistributedCache {
+            consistent_hash,
+            cluster_manager,
+            local_cache: Arc::new(RwLock::new(HashMap::new())),
+            replication_factor: ReplicationFactor::Fixed(replication_factor),
+            eviction_policy: EvictionPolicy::LRU,
+            persistence: None,
+        }
+    }
+    
+    async fn get(&self, key: &str) -> Option<Vec<u8>> {
+        // Check local cache first
+        {
+            let cache = self.local_cache.read().await;
+            if let Some(entry) = cache.get(key) {
+                if self.is_entry_valid(entry) {
+                    entry.access_count.fetch_add(1, AtomicOrdering::Relaxed);
+                    return Some(entry.value.clone());
+                } else {
+                    // Entry expired, remove it
+                    drop(cache);
+                    let mut cache = self.local_cache.write().await;
+                    cache.remove(key);
+                }
+            }
+        }
+        
+        // Determine which nodes store this key
+        let nodes = self.consistent_hash.get_nodes(key, self.replication_factor.get_count());
+        
+        // Try to get from replicated nodes
+        for node in nodes {
+            if node.id != self.cluster_manager.get_local_node_id() {
+                match self.cluster_manager.remote_get(&node, key).await {
+                    Ok(Some(value)) => {
+                        // Cache locally for future requests
+                        self.cache_locally(key, value.clone()).await;
+                        return Some(value);
+                    }
+                    Ok(None) => continue,
+                    Err(_) => continue, // Try next node
+                }
+            }
+        }
+        
+        None
+    }
+    
+    async fn set(&self, key: &str, value: Vec<u8>, ttl: Option<Duration>) -> Result<(), CacheError> {
+        let entry = CacheEntry {
+            value: value.clone(),
+            ttl,
+            created_at: Instant::now(),
+            access_count: AtomicU64::new(0),
+            last_access: Instant::now(),
+        };
+        
+        // Cache locally
+        self.cache_locally(key, entry).await;
+        
+        // Determine which nodes should store this key
+        let nodes = self.consistent_hash.get_nodes(key, self.replication_factor.get_count());
+        
+        // Store in all responsible nodes
+        let mut results = Vec::new();
+        for node in nodes {
+            if node.id == self.cluster_manager.get_local_node_id() {
+                // Already stored locally
+                results.push(Ok(()));
+            } else {
+                let result = self.cluster_manager.remote_set(&node, key, &entry).await;
+                results.push(result);
+            }
+        }
+        
+        // Check if all replications succeeded
+        if results.iter().all(|r| r.is_ok()) {
+            Ok(())
+        } else {
+            Err(CacheError::ReplicationFailure)
+        }
+    }
+    
+    async fn invalidate(&self, key: &str) -> Result<(), CacheError> {
+        // Remove from local cache
+        {
+            let mut cache = self.local_cache.write().await;
+            cache.remove(key);
+        }
+        
+        // Invalidate across all replicas
+        let nodes = self.consistent_hash.get_nodes(key, self.replication_factor.get_count());
+        let mut results = Vec::new();
+        
+        for node in nodes {
+            if node.id != self.cluster_manager.get_local_node_id() {
+                let result = self.cluster_manager.remote_invalidate(&node, key).await;
+                results.push(result);
+            }
+        }
+        
+        Ok(())
+    }
+    
+    async fn cache_locally(&self, key: &str, entry: CacheEntry) {
+        let mut cache = self.local_cache.write().await;
+        
+        // Check if we need to evict entries
+        if cache.len() >= self.get_max_cache_size() {
+            self.evict_entries(&mut cache).await;
+        }
+        
+        cache.insert(key.to_string(), entry);
+    }
+    
+    async fn evict_entries(&self, cache: &mut HashMap<String, CacheEntry>) {
+        match self.eviction_policy {
+            EvictionPolicy::LRU => {
+                let mut entries: Vec<_> = cache.iter().collect();
+                entries.sort_by(|a, b| {
+                    a.1.last_access.cmp(&b.1.last_access)
+                });
+                
+                // Remove least recently used entries
+                let to_remove = entries.len().min(cache.len() / 10); // Remove 10%
+                for (key, _) in entries.iter().take(to_remove) {
+                    cache.remove(*key);
+                }
+            }
+            EvictionPolicy::LFU => {
+                let mut entries: Vec<_> = cache.iter().collect();
+                entries.sort_by(|a, b| {
+                    a.1.access_count.load(Ordering::Relaxed)
+                        .cmp(&b.1.access_count.load(Ordering::Relaxed))
+                });
+                
+                let to_remove = entries.len().min(cache.len() / 10);
+                for (key, _) in entries.iter().take(to_remove) {
+                    cache.remove(*key);
+                }
+            }
+        }
+    }
+}</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('distributed-cache')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('distributed-cache')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Real-time Systems Examples -->
+                    <div class="example-card" data-category="realtime">
+                        <div class="example-header">
+                            <h3><i class="fas fa-clock"></i> Ultra-Low Latency Trading Engine</h3>
+                            <span class="difficulty-badge advanced">Advanced</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                High-frequency trading engine with microsecond latency, lock-free data structures, and direct market connectivity.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">C++</span>
+                                <span class="language-tag">Rust</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-cpp">// Ultra-Low Latency Trading Engine
+#include <multios/realtime.h>
+#include <multios/rtcp.h>
+#include <multios/direct_market.h>
+#include <thread>
+#include <atomic>
+#include <chrono>
+
+using namespace multios::realtime;
+using namespace multios::rtcp;
+using namespace multios::direct_market;
+
+class TradingEngine {
+private:
+    // Lock-free order book
+    std::atomic<OrderBook*> order_books;
+    
+    // High-performance market data feed
+    MarketDataFeed market_feed;
+    
+    // Direct market connectivity
+    DirectConnect market_connect;
+    
+    // Risk management
+    RiskManager risk_mgr;
+    
+    // Latency monitor
+    LatencyMonitor latency_monitor;
+    
+    // CPU affinity for deterministic latency
+    void pin_to_cpu(int cpu_id) {
+        cpu_set_t cpuset;
+        CPU_ZERO(&cpuset);
+        CPU_SET(cpu_id, &cpuset);
+        pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset);
+    }
+    
+public:
+    TradingEngine() {
+        // Initialize order books
+        order_books.store(new OrderBook[256], std::memory_order_relaxed);
+        
+        // Pin main thread to CPU 0
+        pin_to_cpu(0);
+        
+        // Initialize market connections
+        market_connect.initialize("NYSE", "NASDAQ", "BATS");
+        
+        // Setup risk limits
+        risk_mgr.set_max_position(1000000); // $1M max position
+        risk_mgr.set_max_daily_loss(50000); // $50K max daily loss
+    }
+    
+    void start_market_making() {
+        // Pin market making thread to CPU 1
+        std::thread([this]() {
+            pin_to_cpu(1);
+            
+            OrderBook* book = order_books.load(std::memory_order_acquire);
+            
+            while (running.load()) {
+                auto start_time = std::chrono::high_resolution_clock::now();
+                
+                // Process incoming orders
+                process_market_orders(book);
+                
+                // Update quotes based on strategy
+                update_quotes(book);
+                
+                // Send orders to market
+                send_orders_to_market();
+                
+                // Measure latency
+                auto end_time = std::chrono::high_resolution_clock::now();
+                auto latency = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
+                latency_monitor.record_latency(latency.count());
+                
+                // Target microsecond-level latency
+                std::this_thread::sleep_for(std::chrono::microseconds(10));
+            }
+        }).detach();
+    }
+    
+    void process_market_orders(OrderBook* book) {
+        // Lock-free order processing
+        Order incoming_order;
+        
+        while (market_feed.try_pop_order(&incoming_order)) {
+            // Validate order
+            if (!risk_mgr.validate_order(incoming_order)) {
+                continue;
+            }
+            
+            // Process order immediately (sub-microsecond)
+            bool matched = book->try_match(&incoming_order);
+            
+            if (matched) {
+                // Execute trade
+                execute_trade(incoming_order);
+            }
+        }
+    }
+    
+    void execute_trade(const Order& order) {
+        Trade trade = {
+            .order_id = order.id,
+            .symbol = order.symbol,
+            .side = order.side,
+            .quantity = order.quantity,
+            .price = order.price,
+            .timestamp = get_high_res_timestamp()
+        };
+        
+        // Direct market execution
+        DirectExecResult result = market_connect.execute(trade);
+        
+        if (result.success) {
+            // Update position and P&L
+            risk_mgr.update_position(trade);
+            
+            // Send to clearing
+            send_to_clearing(trade);
+        }
+    }
+    
+    void update_quotes(OrderBook* book) {
+        // Market making strategy with microsecond updates
+        QuoteUpdate quote;
+        
+        // Get market prices
+        MarketPrice prices = market_feed.get_latest_prices();
+        
+        // Calculate optimal quotes
+        double bid = prices.mid - 0.01;
+        double ask = prices.mid + 0.01;
+        
+        quote.bid = bid;
+        quote.ask = ask;
+        quote.bid_size = 1000;
+        quote.ask_size = 1000;
+        quote.symbol = "AAPL";
+        quote.timestamp = get_high_res_timestamp();
+        
+        // Post quotes with low latency
+        market_connect.update_quotes(quote);
+    }
+    
+    uint64_t get_high_res_timestamp() {
+        struct timespec ts;
+        clock_gettime(CLOCK_REALTIME, &ts);
+        return (uint64_t)ts.tv_sec * 1000000000ULL + ts.tv_nsec;
+    }
+};
+
+// Performance-optimized OrderBook
+class OrderBook {
+private:
+    // Lock-free price levels
+    LockFreeQueue<BidLevel> bid_levels;
+    LockFreeQueue<AskLevel> ask_levels;
+    
+    // Memory-mapped order storage
+    std::atomic<uint64_t> order_storage_base;
+    
+public:
+    bool try_match(Order* order) {
+        if (order->side == BUY) {
+            return try_match_bid(order);
+        } else {
+            return try_match_ask(order);
+        }
+    }
+    
+private:
+    bool try_match_bid(Order* order) {
+        // Find best ask level
+        AskLevel* best_ask = ask_levels.front();
+        
+        while (best_ask && best_ask->price <= order->price) {
+            // Try to match with orders at this level
+            Order* resting_order = get_best_order_at_level(best_ask);
+            
+            if (resting_order) {
+                // Execute trade
+                execute_internal_trade(order, resting_order, best_ask->price);
+                return true;
+            }
+            
+            // Move to next level
+            AskLevel* next_level = ask_levels.try_pop();
+            if (next_level) {
+                delete best_ask;
+                best_ask = next_level;
+            } else {
+                break;
+            }
+        }
+        
+        return false;
+    }
+    
+    void execute_internal_trade(Order* taker_order, Order* maker_order, double price) {
+        Trade trade = {
+            .taker_id = taker_order->id,
+            .maker_id = maker_order->id,
+            .quantity = std::min(taker_order->quantity, maker_order->quantity),
+            .price = price,
+            .timestamp = get_high_res_timestamp()
+        };
+        
+        // Notify both parties
+        notify_trade_execution(trade);
+    }
+};</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('trading-engine')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('trading-engine')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Machine Learning Examples -->
+                    <div class="example-card" data-category="ml">
+                        <div class="example-header">
+                            <h3><i class="fas fa-brain"></i> Distributed Neural Network Training</h3>
+                            <span class="difficulty-badge advanced">Advanced</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                Large-scale distributed neural network training with parameter servers, gradient aggregation, and fault tolerance.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">Python</span>
+                                <span class="language-tag">Rust</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-python"># Distributed Neural Network Training
+import multios.ml as ml
+import multios.distributed as dist
+import multios.gpu as gpu
+import torch
+import torch.nn as nn
+import torch.distributed as torch_dist
+from torch.nn.parallel import DistributedDataParallel
+import asyncio
+from typing import List, Dict
+
+class ParameterServer:
+    def __init__(self, model_size: int, num_workers: int):
+        self.model_size = model_size
+        self.num_workers = num_workers
+        self.parameters = torch.zeros(model_size, requires_grad=False)
+        self.updates_count = torch.zeros(num_workers)
+        self.gradients = []
+        
+    async def register_worker(self, worker_id: int) -> int:
+        """Register a new worker and return its shard start index"""
+        shard_start = (worker_id * self.model_size) // self.num_workers
+        shard_end = ((worker_id + 1) * self.model_size) // self.num_workers
+        
+        self.updates_count[worker_id] = 0
+        return shard_start
+    
+    async def receive_gradient(self, worker_id: int, gradient: torch.Tensor) -> Dict:
+        """Receive gradient update from worker"""
+        shard_start = (worker_id * self.model_size) // self.num_workers
+        shard_end = ((worker_id + 1) * self.model_size) // self.num_workers
+        
+        # Store gradient for aggregation
+        self.gradients.append({
+            'worker_id': worker_id,
+            'gradient': gradient[shard_start:shard_end],
+            'timestamp': asyncio.get_event_loop().time()
+        })
+        
+        # Check if we have enough gradients for aggregation
+        if len(self.gradients) >= self.num_workers:
+            aggregated_grad = self.aggregate_gradients()
+            self.gradients.clear()
+            
+            return {
+                'aggregated_gradient': aggregated_grad,
+                'new_parameters': self.parameters + aggregated_grad,
+                'sync_frequency': self.calculate_sync_frequency()
+            }
+        
+        return {'status': 'pending'}
+
+class DistributedTrainer:
+    def __init__(self, model: nn.Module, data_loader, server_address: str):
+        self.model = model
+        self.data_loader = data_loader
+        self.server_address = server_address
+        self.worker_id = dist.get_worker_id()
+        self.num_workers = dist.get_num_workers()
+        
+        # Initialize GPU if available
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.model = self.model.to(self.device)
+        
+        # Setup distributed training
+        self.setup_distributed_training()
+        
+        # Initialize parameter server connection
+        self.param_server = ParameterServerServer(self.server_address)
+        
+    def setup_distributed_training(self):
+        """Setup distributed training infrastructure"""
+        if torch.cuda.is_available():
+            # Initialize GPU cluster
+            gpu_cluster = gpu.init_cluster()
+            local_rank = gpu.get_local_rank()
+            world_size = gpu.get_world_size()
+            
+            # Setup GPU communication
+            torch.cuda.set_device(local_rank)
+            torch_dist.init_process_group(
+                backend='nccl',
+                init_method='env://',
+                world_size=world_size,
+                rank=self.worker_id
+            )
+            
+            # Wrap model with DistributedDataParallel
+            self.model = DistributedDataParallel(
+                self.model,
+                device_ids=[local_rank],
+                output_device=local_rank
+            )
+    
+    async def train_epoch(self, epoch: int) -> Dict:
+        """Train one epoch with distributed parameters"""
+        self.model.train()
+        epoch_loss = 0.0
+        num_batches = 0
+        
+        # Get current parameters from parameter server
+        current_params = await self.param_server.get_parameters()
+        await self.update_local_model(current_params)
+        
+        for batch_idx, (data, target) in enumerate(self.data_loader):
+            data, target = data.to(self.device), target.to(self.device)
+            
+            # Forward pass
+            output = self.model(data)
+            loss = nn.functional.cross_entropy(output, target)
+            
+            # Backward pass
+            self.model.zero_grad()
+            loss.backward()
+            
+            # Get gradients
+            gradients = self.get_model_gradients()
+            
+            # Send gradients to parameter server
+            server_response = await self.param_server.send_gradient(gradients)
+            
+            # Update local model with aggregated gradients if received
+            if 'aggregated_gradient' in server_response:
+                await self.apply_gradient_update(server_response['aggregated_gradient'])
+            
+            epoch_loss += loss.item()
+            num_batches += 1
+            
+            # Adaptive batch size based on performance
+            if batch_idx % 100 == 0:
+                await self.adapt_batch_size()
+        
+        avg_loss = epoch_loss / num_batches
+        
+        return {
+            'epoch': epoch,
+            'loss': avg_loss,
+            'worker_id': self.worker_id
+        }
+    
+    async def adaptive_learning_rate(self, metrics: Dict):
+        """Adjust learning rate based on training progress"""
+        base_lr = 0.001
+        current_lr = base_lr
+        
+        # Reduce learning rate if loss plateaus
+        if 'loss_stagnant_epochs' in metrics and metrics['loss_stagnant_epochs'] > 3:
+            current_lr *= 0.5
+            
+        # Increase learning rate for faster convergence if progress is good
+        elif 'improvement_rate' in metrics and metrics['improvement_rate'] > 0.1:
+            current_lr *= 1.1
+            
+        await self.param_server.update_learning_rate(current_lr)
+    
+    async def checkpoint_model(self, epoch: int, metrics: Dict):
+        """Save model checkpoint"""
+        checkpoint = {
+            'epoch': epoch,
+            'model_state_dict': self.model.state_dict(),
+            'metrics': metrics,
+            'worker_id': self.worker_id,
+            'timestamp': asyncio.get_event_loop().time()
+        }
+        
+        # Save to distributed filesystem
+        checkpoint_path = f"/distfs/checkpoints/epoch_{epoch}_worker_{self.worker_id}.pt"
+        await ml.save_checkpoint(checkpoint_path, checkpoint)
+        
+        # Notify parameter server
+        await self.param_server.notify_checkpoint(checkpoint_path)
+
+class ModelParallelTrainer:
+    """For models too large to fit on a single GPU"""
+    def __init__(self, model_parts: List[nn.Module], partition_strategy: str):
+        self.model_parts = model_parts
+        self.partition_strategy = partition_strategy
+        self.worker_pipeline = []
+        
+    def setup_pipeline_parallelism(self):
+        """Setup pipeline parallelism for large models"""
+        num_stages = len(self.model_parts)
+        num_microbatches = 8  # Adjust based on model size
+        
+        for i, model_part in enumerate(self.model_parts):
+            # Assign model part to worker
+            worker_id = i % dist.get_num_workers()
+            stage = PipelineStage(
+                model_part=model_part,
+                stage_id=i,
+                worker_id=worker_id,
+                input_queue=asyncio.Queue(maxsize=num_microbatches),
+                output_queue=asyncio.Queue(maxsize=num_microbatches) if i < num_stages - 1 else None
+            )
+            
+            self.worker_pipeline.append(stage)
+    
+    async def pipeline_forward(self, batch: torch.Tensor) -> torch.Tensor:
+        """Execute forward pass through pipeline"""
+        current_input = batch
+        stage_outputs = []
+        
+        for stage in self.worker_pipeline:
+            if stage.worker_id == dist.get_worker_id():
+                # Process this stage
+                stage_output = await stage.process(current_input)
+                stage_outputs.append(stage_output)
+                
+                if stage.output_queue:
+                    await stage.output_queue.put(stage_output)
+            else:
+                # Receive input from another worker
+                if stage.input_queue:
+                    stage_output = await stage.input_queue.get()
+                    stage_outputs.append(stage_output)
+            
+            current_input = stage_outputs[-1] if stage_outputs else None
+            
+            if current_input is None:
+                break
+        
+        return current_input if current_input is not None else batch
+
+# Fault-tolerant training with automatic recovery
+class FaultTolerantTrainer:
+    def __init__(self, trainer: DistributedTrainer):
+        self.trainer = trainer
+        self.checkpoint_interval = 100  # Save checkpoint every 100 batches
+        self.health_monitor = HealthMonitor()
+        
+    async def fault_tolerant_training(self, total_epochs: int):
+        """Training with automatic failure recovery"""
+        current_epoch = 0
+        retry_count = 0
+        max_retries = 3
+        
+        while current_epoch < total_epochs and retry_count < max_retries:
+            try:
+                # Health check before starting epoch
+                if not await self.health_monitor.is_healthy():
+                    await self.recover_from_failure()
+                    continue
+                
+                # Train epoch
+                metrics = await self.trainer.train_epoch(current_epoch)
+                
+                # Save periodic checkpoints
+                if current_epoch % 10 == 0:
+                    await self.trainer.checkpoint_model(current_epoch, metrics)
+                
+                # Monitor training progress
+                await self.health_monitor.record_metrics(metrics)
+                
+                current_epoch += 1
+                retry_count = 0  # Reset retry count on success
+                
+            except Exception as e:
+                retry_count += 1
+                print(f"Training failed at epoch {current_epoch}, retry {retry_count}: {e}")
+                
+                if retry_count >= max_retries:
+                    # Load latest checkpoint and restart
+                    await self.load_latest_checkpoint()
+                    retry_count = 0
+
+class HealthMonitor:
+    def __init__(self):
+        self.metrics_history = []
+        self.failure_threshold = 0.05  # 5% performance degradation
+        
+    async def is_healthy(self) -> bool:
+        """Check if training is progressing normally"""
+        if len(self.metrics_history) < 10:
+            return True
+            
+        recent_metrics = self.metrics_history[-10:]
+        avg_loss = sum(m['loss'] for m in recent_metrics) / len(recent_metrics)
+        
+        # Check for loss explosion or stagnation
+        if avg_loss > 1.0 or self.is_loss_stagnant():
+            return False
+            
+        return True
+    
+    async def recover_from_failure(self):
+        """Implement failure recovery strategy"""
+        # Strategy 1: Reduce learning rate
+        await self.reduce_learning_rate()
+        
+        # Strategy 2: Reset optimizer state
+        await self.reset_optimizer()
+        
+        # Strategy 3: Load from checkpoint
+        await self.load_checkpoint_if_available()
+    
+    async def record_metrics(self, metrics: Dict):
+        """Record training metrics for health monitoring"""
+        self.metrics_history.append(metrics)
+        
+        # Keep only recent history
+        if len(self.metrics_history) > 100:
+            self.metrics_history = self.metrics_history[-100:]</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('distributed-ml')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('distributed-ml')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enterprise Architecture Examples -->
+                    <div class="example-card" data-category="enterprise">
+                        <div class="example-header">
+                            <h3><i class="fas fa-building"></i> Microservices Architecture</h3>
+                            <span class="difficulty-badge advanced">Advanced</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                Enterprise microservices architecture with service mesh, API gateway, distributed tracing, and circuit breakers.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">Go</span>
+                                <span class="language-tag">Java</span>
+                                <span class="language-tag">Rust</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-go">// Enterprise Microservices Architecture
+package main
+
+import (
+    "context"
+    "fmt"
+    "net/http"
+    "time"
+    
+    "github.com/gin-gonic/gin"
+    "github.com/prometheus/client_golang/prometheus"
+    "go.opentelemetry.io/otel"
+    "go.opentelemetry.io/otel/metric"
+    
+    multios "github.com/multios/api"
+    "github.com/multios/mesh"
+    "github.com/multios/gateway"
+    "github.com/multios/tracing"
+)
+
+type ServiceRegistry struct {
+    services map[string]*ServiceInstance
+    health   *HealthChecker
+    registry mesh.ServiceRegistry
+}
+
+type ServiceInstance struct {
+    ID          string                 `json:"id"`
+    Name        string                 `json:"name"`
+    Version     string                 `json:"version"`
+    Address     string                 `json:"address"`
+    Port        int                    `json:"port"`
+    Metadata    map[string]interface{} `json:"metadata"`
+    LastSeen    time.Time              `json:"last_seen"`
+    HealthCheck string                 `json:"health_check"`
+}
+
+type APIGateway struct {
+    router        *gateway.Router
+    circuitBreaker *CircuitBreaker
+    loadBalancer  *LoadBalancer
+    rateLimiter   *RateLimiter
+    auth          *AuthService
+}
+
+type UserService struct {
+    db           *Database
+    cache        *RedisCache
+    userCache    *UserCache
+    auth         *AuthService
+    notification *NotificationService
+    metrics      *MetricsCollector
+}
+
+func NewUserService(config *Config) (*UserService, error) {
+    // Initialize database connection pool
+    db, err := NewDatabase(config.DatabaseConfig)
+    if err != nil {
+        return nil, err
+    }
+    
+    // Initialize cache layer
+    cache, err := NewRedisCache(config.RedisConfig)
+    if err != nil {
+        return nil, err
+    }
+    
+    userCache := NewUserCache(cache)
+    
+    return &UserService{
+        db:        db,
+        cache:     cache,
+        userCache: userCache,
+        auth:      NewAuthService(config.AuthConfig),
+        metrics:   NewMetricsCollector("user_service"),
+    }, nil
+}
+
+func (s *UserService) CreateUser(ctx context.Context, req *CreateUserRequest) (*CreateUserResponse, error) {
+    // Distributed tracing
+    ctx, span := otel.Tracer("user-service").Start(ctx, "CreateUser")
+    defer span.End()
+    
+    // Metrics
+    start := time.Now()
+    s.metrics.IncCounter("users.created")
+    defer s.metrics.ObserveHistogram("user.creation.duration", time.Since(start))
+    
+    // Validate request
+    if err := s.validateCreateUserRequest(req); err != nil {
+        return nil, err
+    }
+    
+    // Circuit breaker check
+    if !s.checkDependencyHealth(ctx) {
+        return nil, errors.New("dependencies unavailable")
+    }
+    
+    // Create user in database (transactional)
+    user := &User{
+        Email:    req.Email,
+        Name:     req.Name,
+        Created:  time.Now(),
+        Status:   UserStatusPending,
+        Metadata: req.Metadata,
+    }
+    
+    tx, err := s.db.BeginTx(ctx, nil)
+    if err != nil {
+        return nil, err
+    }
+    
+    // Insert user
+    if err := s.db.InsertUser(tx, user); err != nil {
+        tx.Rollback()
+        return nil, err
+    }
+    
+    // Send welcome email asynchronously
+    go func() {
+        emailReq := &EmailRequest{
+            To:       user.Email,
+            Subject:  "Welcome to MultiOS!",
+            Template: "welcome",
+            Data:     map[string]interface{}{"user": user},
+        }
+        
+        if err := s.notification.SendEmail(ctx, emailReq); err != nil {
+            s.metrics.IncCounter("email.send.failed")
+        }
+    }()
+    
+    // Cache user data
+    s.userCache.Set(user.ID, user)
+    
+    tx.Commit()
+    
+    // Update search index asynchronously
+    go func() {
+        searchDoc := &SearchDocument{
+            Type:     "user",
+            ID:       user.ID,
+            Content:  fmt.Sprintf("%s %s", user.Name, user.Email),
+            Metadata: map[string]interface{}{"status": user.Status.String()},
+        }
+        
+        if err := s.updateSearchIndex(ctx, searchDoc); err != nil {
+            s.metrics.IncCounter("search.index.failed")
+        }
+    }()
+    
+    // Emit domain event
+    s.emitUserCreatedEvent(ctx, user)
+    
+    return &CreateUserResponse{
+        UserID:   user.ID,
+        Status:   "created",
+        Created:  user.Created,
+    }, nil
+}
+
+func (s *UserService) GetUser(ctx context.Context, req *GetUserRequest) (*GetUserResponse, error) {
+    ctx, span := otel.Tracer("user-service").Start(ctx, "GetUser")
+    defer span.End()
+    
+    // Check cache first
+    if user := s.userCache.Get(req.UserID); user != nil {
+        return &GetUserResponse{User: user}, nil
+    }
+    
+    // Load from database
+    user, err := s.db.GetUser(ctx, req.UserID)
+    if err != nil {
+        if errors.Is(err, ErrUserNotFound) {
+            return nil, ErrUserNotFound
+        }
+        return nil, err
+    }
+    
+    // Cache for future requests
+    s.userCache.Set(user.ID, user)
+    
+    return &GetUserResponse{User: user}, nil
+}
+
+// Circuit Breaker Implementation
+type CircuitBreaker struct {
+    state       CircuitState
+    failures    int
+    threshold   int
+    timeout     time.Duration
+    lastFailure time.Time
+    mu          sync.Mutex
+}
+
+type CircuitState int
+
+const (
+    StateClosed CircuitState = iota
+    StateOpen
+    StateHalfOpen
+)
+
+func (cb *CircuitBreaker) Execute(operation func() error) error {
+    cb.mu.Lock()
+    defer cb.mu.Unlock()
+    
+    if cb.state == StateOpen {
+        if time.Since(cb.lastFailure) > cb.timeout {
+            cb.state = StateHalfOpen
+        } else {
+            return ErrCircuitOpen
+        }
+    }
+    
+    err := operation()
+    
+    if err != nil {
+        cb.failures++
+        cb.lastFailure = time.Now()
+        
+        if cb.failures >= cb.threshold {
+            cb.state = StateOpen
+        }
+        
+        return err
+    }
+    
+    // Reset on success
+    cb.failures = 0
+    cb.state = StateClosed
+    
+    return nil
+}
+
+// Service Mesh Configuration
+type ServiceMeshConfig struct {
+    ProxyPort      int
+    ControlPlane   string
+    EnableTracing  bool
+    EnableMetrics  bool
+    EnableMTLS     bool
+}
+
+func NewServiceMesh(config *ServiceMeshConfig) (*ServiceMesh, error) {
+    mesh := &ServiceMesh{
+        config:     config,
+        proxy:      NewEnvoyProxy(config),
+        controller: NewIstioController(config),
+    }
+    
+    if err := mesh.initialize(); err != nil {
+        return nil, err
+    }
+    
+    return mesh, nil
+}
+
+func (sm *ServiceMesh) configureTrafficPolicy(serviceName string, policy *TrafficPolicy) error {
+    // Configure load balancing
+    if err := sm.proxy.SetLoadBalancer(serviceName, policy.LoadBalancer); err != nil {
+        return err
+    }
+    
+    // Configure circuit breakers
+    if err := sm.proxy.SetCircuitBreaker(serviceName, policy.CircuitBreaker); err != nil {
+        return err
+    }
+    
+    // Configure retries
+    if err := sm.proxy.SetRetries(serviceName, policy.Retries); err != nil {
+        return err
+    }
+    
+    // Configure timeouts
+    if err := sm.proxy.SetTimeouts(serviceName, policy.Timeouts); err != nil {
+        return err
+    }
+    
+    return nil
+}
+
+// Distributed Tracing Setup
+func setupDistributedTracing(config *TracingConfig) error {
+    // Initialize Jaeger exporter
+    exporter, err := jaeger.NewExporter(jaeger.Options{
+        AgentEndpoint: config.AgentEndpoint,
+        CollectorEndpoint: config.CollectorEndpoint,
+    })
+    if err != nil {
+        return err
+    }
+    
+    // Create tracer provider
+    tp := sdktrace.NewTracerProvider(
+        sdktrace.WithBatcher(exporter),
+        sdktrace.WithSampling(sdktrace.ParentBased(sdktrace.TraceIDRatioBased(config.SampleRate))),
+    )
+    
+    otel.SetTracerProvider(tp)
+    
+    return nil
+}
+
+func main() {
+    // Initialize configuration
+    config, err := loadConfig()
+    if err != nil {
+        log.Fatal(err)
+    }
+    
+    // Setup distributed tracing
+    if err := setupDistributedTracing(config.Tracing); err != nil {
+        log.Fatal(err)
+    }
+    
+    // Initialize service mesh
+    mesh, err := NewServiceMesh(config.ServiceMesh)
+    if err != nil {
+        log.Fatal(err)
+    }
+    
+    // Start user service
+    userService, err := NewUserService(config)
+    if err != nil {
+        log.Fatal(err)
+    }
+    
+    // Setup HTTP server with middleware
+    router := gin.New()
+    
+    // Add middleware stack
+    router.Use(
+        ginlogrus.Logger(),
+        gin.Recovery(),
+        tracing.Middleware(),
+        prometheusMiddleware(),
+        authMiddleware(),
+        rateLimitMiddleware(),
+    )
+    
+    // Register routes
+    api := router.Group("/api/v1")
+    {
+        users := api.Group("/users")
+        {
+            users.POST("/", userService.CreateUser)
+            users.GET("/:id", userService.GetUser)
+            users.PUT("/:id", userService.UpdateUser)
+            users.DELETE("/:id", userService.DeleteUser)
+        }
+    }
+    
+    // Start metrics endpoint
+    router.GET("/metrics", gin.WrapH(prometheus.Handler()))
+    
+    // Start health check endpoint
+    router.GET("/health", func(c *gin.Context) {
+        c.JSON(http.StatusOK, gin.H{"status": "healthy"})
+    })
+    
+    log.Printf("User service starting on port %d", config.Port)
+    
+    // Start server with graceful shutdown
+    server := &http.Server{
+        Addr:    fmt.Sprintf(":%d", config.Port),
+        Handler: router,
+    }
+    
+    ctx, cancel := context.WithCancel(context.Background())
+    defer cancel()
+    
+    go func() {
+        if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+            log.Fatal(err)
+        }
+    }()
+    
+    // Wait for shutdown signal
+    <-ctx.Done()
+    log.Println("Shutting down gracefully...")
+    
+    ctx, cancel = context.WithTimeout(context.Background(), 10*time.Second)
+    defer cancel()
+    
+    server.Shutdown(ctx)
+}</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('microservices-architecture')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('microservices-architecture')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Embedded Systems Examples -->
+                    <div class="example-card" data-category="embedded">
+                        <div class="example-header">
+                            <h3><i class="fas fa-microchip"></i> Real-Time Embedded Controller</h3>
+                            <span class="difficulty-badge advanced">Advanced</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                Hard real-time embedded system with interrupt handling, sensor fusion, and safety-critical error handling.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">C</span>
+                                <span class="language-tag">Rust</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-c">// Real-Time Embedded Controller
+#include <multios/embedded.h>
+#include <multios/rtos.h>
+#include <multios/driver.h>
+#include <multios/safety.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdint.h>
+
+// System configuration
+#define SYSTEM_FREQ        1000000UL    // 1 MHz system clock
+#define TICK_RATE          1000UL       // 1 ms tick
+#define MAX_SENSOR_READINGS  256
+#define CONTROL_LOOP_FREQ   500UL       // 500 Hz control loop
+#define SAFETY_MONITOR_FREQ 10UL        // 10 Hz safety checks
+
+// Task priorities (lower number = higher priority)
+#define PRIORITY_SAFETY      1
+#define PRIORITY_CONTROL     2
+#define PRIORITY_SENSOR      3
+#define PRIORITY_COMM        4
+#define PRIORITY_LOGGING     5
+
+// Task stacks
+#define SAFETY_STACK_SIZE    512
+#define CONTROL_STACK_SIZE   1024
+#define SENSOR_STACK_SIZE    512
+#define COMM_STACK_SIZE      512
+#define LOGGING_STACK_SIZE   256
+
+// Safety-critical data structures
+typedef struct {
+    float temperature;
+    float pressure;
+    float flow_rate;
+    uint32_t system_voltage;
+    uint32_t system_current;
+    bool emergency_stop;
+    bool overpressure;
+    bool overtemperature;
+} SystemState;
+
+typedef struct {
+    uint32_t timestamp;
+    float setpoint;
+    float measured_value;
+    float control_output;
+    uint32_t error_flags;
+} ControlData;
+
+typedef struct {
+    uint32_t sequence;
+    uint8_t status;
+    float sensor_data[16];
+} SensorReading;
+
+// Global system state
+static volatile SystemState g_system_state = {0};
+static volatile ControlData g_control_data = {0};
+static SemaphoreHandle_t g_state_mutex;
+static TimerHandle_t g_watchdog_timer;
+
+// Safety-critical function prototypes
+void emergency_shutdown_handler(void);
+void safety_monitor_task(void* params);
+void control_loop_task(void* params);
+void sensor_task(void* params);
+void communication_task(void* params);
+void logging_task(void* params);
+
+// ISR for emergency stop
+void GPIO_EXTI_Handler(void) {
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    
+    // Disable interrupts immediately
+    __disable_irq();
+    
+    // Check if emergency stop pin is triggered
+    if (GPIO_ReadPin(EMERGENCY_STOP_PIN) == GPIO_LOW) {
+        g_system_state.emergency_stop = true;
+        
+        // Set all control outputs to safe state
+        g_control_data.control_output = 0.0f;
+        
+        // Notify safety monitor task
+        xTaskNotifyFromISR(safety_monitor_task_id, EMERGENCY_STOP_EVENT, eSetBits, &xHigherPriorityTaskWoken);
+    }
+    
+    // Clear interrupt flag
+    GPIO_ClearInterruptFlag(EMERGENCY_STOP_PIN);
+    
+    // Re-enable interrupts
+    __enable_irq();
+    
+    // Yield if needed
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+}
+
+// Safety monitor task (highest priority)
+void safety_monitor_task(void* params) {
+    TickType_t last_wake_time = xTaskGetTickCount();
+    const TickType_t safety_period = pdMS_TO_TICKS(100); // 100ms safety checks
+    
+    while (1) {
+        // Wait for safety check period
+        vTaskDelayUntil(&last_wake_time, safety_period);
+        
+        // Read current system state
+        xSemaphoreTake(g_state_mutex, portMAX_DELAY);
+        
+        // Check safety conditions
+        bool safety_violation = false;
+        
+        // Temperature check
+        if (g_system_state.temperature > MAX_TEMPERATURE) {
+            g_system_state.overtemperature = true;
+            safety_violation = true;
+        } else {
+            g_system_state.overtemperature = false;
+        }
+        
+        // Pressure check
+        if (g_system_state.pressure > MAX_PRESSURE) {
+            g_system_state.overpressure = true;
+            safety_violation = true;
+        } else {
+            g_system_state.overpressure = false;
+        }
+        
+        // Voltage check
+        if (g_system_state.system_voltage > MAX_VOLTAGE || 
+            g_system_state.system_voltage < MIN_VOLTAGE) {
+            safety_violation = true;
+        }
+        
+        xSemaphoreGive(g_state_mutex);
+        
+        // Handle safety violations
+        if (safety_violation) {
+            emergency_shutdown_handler();
+        }
+        
+        // Reset watchdog timer
+        xTimerReset(g_watchdog_timer, 0);
+    }
+}
+
+// Emergency shutdown procedure
+void emergency_shutdown_handler(void) {
+    // Immediately disable all outputs
+    Control_SetOutput(0.0f);
+    Valve_CloseAll();
+    Heater_Disable();
+    Pump_Stop();
+    
+    // Log emergency event
+    Safety_LogEvent(EVENT_EMERGENCY_SHUTDOWN);
+    
+    // Send emergency message
+    Comm_SendEmergencyMessage();
+    
+    // Enter safe state and halt
+    System_EnterSafeState();
+}
+
+// Control loop task (high priority)
+void control_loop_task(void* params) {
+    TickType_t last_wake_time = xTaskGetTickCount();
+    const TickType_t control_period = pdMS_TO_TICKS(1000 / CONTROL_LOOP_FREQ);
+    
+    PID_Controller pid_controller;
+    PID_Init(&pid_controller, 1.0f, 0.1f, 0.01f, -100.0f, 100.0f); // PID gains
+    
+    while (1) {
+        // Wait for control period
+        vTaskDelayUntil(&last_wake_time, control_period);
+        
+        // Check emergency stop
+        if (g_system_state.emergency_stop) {
+            g_control_data.control_output = 0.0f;
+            continue;
+        }
+        
+        xSemaphoreTake(g_state_mutex, portMAX_DELAY);
+        
+        // Read sensor values
+        float measured_temp = g_system_state.temperature;
+        float setpoint = g_control_data.setpoint;
+        
+        xSemaphoreGive(g_state_mutex);
+        
+        // Run PID control
+        float error = setpoint - measured_temp;
+        float control_output = PID_Update(&pid_controller, error);
+        
+        // Apply safety limits
+        if (fabsf(control_output) > MAX_CONTROL_OUTPUT) {
+            control_output = (control_output > 0) ? MAX_CONTROL_OUTPUT : -MAX_CONTROL_OUTPUT;
+        }
+        
+        // Execute control output
+        Control_SetOutput(control_output);
+        
+        // Store control data
+        xSemaphoreTake(g_state_mutex, portMAX_DELAY);
+        g_control_data.measured_value = measured_temp;
+        g_control_data.control_output = control_output;
+        g_control_data.error_flags = PID_GetErrorFlags(&pid_controller);
+        xSemaphoreGive(g_state_mutex);
+    }
+}
+
+// Sensor reading task
+void sensor_task(void* params) {
+    TickType_t last_wake_time = xTaskGetTickCount();
+    const TickType_t sensor_period = pdMS_TO_TICKS(10); // 100 Hz sensor reading
+    
+    // Initialize sensor drivers
+    TemperatureSensor_Init();
+    PressureSensor_Init();
+    FlowSensor_Init();
+    VoltageSensor_Init();
+    
+    uint32_t reading_count = 0;
+    
+    while (1) {
+        vTaskDelayUntil(&last_wake_time, sensor_period);
+        
+        // Read all sensors
+        SensorReading reading;
+        reading.sequence = reading_count++;
+        reading.timestamp = get_system_time();
+        
+        // Read sensors with averaging for noise reduction
+        float temp_readings[MAX_SENSOR_READINGS];
+        float pressure_readings[MAX_SENSOR_READINGS];
+        
+        for (int i = 0; i < MAX_SENSOR_READINGS; i++) {
+            temp_readings[i] = TemperatureSensor_Read();
+            pressure_readings[i] = PressureSensor_Read();
+        }
+        
+        // Calculate averages (simple moving average)
+        float avg_temp = 0.0f;
+        float avg_pressure = 0.0f;
+        
+        for (int i = 0; i < MAX_SENSOR_READINGS; i++) {
+            avg_temp += temp_readings[i];
+            avg_pressure += pressure_readings[i];
+        }
+        
+        avg_temp /= MAX_SENSOR_READINGS;
+        avg_pressure /= MAX_SENSOR_READINGS;
+        
+        // Update global system state
+        xSemaphoreTake(g_state_mutex, portMAX_DELAY);
+        g_system_state.temperature = avg_temp;
+        g_system_state.pressure = avg_pressure;
+        g_system_state.flow_rate = FlowSensor_Read();
+        g_system_state.system_voltage = VoltageSensor_Read();
+        xSemaphoreGive(g_state_mutex);
+        
+        // Log sensor data for diagnostics
+        if (reading_count % 100 == 0) {
+            Log_SensorData(&reading);
+        }
+    }
+}
+
+// Communication task
+void communication_task(void* params) {
+    CAN_Message_t can_msg;
+    
+    // Initialize CAN bus
+    CAN_Init(CAN_BAUDRATE_500KBPS);
+    
+    while (1) {
+        // Receive CAN messages
+        if (CAN_ReceiveMessage(&can_msg)) {
+            Process_CANMessage(&can_msg);
+        }
+        
+        // Send system status periodically
+        static uint32_t last_status_send = 0;
+        uint32_t current_time = get_system_time();
+        
+        if (current_time - last_status_send > 1000) { // Every 1 second
+            CAN_SendSystemStatus();
+            last_status_send = current_time;
+        }
+        
+        vTaskDelay(pdMS_TO_TICKS(5)); // 200 Hz communication check
+    }
+}
+
+// Logging task (lowest priority)
+void logging_task(void* params) {
+    QueueHandle_t log_queue = xQueueCreate(100, sizeof(LogEntry));
+    
+    while (1) {
+        LogEntry entry;
+        
+        // Wait for log messages
+        if (xQueueReceive(log_queue, &entry, portMAX_DELAY)) {
+            // Write to non-volatile storage
+            Storage_WriteLogEntry(&entry);
+            
+            // Also send to remote logger if available
+            if (Comm_IsConnected()) {
+                Comm_SendLogEntry(&entry);
+            }
+        }
+    }
+}
+
+// Watchdog timer callback
+void watchdog_callback(TimerHandle_t timer) {
+    // If this callback is called, system is not responding
+    printf("ERROR: Watchdog timeout - system not responding!\n");
+    
+    // Force emergency shutdown
+    emergency_shutdown_handler();
+}
+
+// System initialization
+void system_init(void) {
+    // Initialize hardware
+    GPIO_Init();
+    Timer_Init(SYSTEM_FREQ);
+    ADC_Init();
+    CAN_Init(0); // Initialize CAN without starting
+    
+    // Create mutex for system state
+    g_state_mutex = xSemaphoreCreateMutex();
+    
+    // Create watchdog timer
+    g_watchdog_timer = xTimerCreate(
+        "Watchdog",
+        pdMS_TO_TICKS(5000), // 5 second timeout
+        pdFALSE,
+        0,
+        watchdog_callback
+    );
+    
+    // Start watchdog timer
+    xTimerStart(g_watchdog_timer, 0);
+    
+    // Create tasks
+    xTaskCreate(
+        safety_monitor_task,
+        "SafetyMonitor",
+        SAFETY_STACK_SIZE,
+        NULL,
+        PRIORITY_SAFETY,
+        &safety_monitor_task_id
+    );
+    
+    xTaskCreate(
+        control_loop_task,
+        "ControlLoop",
+        CONTROL_STACK_SIZE,
+        NULL,
+        PRIORITY_CONTROL,
+        &control_loop_task_id
+    );
+    
+    xTaskCreate(
+        sensor_task,
+        "SensorTask",
+        SENSOR_STACK_SIZE,
+        NULL,
+        PRIORITY_SENSOR,
+        &sensor_task_id
+    );
+    
+    xTaskCreate(
+        communication_task,
+        "Communication",
+        COMM_STACK_SIZE,
+        NULL,
+        PRIORITY_COMM,
+        &comm_task_id
+    );
+    
+    xTaskCreate(
+        logging_task,
+        "Logging",
+        LOGGING_STACK_SIZE,
+        NULL,
+        PRIORITY_LOGGING,
+        &logging_task_id
+    );
+    
+    // Start FreeRTOS scheduler
+    vTaskStartScheduler();
+}
+
+// Get system time in microseconds
+uint32_t get_system_time(void) {
+    return Timer_GetMicroseconds();
+}</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('embedded-controller')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('embedded-controller')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quantum Computing Examples -->
+                    <div class="example-card" data-category="quantum">
+                        <div class="example-header">
+                            <h3><i class="fas fa-atom"></i> Quantum Algorithm Simulator</h3>
+                            <span class="difficulty-badge advanced">Advanced</span>
+                        </div>
+                        <div class="example-content">
+                            <p class="example-description">
+                                Quantum computing simulation with quantum circuits, gates, and algorithms including Shor's algorithm for factorization.
+                            </p>
+                            <div class="example-languages">
+                                <span class="language-tag">Python</span>
+                                <span class="language-tag">C++</span>
+                            </div>
+                            <div class="code-preview">
+                                <pre><code class="language-python"># Quantum Algorithm Simulator and Shor's Algorithm Implementation
+import numpy as np
+import cmath
+from typing import List, Tuple, Optional
+import multios.quantum as qsim
+from multios.quantum.circuit import QuantumCircuit
+from multios.quantum.gates import QuantumGate, HGate, CNOT, PauliX, PauliY, PauliZ, TGate, SGate
+from multios.quantum.algorithms import QuantumAlgorithm
+
+class QuantumRegister:
+    """Quantum register for managing qubits"""
+    
+    def __init__(self, num_qubits: int):
+        self.num_qubits = num_qubits
+        self.state = np.zeros(2**num_qubits, dtype=complex)
+        self.state[0] = 1.0  # |0...0⟩ state
+        
+    def apply_gate(self, gate: QuantumGate, target_qubits: List[int]):
+        """Apply quantum gate to target qubits"""
+        full_gate = self._expand_gate(gate, target_qubits)
+        self.state = full_gate @ self.state
+        
+    def measure(self, qubit: int) -> int:
+        """Measure a qubit and collapse the state"""
+        # Calculate measurement probabilities
+        prob_0 = sum(abs(amplitude)**2 for i, amplitude in enumerate(self.state) 
+                    if (i >> qubit) & 1 == 0)
+        prob_1 = 1.0 - prob_0
+        
+        # Random measurement based on probabilities
+        result = 0 if np.random.random() < prob_0 else 1
+        
+        # Collapse the state
+        new_state = np.zeros_like(self.state)
+        for i, amplitude in enumerate(self.state):
+            if ((i >> qubit) & 1) == result:
+                new_state[i] = amplitude
+        
+        # Normalize
+        norm = np.sqrt(np.sum(np.abs(new_state)**2))
+        if norm > 0:
+            self.state = new_state / norm
+        else:
+            self.state = new_state
+            
+        return result
+    
+    def measure_all(self) -> int:
+        """Measure all qubits"""
+        result = 0
+        for qubit in range(self.num_qubits):
+            bit = self.measure(qubit)
+            result |= (bit << qubit)
+        return result
+    
+    def _expand_gate(self, gate: QuantumGate, target_qubits: List[int]) -> np.ndarray:
+        """Expand gate to full register size"""
+        gate_size = 2**len(target_qubits)
+        expanded = np.eye(2**self.num_qubits, dtype=complex)
+        
+        # Apply gate to appropriate subspace
+        for i in range(2**self.num_qubits):
+            # Check if this state affects target qubits
+            for j, target in enumerate(target_qubits):
+                if (i >> target) & 1:
+                    # Find the corresponding state with target bit flipped
+                    base_i = i & ~((1 << target) << j)
+                    
+                    # Apply gate
+                    for k in range(gate_size):
+                        new_state = base_i
+                        # Set target bits according to gate output
+                        bit_pattern = k
+                        for l, target_bit in enumerate(target_qubits):
+                            if (bit_pattern >> l) & 1:
+                                new_state |= (1 << target_bit)
+                        
+                        expanded[new_state, i] = gate[k, l]
+        
+        return expanded
+    
+    def get_probability(self, bit_string: str) -> float:
+        """Get probability of measuring specific bit string"""
+        index = int(bit_string, 2) if bit_string else 0
+        return abs(self.state[index])**2
+    
+    def entanglement_entropy(self) -> float:
+        """Calculate entanglement entropy (simplified)"""
+        # This is a simplified version - full implementation would require
+        # Schmidt decomposition across bipartitions
+        prob_distribution = np.abs(self.state)**2
+        entropy = -np.sum([p * np.log2(p) for p in prob_distribution if p > 0])
+        return entropy
+
+class QuantumGate:
+    """Base class for quantum gates"""
+    
+    def __init__(self, matrix: np.ndarray):
+        if len(matrix.shape) != 2 or matrix.shape[0] != matrix.shape[1]:
+            raise ValueError("Gate matrix must be square")
+        if matrix.shape[0] & (matrix.shape[0] - 1):
+            raise ValueError("Gate matrix size must be power of 2")
+        self.matrix = matrix
+
+class QuantumFourierTransform:
+    """Quantum Fourier Transform implementation"""
+    
+    @staticmethod
+    def qft(circuit: QuantumCircuit, qubits: List[int]):
+        """Apply QFT to specified qubits"""
+        n = len(qubits)
+        
+        for i in range(n):
+            # Apply Hadamard to qubit i
+            circuit.apply_gate(HGate(), [qubits[i]])
+            
+            # Apply controlled rotation gates
+            for j in range(i + 1, n):
+                angle = 2 * np.pi / (2**(j - i + 1))
+                circuit.apply_controlled_phase(qubits[j], qubits[i], angle)
+        
+        # Reverse the order of qubits
+        for i in range(n // 2):
+            circuit.swap(qubits[i], qubits[n - 1 - i])
+
+class ShorAlgorithm:
+    """Shor's algorithm for integer factorization"""
+    
+    def __init__(self, N: int, a: int = 2):
+        self.N = N  # Number to factor
+        self.a = a  # Base for modular exponentiation
+        self.num_ancilla = int(np.ceil(np.log2(N)))  # Number of ancilla qubits
+        
+    def find_factor(self) -> Optional[int]:
+        """Find a non-trivial factor of N using Shor's algorithm"""
+        print(f"Attempting to factor N = {self.N} using base a = {self.a}")
+        
+        while True:
+            # Step 1: Create quantum register
+            total_qubits = self.num_ancilla + int(np.ceil(np.log2(self.N)))
+            register = QuantumRegister(total_qubits)
+            circuit = QuantumCircuit(total_qubits)
+            
+            # Step 2: Initialize superposition
+            for qubit in range(self.num_ancilla):
+                register.apply_gate(HGate(), [qubit])
+            
+            # Step 3: Apply controlled modular exponentiation
+            self._controlled_modular_exponentiation(circuit, register)
+            
+            # Step 4: Apply inverse QFT to ancilla qubits
+            ancilla_qubits = list(range(self.num_ancilla))
+            QuantumFourierTransform.qft(circuit, ancilla_qubits)
+            
+            # Step 5: Measure ancilla qubits
+            measurement_result = 0
+            for qubit in ancilla_qubits:
+                bit = register.measure(qubit)
+                measurement_result = (measurement_result << 1) | bit
+            
+            # Step 6: Classical post-processing
+            period = self._find_period(measurement_result)
+            
+            if period is None:
+                print("Failed to find period, trying different base...")
+                self.a += 1
+                continue
+                
+            print(f"Found period r = {period}")
+            
+            # Step 7: Calculate factors
+            factor1 = self._gcd(self.a**(period // 2) - 1, self.N)
+            factor2 = self._gcd(self.a**(period // 2) + 1, self.N)
+            
+            if factor1 > 1 and factor1 < self.N:
+                print(f"Factor found: {factor1}")
+                return factor1
+            elif factor2 > 1 and factor2 < self.N:
+                print(f"Factor found: {factor2}")
+                return factor2
+            else:
+                print("Found trivial factors, trying again...")
+                self.a += 1
+    
+    def _controlled_modular_exponentiation(self, circuit: QuantumCircuit, register: QuantumRegister):
+        """Apply controlled modular exponentiation circuit"""
+        # This is a simplified implementation
+        # Full implementation would use quantum Fourier transform
+        # and modular arithmetic circuits
+        
+        for i in range(self.num_ancilla):
+            power = 2**i
+            
+            # Create controlled gates for modular exponentiation
+            # This would involve complex circuits in a real implementation
+            # For simulation, we use a simplified approach
+            self._apply_modular_power(circuit, register, i, power)
+    
+    def _apply_modular_power(self, circuit: QuantumCircuit, register: QuantumRegister, 
+                           control_bit: int, power: int):
+        """Apply modular power for specific bit"""
+        # Simplified modular exponentiation
+        # Real implementation would use quantum modular exponentiation circuit
+        
+        result = pow(self.a, power, self.N)
+        
+        # Apply controlled rotation based on result
+        for qubit in range(self.num_ancilla):
+            if (result >> qubit) & 1:
+                angle = np.pi / (2**(control_bit - qubit + 1))
+                circuit.apply_phase(qubit, angle)
+    
+    def _find_period(self, measurement: int) -> Optional[int]:
+        """Find period from measurement result"""
+        # Classical continued fraction algorithm
+        max_period = 2**self.num_ancilla
+        
+        for r in range(1, max_period):
+            if measurement % r == 0:
+                return r
+        
+        return None
+    
+    def _gcd(self, a: int, b: int) -> int:
+        """Calculate greatest common divisor"""
+        while b:
+            a, b = b, a % b
+        return a
+
+class QuantumVariationalAlgorithm:
+    """Quantum variational algorithm for optimization"""
+    
+    def __init__(self, problem_size: int):
+        self.problem_size = problem_size
+        self.num_qubits = problem_size
+        self.num_params = 2 * problem_size  # Parameter per qubit
+        
+    def run_vqe(self, hamiltonian: np.ndarray, max_iterations: int = 100) -> Tuple[float, np.ndarray]:
+        """Run Variational Quantum Eigensolver (VQE)"""
+        
+        def cost_function(params: np.ndarray) -> float:
+            # Prepare parameterized quantum circuit
+            circuit = QuantumCircuit(self.num_qubits)
+            
+            # Apply parameterized gates
+            for i in range(self.num_qubits):
+                circuit.apply_gate(PauliY(params[2*i]), [i])
+                circuit.apply_gate(PauliZ(params[2*i + 1]), [i])
+            
+            # Add entanglement (CNOT gates)
+            for i in range(self.num_qubits - 1):
+                circuit.apply_gate(CNOT, [i, i + 1])
+            
+            # Execute circuit
+            register = QuantumCircuit.get_register()
+            energy = self._measure_expectation_value(register, hamiltonian)
+            return energy
+        
+        # Optimize parameters (simplified)
+        best_energy = float('inf')
+        best_params = None
+        
+        for iteration in range(max_iterations):
+            # Random parameter search (would use proper optimization in real implementation)
+            params = np.random.uniform(0, 2*np.pi, self.num_params)
+            energy = cost_function(params)
+            
+            if energy < best_energy:
+                best_energy = energy
+                best_params = params.copy()
+        
+        return best_energy, best_params
+    
+    def _measure_expectation_value(self, register: QuantumRegister, 
+                                 hamiltonian: np.ndarray) -> float:
+        """Measure expectation value of Hamiltonian"""
+        # Simplified expectation value calculation
+        # Real implementation would use Pauli measurement circuits
+        state = register.state
+        return np.real(np.conj(state) @ hamiltonian @ state)
+
+class QuantumErrorCorrection:
+    """Quantum error correction codes"""
+    
+    @staticmethod
+    def steane_code_encode(register: QuantumRegister, qubit: int) -> QuantumRegister:
+        """Encode single qubit in Steane [[7,1,3]] code"""
+        # Simplified Steane code encoding
+        # Real implementation would apply 7-qubit encoding circuit
+        
+        if register.num_qubits < 7:
+            raise ValueError("Need at least 7 qubits for Steane code")
+        
+        # Store original qubit state
+        original_state = register.state.copy()
+        
+        # Apply encoding circuit (simplified)
+        # In reality, this would be a complex circuit
+        for i in range(7):
+            register.apply_gate(HGate(), [i])
+        
+        return register
+    
+    @staticmethod
+    def steane_code_decode(register: QuantumRegister) -> int:
+        """Decode from Steane code"""
+        # Simplified decoding - measure first qubit
+        return register.measure(0)
+
+def quantum_simulation_example():
+    """Example of quantum simulation and Shor's algorithm"""
+    print("Quantum Computing Simulation Example")
+    print("==================================")
+    
+    # Example 1: Simple quantum circuit
+    print("\n1. Simple Quantum Circuit")
+    register = QuantumRegister(3)
+    circuit = QuantumCircuit(3)
+    
+    # Apply gates
+    circuit.apply_gate(HGate(), [0])
+    circuit.apply_gate(CNOT, [0, 1])
+    circuit.apply_gate(CNOT, [1, 2])
+    
+    print(f"Initial state: |000⟩")
+    print(f"After gates, measuring qubit 0: {register.measure(0)}")
+    
+    # Example 2: Shor's algorithm
+    print("\n2. Shor's Algorithm")
+    N = 15  # Factor 15 = 3 × 5
+    shors = ShorAlgorithm(N)
+    factor = shors.find_factor()
+    print(f"Factor of {N}: {factor}")
+    
+    # Example 3: VQE for simple Hamiltonian
+    print("\n3. Variational Quantum Eigensolver")
+    hamiltonian = np.array([[1, 0.5], [0.5, 1]], dtype=complex)  # Simple 2x2 Hamiltonian
+    
+    vqe = QuantumVariationalAlgorithm(2)
+    ground_energy, optimal_params = vqe.run_vqe(hamiltonian, max_iterations=50)
+    
+    print(f"Ground state energy: {ground_energy:.6f}")
+    print(f"Optimal parameters: {optimal_params}")
+    
+    # Example 4: Entanglement
+    print("\n4. Quantum Entanglement")
+    bell_register = QuantumRegister(2)
+    bell_circuit = QuantumCircuit(2)
+    
+    # Create Bell state |00⟩ + |11⟩
+    bell_circuit.apply_gate(HGate(), [0])
+    bell_circuit.apply_gate(CNOT, [0, 1])
+    
+    # Measure and check correlation
+    result1 = bell_register.measure(0)
+    result2 = bell_register.measure(1)
+    
+    print(f"Bell measurement: Qubit 0 = {result1}, Qubit 1 = {result2}")
+    print(f"Correlation: {result1 == result2} (should be True for Bell state)")
+
+if __name__ == "__main__":
+    quantum_simulation_example()</code></pre>
+                            </div>
+                            <div class="example-actions">
+                                <button class="btn-enhanced" onclick="openCodeExample('quantum-simulator')">
+                                    <i class="fas fa-code"></i> View Code
+                                </button>
+                                <button class="btn-enhanced btn-secondary" onclick="runExample('quantum-simulator')">
+                                    <i class="fas fa-play"></i> Run Example
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/interactive.js"></script>
+    <script>
+        // Initialize advanced examples
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeThemeToggle();
+            initializeSidebar();
+            initializeAdvancedFilters();
+            initializeCodeExamples();
+        });
+
+        function initializeAdvancedFilters() {
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const exampleCards = document.querySelectorAll('.example-card');
+
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // Update active button
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter examples with animation
+                    exampleCards.forEach(card => {
+                        const cardCategory = card.getAttribute('data-category');
+                        
+                        if (category === 'all' || cardCategory === category) {
+                            card.style.display = 'block';
+                            card.classList.remove('fade-out');
+                            card.classList.add('fade-in');
+                        } else {
+                            card.classList.remove('fade-in');
+                            card.classList.add('fade-out');
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+        }
+
+        function initializeCodeExamples() {
+            // Enhanced code block highlighting
+            Prism.highlightAll();
+            
+            // Add enhanced copy buttons
+            const codeBlocks = document.querySelectorAll('pre code');
+            codeBlocks.forEach(block => {
+                const wrapper = block.parentElement;
+                const copyButton = document.createElement('button');
+                copyButton.className = 'code-block-action enhanced';
+                copyButton.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                copyButton.addEventListener('click', function() {
+                    const code = block.textContent;
+                    
+                    navigator.clipboard.writeText(code).then(() => {
+                        this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        this.classList.add('success');
+                        
+                        setTimeout(() => {
+                            this.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                            this.classList.remove('success');
+                        }, 2000);
+                    }).catch(() => {
+                        this.innerHTML = '<i class="fas fa-times"></i> Failed';
+                        this.classList.add('error');
+                        
+                        setTimeout(() => {
+                            this.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                            this.classList.remove('error');
+                        }, 2000);
+                    });
+                });
+                
+                wrapper.parentElement.insertBefore(copyButton, wrapper);
+            });
+        }
+
+        function openCodeExample(exampleId) {
+            console.log(`Opening advanced code example: ${exampleId}`);
+            // Implementation would open detailed code view or modal
+        }
+
+        function runExample(exampleId) {
+            console.log(`Running advanced example: ${exampleId}`);
+            
+            const button = event.target.closest('.btn-enhanced');
+            const originalText = button.innerHTML;
+            
+            // Show advanced loading state
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Compiling...';
+            button.disabled = true;
+            
+            // Simulate advanced compilation and execution
+            setTimeout(() => {
+                button.innerHTML = '<i class="fas fa-cogs"></i> Running...';
+                
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fas fa-check-circle"></i> Completed!';
+                    button.classList.remove('btn-enhanced');
+                    button.classList.add('btn-success');
+                    
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                        button.disabled = false;
+                        button.classList.remove('btn-success');
+                        button.classList.add('btn-enhanced');
+                    }, 3000);
+                }, 1500);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
