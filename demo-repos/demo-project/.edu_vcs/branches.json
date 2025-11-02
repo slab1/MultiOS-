@@ -1,0 +1,16 @@
+{
+  "main": {
+    "name": "main",
+    "head_commit": "859c18798ff1f481100dfd1a0fe26af83eb66fb90af1047454ccb9bae4decfbb",
+    "created_at": "2025-11-03T05:12:29.547997",
+    "created_by": "System",
+    "description": ""
+  },
+  "feature/new-feature": {
+    "name": "feature/new-feature",
+    "head_commit": "ebb10c63b96d50455c8f7bacbd335f6b0c26b6b8aff2f6bbea1042293ceea6dc",
+    "created_at": "2025-11-03T05:12:29.631651",
+    "created_by": "Demo Student",
+    "description": ""
+  }
+}

@@ -1,0 +1,21 @@
+# Scientific Computing Educational Framework Requirements
+
+# Core dependencies
+numpy>=1.18.0
+matplotlib>=3.0.0
+scipy>=1.4.0
+
+# Optional dependencies for enhanced functionality
+psutil>=5.7.0  # For memory usage monitoring
+jupyter>=1.0.0  # For interactive tutorials
+
+# Development and testing
+pytest>=6.0.0  # For running tests
+pytest-cov>=2.10.0  # For coverage reports
+
+# Documentation
+sphinx>=3.0.0  # For generating documentation
+
+# Note: This framework is designed to be lightweight and educational
+# All core algorithms are implemented from scratch for learning purposes
+# Optional dependencies enhance the experience but are not required

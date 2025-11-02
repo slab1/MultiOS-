@@ -1,0 +1,42 @@
+[package]
+name = "riscv_hal"
+version = "0.1.0"
+edition = "2021"
+authors = ["IoT Development Team"]
+description = "RISC-V Hardware Abstraction Layer for IoT Projects"
+license = "MIT"
+
+[dependencies]
+# Embedded HAL dependencies
+embedded-hal = "1.0"
+nb = "1.0"
+
+# RISC-V specific
+cortex-m = "0.7"
+cortex-m-rt = "0.7"
+
+# Interrupt handling
+bare-metal = "0.2"
+
+# Utilities
+heapless = "0.7"
+spin = "0.9"
+
+# Logging
+defmt = { version = "0.3", optional = true }
+
+[features]
+default = ["std"]
+std = []
+debug = ["defmt"]
+no_std = []
+device_drivers = []
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+
+[profile.dev]
+opt-level = 0
+debug = true

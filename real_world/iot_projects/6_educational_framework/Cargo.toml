@@ -1,0 +1,58 @@
+[package]
+name = "educational_framework"
+version = "0.1.0"
+edition = "2021"
+authors = ["IoT Development Team"]
+description = "Educational IoT tutorial framework with hands-on examples for RISC-V"
+license = "MIT"
+
+[dependencies]
+# Local dependencies
+riscv_hal = { path = "../../shared/riscv_hal" }
+iot_communication = { path = "../../shared/communication", features = ["mqtt", "wifi"] }
+
+# Embedded dependencies
+embedded-hal = "1.0"
+nb = "1.0"
+cortex-m = "0.7"
+cortex-m-rt = "0.7"
+
+# Educational tools
+code-runner = "0.1"
+virtual-lab = "0.1"
+assessment-framework = "0.1"
+
+# Interactive features
+terminal-ui = "0.2"
+progress-tracker = "0.1"
+
+# Utilities
+heapless = "0.7"
+spin = "0.9"
+
+# Logging and debugging
+defmt = "0.3"
+defmt-rtt = "0.4"
+panic-halt = "0.2"
+
+[features]
+default = ["interactive", "virtual-lab", "assessments"]
+interactive = ["terminal-ui"]
+virtual-lab = ["virtual-lab"]
+assessments = ["assessment-framework", "progress-tracker"]
+mqtt = ["iot_communication/mqtt"]
+wifi = ["iot_communication/wifi"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true
+
+[[bin]]
+name = "main"
+path = "src/main.rs"

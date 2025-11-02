@@ -1,0 +1,60 @@
+[package]
+name = "industrial_iot_monitoring"
+version = "0.1.0"
+edition = "2021"
+authors = ["IoT Development Team"]
+description = "Industrial IoT monitoring with predictive maintenance for RISC-V"
+license = "MIT"
+
+[dependencies]
+# Local dependencies
+riscv_hal = { path = "../../shared/riscv_hal" }
+iot_communication = { path = "../../shared/communication", features = ["mqtt", "ethernet"] }
+
+# Embedded dependencies
+embedded-hal = "1.0"
+nb = "1.0"
+cortex-m = "0.7"
+cortex-m-rt = "0.7"
+
+# Industrial sensors
+mpu6050 = "0.3"
+max31855 = "0.2"
+current_sensor = "0.1"
+
+# Signal processing
+# FFT and filtering would go here (in a full implementation)
+
+# Communication
+embassy-eth = { version = "0.1", features = ["defmt"] }
+modbus = "0.5"
+
+# Utilities
+heapless = "0.7"
+spin = "0.9"
+
+# Logging and debugging
+defmt = "0.3"
+defmt-rtt = "0.4"
+panic-halt = "0.2"
+
+[features]
+default = ["mqtt", "ethernet", "industrial", "analysis"]
+mqtt = ["iot_communication/mqtt"]
+ethernet = []
+industrial = []
+analysis = ["mpu6050", "max31855", "current_sensor"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true
+
+[[bin]]
+name = "main"
+path = "src/main.rs"

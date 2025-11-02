@@ -1,0 +1,20 @@
+{
+  "review_1": {
+    "id": "review_1",
+    "pull_request_id": "pr_auth_001",
+    "author": "alice@student.edu",
+    "title": "Add Authentication System",
+    "description": "Implement user authentication with secure password hashing",
+    "target_branch": "main",
+    "source_branch": "feature/auth-system",
+    "created_at": "2025-11-03T05:23:55.759240",
+    "reviewers": [
+      "bob@student.edu",
+      "carol@student.edu"
+    ],
+    "status": "pending",
+    "priority": "high",
+    "comments": [],
+    "educational_focus": "Learning secure coding practices"
+  }
+}

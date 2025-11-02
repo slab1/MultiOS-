@@ -1,0 +1,29 @@
+# Educational VCS Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# Web Framework
+Flask==2.3.3
+Flask-CORS==4.0.0
+Flask-SocketIO==5.3.6
+
+# Real-time Communication
+python-socketio==5.9.0
+
+# Data Analysis and Quality Analysis
+astroid==2.15.8
+analyzedifflib==1.0.3
+
+# Development Dependencies (optional)
+pytest==7.4.3
+pytest-cov==4.1.0
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1
+
+# Documentation
+sphinx==7.2.6
+sphinx-rtd-theme==1.3.0
+
+# Additional Utilities
+click==8.1.7
+colorama==0.4.6

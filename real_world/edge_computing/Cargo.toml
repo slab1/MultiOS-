@@ -1,0 +1,123 @@
+[package]
+name = "edge_computing_demos"
+version = "1.0.0"
+edition = "2021"
+authors = ["MultiOS Development Team"]
+description = "Comprehensive edge computing demonstrations for MultiOS"
+license = "MIT"
+repository = "https://github.com/your-org/edge_computing_demos"
+keywords = ["edge-computing", "distributed-systems", "iot", "ai", "multios"]
+categories = ["network-programming", "web-programming", "scientific-computing"]
+
+[workspace]
+members = [
+    "shared_utils",
+    "1_edge_ai_inference", 
+    "2_realtime_video_processing",
+    "3_predictive_maintenance",
+    "4_smart_city_edge",
+    "5_fog_computing",
+    "6_edge_clustering",
+    "7_educational_tutorials",
+    "performance_benchmarks",
+    "examples"
+]
+
+[workspace.dependencies]
+# Core dependencies
+tokio = { version = "1.35", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+rand = "0.8"
+uuid = { version = "1.6", features = ["v4", "serde"] }
+thiserror = "1.0"
+
+# Async utilities
+async-trait = "0.1"
+futures = "0.3"
+pin-project = "1.1"
+
+# HTTP and networking
+reqwest = { version = "0.11", features = ["json"] }
+tower = "0.4"
+tonic = "0.10"
+tonic-build = "0.10"
+
+# Data processing
+ rayon = "1.8"
+ ndarray = "0.15"
+
+# Configuration management
+config = "0.13"
+toml = "0.8"
+
+# Logging and monitoring
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["json"] }
+metrics = "0.22"
+prometheus = "0.13"
+
+# Testing
+tokio-test = "0.4"
+tempfile = "3.8"
+
+[profile.dev]
+opt-level = 1
+debug = true
+incremental = true
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[[bin]]
+name = "edge_ai_inference_demo"
+path = "examples/edge_ai_inference_demo.rs"
+
+[[bin]]
+name = "video_processing_demo"
+path = "examples/video_processing_demo.rs"
+
+[[bin]]
+name = "predictive_maintenance_demo"
+path = "examples/predictive_maintenance_demo.rs"
+
+[[bin]]
+name = "smart_city_demo"
+path = "examples/smart_city_demo.rs"
+
+[[bin]]
+name = "fog_computing_demo"
+path = "examples/fog_computing_demo.rs"
+
+[[bin]]
+name = "edge_clustering_demo"
+path = "examples/edge_clustering_demo.rs"
+
+[[bin]]
+name = "educational_tutorial_demo"
+path = "examples/educational_tutorial_demo.rs"
+
+[[bin]]
+name = "performance_benchmark_demo"
+path = "examples/performance_benchmark_demo.rs"
+
+[[bin]]
+name = "basic_edge_service"
+path = "examples/basic_edge_service.rs"
+
+[features]
+default = ["all-features"]
+all-features = ["serde"]
+offline = []
+debug-logging = []
+performance-monitoring = ["metrics"]
+gpu-acceleration = []
+ssl-support = ["native-tls"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
