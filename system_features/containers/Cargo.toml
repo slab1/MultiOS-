@@ -1,0 +1,66 @@
+[package]
+name = "multios-containers"
+version = "0.1.0"
+edition = "2021"
+authors = ["MultiOS Team"]
+description = "Lightweight Container Support for MultiOS Educational System"
+
+[dependencies]
+libc = "0.2"
+tokio = { version = "1.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.0", features = ["v4"] }
+anyhow = "1.0"
+thiserror = "1.0"
+clap = { version = "4.0", features = ["derive"] }
+log = "0.4"
+env_logger = "0.10"
+lazy_static = "1.4"
+regex = "1.0"
+bitflags = "2.0"
+crossbeam = "0.8"
+nix = "0.26"
+url = "2.0"
+
+[dependencies.chrono]
+features = ["serde"]
+
+[dev-dependencies]
+tempfile = "3.0"
+assert_matches = "1.0"
+mockall = "0.12"
+
+[lib]
+name = "multios_containers"
+path = "src/lib.rs"
+
+[[bin]]
+name = "multios-container"
+path = "src/bin/multios-container.rs"
+
+[[bin]]
+name = "multios-containerd"
+path = "src/bin/multios-containerd.rs"
+
+[[bin]]
+name = "container-template"
+path = "src/bin/container-template.rs"
+
+[[bin]]
+name = "container-network"
+path = "src/bin/container-network.rs"
+
+[[bin]]
+name = "container-monitor"
+path = "src/bin/container-monitor.rs"
+
+[features]
+default = []
+testing = []
+kernel = []
+
+[profile.release]
+opt-level = 3
+debug = true

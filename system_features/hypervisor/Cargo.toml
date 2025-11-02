@@ -1,0 +1,37 @@
+[package]
+name = "multios-hypervisor"
+version = "0.1.0"
+edition = "2021"
+authors = ["MultiOS Team"]
+description = "Type-2 Hypervisor for MultiOS with nested virtualization support"
+
+[dependencies]
+alloc = { path = "../libraries/alloc" }
+memory-manager = { path = "../libraries/memory-manager" }
+scheduler = { path = "../libraries/scheduler" }
+device-drivers = { path = "../libraries/device-drivers" }
+
+# Core dependencies
+spin = "0.9"
+bitflags = "2.0"
+log = "0.4"
+lazy_static = { version = "1.4", optional = true }
+
+# Hardware virtualization
+raw-cpuid = "11.0"
+
+# Serialization for VM configuration
+serde = { version = "1.0", features = ["derive"], optional = true }
+bincode = { version = "1.3", optional = true }
+
+# Optional dependencies
+[features]
+default = ["serde", "lazy_static"]
+serde = ["dep:serde", "dep:bincode"]
+lazy_static = ["dep:lazy_static"]
+debug = ["log/debug"]
+nested_virt = []
+education = []
+
+[dev-dependencies]
+tempfile = "3.0"

@@ -1,0 +1,170 @@
+{
+  "name": "my-python-app",
+  "image": "python-learning",
+  "description": "Python application with data science capabilities",
+  "created": "2025-11-03T03:02:15Z",
+  
+  "resources": {
+    "cpu_limit": 2.0,
+    "memory_limit": "2GB",
+    "disk_limit": "10GB",
+    "cpu_shares": 512,
+    "io_limit": 1000,
+    "network_bandwidth_limit": "100mbit"
+  },
+  
+  "networking": {
+    "network": "default",
+    "mode": "bridge",
+    "ports": [
+      {
+        "container_port": 8080,
+        "host_port": 8080,
+        "protocol": "tcp",
+        "description": "Web application port"
+      },
+      {
+        "container_port": 8888,
+        "host_port": 8888,
+        "protocol": "tcp",
+        "description": "Jupyter Notebook port"
+      }
+    ],
+    "dns_servers": ["8.8.8.8", "1.1.1.1"]
+  },
+  
+  "security": {
+    "user": "root",
+    "group": "root",
+    "capabilities": [
+      "CHOWN",
+      "DAC_OVERRIDE",
+      "FOWNER",
+      "SETGID",
+      "SETUID"
+    ],
+    "capabilities_drop": [
+      "CAP_SYS_ADMIN",
+      "CAP_SYS_MODULE"
+    ],
+    "seccomp_profile": "default",
+    "apparmor_profile": "multios-default",
+    "read_only": false,
+    "privileged": false
+  },
+  
+  "volumes": [
+    {
+      "host_path": "/host/data",
+      "container_path": "/data",
+      "mode": "rw",
+      "description": "Data directory"
+    },
+    {
+      "host_path": "/host/logs",
+      "container_path": "/logs",
+      "mode": "rw",
+      "description": "Log files directory"
+    },
+    {
+      "host_path": "/host/config",
+      "container_path": "/config",
+      "mode": "ro",
+      "description": "Read-only configuration directory"
+    }
+  ],
+  
+  "environment": {
+    "PYTHONPATH": "/app",
+    "PYTHONUNBUFFERED": "1",
+    "DEBUG": "true",
+    "LOG_LEVEL": "info",
+    "APP_ENV": "development",
+    "DATABASE_URL": "postgresql://user:pass@localhost:5432/mydb"
+  },
+  
+  "working_directory": "/workspace",
+  "command": "python3 app.py",
+  "entrypoint": "/bin/bash",
+  "stdin_open": true,
+  "tty": false,
+  
+  "restart_policy": {
+    "policy": "unless-stopped",
+    "max_attempts": 3,
+    "delay": "10s"
+  },
+  
+  "health_check": {
+    "test": ["CMD", "curl", "-f", "http://localhost:8080/health"],
+    "interval": "30s",
+    "timeout": "10s",
+    "retries": 3,
+    "start_period": "40s"
+  },
+  
+  "labels": {
+    "app.name": "my-python-app",
+    "app.version": "1.0.0",
+    "environment": "development",
+    "maintainer": "developer@example.com",
+    "purpose": "educational",
+    "template": "python-learning"
+  },
+  
+  "hostname": "my-python-app",
+  "domainname": "example.com",
+  "mac_address": "02:42:ac:11:00:02",
+  
+  "ulimits": [
+    {
+      "name": "nofile",
+      "soft": 1024,
+      "hard": 65536
+    },
+    {
+      "name": "nproc",
+      "soft": 4096,
+      "hard": 8192
+    }
+  ],
+  
+  "devices": [
+    {
+      "host_path": "/dev/snd",
+      "container_path": "/dev/snd",
+      "permissions": "rwm"
+    }
+  ],
+  
+  "sysctls": {
+    "net.core.somaxconn": "4096",
+    "net.ipv4.ip_forward": "1"
+  },
+  
+  "oom_score_adj": 500,
+  
+  "pids_limit": 1000,
+  
+  "memory_swap_limit": "2GB",
+  
+  "cpu_realtime_period": "1000000",
+  "cpu_realtime_runtime": "950000",
+  
+  "blkio_weight": 500,
+  "blkio_weight_device": [
+    {
+      "path": "/dev/sda",
+      "weight": 300
+    }
+  ],
+  
+  "cpuset_cpus": "0-1",
+  
+  "storage_options": {
+    "driver": "overlay2",
+    "options": {
+      "size": "10GB"
+    }
+  }
+}

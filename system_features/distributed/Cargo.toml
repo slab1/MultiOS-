@@ -1,0 +1,129 @@
+[package]
+name = "distributed_framework"
+version = "0.1.0"
+edition = "2021"
+authors = ["Educational Framework Team"]
+description = "Distributed Computing Framework for Parallel Processing Education"
+license = "MIT"
+repository = "https://github.com/your-org/distributed-framework"
+keywords = ["distributed", "parallel", "education", "cluster", "mpi"]
+categories = ["parallel-programming", "algorithms", "network-programming"]
+
+[dependencies]
+# Core async runtime
+tokio = { version = "1.34", features = ["full"] }
+async-trait = "0.1"
+futures = "0.3"
+
+# Networking and communication
+async-std = "1.12"
+libp2p = { version = "0.52", features = ["tcp", "quic", "noise", "mdns", "gossipsub"] }
+quinn = "0.10"
+rustls = "0.21"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+bincode = "1.3"
+
+# Data structures and algorithms
+crossbeam = { version = "0.8", features = ["std"] }
+dashmap = "5.5"
+parking_lot = "0.12"
+priority-queue = "1.0"
+
+# Logging and monitoring
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["fmt", "env-filter"] }
+metrics = "0.21"
+prometheus = "0.13"
+
+# Error handling and utilities
+anyhow = "1.0"
+thiserror = "1.0"
+uuid = { version = "1.6", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+
+# Concurrency and synchronization
+arc-swap = "1.6"
+rayon = "1.8"
+once_cell = "1.19"
+
+# Testing dependencies
+[dev-dependencies]
+tempfile = "3.8"
+mockall = "0.12"
+criterion = "0.5"
+proptest = "1.4"
+tokio-test = "0.4"
+
+# Example-specific dependencies for visualizations
+[dev-dependencies.plotters]
+version = "0.3"
+optional = true
+
+[dev-dependencies.wgpu]
+version = "0.19"
+optional = true
+
+# Optional visualization features
+[features]
+default = ["visualization"]
+visualization = ["plotters", "wgpu"]
+examples = []
+benchmark = []
+
+[[bin]]
+name = "cluster_manager"
+path = "src/bin/cluster_manager.rs"
+
+[[bin]]
+name = "performance_monitor"
+path = "src/bin/performance_monitor.rs"
+
+[[bin]]
+name = "distributed_demo"
+path = "src/bin/distributed_demo.rs"
+
+[profile.release]
+debug = true
+lto = true
+codegen-units = 1
+
+[[example]]
+name = "basic_parallel"
+path = "examples/basic_parallel.rs"
+
+[[example]]
+name = "mapreduce_demo"
+path = "examples/mapreduce_demo.rs"
+
+[[example]]
+name = "mpi_communication"
+path = "examples/mpi_communication.rs"
+
+[[example]]
+name = "fault_tolerance_demo"
+path = "examples/fault_tolerance_demo.rs"
+
+[[example]]
+name = "cluster_management"
+path = "examples/cluster_management.rs"
+
+[[example]]
+name = "performance_monitoring"
+path = "examples/performance_monitoring.rs"
+
+[[benchmark]]
+name = "matrix_multiply"
+harness = false
+
+[[benchmark]]
+name = "sorting_algorithms"
+harness = false
+
+[[benchmark]]
+name = "communication_overhead"
+harness = false
+
+[[benchmark]]
+name = "load_balancing"
+harness = false
