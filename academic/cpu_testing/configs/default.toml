@@ -1,0 +1,121 @@
+# MultiOS CPU Architecture Testing Framework - Default Configuration
+# This file contains default settings for CPU architecture testing
+
+[simulation]
+name = "MultiOS Default Simulation"
+timeout_seconds = 300
+parallel_execution = false
+detailed_logging = false
+statistical_analysis = true
+
+[testing]
+enable_isa_testing = true
+enable_performance_testing = true
+enable_memory_testing = true
+enable_pipeline_testing = true
+enable_power_analysis = true
+
+[architectures]
+# Default architectures to test
+enabled = ["x86_64", "arm64", "riscv64"]
+
+[x86_64]
+# Intel/AMD x86_64 configuration
+enabled = true
+frequency_ghz = 3.5
+power_watts = 65.0
+isa_extensions = ["SSE2", "AVX2", "AVX-512", "BMI2", "AES-NI"]
+cache_config = { l1_i_size_kb = 32, l1_d_size_kb = 32, l2_size_kb = 256, l3_size_kb = 8192 }
+
+[arm64]
+# ARM AArch64 configuration
+enabled = true
+frequency_ghz = 2.5
+power_watts = 25.0
+isa_extensions = ["NEON", "SVE", "AES", "SHA", "CRC32"]
+cache_config = { l1_i_size_kb = 64, l1_d_size_kb = 64, l2_size_kb = 512, l3_size_kb = 4096 }
+
+[riscv64]
+# RISC-V 64-bit configuration
+enabled = true
+frequency_ghz = 2.0
+power_watts = 15.0
+isa_extensions = ["M", "A", "F", "D", "C", "Vector"]
+cache_config = { l1_i_size_kb = 32, l1_d_size_kb = 32, l2_size_kb = 256, l3_size_kb = 2048 }
+
+[sparc64]
+# SPARC64 configuration (disabled by default)
+enabled = false
+frequency_ghz = 2.8
+power_watts = 85.0
+isa_extensions = ["VIS1", "VIS2", "VIS3", "Crypto"]
+cache_config = { l1_i_size_kb = 64, l1_d_size_kb = 64, l2_size_kb = 1024, l3_size_kb = 8192 }
+
+[powerpc64]
+# PowerPC64 configuration (disabled by default)
+enabled = false
+frequency_ghz = 3.2
+power_watts = 70.0
+isa_extensions = ["AltiVec", "VSX", "Crypto", "VectorAES"]
+cache_config = { l1_i_size_kb = 32, l1_d_size_kb = 32, l2_size_kb = 512, l3_size_kb = 8192 }
+
+[benchmarks]
+# Benchmark configuration
+iterations = 1000
+warmup_iterations = 100
+enable_profiling = true
+
+[performance]
+# Performance testing configuration
+test_types = ["arithmetic", "memory", "branch", "floating_point", "vector"]
+workload_sizes = [1000, 10000, 100000, 1000000]
+
+[memory]
+# Memory hierarchy testing configuration
+test_patterns = ["sequential", "random", "stride", "hotspot"]
+cache_sizes = [1024, 4096, 16384, 65536, 262144, 1048576]
+tlb_testing = true
+prefetch_testing = true
+
+[pipeline]
+# Pipeline analysis configuration
+test_stages = ["fetch", "decode", "execute", "memory", "writeback"]
+branch_patterns = ["simple", "alternating", "random", "complex"]
+prediction_analysis = true
+speculation_testing = true
+
+[output]
+# Output configuration
+format = "json"
+include_charts = true
+include_statistics = true
+include_recommendations = true
+
+[isa]
+# ISA testing configuration
+test_suites = ["basic", "comprehensive"]
+validate_encodings = true
+test_semantics = true
+coverage_analysis = true
+
+[reporting]
+# Report generation configuration
+generate_markdown = true
+generate_html = false
+generate_csv = false
+include_executive_summary = true
+include_detailed_analysis = true
+
+[logging]
+# Logging configuration
+level = "info"
+file_logging = true
+console_logging = true
+log_file = "cpu_testing.log"
+
+[advanced]
+# Advanced configuration options
+enable_experimental_features = false
+custom_instruction_support = false
+hardware_simulation = false
+cloud_integration = false

@@ -1,0 +1,280 @@
+{
+  "cs_standards": {
+    "k_12": {
+      "computational_thinking": {
+        "algorithmic_thinking": {
+          "level_1": "Create simple algorithms",
+          "level_2": "Apply algorithmic thinking to solve problems",
+          "level_3": "Develop and analyze algorithms"
+        },
+        "problem_decomposition": {
+          "level_1": "Break simple problems into parts",
+          "level_2": "Decompose complex problems systematically",
+          "level_3": "Design modular solutions"
+        },
+        "pattern_recognition": {
+          "level_1": "Identify patterns in data",
+          "level_2": "Use patterns to make predictions",
+          "level_3": "Generalize patterns across domains"
+        }
+      },
+      "data_analysis": {
+        "data_collection": {
+          "level_1": "Collect simple data",
+          "level_2": "Design data collection methods",
+          "level_3": "Implement systematic data collection"
+        },
+        "data_visualization": {
+          "level_1": "Create basic charts and graphs",
+          "level_2": "Choose appropriate visualization methods",
+          "level_3": "Design interactive data displays"
+        },
+        "statistical_analysis": {
+          "level_1": "Calculate basic statistics",
+          "level_2": "Interpret statistical results",
+          "level_3": "Perform advanced statistical analysis"
+        }
+      },
+      "computing_systems": {
+        "hardware_software": {
+          "level_1": "Understand basic computer components",
+          "level_2": "Explain how hardware and software work together",
+          "level_3": "Design system architectures"
+        },
+        "operating_systems": {
+          "level_1": "Use operating systems",
+          "level_2": "Configure and customize OS settings",
+          "level_3": "Implement basic OS concepts"
+        },
+        "networking": {
+          "level_1": "Connect devices to networks",
+          "level_2": "Understand network protocols",
+          "level_3": "Design network solutions"
+        }
+      },
+      "algorithms_programming": {
+        "programming_concepts": {
+          "level_1": "Write simple programs",
+          "level_2": "Use variables, loops, and conditionals",
+          "level_3": "Implement complex algorithms and data structures"
+        },
+        "abstraction": {
+          "level_1": "Use built-in functions",
+          "level_2": "Create custom functions",
+          "level_3": "Design abstract data types"
+        },
+        "software_development": {
+          "level_1": "Follow simple coding practices",
+          "level_2": "Use version control and testing",
+          "level_3": "Apply software engineering principles"
+        }
+      }
+    },
+    "higher_education": {
+      "core_areas": {
+        "algorithms": {
+          "required_topics": [
+            "Algorithm analysis and complexity",
+            "Data structure design and analysis",
+            "Graph algorithms",
+            "Dynamic programming",
+            "Greedy algorithms",
+            "Computational geometry",
+            "Number theory algorithms"
+          ],
+          "learning_outcomes": [
+            "Analyze algorithm efficiency and correctness",
+            "Design efficient algorithms for complex problems",
+            "Implement and optimize data structures",
+            "Apply algorithmic techniques to real-world problems"
+          ]
+        },
+        "operating_systems": {
+          "required_topics": [
+            "Process management and scheduling",
+            "Memory management and virtual memory",
+            "File systems and storage management",
+            "Synchronization and concurrency",
+            "Security and protection",
+            "Distributed systems"
+          ],
+          "learning_outcomes": [
+            "Understand OS principles and design",
+            "Implement process scheduling algorithms",
+            "Design memory management systems",
+            "Analyze system performance and security"
+          ]
+        },
+        "computer_architecture": {
+          "required_topics": [
+            "Digital logic and computer organization",
+            "Instruction set architectures",
+            "CPU design and pipelining",
+            "Memory hierarchy and cache design",
+            "I/O systems and peripherals",
+            "Parallel and distributed architectures"
+          ],
+          "learning_outcomes": [
+            "Understand computer system organization",
+            "Design efficient CPU and memory systems",
+            "Analyze performance bottlenecks",
+            "Optimize for power and cost constraints"
+          ]
+        },
+        "software_engineering": {
+          "required_topics": [
+            "Software development lifecycle",
+            "Requirements engineering",
+            "Software design principles",
+            "Testing and quality assurance",
+            "Project management",
+            "Software maintenance"
+          ],
+          "learning_outcomes": [
+            "Apply systematic software development",
+            "Design maintainable and scalable systems",
+            "Implement effective testing strategies",
+            "Manage software projects effectively"
+          ]
+        },
+        "databases": {
+          "required_topics": [
+            "Relational database theory",
+            "SQL and database design",
+            "Database normalization",
+            "Transaction processing",
+            "Database security",
+            "NoSQL and big data systems"
+          ],
+          "learning_outcomes": [
+            "Design effective database schemas",
+            "Write complex SQL queries",
+            "Understand transaction management",
+            "Evaluate database technologies"
+          ]
+        },
+        "networking": {
+          "required_topics": [
+            "Network protocols and architecture",
+            "Routing and switching",
+            "Network security",
+            "Wireless networks",
+            "Network management",
+            "Internet technologies"
+          ],
+          "learning_outcomes": [
+            "Design and analyze network protocols",
+            "Implement network security measures",
+            "Optimize network performance",
+            "Troubleshoot network problems"
+          ]
+        }
+      },
+      "accreditation_standards": {
+        "abet": {
+          "student_outcomes": [
+            "An ability to analyze a complex computing problem",
+            "An ability to apply computer science theory",
+            "An ability to design systems and components",
+            "An ability to function effectively in teams",
+            "An ability to identify and analyze problems",
+            "An ability to understand professional and ethical responsibility",
+            "An ability to communicate effectively",
+            "An ability to understand impact on society",
+            "An ability to engage in lifelong learning",
+            "An ability to use techniques, skills, and tools"
+          ]
+        },
+        "acm_ieee": {
+          "knowledge_units": [
+            "Algorithms and complexity",
+            "Architecture and organization",
+            "Computational science",
+            "Graphics and visual computing",
+            "Human-computer interaction",
+            "Information assurance and security",
+            "Information management",
+            "Intelligent systems",
+            "Networking and communication",
+            "Operating systems",
+            "Parallel and distributed computing",
+            "Platform-based development",
+            "Programming languages",
+            "Software development",
+            "Software engineering",
+            "Software fundamentals",
+            "Systems fundamentals"
+          ]
+        }
+      }
+    }
+  },
+  "assessment_frameworks": {
+    "bloom_taxonomy": {
+      "levels": [
+        {
+          "level": 1,
+          "name": "Remember",
+          "description": "Recall facts and basic concepts",
+          "verbs": ["define", "list", "describe", "identify", "state", "name"]
+        },
+        {
+          "level": 2,
+          "name": "Understand",
+          "description": "Explain ideas or concepts",
+          "verbs": ["explain", "summarize", "interpret", "classify", "compare", "describe"]
+        },
+        {
+          "level": 3,
+          "name": "Apply",
+          "description": "Use information in new situations",
+          "verbs": ["implement", "execute", "solve", "use", "apply", "demonstrate"]
+        },
+        {
+          "level": 4,
+          "name": "Analyze",
+          "description": "Draw connections among ideas",
+          "verbs": ["differentiate", "organize", "attribute", "compare", "contrast", "examine"]
+        },
+        {
+          "level": 5,
+          "name": "Evaluate",
+          "description": "Justify a decision or course of action",
+          "verbs": ["check", "critique", "judge", "test", "detect", "monitor", "assess"]
+        },
+        {
+          "level": 6,
+          "name": "Create",
+          "description": "Produce new or original work",
+          "verbs": ["design", "construct", "develop", "formulate", "create", "produce"]
+        }
+      ]
+    },
+    "rubric_types": {
+      "analytical": {
+        "description": "Break down assessment into multiple criteria",
+        "structure": {
+          "criteria": "Each criterion is scored separately",
+          "weighting": "Different criteria can have different weights",
+          "feedback": "Specific feedback for each criterion"
+        }
+      },
+      "holistic": {
+        "description": "Single overall score based on general impression",
+        "structure": {
+          "overall": "Single score representing overall performance",
+          "descriptors": "Clear descriptions of performance levels",
+          "consistency": "Ensures consistent scoring across submissions"
+        }
+      },
+      "single_point": {
+        "description": "Focus on one criteria at a time",
+        "structure": {
+          "proficiency": "Clear description of expected proficiency",
+          "feedback": "Feedback on what exceeds or falls short",
+          "simplicity": "Easy to create and understand"
+        }
+      }
+    }
+  }
+}
