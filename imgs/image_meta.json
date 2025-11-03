@@ -1,0 +1,470 @@
+[
+  {
+    "query": "Professional working scene showing developers collaborating",
+    "image_info": {
+      "url": "https://www.ninety.io/hubfs/team%20collaboration_guide%20for%20team%20leaders_blog%20header_1920x1080.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 265406,
+      "width": 1920,
+      "height": 1080,
+      "total_pixels": 2073600,
+      "basic_score": 0.7302993136386905,
+      "file_name": "professional_developers_team_collaboration_meeting_office.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 90.0,
+      "watermark_score": 100.0,
+      "overall_score": 92.0,
+      "explanation": "The image perfectly matches the search query and prompt, depicting a professional team collaborating in what appears to be a modern development office. The clarity is excellent, with good focus on the central figures and natural lighting. There are no watermarks or logos, contributing to its high quality. The composition effectively captures the essence of a collaborative meeting.",
+      "file_name": "professional_developers_team_collaboration_meeting_office.jpg",
+      "caption": "A group of professional male developers or team members collaborating around a wooden table in a modern office setting. Laptops, notebooks, and coffee mugs are visible on the table, indicating a productive working session. The background features stylish wood paneling with integrated greenery, adding to a contemporary office aesthetic.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "Professional working scene showing developers collaborating",
+    "image_info": {
+      "url": "https://b5digital.dk/wp-content/uploads/2023/02/software-development-team.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 441796,
+      "width": 1500,
+      "height": 1000,
+      "total_pixels": 1500000,
+      "basic_score": 0.9026871557862114,
+      "file_name": "team_collaboration_developers_office_meeting_coding.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 95.0,
+      "watermark_score": 100.0,
+      "overall_score": 95.0,
+      "explanation": "The image is highly relevant to the search query and prompt, clearly depicting a professional team collaborating in an office setting with visible development work (code on a monitor). The clarity is excellent, with good lighting and sharp details. There are no watermarks. The composition is dynamic and engaging, making it an excellent visual for the requested theme.",
+      "file_name": "team_collaboration_developers_office_meeting_coding.jpg",
+      "caption": "A diverse team of professionals collaborates in a modern office space. Two team members stand, one holding documents and another a tablet, while a man seated at a desk gestures enthusiastically during a discussion. Another team member is seen from the back, working on a computer screen displaying lines of code, indicating a development project. Laptops are open on the table, showing charts and data, highlighting an active and engaged working environment.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "A clean, professional operating system architecture diagram for technical documentation",
+    "image_info": {
+      "url": "https://infonw.laurensstoop.nl/_images/comp_parts.png",
+      "img_format": "PNG",
+      "mode": "RGB",
+      "file_size": 14732,
+      "width": 404,
+      "height": 296,
+      "total_pixels": 119584,
+      "basic_score": 0.700500568397752,
+      "file_name": "operating_system_architecture_cpu_memory_device_diagram_minimal_bw.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 98.0,
+      "clarity_score": 95.0,
+      "watermark_score": 100.0,
+      "overall_score": 97.0,
+      "explanation": "The image is highly relevant to the search query and prompt, depicting a core operating system architecture. It is presented in a clean, black and white, minimal style, making it ideal for technical documentation. The clarity is excellent with sharp lines and legible text, and there are no watermarks.",
+      "file_name": "operating_system_architecture_cpu_memory_device_diagram_minimal_bw.jpg",
+      "caption": "A minimalist black and white diagram illustrating a fundamental operating system architecture, showing the interactions between the CPU, Memory, and a Device. The CPU communicates with Memory via instructions and data, and with the Device through I/O requests, data transfer, and interrupts. The diagram also highlights Direct Memory Access (DMA) for direct communication between the Device and Memory, bypassing the CPU.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "A clean, professional operating system architecture diagram for technical documentation",
+    "image_info": {
+      "url": "https://cdn.hashnode.com/res/hashnode/image/upload/v1676567869464/bdbf0e25-b4b0-4089-bfe3-cbe457410cbb.jpeg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 22601,
+      "width": 431,
+      "height": 329,
+      "total_pixels": 141799,
+      "basic_score": 0.7222595194525163,
+      "file_name": "operating_system_architecture_diagram_kernel_user_mode.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 100.0,
+      "clarity_score": 95.0,
+      "watermark_score": 100.0,
+      "overall_score": 95.0,
+      "explanation": "The image is an excellent match for the search query and prompt. It clearly depicts an operating system architecture, distinguishing between user and kernel modes, and detailing components like system services, applications, libraries, system calls, file system, process management, networking, device drivers, and hardware. The diagram is clean, professional, and minimal in its black and white design, making it highly suitable for technical documentation. Text is legible and the layout is well-structured.",
+      "file_name": "operating_system_architecture_diagram_kernel_user_mode.jpg",
+      "caption": "A black and white, minimalist operating system architecture diagram illustrating the division between user mode and kernel mode. It details components such as System Services, Applications, Libraries, System Calls, File System with Buffer, Process Management Subsystem, IPC, Process Scheduling, Memory Management, Networking, Device Drivers, and their interaction with the Hardware layer.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "A clean, professional operating system architecture diagram for technical documentation",
+    "image_info": {
+      "url": "http://www.vskills.in/lms/wp-content/uploads/2016/05/windows-architecture.png",
+      "img_format": "PNG",
+      "mode": "RGB",
+      "file_size": 99857,
+      "width": 505,
+      "height": 490,
+      "total_pixels": 247450,
+      "basic_score": 0.7675014538764386,
+      "file_name": "operating_system_architecture_kernel_user_mode_diagram.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 98.0,
+      "clarity_score": 95.0,
+      "watermark_score": 100.0,
+      "overall_score": 95.0,
+      "explanation": "The image is highly relevant to the search query, depicting a clear and minimal black and white operating system architecture diagram. It perfectly fits the prompt for professional technical documentation. The clarity is excellent, with all text legible and lines sharp. There are no watermarks or logos.",
+      "file_name": "operating_system_architecture_kernel_user_mode_diagram.jpg",
+      "caption": "A black and white, clean, and professional operating system architecture diagram, illustrating the hierarchical structure from the Executive layer down to user applications. It features the Executive, Kernel, Device Drivers, and Hardware Abstraction Layer (HAL) at the top. The diagram clearly depicts the ring-based privilege model, showing Ring 0 for Kernel mode and Ring 3 for User mode, with Rings 1 and 2 indicated as 'Not used'. Arrows show the flow of control and interaction between the core OS components, Subsystem DLLs, and various user-level components such as System support processes, Service processes, User applications, and Environmental Subsystems.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "An educational scene showing multiple devices and platforms for cross-platform education",
+    "image_info": {
+      "url": "https://learningnews.com/media/22657/upside%20infographic.png",
+      "img_format": "PNG",
+      "mode": "RGBA",
+      "file_size": 115107,
+      "width": 938,
+      "height": 766,
+      "total_pixels": 718508,
+      "basic_score": 0.8943915185584905,
+      "file_name": "education-multi-device-cross-platform-learning-infographic.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 98.0,
+      "clarity_score": 95.0,
+      "watermark_score": 80.0,
+      "overall_score": 90.0,
+      "explanation": "The image is highly relevant to both the search query and prompt, clearly illustrating multi-device learning and cross-platform interaction in education. The visual elements are sharp, and text is legible. The primary detractor is the 'UPSIDE LEARNING' logo, which acts as a brand watermark.",
+      "file_name": "education-multi-device-cross-platform-learning-infographic.jpg",
+      "caption": "An infographic illustrating 'Learning in a Multi-Device World', featuring interconnected digital devices including a desktop computer, laptop, tablet, and smartphone. Various icons represent different forms of content and interaction, such as HTML files, audio, video, documents, chat, and search, symbolizing cross-platform educational experiences. The accompanying text emphasizes the increasing trend of using multiple devices for learning, aligning with modern education technology.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "An educational scene showing multiple devices and platforms for cross-platform education",
+    "image_info": {
+      "url": "https://elearningindustry.com/wp-content/uploads/2016/01/8-tips-to-create-multi-platform-elearning-courses-1.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 21680,
+      "width": 820,
+      "height": 460,
+      "total_pixels": 377200,
+      "basic_score": 0.8098839229050532,
+      "file_name": "cross_platform_devices_education_technology.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 90.0,
+      "clarity_score": 100.0,
+      "watermark_score": 100.0,
+      "overall_score": 95.0,
+      "explanation": "The image is highly relevant to the 'multi platform devices' and 'cross-platform' aspects of the query and prompt, clearly showing a desktop, laptop, tablet, and smartphone with consistent content. The flat design is perfectly clear, and there are no watermarks. While it lacks explicit 'educational scene' elements, it perfectly illustrates the technological infrastructure required for education technology on multiple devices. The overall composition and professional quality are excellent.",
+      "file_name": "cross_platform_devices_education_technology.jpg",
+      "caption": "A modern flat design illustration featuring various electronic devices including a desktop monitor, a laptop, a tablet, and a smartphone, all displaying identical web content or application interfaces. Dashed arrows flow between the devices, symbolizing data synchronization, responsive design, or seamless cross-platform functionality. The illustration is set against a soft, light blue background.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "An educational scene showing multiple devices and platforms for cross-platform education",
+    "image_info": {
+      "url": "https://lh7-rt.googleusercontent.com/docsz/AD_4nXdz6ZbhYlevLaTFfJjPOX3Pe0LUoXEdvsuV3QgP2jTttfkwmHZsDuj4lqLRNUjb152fZ7VEh6Zbauw4RUC6ZKEkuO4Xs21KvkFuUpp30gQmUPz9NY-VpcFL5Q5Zi7Dz1tXSWPPGgg?key=tGDsPjOzaXJiyegWR5-G7Q",
+      "img_format": "PNG",
+      "mode": "RGB",
+      "file_size": 163338,
+      "width": 1000,
+      "height": 500,
+      "total_pixels": 500000,
+      "basic_score": 0.8405402382498168,
+      "file_name": "educational_technology_multi_platform_learning.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 98.0,
+      "watermark_score": 100.0,
+      "overall_score": 95.0,
+      "explanation": "The image is a highly relevant infographic illustrating educational technology with a focus on digital platforms and devices like computers and laptops. The design is clean, clear, and professionally composed, with no watermarks. It effectively conveys the idea of multi-platform and cross-platform education through both visuals and descriptive text.",
+      "file_name": "educational_technology_multi_platform_learning.jpg",
+      "caption": "An infographic illustration detailing 'Educational Technology,' featuring a central visual of a desktop computer with a graduation cap on its screen, hands typing on a keyboard, a globe, and books. Above the setup, smaller icons represent global learning, innovation, audio education, digital certificates, and a laptop, signifying multiple devices and platforms. An arrow-shaped text block defines educational technology as encompassing computers, the internet, software applications, and multimedia platforms that make learning interactive and accessible. The illustration utilizes a clean, flat design with a prominent red circular frame on a light gray background.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "An educational scene showing multiple devices and platforms for cross-platform education",
+    "image_info": {
+      "url": "https://www.dexway.com/wp-content/uploads/2016/04/online-courses-dexway-e1476359337980.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 68470,
+      "width": 1067,
+      "height": 600,
+      "total_pixels": 640200,
+      "basic_score": 0.8870654956586255,
+      "file_name": "education_technology_multi_platform_e_learning_devices.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 100.0,
+      "clarity_score": 95.0,
+      "watermark_score": 100.0,
+      "overall_score": 95.0,
+      "explanation": "The image perfectly matches the search query and prompt by clearly depicting multiple digital devices (laptop, tablet, smartphone) all displaying educational content related to an 'English Placement Test' and 'Lesson content.' It effectively illustrates cross-platform education technology with excellent clarity and professional composition, free of watermarks.",
+      "file_name": "education_technology_multi_platform_e_learning_devices.jpg",
+      "caption": "A collection of modern digital devices, including a laptop, tablet, and smartphone, showcasing various screens of an e-learning platform. The displays feature an 'English Placement Test,' lesson content, messaging interfaces, and progress scores, highlighting a comprehensive multi-platform educational technology solution against a clean, reflective white background.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "A modern, minimal code editor interface for programming showcase",
+    "image_info": {
+      "url": "https://images.ctfassets.net/lzny33ho1g45/5hzHWhjxP8bM3Ew2SJgKuS/ae69008c04ab864f602254bf349725e7/acode.webp",
+      "img_format": "WEBP",
+      "mode": "RGB",
+      "file_size": 186376,
+      "width": 1280,
+      "height": 800,
+      "total_pixels": 1024000,
+      "basic_score": 0.9498335093873751,
+      "file_name": "modern_minimal_code_editor_javascript_programming.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 98.0,
+      "clarity_score": 95.0,
+      "watermark_score": 100.0,
+      "overall_score": 95.0,
+      "explanation": "The image is highly relevant, perfectly depicting a modern, minimal code editor interface with programming code (JavaScript). The clarity is excellent, making all text and UI elements easily legible. There are no watermarks, contributing to its professional quality. The dark theme and clean layout effectively showcase a minimal programming environment.",
+      "file_name": "modern_minimal_code_editor_javascript_programming.jpg",
+      "caption": "A screenshot of a modern, dark-themed code editor displaying JavaScript code for an 'admin.js' file. The interface features a clean, minimal design with a file explorer sidebar showing project structure including folders like 'public', 'server', 'src', and various '.js' files, alongside open tabs for different code files. The code snippet shows router navigation logic and user authentication, characteristic of web development.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "A modern, minimal code editor interface for programming showcase",
+    "image_info": {
+      "url": "https://miro.medium.com/v2/resize:fit:1400/1*eNHMKgdZDto2T-EPnnTzpQ.png",
+      "img_format": "PNG",
+      "mode": "RGBA",
+      "file_size": 442004,
+      "width": 1400,
+      "height": 989,
+      "total_pixels": 1384600,
+      "basic_score": 0.9144311646605608,
+      "file_name": "modern_minimal_vscode_javascript_code_editor_interface.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 95.0,
+      "watermark_score": 100.0,
+      "overall_score": 90.0,
+      "explanation": "The image is highly relevant to the search query and prompt, showcasing a modern, dark-themed Visual Studio Code interface with JavaScript code. The clarity is excellent, allowing all text and UI elements to be read easily. There are no watermarks present. The composition is professional and effectively highlights the code editor for a programming showcase.",
+      "file_name": "modern_minimal_vscode_javascript_code_editor_interface.jpg",
+      "caption": "A screenshot of a modern, dark-themed Visual Studio Code (VS Code) interface displaying JavaScript code for 'Notifications360Container.js'. The left sidebar shows the file explorer with various project files, while the main panel features code with syntax highlighting, demonstrating a clean and functional programming environment.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "A modern, minimal code editor interface for programming showcase",
+    "image_info": {
+      "url": "https://miro.medium.com/v2/resize:fit:1400/1*_fbuGqWeyzzfviH1AqPCUQ.png",
+      "img_format": "PNG",
+      "mode": "RGBA",
+      "file_size": 459465,
+      "width": 1400,
+      "height": 989,
+      "total_pixels": 1384600,
+      "basic_score": 0.9153349723884986,
+      "file_name": "modern_minimal_code_editor_programming_interface_react_javascript.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 98.0,
+      "watermark_score": 100.0,
+      "overall_score": 95.0,
+      "explanation": "The image perfectly matches the search query and prompt, showcasing a modern, minimal code editor interface displaying programming code. The clarity is excellent, and there are no watermarks. The composition is clean and professional.",
+      "file_name": "modern_minimal_code_editor_programming_interface_react_javascript.jpg",
+      "caption": "A high-resolution screenshot of a modern code editor, likely Visual Studio Code, displaying JavaScript/React code in a dark theme. The interface is clean and minimal, featuring a file explorer sidebar on the left and the main code editing panel on the right with syntax highlighting. The code snippet shows imports for React components and styling, defining a 'Notifications360Container' component.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "A modern, minimal code editor interface for programming showcase",
+    "image_info": {
+      "url": "https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F1r0d543hpuettih1q97p.png",
+      "img_format": "WEBP",
+      "mode": "RGB",
+      "file_size": 34294,
+      "width": 800,
+      "height": 533,
+      "total_pixels": 426400,
+      "basic_score": 0.8378145695023941,
+      "file_name": "modern_minimal_vscode_programming_interface.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 90.0,
+      "watermark_score": 100.0,
+      "overall_score": 90.0,
+      "explanation": "The image is highly relevant, perfectly showcasing a modern, minimal code editor (Visual Studio Code) with programming code. The dark theme and clean interface align well with the 'minimal' aspect. Clarity is excellent, with readable text and sharp details. There are no watermarks, and the overall composition with the subtle, blurred background is very professional and appealing for a showcase.",
+      "file_name": "modern_minimal_vscode_programming_interface.jpg",
+      "caption": "A modern, dark-themed Visual Studio Code interface displaying JSX/React code within an 'index.tsx' file. The file explorer panel on the left shows a project structure, highlighting the 'pages/index.tsx' file, while the main editor pane displays imports and a functional React component. The entire setup is presented on a screen with a blurred, colorful gradient background, emphasizing a sleek and focused programming environment.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "A modern, minimal code editor interface for programming showcase",
+    "image_info": {
+      "url": "https://code.visualstudio.com/assets/docs/getstarted/userinterface/hero.png",
+      "img_format": "PNG",
+      "mode": "RGBA",
+      "file_size": 455485,
+      "width": 1200,
+      "height": 796,
+      "total_pixels": 955200,
+      "basic_score": 0.9509332155138965,
+      "file_name": "vscode_modern_programming_editor_interface_components.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 85.0,
+      "clarity_score": 98.0,
+      "watermark_score": 100.0,
+      "overall_score": 92.0,
+      "explanation": "The image clearly depicts a modern code editor (VS Code) suitable for programming, aligning well with 'code editor' and 'programming' aspects of the query. While it showcases various UI elements, which might lean away from 'minimal' in some interpretations, the interface itself is clean and modern. The clarity is excellent, with all text and UI elements perfectly legible. There are no watermarks. The overall composition is professional, making it a strong reference for its subject.",
+      "file_name": "vscode_modern_programming_editor_interface_components.jpg",
+      "caption": "A detailed screenshot of the Visual Studio Code (VS Code) integrated development environment (IDE) displaying its various components. The interface features a dark theme with highlighted code (TypeScript), a file explorer in the Primary Side Bar (B), an Activity Bar (A) on the far left, multiple Editor Groups (C) showing different files (arrays.ts, package.json), a Panel (D) at the bottom with terminal and output, and a Status Bar (E) at the very bottom. The image highlights common elements of a modern programming editor.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "A clean, minimal representation of servers or computing infrastructure",
+    "image_info": {
+      "url": "https://zpesystems.com/wp-content/uploads/2021/02/vendor-Neurtal-Management-650-x-400.png",
+      "img_format": "PNG",
+      "mode": "P",
+      "file_size": 11347,
+      "width": 650,
+      "height": 400,
+      "total_pixels": 260000,
+      "basic_score": 0.753337199820883,
+      "file_name": "minimal_network_server_infrastructure_diagram_zpe.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 98.0,
+      "clarity_score": 95.0,
+      "watermark_score": 90.0,
+      "overall_score": 95.0,
+      "explanation": "The image is an excellent match for the search query and prompt, providing a clean, minimal, isometric representation of network server infrastructure. All components are clearly labeled and the diagram is highly legible. The 'zpe' logo is integrated as a component label rather than an obstructive watermark.",
+      "file_name": "minimal_network_server_infrastructure_diagram_zpe.jpg",
+      "caption": "An isometric, minimal diagram illustrating a network server infrastructure, featuring a ZPE device connected to servers, a router/switch, UPS, and PDU. The setup shows connectivity to local users, remote users, and the internet via a cloud icon, depicting a comprehensive and clean computing environment.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "A clean, minimal representation of servers or computing infrastructure",
+    "image_info": {
+      "url": "https://images.stockcake.com/public/b/c/3/bc31ae3d-a77f-4584-904b-4b7cac7c6c3f_large/network-infrastructure-illustration-stockcake.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 51142,
+      "width": 512,
+      "height": 512,
+      "total_pixels": 262144,
+      "basic_score": 0.7760319035930887,
+      "file_name": "minimalist_network_server_infrastructure_illustration.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 100.0,
+      "clarity_score": 100.0,
+      "watermark_score": 100.0,
+      "overall_score": 98.0,
+      "explanation": "The image perfectly matches the search query and prompt, depicting a clean and minimal isometric illustration of networked servers and computing infrastructure. It has excellent clarity, a professional aesthetic, and no watermarks.",
+      "file_name": "minimalist_network_server_infrastructure_illustration.jpg",
+      "caption": "An isometric illustration showcasing a minimalist network server infrastructure with interconnected server racks. Each server features distinct icons representing various services like cloud, email, database, and security, all connected to a central processing unit, on a clean white background.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "A clean, minimal representation of servers or computing infrastructure",
+    "image_info": {
+      "url": "https://engineering.fb.com/wp-content/uploads/2018/05/data-center-shot.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 705544,
+      "width": 1800,
+      "height": 1080,
+      "total_pixels": 1944000,
+      "basic_score": 0.7844397526347208,
+      "file_name": "clean_modern_data_center_server_infrastructure.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 90.0,
+      "clarity_score": 98.0,
+      "watermark_score": 100.0,
+      "overall_score": 95.0,
+      "explanation": "The image is highly relevant, clearly depicting extensive network server infrastructure. While showing a large data center, the representation is exceptionally clean, orderly, and well-organized, aligning with the 'clean, minimal' aspect of the prompt in terms of visual presentation. The clarity and resolution are outstanding, with sharp details of the server racks and colored cabling. There are no watermarks or logos. The composition is professional, well-lit, and aesthetically pleasing.",
+      "file_name": "clean_modern_data_center_server_infrastructure.jpg",
+      "caption": "A long, brightly lit aisle within a modern data center, showcasing rows of interconnected server racks filled with a complex array of colored network cables in shades of blue, yellow, purple, and green. The highly organized and symmetrical layout emphasizes the scale and efficiency of contemporary computing infrastructure.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "A clean, minimal representation of servers or computing infrastructure",
+    "image_info": {
+      "url": "https://images.squarespace-cdn.com/content/v1/67b73a794c6a54390dd94f42/f697004c-43a1-4f18-b327-aecf92d89d71/d64fbf680701d05b40f73ef69ba73fbf.jpg",
+      "img_format": "WEBP",
+      "mode": "RGB",
+      "file_size": 41340,
+      "width": 458,
+      "height": 320,
+      "total_pixels": 146560,
+      "basic_score": 0.7366167341926259,
+      "file_name": "data_center_network_infrastructure_data_flow.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 88.0,
+      "clarity_score": 85.0,
+      "watermark_score": 100.0,
+      "overall_score": 88.0,
+      "explanation": "The image clearly depicts network server infrastructure with a futuristic aesthetic. The glowing blue and purple lines effectively represent data flow and network activity, adding to the 'network' aspect of the query. While the environment is clean, the prominent visual effects make it less 'minimal' in a stark aesthetic sense, though the representation of complex data flow could be considered conceptually minimal. The image is well-composed and free of watermarks, with good clarity.",
+      "file_name": "data_center_network_infrastructure_data_flow.jpg",
+      "caption": "An expansive and futuristic data center or server room, showcasing rows of high-density server racks. Dynamic blue and purple glowing lines abstractly illustrate vigorous data flow and network connectivity throughout the infrastructure. In the foreground, a person, likely an IT administrator, is seen interacting with a tablet while standing beside a server rack, highlighting human management within this sophisticated computing environment.",
+      "recommend": true,
+      "error": ""
+    }
+  }
+]
