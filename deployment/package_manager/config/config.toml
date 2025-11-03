@@ -1,0 +1,322 @@
+# MultiOS Package Manager Configuration
+# 
+# This file contains the main configuration for the MultiOS Package Manager.
+# Modify these settings according to your system requirements.
+
+[general]
+# Main data directory for package manager
+data_directory = "/var/lib/multios-package-manager"
+
+# Log level (error, warn, info, debug)
+log_level = "info"
+
+# Maximum number of concurrent downloads
+max_concurrent_downloads = 10
+
+# Download timeout in seconds
+download_timeout = 300
+
+# Package cache TTL in seconds
+cache_ttl = 86400
+
+# Auto-sync interval in seconds
+auto_sync_interval = 3600
+
+# Retry configuration
+retry_count = 3
+retry_delay = 5
+
+[security]
+# Require package signatures
+require_signature = false
+
+# Allow unsigned packages
+allow_unsigned = true
+
+# Require trusted publishers only
+trusted_publishers_only = false
+
+# Minimum key length for RSA signatures
+minimum_key_length = 2048
+
+# Check certificate revocation lists
+check_crl = false
+
+# Require certificate validation
+require_certificate_validation = true
+
+# Checksum algorithm (sha256, sha512, blake2b)
+checksum_algorithm = "sha256"
+
+# Enable vulnerability scanning
+vulnerability_scanning = true
+
+# Auto-update security databases
+auto_update_security_db = true
+
+[updates]
+# Enable automatic update checking
+auto_check_updates = true
+
+# Enable automatic installation of updates
+auto_install_updates = false
+
+# Update check interval in seconds
+check_interval = 86400
+
+# Security updates interval in seconds
+security_check_interval = 21600
+
+# Install interval in seconds
+install_interval = 604800
+
+# Only install security updates automatically
+security_updates_only = false
+
+# Require user confirmation for updates
+require_confirmation = true
+
+# Bandwidth limit for downloads (bytes per second)
+bandwidth_limit = null
+
+# Delta updates (incremental updates)
+enable_delta_updates = true
+
+# Maximum delta size (bytes)
+max_delta_size = 104857600
+
+[scheduler]
+# Maintenance day (Monday, Tuesday, ..., Sunday)
+maintenance_day = "Sunday"
+
+# Maintenance time (24-hour format)
+maintenance_time = "02:00"
+
+# System timezone
+timezone = "UTC"
+
+# Enable notifications
+notify_on_updates = true
+
+# Desktop notifications
+desktop_notifications = true
+
+# Email notifications
+email_notifications = false
+
+# Notification settings
+[scheduler.notifications]
+# Email address for notifications
+email_address = ""
+
+# Webhook URL for notifications
+webhook_url = ""
+
+# Slack webhook for notifications
+slack_webhook = ""
+
+[repository]
+# Default repository name
+default_repository = "main"
+
+# Repository update interval
+repository_update_interval = 3600
+
+# Maximum repository mirrors
+max_mirrors = 5
+
+# Mirror rotation interval
+mirror_rotation_interval = 300
+
+# Repository timeout
+repository_timeout = 30
+
+# Enable repository compression
+enable_compression = true
+
+[storage]
+# Package storage directory
+package_directory = "packages"
+
+# Metadata storage directory
+metadata_directory = "metadata"
+
+# Cache storage directory
+cache_directory = "cache"
+
+# Temporary file directory
+temp_directory = "temp"
+
+# Maximum cache size (bytes)
+max_cache_size = 1073741824
+
+# Maximum package size (bytes)
+max_package_size = 1073741824
+
+# Enable automatic cleanup
+auto_cleanup = true
+
+# Cleanup interval in seconds
+cleanup_interval = 86400
+
+# Keep old versions for rollback
+keep_old_versions = 3
+
+[network]
+# Use system proxy settings
+use_system_proxy = true
+
+# Custom HTTP proxy
+http_proxy = ""
+
+# Custom HTTPS proxy
+https_proxy = ""
+
+# Custom FTP proxy
+ftp_proxy = ""
+
+# No proxy domains
+no_proxy = "localhost,127.0.0.1,*.local"
+
+# Enable keep-alive
+enable_keep_alive = true
+
+# Connection timeout
+connection_timeout = 30
+
+[ui]
+# Enable interactive mode by default
+interactive_mode = false
+
+# Default output format
+output_format = "text"
+
+# Show progress bars
+show_progress = true
+
+# Enable colors in output
+enable_colors = true
+
+# Wrap long lines
+wrap_lines = true
+
+# Page size for listings
+page_size = 50
+
+[debug]
+# Enable debug mode
+debug_mode = false
+
+# Debug file path
+debug_file = "/var/log/multios-package-manager/debug.log"
+
+# Debug modules
+debug_modules = ""
+
+# Trace function calls
+trace_calls = false
+
+# Enable profiling
+enable_profiling = false
+
+# Profiling output directory
+profiling_dir = "/tmp/multios-pm-profiling"
+
+[advanced]
+# Custom package format handlers
+custom_handlers = []
+
+# Enable experimental features
+experimental_features = false
+
+# Maximum dependency resolution depth
+max_dependency_depth = 10
+
+# Dependency resolution timeout
+dependency_timeout = 60
+
+# Enable parallel processing
+parallel_processing = true
+
+# Number of worker threads
+worker_threads = 4
+
+# Memory usage limit (bytes)
+memory_limit = 1073741824
+
+# CPU usage limit (percentage)
+cpu_limit = 80
+
+# File descriptor limit
+file_descriptor_limit = 1024
+
+# Enable metrics collection
+enable_metrics = false
+
+# Metrics export interval
+metrics_export_interval = 60
+
+# Metrics storage backend
+metrics_backend = "prometheus"
+
+[enterprise]
+# Enable enterprise features
+enterprise_mode = false
+
+# License key
+license_key = ""
+
+# Support contract ID
+support_contract = ""
+
+# Organization ID
+organization_id = ""
+
+# Enable audit logging
+audit_logging = false
+
+# Audit log retention period (days)
+audit_retention = 365
+
+# Enable policy enforcement
+policy_enforcement = false
+
+# Policy configuration file
+policy_config = ""
+
+# Enable bulk operations
+bulk_operations = false
+
+# Maximum bulk operation size
+bulk_operation_limit = 100
+
+# Enable compliance reporting
+compliance_reporting = false
+
+# Compliance report format
+compliance_format = "pdf"
+
+[educational]
+# Enable educational features
+educational_mode = false
+
+# Student mode restrictions
+student_mode = false
+
+# Learning path configuration
+learning_paths = []
+
+# Tutorial package repository
+tutorial_repository = ""
+
+# Assessment package repository
+assessment_repository = ""
+
+# Certification tracking
+certification_tracking = false
+
+# Progress tracking
+progress_tracking = false
+
+# Parent/teacher dashboard
+parent_dashboard = false

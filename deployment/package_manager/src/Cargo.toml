@@ -1,0 +1,72 @@
+[package]
+name = "multios-package-manager"
+version = "0.1.0"
+edition = "2021"
+description = "MultiOS Package Manager - Comprehensive package and update management system"
+authors = ["MultiOS Team <team@multios.org>"]
+license = "MIT"
+
+[features]
+default = ["serde", "openssl"]
+crypto = ["openssl"]
+serde = ["serde_derive", "serde_json"]
+delta-updates = []
+security = []
+
+[dependencies]
+# Core dependencies
+tokio = { version = "1.0", features = ["full"] }
+async-trait = "0.1"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+regex = "1.0"
+uuid = { version = "1.0", features = ["v4"] }
+chrono = { version = "0.4", features = ["serde"] }
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Cryptographic dependencies
+openssl = { version = "0.10", optional = true }
+ring = "0.17"
+ed25519-dalek = "2.0"
+
+# Archive and compression
+tar = "0.4"
+flate2 = "1.0"
+lzma-rs = "0.3"
+xz2 = "0.5"
+
+# File system and networking
+reqwest = { version = "0.11", features = ["json", "stream"] }
+url = "2.0"
+pathdiff = "0.2"
+walkdir = "2.4"
+dirs = "5.0"
+
+# HTTP and downloads
+async-std = "1.12"
+futures = "0.3"
+bytes = "1.0"
+
+# Configuration and logging
+log = "0.4"
+env_logger = "0.10"
+config = "0.13"
+
+# Package format handling
+rpm = "0.1"
+deb = "0.1"
+pkg = "0.1"
+
+[build-dependencies]
+cc = "1.0"
+
+[dev-dependencies]
+tempfile = "3.0"
+mockall = "0.12"
+proptest = "1.0"
+
+[[bin]]
+name = "multios-pm"
+path = "main.rs"

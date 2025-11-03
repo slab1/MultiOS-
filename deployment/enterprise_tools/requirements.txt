@@ -1,0 +1,44 @@
+# MultiOS Enterprise Deployment Tools - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# Core dependencies
+PyYAML>=6.0
+requests>=2.28.0
+psutil>=5.9.0
+
+# Template engine
+jinja2>=3.1.0
+
+# LDAP/Active Directory integration
+ldap3>=2.9.0
+
+# Database support
+SQLAlchemy>=1.4.0
+psycopg2-binary>=2.9.0  # For PostgreSQL
+pymysql>=1.0.0          # For MySQL
+
+# Monitoring and metrics
+prometheus-client>=0.15.0
+
+# Configuration management
+python-dotenv>=0.19.0
+
+# Web framework (for web interface)
+flask>=2.2.0
+flask-cors>=3.0.0
+
+# Task scheduling
+apscheduler>=3.9.0
+
+# Encryption
+cryptography>=3.4.0
+
+# Email support (usually built-in, but explicit for clarity)
+# email.mime.text - built-in Python module
+# email.mime.multipart - built-in Python module
+
+# Development and testing (optional)
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=22.0.0
+flake8>=5.0.0

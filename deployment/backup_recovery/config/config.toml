@@ -1,0 +1,91 @@
+# MultiOS Backup System Configuration
+# Global system settings and default values
+
+[system]
+version = "1.0.0"
+name = "MultiOS Backup System"
+description = "Enterprise-grade backup and recovery system"
+
+[paths]
+# Base directories
+backup_dir = "/var/lib/multios/backup"
+temp_dir = "/tmp/multios-backup"
+log_dir = "/var/log/multios/backup"
+config_dir = "/etc/multios/backup"
+media_dir = "/var/lib/multios/backup/media"
+lab_profiles_dir = "/etc/multios/backup/labs"
+
+[storage]
+# Default storage configuration
+default_storage_id = "local-default"
+max_concurrent_backups = 4
+max_concurrent_restores = 2
+
+[compression]
+# Default compression settings
+default_algorithm = "zstd"
+compression_level = 3
+auto_detect_best = true
+
+[encryption]
+# Default encryption settings
+default_enabled = false
+default_algorithm = "AES-256"
+key_derivation = "PBKDF2"
+key_iterations = 100000
+
+[scheduling]
+# Default scheduling settings
+enable_scheduler = true
+check_interval = 60  # seconds
+max_schedule_retries = 3
+
+[network]
+# Network backup settings
+timeout = 300  # seconds
+retry_attempts = 3
+retry_delay = 30  # seconds
+
+[verification]
+# Backup verification settings
+enable_verification = true
+verify_on_create = true
+quick_verify_timeout = 300  # seconds
+full_verify_timeout = 3600  # seconds
+
+[recovery_media]
+# Bootable recovery media settings
+default_timeout = 30  # seconds
+include_default_tools = true
+enable_network = true
+enable_ssh = true
+
+[lab_profiles]
+# Educational lab settings
+enable_lab_profiles = true
+default_retention = "30 days"
+auto_backup_on_profile_change = true
+
+[monitoring]
+# System monitoring
+enable_monitoring = true
+metrics_interval = 30  # seconds
+log_level = "INFO"
+
+[performance]
+# Performance tuning
+io_buffer_size = "64KB"
+max_memory_usage = "1GB"
+concurrent_file_operations = 8
+
+[security]
+# Security settings
+require_authentication = false
+session_timeout = 3600  # seconds
+audit_logging = true
+
+[disaster_recovery]
+# Disaster recovery settings
+enable_dr_procedures = true
+auto_create_recovery_media = false
+dr_check_interval = 24  # hours
