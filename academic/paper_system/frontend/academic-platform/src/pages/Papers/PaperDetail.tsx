@@ -18,8 +18,8 @@ import {
   BookOpen
 } from 'lucide-react';
 
-import LoadingSpinner from '../../components/Common/LoadingSpinner';
-import { apiService } from '../../services/api';
+import LoadingSpinner from '../Common/LoadingSpinner';
+import { papersAPI } from '../../services/api';
 
 interface Paper {
   _id: string;
@@ -66,7 +66,7 @@ export default function PaperDetail() {
   const fetchPaper = async () => {
     try {
       setLoading(true);
-      const response = await apiService.get(`/papers/${id}`);
+      const response = await papersAPI.get(`/papers/${id}`);
       setPaper(response.data);
     } catch (error: any) {
       toast.error(error.message || 'Failed to fetch paper');
@@ -95,7 +95,7 @@ export default function PaperDetail() {
       const formData = new FormData();
       formData.append('file', file);
       
-      await apiService.post(`/papers/${id}/upload`, formData, {
+      await papersAPI.post(`/papers/${id}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

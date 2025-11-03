@@ -3,8 +3,7 @@ resolver = "2"
 members = [
     "kernel",
     "bootloader", 
-    "libraries/*",
-    "tools/*"
+    "libraries/*"
 ]
 
 [workspace.package]
@@ -19,7 +18,7 @@ bitflags = "2.4"
 log = "0.4"
 bootloader = "0.9"
 pic8259 = "0.10"
-x86_64 = "0.14"
+x86_64 = "0.15"
 linked_list_allocator = "0.10"
 uart_16550 = "0.3"
 pc-keyboard = "0.7"

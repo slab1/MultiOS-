@@ -6,8 +6,8 @@ import { z } from 'zod';
 import { toast } from 'react-hot-toast';
 import { Plus, X, FileText, Upload, Save } from 'lucide-react';
 
-import LoadingSpinner from '../../components/Common/LoadingSpinner';
-import { apiService } from '../../services/api';
+import LoadingSpinner from '../Common/LoadingSpinner';
+import { papersAPI } from '../../services/api';
 
 const authorSchema = z.object({
   name: z.string().min(1, 'Author name is required'),
@@ -45,9 +45,9 @@ export default function CreatePaper() {
       title: '',
       abstract: '',
       authors: [{ name: '', email: '', affiliation: '' }],
-      keywords: '',
-      references: '',
-      tags: ''
+      keywords: [],
+      references: [],
+      tags: []
     }
   });
 
@@ -64,7 +64,7 @@ export default function CreatePaper() {
         status: 'draft'
       };
       
-      const response = await apiService.post('/papers', paperData);
+      const response = await papersAPI.createPaper(paperData);
       toast.success('Paper created successfully!');
       navigate(`/papers/${response.data._id}`);
     } catch (error: any) {

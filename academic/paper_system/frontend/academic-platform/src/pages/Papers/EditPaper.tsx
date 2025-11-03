@@ -6,8 +6,8 @@ import { z } from 'zod';
 import { toast } from 'react-hot-toast';
 import { Plus, X, FileText, Save, ArrowLeft } from 'lucide-react';
 
-import LoadingSpinner from '../../components/Common/LoadingSpinner';
-import { apiService } from '../../services/api';
+import LoadingSpinner from '../Common/LoadingSpinner';
+import { papersAPI } from '../../services/api';
 
 const authorSchema = z.object({
   name: z.string().min(1, 'Author name is required'),
@@ -38,6 +38,7 @@ export default function EditPaper() {
     register,
     control,
     handleSubmit,
+    reset,
     formState: { errors }
   } = useForm<EditPaperFormData>({
     resolver: zodResolver(editPaperSchema),
@@ -45,9 +46,9 @@ export default function EditPaper() {
       title: '',
       abstract: '',
       authors: [{ name: '', email: '', affiliation: '' }],
-      keywords: '',
-      references: '',
-      tags: ''
+      keywords: [],
+      references: [],
+      tags: []
     }
   });
 
@@ -65,17 +66,17 @@ export default function EditPaper() {
   const fetchPaper = async () => {
     try {
       setLoading(true);
-      const response = await apiService.get(`/papers/${id}`);
+      const response = await papersAPI.getPaper(id!);
       const paper = response.data;
       
       // Populate form with existing data
-      (form as any).reset({
+      reset({
         title: paper.title,
         abstract: paper.abstract,
         authors: paper.authors || [{ name: '', email: '', affiliation: '' }],
-        keywords: paper.keywords?.join(', ') || '',
-        references: paper.references?.join('\n') || '',
-        tags: paper.tags?.join(', ') || '',
+        keywords: paper.keywords || [],
+        references: paper.references || [],
+        tags: paper.tags || [],
         latexContent: paper.latexContent || '',
         conferenceId: paper.conferenceId || ''
       });
@@ -90,7 +91,7 @@ export default function EditPaper() {
   const onSubmit = async (data: EditPaperFormData) => {
     setIsLoading(true);
     try {
-      await apiService.put(`/papers/${id}`, data);
+      await papersAPI.put(`/papers/${id}`, data);
       toast.success('Paper updated successfully!');
       navigate(`/papers/${id}`);
     } catch (error: any) {

@@ -18,8 +18,8 @@ import {
   SortDesc
 } from 'lucide-react';
 
-import LoadingSpinner from '../../components/Common/LoadingSpinner';
-import { apiService } from '../../services/api';
+import LoadingSpinner from '../Common/LoadingSpinner';
+import { papersAPI } from '../../services/api';
 
 const searchSchema = z.object({
   search: z.string().optional(),
@@ -71,7 +71,7 @@ export default function PapersList() {
   const fetchPapers = async (page = 1, searchParams?: Partial<SearchFormData>) => {
     try {
       setLoading(true);
-      const response = await apiService.get('/papers', {
+      const response = await papersAPI.get('/papers', {
         params: {
           page,
           limit: 20,

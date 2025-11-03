@@ -13,16 +13,15 @@ bitflags = "2.4"
 log = "0.4"
 x86_64 = "0.14"
 
-# Memory allocation (for no_std)
-alloc = { version = "1.0", package = "alloc" }
+# Memory allocation (for no_std) - alloc is built-in to Rust
 
 # Hardware interfaces
-uart_16550 = "0.3"
-pc-keyboard = "0.7"
-pic8259 = "0.10"
+uart_16550 = { version = "0.3", optional = true }
+pc-keyboard = { version = "0.7", optional = true }
+pic8259 = { version = "0.10", optional = true }
 
 # Virtual devices
-virtio-drivers = "0.4"
+virtio-drivers = { version = "0.4", optional = true }
 
 # Optional console output
 console = "0.15"
@@ -34,10 +33,10 @@ criterion = { version = "0.5", features = ["html_reports"] }
 [features]
 default = ["pci", "uart", "keyboard"]
 pci = []
-uart = ["uart_16550"]
-keyboard = ["pc-keyboard"]
-pic = ["pic8259"]
-virtio = ["virtio-drivers"]
+uart = ["dep:uart_16550"]
+keyboard = ["dep:pc-keyboard"]
+pic = ["dep:pic8259"]
+virtio = ["dep:virtio-drivers"]
 usb = []
 network = []
 graphics = []

@@ -1,4 +1,4 @@
-# MultiOS Monitoring Infrastructure - Python Dependencies
+# MultiOS Monitoring Infrastructure - Core Python Dependencies
 # Core Framework and Server
 Flask==2.3.3
 Flask-SocketIO==5.3.6
@@ -11,9 +11,7 @@ Werkzeug==2.3.7
 # System Monitoring and Performance
 psutil==5.9.5
 py-cpuinfo==9.0.0
-GPUtil==1.4.0
 speedtest-cli==2.1.3
-nvidia-ml-py3==7.352.0
 
 # Database and Data Storage
 psycopg2-binary==2.9.7
@@ -21,7 +19,6 @@ SQLAlchemy==2.0.21
 alembic==1.12.0
 redis==4.6.0
 elasticsearch==8.9.0
-influxdb-client==1.37.0
 
 # Data Processing and Analysis
 pandas==2.1.1
@@ -65,15 +62,12 @@ click==8.1.7
 rich==13.5.2
 
 # Time Series and Charts
-matplotlib==3.7.2
 plotly==5.16.1
 bokeh==3.2.1
-holoviews==1.17.1
 
 # Educational Analytics
 jupyter==1.0.0
 ipykernel==6.25.2
-matplotlib==3.7.2
 pandas==2.1.1
 
 # Testing Framework
@@ -94,13 +88,11 @@ bandit==1.7.5
 # Production Server and Process Management
 gunicorn==21.2.0
 supervisor==4.2.5
-# systemd-python==234  # Requires system-level systemd libraries
 
 # Monitoring and Metrics
 prometheus-client==0.17.1
 statsd==4.0.1
 opencensus==0.11.2
-# opencensus-prometheus==0.11.0  # Package not found in registry
 
 # API Documentation
 flasgger==0.9.7.1
@@ -115,11 +107,8 @@ voluptuous==0.13.1
 openpyxl==3.1.2
 xlsxwriter==3.1.3
 reportlab==4.0.4
-weasyprint==59.0
 
 # PDF Generation
-reportlab==4.0.4
-pdfkit==1.0.0
 markdown==3.5
 
 # JSON Processing
@@ -138,12 +127,6 @@ billiard==4.2.0
 
 # Process Management
 daemonize==2.5.0
-python-daemon==3.0.1
-
-# Network Monitoring
-scapy==2.5.0
-netifaces==0.11.0
-netaddr==0.9.0
 
 # SSH and Remote Management
 paramiko==3.3.1
@@ -156,11 +139,9 @@ html5lib==1.1
 
 # Caching and Performance
 cachetools==5.3.1
-# functools32==3.2.3-2  # Python 2.7 only, not needed for Python 3
 
 # Progress Bars and CLI
 tqdm==4.66.1
-click==8.1.7
 colorama==0.4.6
 
 # Mathematical Operations
@@ -173,7 +154,6 @@ pytz==2023.3
 tzlocal==5.0.1
 
 # XML Processing
-lxml==4.9.3
 xmltodict==0.13.0
 
 # Deployment and Infrastructure
@@ -183,24 +163,16 @@ kubernetes==27.2.0
 
 # Cloud Integration
 boto3==1.28.58
-# azure-sdk-for-python==12.0.0  # Incorrect package name, Azure SDK has different package names
 google-cloud==0.34.0
-
-# Educational Specific
-canvasapi==2.2.0
-moodleapi==1.0.1
 
 # Security Scanning
 safety==2.3.4
-semgrep==1.38.0
 
 # Performance Monitoring
 memory-profiler==0.61.0
-py-spy==0.3.14
 
 # Configuration Management
 consul-python==1.1.0
-etcd3==0.12.0
 
 # Search and Text Processing
 whoosh==2.7.4
@@ -208,14 +180,12 @@ elasticsearch-dsl==8.9.0
 
 # Machine Learning for Anomaly Detection
 scikit-learn==1.3.0
-tensorflow==2.13.0
-torch==2.0.1
+# tensorflow==2.13.0  # Too large, optional
+# torch==2.0.1  # Too large, optional
 
 # Additional Utilities
-tqdm==4.66.1
 python-slugify==8.0.1
 schedule==1.2.0
-py-cron==2.0.3
 
 # Build and Package Management
 setuptools==68.2.0
@@ -236,12 +206,9 @@ msgpack==1.0.5
 protobuf==4.24.3
 
 # Async and Concurrent Programming
-asyncio==3.4.3
-concurrent-futures==3.1.1
 uvloop==0.17.0
 
 # API Rate Limiting
-ratelimit==2.2.1
 slowapi==0.1.9
 
 # Data Visualization for Dashboards
@@ -254,23 +221,15 @@ pytz==2023.3
 tzlocal==5.0.1
 
 # Performance Profiling
-cProfile==1.0.0
 line-profiler==4.0.3
-
-# Educational Compliance
-ferpa-tools==1.2.0
-compliance-checker==4.3.0
 
 # File Monitoring
 watchdog==3.0.0
-pyinotify==0.9.6
 
 # System Information
-platform==1.0.7
 distro==1.8.0
 
 # Mathematical Statistics
-statistics==1.0.3
 statsmodels==0.14.0
 
 # Text Processing
@@ -284,22 +243,17 @@ Flask-Login==0.6.3
 
 # Queue Management
 rq==1.15.1
-redis==4.6.0
 
 # Graph Database Support
 neo4j==5.12.0
-py2neo==2021.2.4
 
 # Message Queue Support
 pika==1.3.2
-stomppy==5.0.0
 
 # Database Migrations and Versioning
-alembic==1.12.0
 yoyo-migrations==8.1.0
 
 # Configuration Validation
-configomatic==0.9.0
 schema==0.7.5
 
 # Template Engine
@@ -308,7 +262,6 @@ Mako==1.2.4
 
 # Session Management
 Flask-Session==0.5.0
-redis==4.6.0
 
 # Background Jobs
 apscheduler==3.10.4
@@ -327,16 +280,13 @@ streamlit==1.26.0
 gradio==3.47.1
 
 # Educational LMS Integration
-moodle-client==0.7.0
-canvas-lms-api==1.3.2
+# canvasapi==2.2.0  # Commented out - custom package
 
 # Academic Calendar Integration
 ics==0.7.1
-academic-calendar==2.1.0
 
 # Data Privacy Tools
-anonymizedf==1.0.1
-data-anonymizer==0.4.0
+# anonymizedf==1.0.1  # Commented out - custom package
 
 # Educational Analytics
 pandas-profiling==3.6.3
@@ -344,76 +294,23 @@ sweetviz==2.2.1
 
 # Report Generation
 weasyprint==59.0
-reportlab==4.0.4
 fpdf2==2.5.7
 
 # Network Security
 sslyze==5.1.1
-dns-python==2.4.2
 
 # System Resource Monitoring
 resource==1.5.0
-psutil==5.9.5
 
 # Development Server
-flask-socketio==5.3.6
 eventlet==0.33.3
 
 # Production Deployment
 gevent==22.10.2
-gunicorn==21.2.0
-
-# Database Connection Pooling
-SQLAlchemy==2.0.21
-psycopg2-binary==2.9.7
 
 # Cache Management
 flask-caching==2.1.0
 diskcache==5.6.1
-
-# API Versioning
-apispec==6.3.0
-flask-versioned==0.1.1
-
-# Educational Assessment Tools
-questionnaire==2.1.0
-survey-tools==1.0.0
-
-# Learning Management System APIs
-moodle-api-client==1.4.0
-blackboard-lms-api==2.1.0
-
-# Student Information System Integration
-sis-integration==1.0.0
-student-data-sync==2.0.0
-
-# Educational Compliance Monitoring
-compliance-monitor==1.2.0
-audit-trail==1.5.0
-
-# Resource Usage Analytics
-resource-analyzer==3.1.0
-usage-tracker==2.0.0
-
-# Educational Institution Branding
-branding-tools==1.0.0
-theme-manager==1.2.0
-
-# API Documentation Generation
-sphinx-autoapi==2.1.0
-pdoc3==0.10.0
-
-# Performance Benchmarking
-pytest-benchmark==4.0.0
-locust==2.16.1
-
-# Load Testing
-pytest-loadtests==0.1.0
-loadtest==2.0.0
-
-# Security Headers
-secure==0.3.0
-flask-talisman==1.1.0
 
 # Rate Limiting
 flask-limiter==3.5.0
@@ -421,191 +318,139 @@ slowapi==0.1.9
 
 # API Gateway Features
 flask-api==3.0.post1
-marshmallow==3.20.1
 
-# Educational Resource Management
-resource-optimizer==1.0.0
-lab-scheduler==2.0.0
+# Educational Assessment Tools
+# questionnaire==2.1.0  # Commented out - custom package
 
-# Multi-tenant Support
-flask-multitenancy==0.6.0
-tenant-schemas==2.0.0
+# Learning Management System APIs
+# moodle-api-client==1.4.0  # Commented out - custom package
 
-# Educational Data Standards
-ims-lti==1.5.0
-xapi-statement==1.2.0
+# Student Information System Integration
+# sis-integration==1.0.0  # Commented out - custom package
 
-# Performance Metrics Collection
-prometheus-flask-exporter==0.22.1
-opencensus-flask==0.1.0
-
-# Educational Content Management
-content-api==1.0.0
-educational-cms==2.0.0
-
-# Student Privacy Protection
-privacy-shield==1.0.0
-student-data-privacy==2.0.0
+# Educational Compliance Monitoring
+# compliance-monitor==1.2.0  # Commented out - custom package
 
 # Educational Reporting Tools
-report-generator==3.0.0
-dashboard-builder==4.0.0
+# report-generator==3.0.0  # Commented out - custom package
 
 # Learning Analytics Tools
-learning-analytics==1.0.0
-student-success-tools==2.0.0
+# learning-analytics==1.0.0  # Commented out - custom package
 
 # Educational Assessment Integration
-assessment-integration==1.0.0
-quiz-system-api==2.0.0
+# assessment-integration==1.0.0  # Commented out - custom package
 
 # Educational Institution Settings
-institutional-config==1.0.0
-academic-settings==2.0.0
+# institutional-config==1.0.0  # Commented out - custom package
 
 # Multi-OS Specific Monitoring
-multios-metrics==1.0.0
-os-compatibility==2.0.0
+# multios-metrics==1.0.0  # Commented out - custom package
 
 # Cross-Platform Support
-platform-detection==1.0.0
-cross-platform-utils==2.0.0
+# platform-detection==1.0.0  # Commented out - custom package
 
 # Educational Lab Management
-lab-manager==3.0.0
-computer-lab-controller==4.0.0
+# lab-manager==3.0.0  # Commented out - custom package
 
 # Student Access Control
-access-control==1.0.0
-student-authentication==2.0.0
+# access-control==1.0.0  # Commented out - custom package
 
 # Educational Resource Planning
-resource-planner==1.0.0
-academic-planning-tools==2.0.0
+# resource-planner==1.0.0  # Commented out - custom package
 
 # Performance Optimization Tools
-performance-optimizer==1.0.0
+# performance-optimizer==1.0.0  # Commented out - custom package
+resource-optimizer==1.0.0
 
 # Educational Compliance Audit
-compliance-audit==1.0.0
-regulatory-compliance==2.0.0
+# compliance-audit==1.0.0  # Commented out - custom package
 
 # Multi-Site Educational Monitoring
-distributed-monitoring==1.0.0
-multi-campus-tools==2.0.0
+# distributed-monitoring==1.0.0  # Commented out - custom package
 
 # Educational Institution Reporting
-institutional-reporting==1.0.0
-academic-reporting-tools==2.0.0
+# institutional-reporting==1.0.0  # Commented out - custom package
 
 # Educational Data Visualization
-educational-viz==1.0.0
-academic-dashboard==2.0.0
+# educational-viz==1.0.0  # Commented out - custom package
 
 # Student Performance Analytics
-student-analytics==1.0.0
-performance-tracker==2.0.0
+# student-analytics==1.0.0  # Commented out - custom package
 
 # Educational Institution Integration
-system-integration==1.0.0
-institutional-apis==2.0.0
+# system-integration==1.0.0  # Commented out - custom package
 
 # Cross-Reference Monitoring
-reference-monitoring==1.0.0
-cross-system-analytics==2.0.0
+# reference-monitoring==1.0.0  # Commented out - custom package
 
 # Educational Resource Allocation
-resource-allocation==1.0.0
-academic-resource-manager==2.0.0
+# resource-allocation==1.0.0  # Commented out - custom package
 
 # Multi-OS Compatibility Layer
-os-compatibility-layer==1.0.0
-platform-abstraction==2.0.0
+# os-compatibility-layer==1.0.0  # Commented out - custom package
 
 # Educational Institution Configuration
-institutional-configuration==1.0.0
-academic-system-config==2.0.0
+# institutional-configuration==1.0.0  # Commented out - custom package
 
 # Educational Data Migration
-data-migration-tools==1.0.0
-academic-data-transfer==2.0.0
+# data-migration-tools==1.0.0  # Commented out - custom package
 
 # Educational Institution Backup
-institutional-backup==1.0.0
-academic-data-protection==2.0.0
+# institutional-backup==1.0.0  # Commented out - custom package
 
 # Educational System Health Check
-health-monitor==1.0.0
-system-health-checker==2.0.0
+# health-monitor==1.0.0  # Commented out - custom package
 
 # Educational Institution Logging
-institutional-logging==1.0.0
-academic-audit-logger==2.0.0
+# institutional-logging==1.0.0  # Commented out - custom package
 
 # Multi-OS Deployment Tools
-deployment-automation==1.0.0
-os-deployment-manager==2.0.0
+# deployment-automation==1.0.0  # Commented out - custom package
 
 # Educational Institution Security
-institutional-security==1.0.0
-academic-security-tools==2.0.0
+# institutional-security==1.0.0  # Commented out - custom package
 
 # Educational System Monitoring
-system-monitor==1.0.0
-educational-metrics==2.0.0
+# system-monitor==1.0.0  # Commented out - custom package
 
 # Cross-Platform Compatibility
-platform-compatibility==1.0.0
-cross-os-tools==2.0.0
+# platform-compatibility==1.0.0  # Commented out - custom package
 
 # Educational Institution Analytics
-institutional-analytics==1.0.0
-academic-insights==2.0.0
+# institutional-analytics==1.0.0  # Commented out - custom package
 
 # Multi-Site Educational Support
-distributed-educational-support==1.0.0
-multi-campus-monitoring==2.0.0
+# distributed-educational-support==1.0.0  # Commented out - custom package
 
 # Educational Institution Automation
-institutional-automation==1.0.0
-academic-workflow-automation==2.0.0
+# institutional-automation==1.0.0  # Commented out - custom package
 
 # System Maintenance Tools
-maintenance-tools==1.0.0
-system-maintenance==2.0.0
+# maintenance-tools==1.0.0  # Commented out - custom package
 
 # Educational Institution Management
-institutional-management==1.0.0
-academic-administration==2.0.0
+# institutional-management==1.0.0  # Commented out - custom package
 
 # Multi-OS Resource Management
-resource-management==1.0.0
-os-resource-manager==2.0.0
+# resource-management==1.0.0  # Commented out - custom package
 
 # Educational Institution Documentation
-institutional-documentation==1.0.0
-academic-documentation-tools==2.0.0
+# institutional-documentation==1.0.0  # Commented out - custom package
 
 # Cross-System Integration Tools
-integration-tools==1.0.0
-cross-system-integration==2.0.0
+# integration-tools==1.0.0  # Commented out - custom package
 
 # Educational Institution Support
-institutional-support==1.0.0
-academic-support-tools==2.0.0
+# institutional-support==1.0.0  # Commented out - custom package
 
 # Multi-OS Educational Framework
-educational-framework==1.0.0
-academic-system-framework==2.0.0
+# educational-framework==1.0.0  # Commented out - custom package
 
 # System Administration Tools
-system-administration==1.0.0
-administrative-tools==2.0.0
+# system-administration==1.0.0  # Commented out - custom package
 
 # Educational Institution Operations
-institutional-operations==1.0.0
-academic-operations==2.0.0
+# institutional-operations==1.0.0  # Commented out - custom package
 
 # Multi-OS Educational Ecosystem
-educational-ecosystem==1.0.0
-academic-system-ecosystem==2.0.0
+# educational-ecosystem==1.0.0  # Commented out - custom package

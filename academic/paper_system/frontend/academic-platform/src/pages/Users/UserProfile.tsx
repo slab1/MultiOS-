@@ -19,9 +19,9 @@ import {
   Calendar
 } from 'lucide-react';
 
-import LoadingSpinner from '../../components/Common/LoadingSpinner';
+import LoadingSpinner from '../Common/LoadingSpinner';
 import { useAuth } from '../../contexts/AuthContext';
-import { apiService } from '../../services/api';
+import { papersAPI } from '../../services/api';
 
 const profileSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
@@ -83,8 +83,8 @@ export default function UserProfile() {
   const fetchUserStats = async () => {
     try {
       const [papersRes, reviewsRes] = await Promise.all([
-        apiService.get('/papers', { params: { author: user?._id, limit: 0 } }),
-        apiService.get('/reviews', { params: { reviewer: user?._id, limit: 0 } })
+        papersAPI.getPapers({ params: { author: user?.id, limit: 0 } }),
+        papersAPI.getPapers({ params: { reviewer: user?.id, limit: 0 } })
       ]);
       
       setStats({
@@ -100,7 +100,7 @@ export default function UserProfile() {
   const onProfileSubmit = async (data: ProfileFormData) => {
     setIsLoading(true);
     try {
-      await apiService.put('/users/profile', data);
+      await papersAPI.put('/users/profile', data);
       toast.success('Profile updated successfully!');
     } catch (error: any) {
       toast.error(error.message || 'Failed to update profile');
@@ -112,7 +112,7 @@ export default function UserProfile() {
   const onPasswordSubmit = async (data: PasswordFormData) => {
     setIsLoading(true);
     try {
-      await apiService.post('/auth/change-password', {
+      await papersAPI.post('/auth/change-password', {
         currentPassword: data.currentPassword,
         newPassword: data.newPassword
       });

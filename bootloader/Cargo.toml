@@ -40,9 +40,7 @@ atomic = "0.5"
 criterion = { version = "0.5", features = ["html_reports"] }
 
 [features]
-default = ["uefi", "logging"]
-uefi = ["bootloader/uefi"]
-legacy = ["bootloader/legacy"]
+default = ["logging"]
 logging = []
 debug_mode = []
 memory_test = []

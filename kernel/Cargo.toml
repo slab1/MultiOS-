@@ -24,8 +24,7 @@ bootloader = { version = "0.9", features = ["map_physical_memory"] }
 # Memory management
 multios-memory-manager = { path = "../libraries/memory-manager", features = ["x86_64"] }
 
-# HAL dependencies
-rust-std = { package = "rust-std", version = "1.65.0", features = ["core"] }
+# HAL dependencies - rust-std is built-in to rustc, no need to specify
 
 # Testing
 [dev-dependencies]
@@ -33,9 +32,6 @@ criterion = { version = "0.5", features = ["html_reports"] }
 
 [features]
 default = []
-virtio = ["virtio-drivers"]
-uefi = ["bootloader/uefi"]
-legacy = ["bootloader/legacy"]
 
 [profile.dev]
 opt-level = 1
