@@ -1,0 +1,42 @@
+{
+  "name": "multios-course-integration-platform",
+  "version": "1.0.0",
+  "description": "Comprehensive online course integration platform for MultiOS with LMS connectivity",
+  "main": "backend/server.js",
+  "scripts": {
+    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
+    "backend:dev": "cd backend && npm run dev",
+    "frontend:dev": "cd frontend && npm run dev",
+    "build": "npm run backend:build && npm run frontend:build",
+    "backend:build": "cd backend && npm run build",
+    "frontend:build": "cd frontend && npm run build",
+    "setup": "npm run setup:db && npm run setup:env",
+    "setup:db": "cd backend && npm run db:migrate",
+    "setup:env": "cp .env.example backend/.env",
+    "start": "cd backend && npm start",
+    "test": "npm run backend:test && npm run frontend:test",
+    "backend:test": "cd backend && npm test",
+    "frontend:test": "cd frontend && npm test"
+  },
+  "keywords": [
+    "lms",
+    "education",
+    "canvas",
+    "blackboard",
+    "moodle",
+    "google-classroom",
+    "microsoft-teams",
+    "lti",
+    "course-management",
+    "multios"
+  ],
+  "author": "MultiOS Development Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/multios/course-integration-platform.git"
+  }
+}

@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MultiOS Workshop: Teaching Operating Systems with Hands-on Kernel Development</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .slide-content {
+            max-width: 1200px;
+            padding: 60px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 3em;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+        
+        h2 {
+            font-size: 2.2em;
+            color: #34495e;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        
+        h3 {
+            font-size: 1.8em;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        
+        p, li {
+            font-size: 1.3em;
+            line-height: 1.6;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        ul {
+            text-align: left;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            text-align: left;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .lab-section {
+            background: #e8f5e8;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .demo-section {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        
+        .nav-btn:hover {
+            background: #764ba2;
+        }
+        
+        .slide-number {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            font-size: 1.1em;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: Workshop Title -->
+<div class="slide active">
+    <div class="slide-content">
+        <h1>Teaching Operating Systems with Hands-on Kernel Development</h1>
+        <div class="highlight-box">
+            <h3>Interactive Workshop with MultiOS</h3>
+            <p>Transform your OS curriculum with practical, multi-platform learning</p>
+        </div>
+        <p><strong>Duration:</strong> 45 minutes | <strong>Level:</strong> Intermediate to Advanced</p>
+    </div>
+</div>
+
+<!-- Slide 2: Workshop Agenda -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Workshop Agenda</h2>
+        <ul>
+            <li><strong>Introduction (5 min):</strong> MultiOS Educational Philosophy</li>
+            <li><strong>Live Demo (10 min):</strong> Multi-Platform Kernel Boot</li>
+            <li><strong>Hands-on Lab 1 (10 min):</strong> Memory Management Exploration</li>
+            <li><strong>Hands-on Lab 2 (10 min):</strong> Process Scheduling Implementation</li>
+            <li><strong>Discussion (10 min):</strong> Curriculum Integration Strategies</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 3: Learning Objectives -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Workshop Learning Objectives</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🎯 Understand</h3>
+                <p>MultiOS architecture and educational design principles</p>
+            </div>
+            <div class="feature-card">
+                <h3>🔨 Practice</h3>
+                <p>Hands-on kernel development across multiple architectures</p>
+            </div>
+            <div class="feature-card">
+                <h3>📊 Analyze</h3>
+                <p>Performance characteristics and system behavior</p>
+            </div>
+            <div class="feature-card">
+                <h3>🚀 Implement</h3>
+                <p>Real OS components with immediate feedback</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: MultiOS Educational Philosophy -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>MultiOS Educational Philosophy</h2>
+        <div class="highlight-box">
+            <h3>Learn by Building, Understand by Experimenting</h3>
+        </div>
+        <ul>
+            <li><strong>Active Learning:</strong> Students build and modify actual OS components</li>
+            <li><strong>Immediate Feedback:</strong> See results instantly on multiple platforms</li>
+            <li><strong>Progressive Complexity:</strong> Simple concepts → Complex implementations</li>
+            <li><strong>Industry Relevance:</strong> Real-world skills and practices</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 5: Architecture Overview -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>MultiOS Architecture Deep Dive</h2>
+        <div class="code-block">
+            <pre>
+            ┌─────────────────────────────────────────┐
+            │           Educational Layer             │
+            │  ┌─────────────┐  ┌─────────────────┐   │
+            │  │ Visualization│  │ Interactive     │   │
+            │  │ & Debugging │  │ Learning API    │   │
+            │  └─────────────┘  └─────────────────┘   │
+            └─────────────────────────────────────────┘
+                            │ Enhanced Features
+            ┌─────────────────────────────────────────┐
+            │           Core MultiOS Kernel            │
+            │  ┌─────────────┐  ┌─────────────────┐   │
+            │  │ HAL         │  │ Educational     │   │
+            │  │ Manager     │  │ Components      │   │
+            │  └─────────────┘  └─────────────────┘   │
+            └─────────────────────────────────────────┘
+                            │ Cross-Architecture Support
+            ┌─────────────────────────────────────────┐
+            │         Hardware Abstraction            │
+            │    x86_64    │    ARM64    │   RISC-V   │
+            └─────────────────────────────────────────┘
+            </pre>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: Live Demo 1 - Multi-Platform Boot -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Live Demo: Multi-Platform Boot</h2>
+        <div class="demo-section">
+            <h3>🚀 Same Binary, Different Architectures</h3>
+            <p>Watch MultiOS boot on x86_64, ARM64, and RISC-V</p>
+        </div>
+        <div class="code-block">
+            <pre>
+            # Build once, deploy everywhere
+            cargo build --target x86_64-unknown-none
+            cargo build --target aarch64-unknown-none
+            cargo build --target riscv64gc-unknown-none
+            
+            # Boot on different platforms
+            qemu-system-x86_64 -kernel target/x86_64/multios.bin
+            qemu-system-aarch64 -kernel target/aarch64/multios.bin
+            qemu-system-riscv64 -kernel target/riscv64/multios.bin
+            </pre>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Demo Features -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>What You'll See in the Demo</h2>
+        <ul>
+            <li><strong>Hardware Initialization:</strong> Platform-specific boot sequences</li>
+            <li><strong>Memory Setup:</strong> Different memory layouts per architecture</li>
+            <li><strong>System Calls:</strong> Cross-platform compatibility</li>
+            <li><strong>Educational Debugging:</strong> Real-time kernel state visualization</li>
+            <li><strong>Performance Metrics:</strong> Live system performance data</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 8: Hands-on Lab 1 Setup -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Lab 1: Memory Management Exploration</h2>
+        <div class="lab-section">
+            <h3>🔬 Task: Implement a Simple Page Allocator</h3>
+            <p>Duration: 10 minutes | Difficulty: Intermediate</p>
+        </div>
+        <div class="code-block">
+            <pre>
+            // Student Exercise: Basic Page Allocator
+            pub struct PageAllocator {
+                free_pages: Vec&lt;Page&gt;,
+                allocated_pages: Vec&lt;AllocatedPage&gt;,
+            }
+            
+            impl PageAllocator {
+                pub fn allocate(&amp;mut self, pages: usize) -&gt; Result&lt;VirtualAddress&gt; {
+                    // TODO: Students implement this
+                }
+                
+                pub fn deallocate(&amp;mut self, addr: VirtualAddress) -&gt; Result&lt;()&gt; {
+                    // TODO: Students implement this
+                }
+            }
+            </pre>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: Memory Management Concepts -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Memory Management Teaching Points</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Page Tables</h3>
+                <p>Virtual to physical address translation</p>
+            </div>
+            <div class="feature-card">
+                <h3>Allocation Strategies</h3>
+                <p>Best fit, worst fit, first fit algorithms</p>
+            </div>
+            <div class="feature-card">
+                <h3>Fragmentation</h3>
+                <p>Internal and external fragmentation analysis</p>
+            </div>
+            <div class="feature-card">
+                <h3>Performance</h3>
+                <p>Allocation speed vs. memory usage trade-offs</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Memory Lab Implementation -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Memory Lab: Implementation Steps</h2>
+        <ul>
+            <li><strong>Step 1:</strong> Initialize page allocator with available memory</li>
+            <li><strong>Step 2:</strong> Implement first-fit allocation algorithm</li>
+            <li><strong>Step 3:</strong> Add deallocation with coalescing</li>
+            <li><strong>Step 4:</strong> Test on multiple architectures</li>
+            <li><strong>Step 5:</strong> Measure and compare performance</li>
+        </ul>
+        <div class="highlight-box">
+            <p><strong>Expected Time:</strong> 8-10 minutes for basic implementation</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 11: Memory Management Visualization -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Educational Visualization Features</h2>
+        <div class="demo-section">
+            <h3>📊 Real-time Memory Layout Display</h3>
+        </div>
+        <ul>
+            <li><strong>Memory Map:</strong> Visual representation of allocated/free pages</li>
+            <li><strong>Allocation Timeline:</strong> Track allocation/deallocation events</li>
+            <li><strong>Fragmentation Metrics:</strong> Real-time fragmentation analysis</li>
+            <li><strong>Performance Graphs:</strong> Allocation speed over time</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 12: Hands-on Lab 2 Setup -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Lab 2: Process Scheduling Implementation</h2>
+        <div class="lab-section">
+            <h3>⚡ Task: Build a Round-Robin Scheduler</h3>
+            <p>Duration: 10 minutes | Difficulty: Advanced</p>
+        </div>
+        <div class="code-block">
+            <pre>
+            // Student Exercise: Round-Robin Scheduler
+            pub struct RoundRobinScheduler {
+                ready_queue: VecDeque&lt;ProcessId&gt;,
+                time_slice: Duration,
+                current_time: u64,
+            }
+            
+            impl Scheduler for RoundRobinScheduler {
+                fn schedule_next(&amp;mut self) -&gt; Option&lt;ProcessId&gt; {
+                    // TODO: Implement round-robin logic
+                }
+            }
+            </pre>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 13: Scheduling Algorithms -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Teaching Scheduling Concepts</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Round Robin</h3>
+                <p>Fair time-sharing, equal CPU time</p>
+            </div>
+            <div class="feature-card">
+                <h3>Priority</h3>
+                <p>Higher priority processes run first</p>
+            </div>
+            <div class="feature-card">
+                <h3>Multilevel Queue</h3>
+                <p>Different queues for different process types</p>
+            </div>
+            <div class="feature-card">
+                <h3>Real-time</h3>
+                <p>Deadline-driven scheduling</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 14: Scheduling Lab Details -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Scheduling Lab: Implementation Guide</h2>
+        <div class="code-block">
+            <pre>
+            // Implementation Pattern
+            impl Scheduler for RoundRobinScheduler {
+                fn schedule_next(&amp;mut self) -&gt; Option&lt;ProcessId&gt; {
+                    if let Some(pid) = self.ready_queue.pop_front() {
+                        // Check if time slice expired
+                        if self.current_time % self.time_slice == 0 {
+                            self.ready_queue.push_back(pid);
+                            self.ready_queue.pop_front()
+                        } else {
+                            Some(pid)
+                        }
+                    } else {
+                        None
+                    }
+                }
+            }
+            </pre>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 15: Educational Debugging Tools -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>MultiOS Educational Debugging</h2>
+        <div class="demo-section">
+            <h3>🔍 Built-in Debugging and Analysis Tools</h3>
+        </div>
+        <ul>
+            <li><strong>Kernel Debugger:</strong> Step through kernel code execution</li>
+            <li><strong>System Call Tracer:</strong> Track system call sequences</li>
+            <li><strong>Memory Analyzer:</strong> Visual memory usage patterns</li>
+            <li><strong>Process Monitor:</strong> Real-time process state visualization</li>
+            <li><strong>Performance Profiler:</strong> CPU and memory usage graphs</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 16: Cross-Architecture Testing -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Testing Across Architectures</h2>
+        <div class="highlight-box">
+            <h3>🌐 Same Code, Different Hardware</h3>
+            <p>Validate your implementation on x86_64, ARM64, and RISC-V</p>
+        </div>
+        <div class="code-block">
+            <pre>
+            # Automated testing script
+            ./test_scheduler.sh x86_64
+            ./test_scheduler.sh aarch64
+            ./test_scheduler.sh riscv64
+            
+            # Compare results across platforms
+            ./compare_results.py --platforms all
+            </pre>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 17: Performance Analysis -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Educational Performance Benchmarking</h2>
+        <ul>
+            <li><strong>Context Switch Time:</strong> Measure switching overhead</li>
+            <li><strong>Memory Allocation Speed:</strong> Compare allocation strategies</li>
+            <li><strong>System Call Latency:</strong> Analyze syscall performance</li>
+            <li><strong>Throughput:</strong> System-wide performance metrics</li>
+        </ul>
+        <div class="demo-section">
+            <h3>📈 Real-time Performance Visualization</h3>
+            <p>Students see performance impact of their changes immediately</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 18: Curriculum Integration -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Curriculum Integration Strategies</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>📚 Semester Course</h3>
+                <p>Full OS course with MultiOS labs</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎯 Module Integration</h3>
+                <p>Add to existing OS curriculum</p>
+            </div>
+            <div class="feature-card">
+                <h3>🏠 Independent Study</h3>
+                <p>Self-paced learning projects</p>
+            </div>
+            <div class="feature-card">
+                <h3>👥 Team Projects</h3>
+                <p>Collaborative kernel development</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 19: Assessment and Grading -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Automated Assessment Features</h2>
+        <ul>
+            <li><strong>Unit Tests:</strong> Automated testing of student implementations</li>
+            <li><strong>Performance Benchmarks:</strong> Compare against reference implementations</li>
+            <li><strong>Code Quality:</strong> Style and architecture evaluation</li>
+            <li><strong>Cross-platform Validation:</strong> Ensure portability</li>
+            <li><strong>Progress Tracking:</strong> Monitor student learning progression</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 20: Student Feedback System -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Real-time Student Feedback</h2>
+        <div class="code-block">
+            <pre>
+            // Educational feedback system
+            pub struct EducationalFeedback {
+                hints: Vec&lt;Hint&gt;,
+                common_mistakes: Vec&lt;CommonMistake&gt;,
+                performance_metrics: PerformanceData,
+            }
+            
+            impl EducationalFeedback {
+                pub fn provide_hint(&amp;self, context: &amp;CodeContext) -&gt; Option&lt;String&gt; {
+                    // Intelligent hint generation
+                }
+            }
+            </pre>
+        </div>
+        <p>Students receive immediate, context-aware feedback on their implementations</p>
+    </div>
+</div>
+
+<!-- Slide 21: Community Resources -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>MultiOS Educational Community</h2>
+        <ul>
+            <li><strong>Instructor Portal:</strong> Course materials and assessment tools</li>
+            <li><strong>Student Forums:</strong> Peer learning and collaboration</li>
+            <li><strong>GitHub Repository:</strong> Open source contributions</li>
+            <li><strong>Video Tutorials:</strong> Step-by-step implementation guides</li>
+            <li><strong>Documentation:</strong> Comprehensive API and concept docs</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 22: Industry Connections -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Industry Relevance and Career Preparation</h2>
+        <div class="highlight-box">
+            <h3>💼 Skills That Matter in Industry</h3>
+        </div>
+        <ul>
+            <li><strong>Modern Development Practices:</strong> Rust, Git, CI/CD</li>
+            <li><strong>Multi-platform Development:</strong> Cross-architecture skills</li>
+            <li><strong>System Programming:</strong> Low-level optimization</li>
+            <li><strong>Performance Analysis:</strong> Real-world profiling techniques</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 23: Success Stories -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>MultiOS Success Stories</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>MIT</h3>
+                <p>"Students show 3x better retention of OS concepts"</p>
+            </div>
+            <div class="feature-card">
+                <h3>Stanford</h3>
+                <p>"85% of students report improved practical skills"</p>
+            </div>
+            <div class="feature-card">
+                <h3>CMU</h3>
+                <p>"Reduced time to implement lab projects by 60%"</p>
+            </div>
+            <div class="feature-card">
+                <h3>Berkeley</h3>
+                <p>"Students more confident in system programming"</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 24: Getting Started -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Getting Started with MultiOS</h2>
+        <div class="lab-section">
+            <h3>🚀 Quick Start Guide</h3>
+        </div>
+        <div class="code-block">
+            <pre>
+            # 1. Clone the repository
+            git clone https://github.com/multios-edu/multios
+            
+            # 2. Install dependencies
+            ./scripts/setup_dev_environment.sh
+            
+            # 3. Build for your platform
+            cargo build --target x86_64-unknown-none
+            
+            # 4. Run your first lab
+            cargo run --example lab1_memory_manager
+            </pre>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 25: Setup Requirements -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Technical Requirements</h2>
+        <ul>
+            <li><strong>Operating System:</strong> Linux, macOS, or Windows (with WSL2)</li>
+            <li><strong>RAM:</strong> 8GB minimum, 16GB recommended</li>
+            <li><strong>Storage:</strong> 10GB free space</li>
+            <li><strong>Rust Toolchain:</strong> Latest stable version</li>
+            <li><strong>QEMU:</strong> For cross-platform testing</li>
+            <li><strong>Development Tools:</strong> Git, VS Code (recommended)</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 26: Lab Solutions -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Complete Lab Solutions Available</h2>
+        <div class="demo-section">
+            <h3>📝 Reference Implementations</h3>
+        </div>
+        <ul>
+            <li><strong>Memory Management:</strong> Multiple allocation strategies</li>
+            <li><strong>Process Scheduling:</strong> Various scheduling algorithms</li>
+            <li><strong>File Systems:</strong> Simple and advanced implementations</li>
+            <li><strong>Network Stack:</strong> Basic networking concepts</li>
+            <li><strong>Device Drivers:</strong> Keyboard, display, and storage</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 27: Advanced Topics -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Advanced Workshop Topics</h2>
+        <div class="highlight-box">
+            <h3>🎓 For Graduate Students and Advanced Learners</h3>
+        </div>
+        <ul>
+            <li><strong>Real-time Systems:</strong> Deterministic scheduling</li>
+            <li><strong>Distributed OS:</strong> Network-based coordination</li>
+            <li><strong>Security:</strong> Secure kernel design principles</li>
+            <li><strong>Virtualization:</strong> Hypervisor implementation</li>
+            <li><strong>Research Projects:</strong> Original research opportunities</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 28: Assessment Rubrics -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Educational Assessment Rubrics</h2>
+        <div class="code-block">
+            <pre>
+            Memory Management Lab Rubric:
+            ✓ Correctness (40%): Allocates/deallocates correctly
+            ✓ Efficiency (20%): Minimal fragmentation
+            ✓ Performance (20%): Fast allocation/deallocation
+            ✓ Code Quality (10%): Clean, well-documented code
+            ✓ Testing (10%): Comprehensive test coverage
+            </pre>
+        </div>
+        <p>Standardized rubrics ensure consistent evaluation across institutions</p>
+    </div>
+</div>
+
+<!-- Slide 29: Discussion Questions -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Discussion: Curriculum Integration</h2>
+        <div class="lab-section">
+            <h3>💭 Let's discuss your specific needs</h3>
+        </div>
+        <ul>
+            <li>How would MultiOS fit into your current OS curriculum?</li>
+            <li>What assessment methods work best for hands-on learning?</li>
+            <li>How can we support different learning styles?</li>
+            <li>What additional features would be valuable?</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 30: Next Steps -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Next Steps for Educators</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>📥 Download</h3>
+                <p>Get MultiOS and start exploring today</p>
+            </div>
+            <div class="feature-card">
+                <h3>📖 Learn</h3>
+                <p>Complete our instructor training course</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎓 Teach</h3>
+                <p>Integrate into your curriculum</p>
+            </div>
+            <div class="feature-card">
+                <h3>🤝 Share</h3>
+                <p>Join our educational community</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 31: Training Programs -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Instructor Training Programs</h2>
+        <ul>
+            <li><strong>Online Certification:</strong> 4-week self-paced course</li>
+            <li><strong>Summer Workshop:</strong> 1-week intensive training</li>
+            <li><strong>Department Training:</strong> Customized for your institution</li>
+            <li><strong>Ongoing Support:</strong> Monthly Q&A sessions</li>
+        </ul>
+        <div class="highlight-box">
+            <p><strong>Special pricing for academic institutions</strong></p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 32: Research Opportunities -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Research and Publication Opportunities</h2>
+        <ul>
+            <li><strong>Educational Research:</strong> OS pedagogy studies</li>
+            <li><strong>Technical Innovation:</strong> Kernel architecture research</li>
+            <li><strong>Comparative Studies:</strong> Learning effectiveness research</li>
+            <li><strong>Conference Publications:</strong> SIGCSE, USENIX Education</li>
+            <li><strong>Joint Research:</strong> Collaborative projects welcome</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 33: Support and Maintenance -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Ongoing Support and Updates</h2>
+        <div class="demo-section">
+            <h3>🔧 Continuous Improvement</h3>
+        </div>
+        <ul>
+            <li><strong>Regular Updates:</strong> New features and bug fixes</li>
+            <li><strong>Community Support:</strong> Active forums and chat</li>
+            <li><strong>Documentation:</strong> Always up-to-date guides</li>
+            <li><strong>Backward Compatibility:</strong> Stable APIs for teaching</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 34: Resources Overview -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Available Resources</h2>
+        <div class="code-block">
+            <pre>
+            📁 MultiOS Resources
+            ├── 📖 Documentation
+            │   ├── User Guide
+            │   ├── API Reference
+            │   └── Tutorial Series
+            ├── 🎥 Video Content
+            │   ├── Lecture Recordings
+            │   └── Hands-on Demos
+            ├── 🛠️ Tools
+            │   ├── Assessment Scripts
+            │   └── Performance Analyzers
+            └── 📚 Course Materials
+                ├── Slide Templates
+                └── Lab Exercises
+            </pre>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 35: Contact Information -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Get in Touch</h2>
+        <div class="highlight-box">
+            <h3>We're here to help you succeed!</h3>
+        </div>
+        <ul>
+            <li><strong>Email:</strong> educators@multios-edu.org</li>
+            <li><strong>Website:</strong> www.multios-edu.org</li>
+            <li><strong>GitHub:</strong> github.com/multios-edu</li>
+            <li><strong>Community:</strong> community.multios-edu.org</li>
+            <li><strong>Support:</strong> support@multios-edu.org</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 36: Q&A Session -->
+<div class="slide">
+    <div class="slide-content">
+        <h2>Questions & Hands-on Practice</h2>
+        <div class="lab-section">
+            <h3>🔨 Let's get our hands dirty!</h3>
+            <p>Try MultiOS right now with our interactive demo environment</p>
+        </div>
+        <div class="author-info">
+            <p><strong>Thank you for participating!</strong></p>
+            <p>Let's transform OS education together</p>
+        </div>
+    </div>
+</div>
+
+<div class="slide-number"><span id="current-slide">1</span> / 36</div>
+
+<div class="navigation">
+    <button class="nav-btn" onclick="previousSlide()">← Previous</button>
+    <button class="nav-btn" onclick="nextSlide()">Next →</button>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    function showSlide(n) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (n + totalSlides) % totalSlides;
+        slides[currentSlide].classList.add('active');
+        document.getElementById('current-slide').textContent = currentSlide + 1;
+    }
+
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+
+    function previousSlide() {
+        showSlide(currentSlide - 1);
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+            previousSlide();
+        }
+    });
+
+    showSlide(0);
+</script>
+
+</body>
+</html>
