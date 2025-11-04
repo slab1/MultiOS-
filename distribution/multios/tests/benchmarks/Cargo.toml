@@ -1,0 +1,76 @@
+# Performance Benchmarks for MultiOS
+# This directory contains performance benchmarks and regression tests
+
+[package]
+name = "multios-benchmarks"
+version = "0.1.0"
+edition = "2021"
+authors = ["MultiOS Development Team"]
+description = "Performance benchmarks for MultiOS"
+
+[dependencies]
+# Benchmarking dependencies
+criterion = { version = "0.5", features = ["html_reports", "csv_output"] }
+proptest = "1.4"
+statistical = "0.1"
+
+[dev-dependencies]
+# Additional benchmark dependencies
+quickcheck = "1.0"
+rand = "0.8"
+
+[[bench]]
+name = "memory_allocation_benchmarks"
+harness = false
+
+[[bench]]
+name = "scheduler_benchmarks"
+harness = false
+
+[[bench]]
+name = "ipc_benchmarks"
+harness = false
+
+[[bench]]
+name = "context_switch_benchmarks"
+harness = false
+
+[[bench]]
+name = "interrupt_handling_benchmarks"
+harness = false
+
+[[bench]]
+name = "filesystem_benchmarks"
+harness = false
+
+[[bench]]
+name = "network_stack_benchmarks"
+harness = false
+
+[[bench]]
+name = "driver_benchmarks"
+harness = false
+
+[features]
+default = []
+# Benchmark-specific features
+detailed_profiling = []
+hardware_counters = []
+
+# Architecture-specific benchmark features
+x86_64 = []
+arm64 = []
+riscv64 = []
+
+# Benchmark targets
+[bench-groups]
+cpu_intensive = ["memory_allocation_benchmarks", "scheduler_benchmarks", "context_switch_benchmarks"]
+io_intensive = ["filesystem_benchmarks", "network_stack_benchmarks", "driver_benchmarks"]
+mixed_workload = ["ipc_benchmarks", "interrupt_handling_benchmarks"]
+
+# Benchmark configuration
+[profile.bench]
+opt-level = 3
+debug = false
+lto = true
+codegen-units = 1

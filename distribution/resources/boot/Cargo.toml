@@ -1,0 +1,36 @@
+[package]
+name = "multios-hardware-boot"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bootloader = "0.9"
+spinned = "0.5"
+log = "0.4"
+uart_16550 = "0.3"
+pic8259 = "0.10"
+x86_64 = "0.14"
+pc-keymap = "0.7"
+linked_list_allocator = "0.10"
+spin = "0.9"
+bitflags = "2.4"
+
+[features]
+default = []
+uefi = ["bootloader/uefi"]
+bios = ["bootloader/bios"]
+arm64 = []
+riscv64 = []
+x86_64 = []
+testing = []
+debug = []
+optimized = []
+
+[profile.dev]
+opt-level = 0
+debug = true
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1

@@ -1,0 +1,44 @@
+[package]
+name = "multios-kernel"
+version = "0.1.0"
+edition = "2021"
+authors = ["MultiOS Development Team"]
+description = "MultiOS kernel - A hybrid microkernel written in Rust"
+
+[lib]
+name = "multios_kernel"
+crate-type = ["staticlib"]
+
+[dependencies]
+# Core kernel dependencies
+x86_64 = "0.14"
+bootloader = "0.9"
+pic8259 = "0.10"
+uart_16550 = { version = "0.3", optional = true }
+linked_list_allocator = "0.10"
+spin = "0.9"
+lazy_static = "1.4"
+log = "0.4"
+console = "0.15"
+volatile = "0.4"
+bit_field = "0.10"
+libm = "0.2"
+
+[features]
+default = ["serial"]
+serial = []
+qemu = []
+# Architecture-specific features
+x86_64 = []
+aarch64 = []
+riscv64 = []
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true

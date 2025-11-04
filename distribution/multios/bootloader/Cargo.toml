@@ -1,0 +1,33 @@
+[package]
+name = "multios-bootloader"
+version = "0.1.0"
+edition = "2021"
+authors = ["MultiOS Development Team"]
+description = "MultiOS bootloader - Bootloader for MultiOS operating system"
+
+[lib]
+name = "multios_bootloader"
+crate-type = ["staticlib"]
+
+[dependencies]
+bootloader = "0.9"
+x86_64 = "0.14"
+log = "0.4"
+console = "0.15"
+
+[features]
+default = []
+# Enable UEFI support
+uefi = []
+# Enable BIOS support
+bios = []
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true

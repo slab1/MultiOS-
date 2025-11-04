@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MultiOS Interactive Documentation</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>MultiOS Documentation</h1>
+            <p>Universal Educational Operating System Documentation</p>
+        </header>
+
+        <div class="main-content">
+            <nav class="sidebar">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search documentation...">
+                    <button id="searchBtn">🔍</button>
+                </div>
+                
+                <div class="nav-tree" id="navTree">
+                    <!-- Navigation tree will be populated by JavaScript -->
+                </div>
+
+                <div class="quick-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#" onclick="loadDoc('README.md')">📚 Documentation Index</a></li>
+                        <li><a href="#" onclick="loadDoc('getting_started/README.md')">🚀 Getting Started</a></li>
+                        <li><a href="#" onclick="loadDoc('user_guide/README.md')">👤 User Guide</a></li>
+                        <li><a href="#" onclick="loadDoc('developer/README.md')">🔧 Developer Guide</a></li>
+                        <li><a href="#" onclick="loadDoc('architecture/README.md')">🏗️ Architecture</a></li>
+                        <li><a href="#" onclick="loadDoc('api/README.md')">📖 API Reference</a></li>
+                        <li><a href="#" onclick="loadDoc('tutorials/README.md')">📝 Tutorials</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="content">
+                <div class="toolbar">
+                    <button id="prevBtn" onclick="previousDoc()">← Previous</button>
+                    <button id="nextBtn" onclick="nextDoc()">Next →</button>
+                    <button onclick="toggleFullscreen()">⛶ Fullscreen</button>
+                    <button onclick="printDoc()">🖨️ Print</button>
+                    <div class="breadcrumb" id="breadcrumb"></div>
+                </div>
+
+                <div class="doc-content" id="docContent">
+                    <div class="loading">Loading documentation...</div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Search Results Modal -->
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSearchModal()">&times;</span>
+            <h2>Search Results</h2>
+            <div id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- Code Example Modal -->
+    <div id="codeModal" class="modal">
+        <div class="modal-content code-modal">
+            <span class="close" onclick="closeCodeModal()">&times;</span>
+            <h2 id="codeModalTitle">Code Example</h2>
+            <pre><code id="codeExample" class="language-rust"></code></pre>
+            <button onclick="copyCode()">📋 Copy Code</button>
+        </div>
+    </div>
+</body>
+</html>

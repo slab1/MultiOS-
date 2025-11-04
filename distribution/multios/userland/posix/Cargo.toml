@@ -1,0 +1,31 @@
+[package]
+name = "multios-posix"
+version = "0.1.0"
+edition = "2021"
+description = "POSIX API Compatibility Layer for MultiOS"
+license = "MIT OR Apache-2.0"
+authors = ["MultiOS Team"]
+
+[lib]
+crate-type = ["staticlib", "cdylib"]
+
+[dependencies]
+# Core functionality
+spin = "0.9"
+bitflags = "2.4"
+log = "0.4"
+
+# User-space networking (when available)
+# Note: These would be platform-specific implementations
+
+[features]
+default = []
+stdio = ["std"]
+unistd = ["std"] 
+sys_types = ["std"]
+signal = ["std"]
+socket = ["std"]
+pthread = ["std"]
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }

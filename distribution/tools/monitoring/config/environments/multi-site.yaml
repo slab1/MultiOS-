@@ -1,0 +1,488 @@
+# Multi-Site Deployment Configuration
+# Optimized for distributed monitoring across multiple sites
+
+# General Settings
+general:
+  environment: multi-site
+  timezone: UTC
+  log_level: INFO
+  debug: false
+  data_retention_days: 90
+  site_id: auto  # Auto-detect from hostname
+  coordinator_enabled: false
+
+# Dashboard Configuration
+dashboard:
+  port: 8080
+  bind_address: "0.0.0.0"
+  ssl_enabled: true
+  session_timeout: 1800  # Shorter for distributed environment
+  theme: light
+  max_connections: 2000
+  enable_cors: true
+  cors_origins: ["*"]  # Restrict in production
+
+# Database Configuration
+database:
+  type: postgresql
+  host: localhost
+  port: 5432
+  name: multios_monitoring
+  username: monitor_user
+  password: secure_password_multi_site
+  pool_size: 30
+  max_overflow: 50
+  pool_timeout: 30
+  echo: false
+  pool_pre_ping: true
+  ssl_mode: require
+  
+  # Read replicas for distributed reads
+  replicas:
+    - host: replica1.internal
+      port: 5432
+      weight: 1
+    - host: replica2.internal
+      port: 5432
+      weight: 1
+
+# Redis Configuration
+redis:
+  host: localhost
+  port: 6379
+  db: 0
+  password: secure_redis_password
+  decode_responses: true
+  max_connections: 100
+  connection_pool_timeout: 5
+  ssl: false
+  
+  # Redis Cluster for high availability
+  cluster:
+    enabled: false
+    nodes:
+      - host: redis1.internal
+        port: 6379
+      - host: redis2.internal
+        port: 6379
+      - host: redis3.internal
+        port: 6379
+
+# Site Configuration
+sites:
+  coordinator:
+    enabled: true
+    url: https://monitoring-coordinator.company.com
+    api_key: coordinator_api_key_here
+    heartbeat_interval: 60
+    sync_interval: 300
+  
+  current_site:
+    name: "Main Campus"
+    location: "Building A"
+    timezone: "America/New_York"
+    contact: "admin@company.com"
+    
+    network:
+      local_subnet: "192.168.1.0/24"
+      trusted_networks:
+        - "10.0.0.0/8"
+        - "172.16.0.0/12"
+        - "192.168.0.0/16"
+    
+    agents:
+      - name: "Campus Servers"
+        type: "system"
+        targets: ["192.168.1.10", "192.168.1.11", "192.168.1.12"]
+      - name: "Lab Computers"
+        type: "educational"
+        targets: ["192.168.2.0/24"]
+      - name: "Network Equipment"
+        type: "network"
+        targets: ["192.168.1.1", "192.168.1.254"]
+
+# Distributed Monitoring Configuration
+monitoring:
+  enabled: true
+  collection_interval: 30
+  sync_with_coordinator: true
+  data_buffer_size: 1000
+  
+  agents:
+    system:
+      enabled: true
+      metrics:
+        - cpu
+        - memory
+        - disk
+        - network
+        - processes
+      interval: 30
+      remote_agents: true
+    
+    hardware:
+      enabled: true
+      metrics:
+        - temperature
+        - voltage
+        - fan_speed
+        - disk_health
+      interval: 120
+      remote_agents: true
+    
+    network:
+      enabled: true
+      interfaces: ["eth0", "eth1", "wlan0"]
+      track_bandwidth: true
+      packet_analysis: true
+      interval: 30
+      remote_monitoring: true
+    
+    distributed:
+      enabled: true
+      coordinator_url: https://monitoring-coordinator.company.com
+      site_id: auto
+      heartbeat_interval: 60
+      data_sync_interval: 300
+      compression: true
+      encryption: true
+
+# Educational Configuration (Multi-Site)
+educational:
+  enabled: true
+  multi_site_sync: true
+  privacy_level: "enhanced"
+  
+  agents:
+    lab_usage:
+      enabled: true
+      update_interval: 180  # 3 minutes for better sync
+      track_per_user: true
+      track_per_app: true
+      anonymize_data: true
+      site_aggregation: true
+    
+    student_activity:
+      enabled: true
+      update_interval: 120  # 2 minutes
+      privacy_mode: true
+      data_retention_days: 180  # Reduced for privacy
+      cross_site_analysis: false
+      anonymization_level: "high"
+    
+    compliance:
+      enabled: true
+      ferpa_compliance: true
+      gdpr_compliance: true
+      audit_trail: true
+      retention_period_days: 2555
+      data_residency: "local_only"
+
+# Alert Configuration (Distributed)
+alerts:
+  enabled: true
+  check_interval: 30  # Faster checking for distributed
+  max_alerts_per_rule: 200
+  escalation_enabled: true
+  escalation_timeout: 180  # Faster escalation
+  
+  # Cross-site alerting
+  distributed_alerts:
+    enabled: true
+    coordinator_url: https://monitoring-coordinator.company.com
+    share_alerts: true
+    global_threshold_mode: false
+    site_specific_rules: true
+  
+  channels:
+    email:
+      enabled: true
+      smtp_server: smtp.company.com
+      smtp_port: 587
+      username: alerts@company.com
+      password: secure_email_password
+      use_tls: true
+      connection_pool_size: 10
+    
+    slack:
+      enabled: true
+      webhook_url: https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
+      channel: "#infrastructure-alerts"
+      mentions:
+        - "@here"
+    
+    webhook:
+      enabled: true
+      url: https://monitoring-coordinator.company.com/api/alerts
+      timeout: 10
+      retries: 3
+  
+  rules:
+    high_cpu_global:
+      name: "High CPU Usage - Cross Site"
+      description: "CPU usage exceeds 80% across multiple sites"
+      condition: "cpu_usage > 80"
+      severity: "warning"
+      duration: 300
+      scope: "global"
+      actions: ["email", "slack"]
+    
+    site_isolation:
+      name: "Site Isolation Detected"
+      description: "Site cannot communicate with coordinator"
+      condition: "coordinator_heartbeat_failure > 180"
+      severity: "critical"
+      duration: 60
+      scope: "local"
+      actions: ["email", "slack", "webhook"]
+    
+    network_partition:
+      name: "Network Partition"
+      description: "Inter-site communication failure"
+      condition: "inter_site_ping_failure > 120"
+      severity: "critical"
+      duration: 30
+      scope: "global"
+      actions: ["email", "slack"]
+
+# Logging Configuration (Distributed)
+logging:
+  level: INFO
+  format: json
+  compression: true
+  
+  destinations:
+    - type: file
+      path: /var/log/multios-monitoring/application.log
+      rotation: daily
+      retention: 30
+      max_size: "200MB"
+      compression: true
+    
+    - type: syslog
+      server: log-collector.company.com
+      port: 514
+      facility: local0
+      tcp: true
+      tls: true
+    
+    - type: elasticsearch
+      host: elasticsearch.company.com
+      port: 9200
+      index: "multios-monitoring-multi-site"
+      timeout: 30
+  
+  # Local buffering for network issues
+  local_buffer:
+    enabled: true
+    max_size: "1GB"
+    flush_interval: 60
+  
+  parsers:
+    - type: syslog
+    - type: json
+    - type: nginx
+    - type: application
+    - type: distributed_heartbeat
+  
+  retention:
+    application_logs: 30
+    access_logs: 7
+    error_logs: 90
+    audit_logs: 2555
+    distributed_logs: 7  # Shorter for distributed logs
+
+# Integration Configuration (Multi-Site)
+integrations:
+  prometheus:
+    enabled: true
+    port: 9090
+    endpoint: /metrics
+    include_system_metrics: true
+    include_application_metrics: true
+    include_distributed_metrics: true
+  
+  grafana:
+    enabled: true
+    url: https://grafana.company.com
+    api_key: your_grafana_api_key
+    datasource_name: "MultiOS Multi-Site"
+    dashboard_folder: "MultiOS/Multi-Site"
+    shared_dashboards: true
+  
+  centralized_monitoring:
+    enabled: true
+    coordinator_url: https://monitoring-coordinator.company.com
+    api_key: coordinator_api_key
+    push_metrics: true
+    push_logs: true
+    push_alerts: true
+    push_interval: 60
+
+# Security Configuration (Multi-Site)
+security:
+  enabled: true
+  
+  authentication:
+    method: "jwt"
+    secret_key: "your_jwt_secret_multi_site_change_in_production"
+    access_token_expire_minutes: 30  # Shorter for security
+    refresh_token_expire_days: 7     # Shorter for distributed
+    max_failed_attempts: 3           # Tighter security
+    lockout_duration: 1800
+  
+  # Multi-site security
+  cross_site_auth:
+    enabled: true
+    coordinator_url: https://monitoring-coordinator.company.com
+    token_exchange: true
+    trust_level: "high"
+  
+  network:
+    allowed_hosts: ["*.company.com", "192.168.0.0/16", "10.0.0.0/8"]
+    max_request_size: "32MB"  # Larger for distributed data
+    rate_limiting:
+      enabled: true
+      requests_per_minute: 200  # Higher for distributed
+      burst_size: 40
+  
+  encryption:
+    at_rest: true
+    in_transit: true
+    algorithm: "AES-256-GCM"
+    key_rotation_days: 30
+
+# Performance Configuration (Multi-Site)
+performance:
+  workers: 4  # More workers for distributed load
+  worker_connections: 2000
+  max_requests: 2000
+  max_requests_jitter: 200
+  timeout: 60  # Longer timeout for distributed calls
+  keepalive: 5
+  
+  caching:
+    enabled: true
+    default_timeout: 600  # Longer cache for distributed
+    cache_null: true
+    cache_404: true
+    distributed_cache: true
+  
+  compression:
+    enabled: true
+    min_size: 1000  # Compress smaller responses
+    compress_level: 6
+
+# Data Retention Configuration (Multi-Site)
+data_retention:
+  metrics:
+    high_resolution: 3     # days - reduced for distributed
+    normal_resolution: 14  # days - reduced
+    low_resolution: 180    # days - reduced
+  
+  logs:
+    application: 14        # days - reduced
+    access: 3             # days - reduced
+    error: 30             # days - reduced
+    audit: 2555           # days (7 years) - unchanged
+    distributed: 7        # days - much shorter
+  
+  alerts:
+    active: 30            # days - reduced
+    resolved: 180         # days - reduced
+  
+  educational:
+    lab_usage: 365        # days (1 year) - reduced
+    student_activity: 90   # days (3 months) - reduced for privacy
+    compliance: 2555      # days (7 years) - unchanged
+
+# Backup Configuration (Multi-Site)
+backup:
+  enabled: true
+  schedule: "0 1 * * *"  # Daily at 1 AM (off-peak)
+  retention_days: 14  # Reduced for multi-site
+  
+  components:
+    database:
+      enabled: true
+      compression: true
+      encryption: true
+    configuration:
+      enabled: true
+      encryption: true
+    distributed_state:
+      enabled: true  # Backup distributed configuration
+      compression: true
+  
+  destinations:
+    - type: local
+      path: /var/backups/multios-monitoring/
+    - type: remote
+      endpoint: s3://your-backup-bucket/multios-monitoring/
+      region: us-east-1
+      access_key: your_access_key
+      secret_key: your_secret_key
+      encryption: "AES-256"
+    - type: coordinator
+      url: https://monitoring-coordinator.company.com/api/backup
+      api_key: coordinator_api_key
+
+# Maintenance Configuration (Multi-Site)
+maintenance:
+  enabled: true
+  
+  cleanup:
+    schedule: "0 4 * * 1"  # Weekly on Monday at 4 AM
+    vacuum_database: true
+    clear_caches: true
+    rotate_logs: true
+    sync_with_coordinator: true
+  
+  health_check:
+    schedule: "*/2 * * * *"  # Every 2 minutes for distributed
+    endpoints:
+      - /api/health
+      - /api/metrics/system
+      - /api/database/status
+      - /api/distributed/coordinator_status
+    
+    coordinator_checks:
+      enabled: true
+      interval: 60
+      timeout: 10
+      retries: 3
+  
+  notifications:
+    admin_email: admin@company.com
+    site_admin_email: site-admin@company.com
+    on_failure: true
+    on_recovery: true
+    on_coordinator_failure: true
+
+# Network Configuration
+network:
+  discovery:
+    enabled: true
+    subnet_scan: "192.168.0.0/16"
+    scan_interval: 3600
+    service_discovery: true
+  
+  connectivity:
+    coordinator_url: https://monitoring-coordinator.company.com
+    ping_interval: 60
+    connection_timeout: 10
+    retry_attempts: 3
+    retry_delay: 5
+  
+  load_balancing:
+    enabled: false  # Single site configuration
+    algorithms:
+      - round_robin
+      - least_connections
+      - weighted_response_time
+  
+  high_availability:
+    enabled: true
+    failover_timeout: 30
+    health_check_interval: 10
+    backup_site: "backup-site-1.company.com"

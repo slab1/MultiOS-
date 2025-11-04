@@ -1,0 +1,45 @@
+[Unit]
+Description=MultiOS Package Manager
+Documentation=https://docs.multios.org/package-manager
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=multios-pm
+Group=multios-pm
+ExecStart=/usr/local/bin/multios-pm daemon
+ExecReload=/bin/kill -HUP $MAINPID
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/multios-package-manager
+ReadWritePaths=/var/log/multios-package-manager
+ReadWritePaths=/var/cache/multios-package-manager
+
+# Resource limits
+MemoryMax=512M
+CPUQuota=50%
+TasksMax=100
+
+# Environment
+Environment=RUST_LOG=info
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+
+# Working directory
+WorkingDirectory=/var/lib/multios-package-manager
+
+# Restart policy
+Restart=always
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=multios-package-manager
+
+[Install]
+WantedBy=multi-user.target

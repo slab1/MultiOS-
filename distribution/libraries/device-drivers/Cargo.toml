@@ -1,0 +1,55 @@
+[package]
+name = "multios-device-drivers"
+version = "0.1.0"
+edition = "2021"
+description = "MultiOS Device Driver Framework"
+license = "MIT OR Apache-2.0"
+authors = ["MultiOS Team"]
+
+[dependencies]
+# Core driver framework
+spin = "0.9"
+bitflags = "2.4"
+log = "0.4"
+x86_64 = "0.14"
+
+# Memory allocation (for no_std) - alloc is built-in to Rust
+
+# Hardware interfaces
+uart_16550 = { version = "0.3", optional = true }
+pc-keyboard = { version = "0.7", optional = true }
+pic8259 = { version = "0.10", optional = true }
+
+# Virtual devices
+virtio-drivers = { version = "0.4", optional = true }
+
+# Optional console output
+console = "0.15"
+
+# Testing
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[features]
+default = ["pci", "uart", "keyboard"]
+pci = []
+uart = ["dep:uart_16550"]
+keyboard = ["dep:pc-keyboard"]
+pic = ["dep:pic8259"]
+virtio = ["dep:virtio-drivers"]
+usb = []
+network = []
+graphics = []
+
+[profile.dev]
+opt-level = 1
+debug = true
+lto = false
+codegen-units = 1
+panic = "abort"
+
+[profile.release]
+opt-level = "s"
+lto = "thin"
+codegen-units = 1
+panic = "abort"

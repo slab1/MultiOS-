@@ -1,0 +1,633 @@
+# Educational Lab Deployment Configuration
+# Optimized for educational environments with enhanced privacy and compliance
+
+# General Settings
+general:
+  environment: educational-lab
+  timezone: "America/New_York"  # Default to Eastern Time
+  log_level: WARN  # Reduced logging for performance
+  debug: false
+  data_retention_days: 180  # Moderate retention for educational data
+  privacy_mode: "enhanced"
+  compliance_mode: "ferpa_strict"
+
+# Dashboard Configuration
+dashboard:
+  port: 8080
+  bind_address: "127.0.0.1"  # Local access only for security
+  ssl_enabled: false  # For lab networks
+  session_timeout: 7200  # 2 hours for lab sessions
+  theme: light
+  max_connections: 500  # Limited for lab environment
+  hide_sensitive_data: true
+  educational_mode: true
+  simplified_interface: true
+
+# Database Configuration
+database:
+  type: postgresql
+  host: localhost
+  port: 5432
+  name: multios_monitoring_edu
+  username: monitor_user_edu
+  password: secure_password_educational_lab
+  pool_size: 10  # Smaller pool for lab environment
+  max_overflow: 20
+  pool_timeout: 15
+  echo: false
+  pool_pre_ping: true
+  ssl_mode: disable  # Local environment
+  
+  # Educational-specific optimizations
+  query_timeout: 30
+  statement_timeout: 60
+
+# Redis Configuration
+redis:
+  host: localhost
+  port: 6379
+  db: 0
+  password: null  # No password for local lab environment
+  decode_responses: true
+  max_connections: 20  # Smaller for lab
+  connection_pool_timeout: 3
+  maxmemory: "128MB"  # Limited memory for lab
+  maxmemory_policy: "allkeys-lru"
+
+# Educational Institution Configuration
+institution:
+  name: "Example University"
+  type: "university"  # university, college, high_school, k12
+  campus: "Main Campus"
+  timezone: "America/New_York"
+  
+  contact:
+    admin_email: admin@university.edu
+    support_email: support@university.edu
+    emergency_phone: "+1-555-0123"
+  
+  compliance:
+    ferpa_compliance: true
+    coppa_compliance: true  # For K-12 institutions
+    gdpr_compliance: false  # Set to true for EU institutions
+    data_residency: "united_states"
+  
+  privacy:
+    anonymization_level: "enhanced"
+    data_minimization: true
+    purpose_limitation: true
+    retention_enforcement: true
+
+# Lab Configuration
+labs:
+  enabled: true
+  
+  lab_settings:
+    - name: "Computer Science Lab"
+      id: "cs-lab-1"
+      capacity: 30
+      location: "Building A, Room 101"
+      timezone: "America/New_York"
+      
+      computers:
+        start_ip: "192.168.1.100"
+        end_ip: "192.168.1.129"
+        mac_address_tracking: true
+        software_inventory: true
+      
+      usage_hours:
+        weekday: ["08:00", "22:00"]
+        weekend: ["10:00", "18:00"]
+        holidays: ["closed"]
+      
+      privacy_settings:
+        anonymize_usernames: true
+        mask_ip_addresses: true
+        data_retention_days: 90
+      
+      monitoring:
+        applications: true
+        websites: false  # Privacy concern
+        keystrokes: false  # Privacy concern
+        screen_capture: false  # Privacy concern
+        network_traffic: true
+    
+    - name: "Engineering Lab"
+      id: "eng-lab-1"
+      capacity: 25
+      location: "Building B, Room 205"
+      
+      computers:
+        start_ip: "192.168.2.100"
+        end_ip: "192.168.2.124"
+        mac_address_tracking: true
+        software_inventory: true
+      
+      usage_hours:
+        weekday: ["07:00", "23:00"]
+        weekend: ["09:00", "20:00"]
+      
+      privacy_settings:
+        anonymize_usernames: true
+        mask_ip_addresses: true
+        data_retention_days: 120
+      
+      monitoring:
+        applications: true
+        websites: false
+        keystrokes: false
+        screen_capture: false
+        network_traffic: true
+    
+    - name: "Library Computer Lab"
+      id: "lib-lab-1"
+      capacity: 20
+      location: "Library, Ground Floor"
+      
+      computers:
+        start_ip: "192.168.3.100"
+        end_ip: "192.168.3.119"
+        mac_address_tracking: false  # Public computers
+        software_inventory: false
+      
+      usage_hours:
+        weekday: ["06:00", "24:00"]
+        weekend: ["08:00", "22:00"]
+      
+      privacy_settings:
+        anonymize_usernames: false  # Guest users
+        mask_ip_addresses: true
+        data_retention_days: 30  # Very short for privacy
+      
+      monitoring:
+        applications: true
+        websites: false
+        keystrokes: false
+        screen_capture: false
+        network_traffic: true
+
+# Educational Monitoring Configuration
+monitoring:
+  enabled: true
+  collection_interval: 120  # 2 minutes for better performance
+  privacy_preserving: true
+  
+  agents:
+    system:
+      enabled: true
+      metrics:
+        - cpu
+        - memory
+        - disk
+        - network
+      interval: 120  # Less frequent for lab privacy
+      anonymize_hostnames: true
+    
+    hardware:
+      enabled: true
+      metrics:
+        - temperature
+        - disk_health
+      interval: 300  # 5 minutes
+      anonymize_serial_numbers: true
+    
+    network:
+      enabled: true
+      interfaces: ["eth0", "wlan0"]
+      track_bandwidth: true
+      packet_analysis: false  # Privacy concern
+      interval: 120
+      anonymize_traffic: true
+    
+    educational:
+      enabled: true
+      metrics:
+        - lab_usage
+        - application_usage
+        - session_duration
+        - resource_utilization
+      interval: 60  # More frequent for educational analytics
+      privacy_mode: "strict"
+
+# Educational Analytics Configuration
+educational_analytics:
+  enabled: true
+  
+  student_tracking:
+    enabled: true
+    anonymization: "enhanced"
+    session_tracking: true
+    application_usage: true
+    resource_consumption: true
+    
+    privacy_settings:
+      pseudonymize_ids: true
+      age_based_retention: true
+      parental_consent_tracking: false  # Set to true for K-12
+      opt_out_support: true
+  
+  instructor_analytics:
+    enabled: true
+    course_tracking: true
+    resource_allocation: true
+    effectiveness_metrics: true
+  
+  institutional_analytics:
+    enabled: true
+    capacity_planning: true
+    resource_optimization: true
+    compliance_reporting: true
+  
+  privacy_controls:
+    data_minimization: true
+    purpose_limitation: true
+    consent_management: true
+    audit_trail: true
+
+# Alert Configuration (Educational Focus)
+alerts:
+  enabled: true
+  check_interval: 180  # 3 minutes
+  max_alerts_per_rule: 50  # Smaller for lab
+  escalation_enabled: true
+  escalation_timeout: 600  # 10 minutes
+  
+  channels:
+    email:
+      enabled: true
+      smtp_server: smtp.university.edu
+      smtp_port: 587
+      username: monitoring@university.edu
+      password: secure_email_password
+      use_tls: true
+    
+    slack:
+      enabled: false  # Typically not used in educational environments
+    
+    pagerduty:
+      enabled: false
+  
+  educational_rules:
+    lab_capacity_exceeded:
+      name: "Lab Capacity Exceeded"
+      description: "Lab usage exceeds 100% capacity"
+      condition: "lab_usage_percentage > 100"
+      severity: "warning"
+      duration: 60
+      actions: ["email"]
+      education_focused: true
+    
+    suspicious_activity:
+      name: "Suspicious Activity"
+      description: "Unusual login patterns detected"
+      condition: "unusual_login_patterns > threshold"
+      severity: "warning"
+      duration: 300
+      actions: ["email"]
+      privacy_sensitive: true
+    
+    hardware_failure_risk:
+      name: "Hardware Failure Risk"
+      description: "Hardware health indicators suggest failure"
+      condition: "hardware_health_score < 70"
+      severity: "warning"
+      duration: 600
+      actions: ["email"]
+    
+    resource_exhaustion:
+      name: "Resource Exhaustion"
+      description: "System resources critically low"
+      condition: "disk_usage > 95 OR memory_usage > 95"
+      severity: "critical"
+      duration: 120
+      actions: ["email"]
+
+# Logging Configuration (Educational)
+logging:
+  level: WARN  # Reduced for performance and privacy
+  format: json
+  privacy_filtering: true
+  
+  destinations:
+    - type: file
+      path: /var/log/multios-monitoring/educational.log
+      rotation: weekly
+      retention: 30
+      max_size: "50MB"
+      encryption: true
+    
+    - type: syslog
+      server: localhost
+      port: 514
+      facility: local1
+  
+  # Privacy-preserving logging
+  privacy_filters:
+    - type: "username"
+      action: "pseudonymize"
+    - type: "ip_address"
+      action: "mask"
+    - type: "mac_address"
+      action: "hash"
+    - type: "student_id"
+      action: "pseudonymize"
+  
+  parsers:
+    - type: syslog
+    - type: json
+    - type: nginx
+    - type: educational_activity
+  
+  retention:
+    educational_logs: 30  # days
+    access_logs: 7       # days
+    error_logs: 14       # days
+    audit_logs: 2555     # days (7 years - compliance)
+
+# Integration Configuration (Educational)
+integrations:
+  prometheus:
+    enabled: true
+    port: 9090
+    endpoint: /metrics
+    include_system_metrics: true
+    include_educational_metrics: true
+    privacy_filtering: true
+  
+  grafana:
+    enabled: true
+    url: http://localhost:3000
+    api_key: null
+    datasource_name: "Educational Monitoring"
+    dashboard_folder: "Educational/Labs"
+    privacy_mode: true
+  
+  lms_integration:
+    enabled: false  # Disabled by default
+    canvas:
+      enabled: false
+      url: null
+      api_key: null
+    moodle:
+      enabled: false
+      url: null
+      api_key: null
+  
+  sis_integration:
+    enabled: false  # Disabled by default for privacy
+    enabled_systems:
+      - "banner"
+      - "peoplesoft"
+      - "colleague"
+    api_endpoint: null
+    api_key: null
+    privacy_level: "high"
+
+# Security Configuration (Educational)
+security:
+  enabled: true
+  
+  authentication:
+    method: "jwt"
+    secret_key: "your_jwt_secret_educational_change_in_production"
+    access_token_expire_minutes: 120  # 2 hours for lab sessions
+    refresh_token_expire_days: 1     # Daily refresh for students
+    max_failed_attempts: 3
+    lockout_duration: 1800
+  
+  # Educational-specific security
+  student_privacy:
+    enhanced_protection: true
+    data_minimization: true
+    consent_tracking: true
+    parental_consent: false  # Set to true for K-12
+  
+  network:
+    allowed_hosts: ["127.0.0.1", "192.168.0.0/16", "10.0.0.0/8"]
+    max_request_size: "8MB"  # Smaller for lab environment
+    rate_limiting:
+      enabled: true
+      requests_per_minute: 50  # Lower for students
+      burst_size: 10
+  
+  encryption:
+    at_rest: true
+    in_transit: true
+    algorithm: "AES-256"
+    key_rotation_days: 90
+
+# Performance Configuration (Educational)
+performance:
+  workers: 2  # Smaller for lab environment
+  worker_connections: 500
+  max_requests: 500
+  max_requests_jitter: 50
+  timeout: 30
+  keepalive: 2
+  
+  caching:
+    enabled: true
+    default_timeout: 1800  # 30 minutes
+    cache_null: true
+    cache_404: false
+  
+  compression:
+    enabled: true
+    min_size: 1000
+    compress_level: 4  # Lower compression for faster response
+
+# Data Retention Configuration (Educational)
+data_retention:
+  metrics:
+    high_resolution: 7     # days
+    normal_resolution: 30  # days
+    low_resolution: 90     # days
+  
+  logs:
+    educational: 30        # days
+    access: 7             # days
+    error: 14             # days
+    audit: 2555           # days (7 years - compliance)
+  
+  alerts:
+    active: 30            # days
+    resolved: 90          # days
+  
+  educational:
+    lab_usage: 365        # days (1 year)
+    student_activity: 90   # days (3 months)
+    compliance: 2555      # days (7 years)
+  
+  # Age-based retention for student data
+  age_based_retention:
+    undergraduate: 7       # years after graduation
+    graduate: 10          # years after graduation
+    k12_student: 7        # years after graduation
+    faculty: 2555         # permanent for faculty
+
+# Backup Configuration (Educational)
+backup:
+  enabled: true
+  schedule: "0 3 * * *"  # Daily at 3 AM
+  retention_days: 14
+  
+  components:
+    database:
+      enabled: true
+      compression: true
+      encryption: true
+    configuration:
+      enabled: true
+      encryption: true
+  
+  destinations:
+    - type: local
+      path: /var/backups/multios-monitoring/
+    - type: network_storage
+      server: backup-server.university.edu
+      path: /backups/multios-monitoring/
+      username: backup_user
+      password: secure_backup_password
+  
+  # Compliance-aware backup
+  backup_compliance:
+    ferpa_compliant: true
+    encryption_required: true
+    access_logging: true
+    retention_per_policy: true
+
+# Maintenance Configuration (Educational)
+maintenance:
+  enabled: true
+  
+  cleanup:
+    schedule: "0 5 * * 0"  # Weekly on Sunday at 5 AM
+    vacuum_database: true
+    clear_caches: true
+    rotate_logs: true
+    privacy_compliance_check: true
+  
+  health_check:
+    schedule: "*/5 * * * *"  # Every 5 minutes
+    endpoints:
+      - /api/health
+      - /api/educational/status
+      - /api/privacy/compliance
+  
+  notifications:
+    admin_email: admin@university.edu
+    it_support_email: itsupport@university.edu
+    on_failure: true
+    on_recovery: true
+    compliance_violation: true
+
+# Compliance Configuration
+compliance:
+  ferpa:
+    enabled: true
+    strict_mode: true
+    data_classification: true
+    access_logging: true
+    consent_tracking: true
+    retention_enforcement: true
+  
+  coppa:
+    enabled: false  # Enable for K-12 institutions
+    parental_consent: false
+    data_minimization: true
+    age_verification: false
+  
+  gdpr:
+    enabled: false  # Enable for EU institutions
+    right_to_erasure: true
+    data_portability: true
+    consent_management: true
+    privacy_by_design: true
+  
+  audit:
+    enabled: true
+    logging_level: "detailed"
+    access_tracking: true
+    data_access_auditing: true
+    retention_audit: true
+
+# Educational Reporting Configuration
+reporting:
+  enabled: true
+  
+  automated_reports:
+    - name: "Weekly Lab Usage Report"
+      schedule: "0 9 * * 1"  # Monday at 9 AM
+      recipients: ["lab-admin@university.edu"]
+      format: "pdf"
+      content: ["usage_statistics", "capacity_analysis"]
+    
+    - name: "Monthly Compliance Report"
+      schedule: "0 9 1 * *"  # First day of month at 9 AM
+      recipients: ["compliance@university.edu"]
+      format: "pdf"
+      content: ["privacy_compliance", "data_retention"]
+  
+  custom_reports:
+    enabled: true
+    templates_path: "/etc/multios-monitoring/report-templates/"
+    output_path: "/var/lib/multios-monitoring/reports/"
+    privacy_filtering: true
+
+# Student Privacy Controls
+privacy_controls:
+  enabled: true
+  
+  anonymization:
+    usernames: true
+    ip_addresses: true
+    mac_addresses: true
+    student_ids: true
+  
+  pseudonymization:
+    enabled: true
+    algorithm: "sha256"
+    salt_rotation: "daily"
+  
+  data_minimization:
+    collect_only_necessary: true
+    purpose_limitation: true
+    retention_enforcement: true
+  
+  consent_management:
+    tracking: true
+    parental_consent: false  # Set to true for K-12
+    withdrawal_support: true
+  
+  student_rights:
+    data_access: true
+    data_rectification: true
+    data_erasure: true
+    data_portability: true
+    objection_right: true
+
+# Lab Management Features
+lab_management:
+  enabled: true
+  
+  reservation_system:
+    enabled: false  # Disabled by default
+    integration: false
+    auto_logout: true
+  
+  session_management:
+    automatic_logout: true
+    session_timeout: 7200  # 2 hours
+    warning_time: 600      # 10 minutes
+  
+  resource_quotas:
+    enabled: true
+    storage_quota: "2GB"   # Per student per session
+    cpu_quota: "75%"      # Per session
+    network_quota: "500MB" # Per session
+  
+  accessibility:
+    screen_reader_support: true
+    keyboard_navigation: true
+    high_contrast_mode: true
+    font_size_adjustment: true

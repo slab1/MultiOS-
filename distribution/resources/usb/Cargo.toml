@@ -1,0 +1,42 @@
+[package]
+name = "multios-usb"
+version = "0.1.0"
+edition = "2021"
+authors = ["MultiOS Team"]
+license = "MIT OR Apache-2.0"
+description = "Comprehensive USB device driver framework for MultiOS"
+repository = "https://github.com/multios/hardware_support"
+
+[dependencies]
+log = "0.4"
+bitflags = "2.4"
+tokio = { version = "1.0", optional = true }
+futures = { version = "0.3", optional = true }
+serde = { version = "1.0", optional = true }
+serde_json = { version = "1.0", optional = true }
+clap = { version = "4.0", optional = true }
+
+[dependencies.multios-memory]
+path = "../../libraries/memory-manager"
+
+[dependencies.multios-hal]
+path = "../../kernel/src/hal"
+
+[dependencies.multios-drivers]
+path = "../../libraries/device-drivers"
+
+[dev-dependencies]
+tempfile = "3.0"
+criterion = "0.5"
+
+[features]
+default = ["std"]
+std = []
+async = ["tokio", "futures"]
+serialization = ["serde", "serde_json"]
+cli = ["clap"]
+
+[profile.release]
+lto = true
+opt-level = 3
+codegen-units = 1

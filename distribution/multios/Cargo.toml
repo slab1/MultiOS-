@@ -1,0 +1,58 @@
+[package]
+name = "multios"
+version = "0.1.0"
+authors = ["MultiOS Development Team"]
+edition = "2021"
+description = "MultiOS: A universal educational operating system written in Rust"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/multios/multios"
+homepage = "https://multios.org"
+keywords = ["operating-system", "kernel", "rust", "microkernel", "education"]
+categories = ["embedded", "no-std"]
+
+[workspace]
+members = [
+    "kernel",
+    "bootloader",
+    "userland/shell",
+    "userland/init",
+    "tests/integration",
+]
+
+[workspace.dependencies]
+# Common dependencies across all crates
+bootloader = "0.9"
+uefi = "0.29"
+linked_list_allocator = "0.10"
+pic8259 = "0.10"
+x86_64 = "0.14"
+spin = "0.9"
+pc-keyboard = "0.7"
+uart_16550 = "0.3"
+lazy_static = "1.4"
+log = "0.4"
+console = "0.15"
+
+# Testing dependencies
+criterion = "0.5"
+proptest = "1.4"
+serial_test = "2.0"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true
+
+[features]
+default = ["serial"]
+serial = []
+qemu = []
+# Target-specific features
+x86_64 = []
+aarch64 = []
+riscv64 = []

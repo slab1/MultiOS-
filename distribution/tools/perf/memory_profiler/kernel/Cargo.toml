@@ -1,0 +1,16 @@
+[package]
+name = "memory_profiler_kernel"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+log = "0.4"
+spin = "0.9"
+bitflags = "2.4"
+# Internal dependencies
+memory_manager = { path = "../../../libraries/memory-manager" }
+scheduler = { path = "../../../libraries/scheduler" }
+
+[dev-dependencies]
+# For testing purposes
+allocator = { path = "../../../libraries/memory-manager/src/allocator" }

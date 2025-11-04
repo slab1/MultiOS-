@@ -1,0 +1,498 @@
+#!/usr/bin/env python3
+"""
+MultiOS Enterprise Deployment CLI Tool
+Command-line interface for managing enterprise deployments
+"""
+
+import sys
+import argparse
+import json
+import yaml
+from datetime import datetime, timedelta
+from pathlib import Path
+
+# Add the enterprise_tools module to the path
+sys.path.insert(0, '/opt/multios-enterprise')
+
+try:
+    from core.manager import DeploymentManager
+    from core.models import *
+    from user_management.user_manager import UserManager
+    from software_deployment.package_manager import PackageManager
+    from lab_templates.lab_manager import LabManager
+    from license_tracking.license_manager import LicenseManager
+    from system_monitoring.monitor import SystemMonitor
+except ImportError as e:
+    print(f"Error importing MultiOS Enterprise modules: {e}")
+    print("Make sure the enterprise tools are properly installed.")
+    sys.exit(1)
+
+def cmd_status(args):
+    """Show system status"""
+    try:
+        manager = DeploymentManager()
+        status = manager.get_monitoring_status()
+        
+        print("MultiOS Enterprise System Status")
+        print("=" * 40)
+        print(f"Monitoring Active: {status['active']}")
+        print(f"Monitored Systems: {status['monitored_systems']}")
+        print(f"Healthy Systems: {status['healthy_systems']}")
+        print(f"Degraded Systems: {status['degraded_systems']}")
+        print(f"Offline Systems: {status['offline_systems']}")
+        
+    except Exception as e:
+        print(f"Error getting status: {e}")
+        return 1
+    
+    return 0
+
+def cmd_register_system(args):
+    """Register a new system"""
+    try:
+        manager = DeploymentManager()
+        
+        # Read system info from file if provided
+        if args.config_file:
+            with open(args.config_file, 'r') as f:
+                if args.config_file.endswith('.yaml') or args.config_file.endswith('.yml'):
+                    config_data = yaml.safe_load(f)
+                else:
+                    config_data = json.load(f)
+            
+            system_info = SystemInfo(**config_data)
+        else:
+            # Create system info from command line arguments
+            system_info = SystemInfo(
+                system_id=args.system_id,
+                hostname=args.hostname,
+                ip_address=args.ip_address,
+                mac_address=args.mac_address,
+                system_type=SystemType(args.system_type),
+                cpu_model=args.cpu_model,
+                memory_gb=args.memory_gb,
+                storage_gb=args.storage_gb,
+                network_interface=args.network_interface,
+                site_id=args.site_id,
+                location=args.location
+            )
+        
+        success = manager.register_system(system_info)
+        if success:
+            print(f"System {args.hostname} registered successfully")
+            return 0
+        else:
+            print(f"Failed to register system {args.hostname}")
+            return 1
+            
+    except Exception as e:
+        print(f"Error registering system: {e}")
+        return 1
+
+def cmd_deploy(args):
+    """Deploy a system"""
+    try:
+        manager = DeploymentManager()
+        
+        # Create deployment profile
+        profile = DeploymentProfile(
+            profile_id=args.profile_id,
+            name=args.name,
+            system_type=SystemType(args.system_type),
+            base_os_version=args.os_version,
+            required_packages=args.packages,
+            configuration=args.config,
+            network_config=args.network_config,
+            user_groups=args.user_groups,
+            security_settings=args.security_settings,
+            resource_limits=args.resource_limits
+        )
+        
+        deployment_id = manager.start_deployment(profile, args.target_systems)
+        print(f"Deployment started: {deployment_id}")
+        
+        # Monitor deployment if requested
+        if args.monitor:
+            print("Monitoring deployment...")
+            while True:
+                status = manager.get_deployment_status(deployment_id)
+                if status['status'] in ['completed', 'failed']:
+                    print(f"Deployment {status['status']}: {status.get('progress', 0):.1f}%")
+                    break
+                print(f"Progress: {status.get('progress', 0):.1f}%")
+                import time
+                time.sleep(10)
+        
+        return 0
+        
+    except Exception as e:
+        print(f"Error deploying system: {e}")
+        return 1
+
+def cmd_create_users(args):
+    """Create user accounts"""
+    try:
+        user_manager = UserManager()
+        
+        if args.csv_file:
+            # Import from CSV
+            results = user_manager.import_users_from_csv(args.csv_file)
+            print(f"Imported {results['successful']}/{results['total']} users")
+            if results['failed'] > 0:
+                print(f"Failed to import {results['failed']} users")
+        else:
+            # Create single user
+            user_data = {
+                'username': args.username,
+                'email': args.email,
+                'full_name': args.full_name,
+                'role': args.role,
+                'site_id': args.site_id,
+                'department': args.department
+            }
+            
+            user_id = user_manager.create_user_account(user_data)
+            if user_id:
+                print(f"User {args.username} created: {user_id}")
+            else:
+                print(f"Failed to create user {args.username}")
+                return 1
+        
+        return 0
+        
+    except Exception as e:
+        print(f"Error creating users: {e}")
+        return 1
+
+def cmd_deploy_lab(args):
+    """Deploy lab environment"""
+    try:
+        lab_manager = LabManager()
+        
+        session_data = {
+            'session_name': args.session_name,
+            'instructor_id': args.instructor_id,
+            'student_count': args.student_count
+        }
+        
+        session_id = lab_manager.deploy_lab_environment(
+            args.template_id, args.site_id, session_data
+        )
+        
+        if session_id:
+            print(f"Lab session deployed: {session_id}")
+        else:
+            print("Failed to deploy lab session")
+            return 1
+            
+        return 0
+        
+    except Exception as e:
+        print(f"Error deploying lab: {e}")
+        return 1
+
+def cmd_install_packages(args):
+    """Install software packages"""
+    try:
+        package_manager = PackageManager()
+        
+        if args.lab_template:
+            # Deploy lab environment
+            success = package_manager.deploy_lab_environment(
+                args.system_id, args.lab_template, args.custom_packages
+            )
+        else:
+            # Install packages
+            results = package_manager.bulk_install_packages(
+                args.system_id, args.packages
+            )
+            success = results['failed'] == 0
+            print(f"Installed {results['successful']}/{results['total']} packages")
+        
+        if not success:
+            return 1
+            
+        return 0
+        
+    except Exception as e:
+        print(f"Error installing packages: {e}")
+        return 1
+
+def cmd_add_license(args):
+    """Add software license"""
+    try:
+        license_manager = LicenseManager()
+        
+        license_data = {
+            'software_name': args.software_name,
+            'license_type': args.license_type,
+            'total_licenses': args.total_licenses,
+            'vendor': args.vendor,
+            'license_key': args.license_key,
+            'purchase_date': args.purchase_date,
+            'expiry_date': args.expiry_date,
+            'cost_per_license': args.cost_per_license
+        }
+        
+        license_id = license_manager.add_license(license_data)
+        if license_id:
+            print(f"License added: {license_id}")
+        else:
+            print("Failed to add license")
+            return 1
+            
+        return 0
+        
+    except Exception as e:
+        print(f"Error adding license: {e}")
+        return 1
+
+def cmd_check_health(args):
+    """Check system health"""
+    try:
+        manager = DeploymentManager()
+        manager.start_monitoring()
+        
+        if args.system_id:
+            # Check specific system
+            health = manager.get_system_health(args.system_id)
+            if health:
+                print(f"System {args.system_id} Health:")
+                print(f"  Status: {health.overall_status.value}")
+                print(f"  Issues: {len(health.issues)}")
+                if health.issues:
+                    for issue in health.issues:
+                        print(f"    - {issue}")
+            else:
+                print(f"No health data found for system {args.system_id}")
+                return 1
+        else:
+            # Check all systems
+            health_data = manager.get_all_systems_health()
+            print(f"Health Check Results ({len(health_data)} systems):")
+            
+            healthy = sum(1 for h in health_data.values() 
+                         if h.overall_status == SystemStatus.ONLINE)
+            degraded = sum(1 for h in health_data.values() 
+                          if h.overall_status == SystemStatus.DEGRADED)
+            offline = sum(1 for h in health_data.values() 
+                         if h.overall_status == SystemStatus.OFFLINE)
+            
+            print(f"  Healthy: {healthy}")
+            print(f"  Degraded: {degraded}")
+            print(f"  Offline: {offline}")
+        
+        return 0
+        
+    except Exception as e:
+        print(f"Error checking health: {e}")
+        return 1
+
+def cmd_schedule_maintenance(args):
+    """Schedule system maintenance"""
+    try:
+        manager = DeploymentManager()
+        
+        start_time = datetime.fromisoformat(args.start_time)
+        duration_minutes = args.duration
+        
+        schedule_id = manager.schedule_maintenance(
+            args.system_ids, start_time, duration_minutes
+        )
+        
+        print(f"Maintenance scheduled: {schedule_id}")
+        print(f"Start time: {start_time}")
+        print(f"Duration: {duration_minutes} minutes")
+        
+        return 0
+        
+    except Exception as e:
+        print(f"Error scheduling maintenance: {e}")
+        return 1
+
+def cmd_export_report(args):
+    """Export analytics or inventory report"""
+    try:
+        manager = DeploymentManager()
+        
+        if args.report_type == 'analytics':
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=30)
+            report = manager.generate_analytics_report(args.format_type, start_date, end_date)
+        elif args.report_type == 'inventory':
+            report = manager.export_inventory_report(args.format_type)
+        elif args.report_type == 'compliance':
+            license_manager = LicenseManager()
+            report = license_manager.generate_compliance_report(args.format_type)
+        else:
+            print(f"Unknown report type: {args.report_type}")
+            return 1
+        
+        if args.output_file:
+            with open(args.output_file, 'w') as f:
+                f.write(report)
+            print(f"Report exported to: {args.output_file}")
+        else:
+            print(report)
+        
+        return 0
+        
+    except Exception as e:
+        print(f"Error exporting report: {e}")
+        return 1
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="MultiOS Enterprise Deployment CLI Tool",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  # Check system status
+  multios-enterprise status
+  
+  # Register a new system
+  multios-enterprise register-system --system-id SYS001 --hostname lab-desktop-01 \
+    --ip-address 192.168.1.101 --mac-address aa:bb:cc:dd:ee:ff \
+    --system-type desktop --cpu-model "Intel Core i5" --memory-gb 8 \
+    --storage-gb 500 --network-interface eth0 --site-id CAMPUS001 \
+    --location "Building A, Lab 101"
+  
+  # Deploy system with profile
+  multios-enterprise deploy --profile-id PROF001 --name "Standard Desktop" \
+    --system-type desktop --os-version 1.0.0 --target-systems SYS001
+  
+  # Create users from CSV
+  multios-enterprise create-users --csv-file users.csv
+  
+  # Deploy lab environment
+  multios-enterprise deploy-lab --template-id prog-lab-001 --site-id CAMPUS001 \
+    --session-name "CS101 Week 3" --instructor-id PROF001 --student-count 25
+  
+  # Install packages
+  multios-enterprise install-packages --system-id SYS001 --packages python3 gcc code
+  
+  # Check system health
+  multios-enterprise check-health --system-id SYS001
+  
+  # Export compliance report
+  multios-enterprise export-report --report-type compliance --format csv --output-file compliance.csv
+        """
+    )
+    
+    subparsers = parser.add_subparsers(dest='command', help='Available commands')
+    
+    # Status command
+    status_parser = subparsers.add_parser('status', help='Show system status')
+    
+    # Register system command
+    register_parser = subparsers.add_parser('register-system', help='Register a new system')
+    register_parser.add_argument('--system-id', required=True, help='System ID')
+    register_parser.add_argument('--hostname', required=True, help='Hostname')
+    register_parser.add_argument('--ip-address', required=True, help='IP Address')
+    register_parser.add_argument('--mac-address', required=True, help='MAC Address')
+    register_parser.add_argument('--system-type', required=True, 
+                               choices=['desktop', 'laptop', 'tablet', 'server', 'iot_device', 'thin_client'],
+                               help='System type')
+    register_parser.add_argument('--cpu-model', required=True, help='CPU model')
+    register_parser.add_argument('--memory-gb', type=int, required=True, help='Memory in GB')
+    register_parser.add_argument('--storage-gb', type=int, required=True, help='Storage in GB')
+    register_parser.add_argument('--network-interface', default='eth0', help='Network interface')
+    register_parser.add_argument('--site-id', required=True, help='Site ID')
+    register_parser.add_argument('--location', required=True, help='Location')
+    register_parser.add_argument('--config-file', help='System configuration file')
+    
+    # Deploy command
+    deploy_parser = subparsers.add_parser('deploy', help='Deploy a system')
+    deploy_parser.add_argument('--profile-id', required=True, help='Profile ID')
+    deploy_parser.add_argument('--name', required=True, help='Profile name')
+    deploy_parser.add_argument('--system-type', required=True,
+                             choices=['desktop', 'laptop', 'tablet', 'server', 'iot_device', 'thin_client'],
+                             help='System type')
+    deploy_parser.add_argument('--os-version', required=True, help='OS version')
+    deploy_parser.add_argument('--target-systems', nargs='+', required=True, help='Target system IDs')
+    deploy_parser.add_argument('--packages', nargs='*', default=[], help='Required packages')
+    deploy_parser.add_argument('--user-groups', nargs='*', default=[], help='User groups')
+    deploy_parser.add_argument('--monitor', action='store_true', help='Monitor deployment progress')
+    
+    # Create users command
+    users_parser = subparsers.add_parser('create-users', help='Create user accounts')
+    users_parser.add_argument('--csv-file', help='CSV file with user data')
+    users_parser.add_argument('--username', help='Username')
+    users_parser.add_argument('--email', help='Email address')
+    users_parser.add_argument('--full-name', help='Full name')
+    users_parser.add_argument('--role', choices=['admin', 'teacher', 'student', 'support', 'guest'],
+                            help='User role')
+    users_parser.add_argument('--site-id', help='Site ID')
+    users_parser.add_argument('--department', help='Department')
+    
+    # Deploy lab command
+    lab_parser = subparsers.add_parser('deploy-lab', help='Deploy lab environment')
+    lab_parser.add_argument('--template-id', required=True, help='Lab template ID')
+    lab_parser.add_argument('--site-id', required=True, help='Site ID')
+    lab_parser.add_argument('--session-name', required=True, help='Session name')
+    lab_parser.add_argument('--instructor-id', required=True, help='Instructor ID')
+    lab_parser.add_argument('--student-count', type=int, required=True, help='Number of students')
+    
+    # Install packages command
+    packages_parser = subparsers.add_parser('install-packages', help='Install software packages')
+    packages_parser.add_argument('--system-id', required=True, help='System ID')
+    packages_parser.add_argument('--packages', nargs='*', default=[], help='Package names')
+    packages_parser.add_argument('--lab-template', help='Lab template to deploy')
+    packages_parser.add_argument('--custom-packages', nargs='*', default=[], help='Custom packages')
+    
+    # Add license command
+    license_parser = subparsers.add_parser('add-license', help='Add software license')
+    license_parser.add_argument('--software-name', required=True, help='Software name')
+    license_parser.add_argument('--license-type', required=True,
+                              choices=['single_user', 'site_license', 'volume_license', 'educational'],
+                              help='License type')
+    license_parser.add_argument('--total-licenses', type=int, required=True, help='Total licenses')
+    license_parser.add_argument('--vendor', required=True, help='Vendor name')
+    license_parser.add_argument('--license-key', required=True, help='License key')
+    license_parser.add_argument('--purchase-date', required=True, help='Purchase date (ISO format)')
+    license_parser.add_argument('--expiry-date', help='Expiry date (ISO format)')
+    license_parser.add_argument('--cost-per-license', type=float, default=0.0, help='Cost per license')
+    
+    # Check health command
+    health_parser = subparsers.add_parser('check-health', help='Check system health')
+    health_parser.add_argument('--system-id', help='Specific system ID')
+    
+    # Schedule maintenance command
+    maintenance_parser = subparsers.add_parser('schedule-maintenance', help='Schedule system maintenance')
+    maintenance_parser.add_argument('--system-ids', nargs='+', required=True, help='System IDs')
+    maintenance_parser.add_argument('--start-time', required=True, help='Start time (ISO format)')
+    maintenance_parser.add_argument('--duration', type=int, required=True, help='Duration in minutes')
+    
+    # Export report command
+    export_parser = subparsers.add_parser('export-report', help='Export reports')
+    export_parser.add_argument('--report-type', required=True,
+                             choices=['analytics', 'inventory', 'compliance'],
+                             help='Report type')
+    export_parser.add_argument('--format', default='json',
+                             choices=['json', 'csv'], help='Output format')
+    export_parser.add_argument('--output-file', help='Output file path')
+    
+    args = parser.parse_args()
+    
+    if not args.command:
+        parser.print_help()
+        return 1
+    
+    # Execute command
+    commands = {
+        'status': cmd_status,
+        'register-system': cmd_register_system,
+        'deploy': cmd_deploy,
+        'create-users': cmd_create_users,
+        'deploy-lab': cmd_deploy_lab,
+        'install-packages': cmd_install_packages,
+        'add-license': cmd_add_license,
+        'check-health': cmd_check_health,
+        'schedule-maintenance': cmd_schedule_maintenance,
+        'export-report': cmd_export_report
+    }
+    
+    return commands[args.command](args)
+
+if __name__ == '__main__':
+    sys.exit(main())

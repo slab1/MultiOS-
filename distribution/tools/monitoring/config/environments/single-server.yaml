@@ -1,0 +1,319 @@
+# Single-Server Deployment Configuration
+# Optimized for a single monitoring server handling all components
+
+# General Settings
+general:
+  environment: single-server
+  timezone: UTC
+  log_level: INFO
+  debug: false
+  data_retention_days: 90
+
+# Dashboard Configuration
+dashboard:
+  port: 8080
+  bind_address: "0.0.0.0"
+  ssl_enabled: false
+  session_timeout: 3600
+  theme: light
+  max_connections: 1000
+
+# Database Configuration
+database:
+  type: postgresql
+  host: localhost
+  port: 5432
+  name: multios_monitoring
+  username: monitor_user
+  password: secure_password_single_server
+  pool_size: 20
+  max_overflow: 30
+  pool_timeout: 30
+  echo: false
+  pool_pre_ping: true
+
+# Redis Configuration
+redis:
+  host: localhost
+  port: 6379
+  db: 0
+  password: null
+  decode_responses: true
+  max_connections: 50
+  connection_pool_timeout: 5
+
+# System Monitoring Configuration
+monitoring:
+  enabled: true
+  collection_interval: 60
+  agents:
+    system:
+      enabled: true
+      metrics:
+        - cpu
+        - memory
+        - disk
+        - network
+        - processes
+      interval: 30
+    
+    hardware:
+      enabled: true
+      metrics:
+        - temperature
+        - voltage
+        - fan_speed
+        - disk_health
+      interval: 120
+    
+    network:
+      enabled: true
+      interfaces: ["eth0", "eth1", "wlan0"]
+      track_bandwidth: true
+      packet_analysis: false
+      interval: 30
+
+# Educational Configuration
+educational:
+  enabled: true
+  agents:
+    lab_usage:
+      enabled: true
+      update_interval: 300
+      track_per_user: true
+      track_per_app: true
+    
+    student_activity:
+      enabled: true
+      update_interval: 60
+      privacy_mode: true
+      data_retention_days: 365
+    
+    compliance:
+      enabled: true
+      ferpa_compliance: true
+      audit_trail: true
+      retention_period_days: 2555
+
+# Alert Configuration
+alerts:
+  enabled: true
+  check_interval: 60
+  max_alerts_per_rule: 100
+  escalation_enabled: true
+  escalation_timeout: 300
+  
+  channels:
+    email:
+      enabled: true
+      smtp_server: smtp.gmail.com
+      smtp_port: 587
+      username: alerts@yourdomain.com
+      password: app_password
+      use_tls: true
+    
+    slack:
+      enabled: false
+      webhook_url: null
+      channel: "#alerts"
+    
+    webhook:
+      enabled: false
+      url: null
+      timeout: 10
+  
+  rules:
+    high_cpu:
+      name: "High CPU Usage"
+      description: "CPU usage exceeds 80% for 5 minutes"
+      condition: "cpu_usage > 80"
+      severity: "warning"
+      duration: 300
+      actions: ["email"]
+    
+    high_memory:
+      name: "High Memory Usage"
+      description: "Memory usage exceeds 90%"
+      condition: "memory_usage > 90"
+      severity: "critical"
+      duration: 180
+      actions: ["email", "slack"]
+    
+    disk_full:
+      name: "Disk Space Critical"
+      description: "Disk usage exceeds 95%"
+      condition: "disk_usage > 95"
+      severity: "critical"
+      duration: 60
+      actions: ["email", "slack", "webhook"]
+    
+    service_down:
+      name: "Service Down"
+      description: "Critical service is not responding"
+      condition: "service_status != 'running'"
+      severity: "critical"
+      duration: 30
+      actions: ["email", "slack"]
+
+# Logging Configuration
+logging:
+  level: INFO
+  format: json
+  destinations:
+    - type: file
+      path: /var/log/multios-monitoring/application.log
+      rotation: daily
+      retention: 30
+      max_size: "100MB"
+    
+    - type: syslog
+      server: localhost
+      port: 514
+      facility: local0
+  
+  parsers:
+    - type: syslog
+    - type: json
+    - type: nginx
+    - type: application
+  
+  retention:
+    application_logs: 30
+    access_logs: 7
+    error_logs: 90
+    audit_logs: 2555
+
+# Integration Configuration
+integrations:
+  prometheus:
+    enabled: true
+    port: 9090
+    endpoint: /metrics
+    include_system_metrics: true
+    include_application_metrics: true
+  
+  grafana:
+    enabled: true
+    url: http://localhost:3000
+    api_key: null
+    datasource_name: "MultiOS Monitoring"
+    dashboard_folder: "MultiOS"
+
+# Security Configuration
+security:
+  enabled: true
+  
+  authentication:
+    method: "jwt"
+    secret_key: "your_jwt_secret_here_change_in_production"
+    access_token_expire_minutes: 60
+    refresh_token_expire_days: 30
+    max_failed_attempts: 5
+    lockout_duration: 900
+  
+  session:
+    timeout: 3600
+    secure_cookies: false
+    http_only: true
+    same_site: "Lax"
+  
+  encryption:
+    at_rest: true
+    in_transit: true
+    algorithm: "AES-256"
+  
+  network:
+    allowed_hosts: ["*"]
+    max_request_size: "16MB"
+    rate_limiting:
+      enabled: true
+      requests_per_minute: 100
+      burst_size: 20
+
+# Performance Configuration
+performance:
+  workers: 2
+  worker_connections: 1000
+  max_requests: 1000
+  max_requests_jitter: 100
+  timeout: 30
+  keepalive: 2
+  
+  caching:
+    enabled: true
+    default_timeout: 300
+    cache_null: true
+    cache_404: true
+  
+  compression:
+    enabled: true
+    min_size: 500
+    compress_level: 6
+
+# Data Retention Configuration
+data_retention:
+  metrics:
+    high_resolution: 7    # days
+    normal_resolution: 30 # days
+    low_resolution: 365   # days
+  
+  logs:
+    application: 30       # days
+    access: 7            # days
+    error: 90            # days
+    audit: 2555          # days (7 years)
+  
+  alerts:
+    active: 90           # days
+    resolved: 365        # days
+  
+  educational:
+    lab_usage: 1095      # days (3 years)
+    student_activity: 365 # days (1 year)
+    compliance: 2555     # days (7 years)
+
+# Backup Configuration
+backup:
+  enabled: true
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  retention_days: 30
+  
+  components:
+    database:
+      enabled: true
+      compression: true
+    configuration:
+      enabled: true
+      encryption: true
+    logs:
+      enabled: false  # Logs handled by logrotate
+  
+  destinations:
+    - type: local
+      path: /var/backups/multios-monitoring/
+    - type: remote
+      endpoint: s3://your-backup-bucket/multios-monitoring/
+      access_key: your_access_key
+      secret_key: your_secret_key
+
+# Maintenance Configuration
+maintenance:
+  enabled: true
+  
+  cleanup:
+    schedule: "0 3 * * 0"  # Weekly on Sunday at 3 AM
+    vacuum_database: true
+    clear_caches: true
+    rotate_logs: true
+  
+  health_check:
+    schedule: "*/5 * * * *"  # Every 5 minutes
+    endpoints:
+      - /api/health
+      - /api/metrics/system
+      - /api/database/status
+    
+  notifications:
+    admin_email: admin@yourdomain.com
+    on_failure: true
+    on_recovery: true

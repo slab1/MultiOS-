@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MultiOS Monitoring Dashboard</title>
+    <link rel="stylesheet" href="./css/dashboard.css">
+    <link rel="stylesheet" href="./css/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1><i class="fas fa-chart-line"></i> MultiOS Monitoring Dashboard</h1>
+            <div class="header-controls">
+                <span class="status-indicator" id="systemStatus">
+                    <i class="fas fa-circle"></i> System Online
+                </span>
+                <button id="refreshBtn" class="btn btn-primary">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <button id="settingsBtn" class="btn btn-secondary">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <ul class="nav-tabs">
+            <li class="tab active" data-tab="overview">Overview</li>
+            <li class="tab" data-tab="system">System Health</li>
+            <li class="tab" data-tab="performance">Performance</li>
+            <li class="tab" data-tab="logs">Logs & Events</li>
+            <li class="tab" data-tab="network">Network</li>
+            <li class="tab" data-tab="security">Security</li>
+            <li class="tab" data-tab="educational">Educational Analytics</li>
+            <li class="tab" data-tab="compliance">Compliance</li>
+            <li class="tab" data-tab="alerts">Alerts</li>
+        </ul>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Overview Dashboard -->
+        <section id="overview" class="tab-content active">
+            <div class="dashboard-grid">
+                <!-- System Status Cards -->
+                <div class="grid-item full-width">
+                    <div class="card">
+                        <h3><i class="fas fa-server"></i> System Status Overview</h3>
+                        <div class="status-grid">
+                            <div class="status-item">
+                                <span class="status-label">CPU Usage</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="cpuProgress" style="width: 0%"></div>
+                                </div>
+                                <span class="status-value" id="cpuValue">0%</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">Memory Usage</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="memoryProgress" style="width: 0%"></div>
+                                </div>
+                                <span class="status-value" id="memoryValue">0%</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">Disk Usage</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="diskProgress" style="width: 0%"></div>
+                                </div>
+                                <span class="status-value" id="diskValue">0%</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">Network I/O</span>
+                                <div class="network-stats">
+                                    <span id="networkIn">↑ 0 MB/s</span>
+                                    <span id="networkOut">↓ 0 MB/s</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Charts -->
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-chart-line"></i> System Performance (24h)</h3>
+                        <canvas id="performanceChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-memory"></i> Memory Usage</h3>
+                        <canvas id="memoryChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Active Alerts -->
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Active Alerts</h3>
+                        <div id="alertsList" class="alerts-list">
+                            <div class="alert-item success">
+                                <i class="fas fa-check-circle"></i>
+                                <span>System operating normally</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Processes -->
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-list"></i> Top Processes</h3>
+                        <div id="processList" class="process-list">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Health Tab -->
+        <section id="system" class="tab-content">
+            <div class="dashboard-grid">
+                <div class="grid-item full-width">
+                    <div class="card">
+                        <h3><i class="fas fa-thermometer-half"></i> Hardware Sensors</h3>
+                        <div class="sensors-grid" id="hardwareSensors">
+                            <!-- Dynamic sensor data -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-microchip"></i> CPU Details</h3>
+                        <div id="cpuDetails" class="cpu-details">
+                            <!-- Dynamic CPU information -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-hdd"></i> Storage Health</h3>
+                        <div id="storageHealth" class="storage-health">
+                            <!-- Dynamic storage information -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Performance Tab -->
+        <section id="performance" class="tab-content">
+            <div class="dashboard-grid">
+                <div class="grid-item full-width">
+                    <div class="card">
+                        <h3><i class="fas fa-chart-area"></i> Performance Metrics Timeline</h3>
+                        <div class="chart-controls">
+                            <select id="timeRange">
+                                <option value="1h">Last Hour</option>
+                                <option value="6h">Last 6 Hours</option>
+                                <option value="24h" selected>Last 24 Hours</option>
+                                <option value="7d">Last 7 Days</option>
+                                <option value="30d">Last 30 Days</option>
+                            </select>
+                            <button id="exportData" class="btn btn-secondary">
+                                <i class="fas fa-download"></i> Export Data
+                            </button>
+                        </div>
+                        <canvas id="performanceTimelineChart" width="800" height="300"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-gauge-high"></i> Real-time Metrics</h3>
+                        <div class="metrics-grid" id="realTimeMetrics">
+                            <!-- Dynamic real-time metrics -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-bolt"></i> Resource Utilization Forecast</h3>
+                        <canvas id="forecastChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logs & Events Tab -->
+        <section id="logs" class="tab-content">
+            <div class="dashboard-grid">
+                <div class="grid-item full-width">
+                    <div class="card">
+                        <h3><i class="fas fa-file-alt"></i> Log Viewer</h3>
+                        <div class="log-controls">
+                            <select id="logLevel">
+                                <option value="all">All Levels</option>
+                                <option value="error">Errors</option>
+                                <option value="warning">Warnings</option>
+                                <option value="info">Info</option>
+                                <option value="debug">Debug</option>
+                            </select>
+                            <input type="text" id="logSearch" placeholder="Search logs..." class="search-input">
+                            <button id="clearLogs" class="btn btn-secondary">
+                                <i class="fas fa-trash"></i> Clear
+                            </button>
+                        </div>
+                        <div id="logViewer" class="log-viewer">
+                            <!-- Dynamic log content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Network Tab -->
+        <section id="network" class="tab-content">
+            <div class="dashboard-grid">
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-network-wired"></i> Network Traffic</h3>
+                        <canvas id="networkChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-users"></i> Active Connections</h3>
+                        <div id="activeConnections" class="connections-list">
+                            <!-- Dynamic connection data -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-item full-width">
+                    <div class="card">
+                        <h3><i class="fas fa-globe"></i> Bandwidth Usage by Interface</h3>
+                        <div class="interfaces-grid" id="interfaceStats">
+                            <!-- Dynamic interface statistics -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Tab -->
+        <section id="security" class="tab-content">
+            <div class="dashboard-grid">
+                <div class="grid-item full-width">
+                    <div class="card">
+                        <h3><i class="fas fa-shield-alt"></i> Security Events</h3>
+                        <div class="security-timeline" id="securityEvents">
+                            <!-- Dynamic security events -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-lock"></i> Access Control</h3>
+                        <div id="accessControl" class="access-stats">
+                            <!-- Dynamic access control data -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-virus"></i> Threat Detection</h3>
+                        <div id="threatDetection" class="threat-stats">
+                            <!-- Dynamic threat detection data -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Educational Analytics Tab -->
+        <section id="educational" class="tab-content">
+            <div class="dashboard-grid">
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-user-graduate"></i> Lab Usage Analytics</h3>
+                        <canvas id="labUsageChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-chart-pie"></i> Student Activity</h3>
+                        <canvas id="studentActivityChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-graduation-cap"></i> Educational KPIs</h3>
+                        <div id="educationalKPIs" class="kpi-grid">
+                            <!-- Dynamic KPI data -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-item full-width">
+                    <div class="card">
+                        <h3><i class="fas fa-book"></i> Resource Utilization by Course</h3>
+                        <div id="courseResourceUsage" class="course-grid">
+                            <!-- Dynamic course resource usage -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Compliance Tab -->
+        <section id="compliance" class="tab-content">
+            <div class="dashboard-grid">
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-clipboard-check"></i> Compliance Status</h3>
+                        <div id="complianceStatus" class="compliance-grid">
+                            <!-- Dynamic compliance data -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-file-contract"></i> Audit Trail</h3>
+                        <div id="auditTrail" class="audit-list">
+                            <!-- Dynamic audit trail data -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-item full-width">
+                    <div class="card">
+                        <h3><i class="fas fa-chart-bar"></i> Compliance Reports</h3>
+                        <div class="report-controls">
+                            <select id="reportType">
+                                <option value="ferpa">FERPA Compliance</option>
+                                <option value="coppa">COPPA Compliance</option>
+                                <option value="gdpr">GDPR Compliance</option>
+                                <option value="custom">Custom Report</option>
+                            </select>
+                            <select id="reportPeriod">
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="quarter">This Quarter</option>
+                                <option value="year">This Year</option>
+                            </select>
+                            <button id="generateReport" class="btn btn-primary">
+                                <i class="fas fa-file-pdf"></i> Generate Report
+                            </button>
+                        </div>
+                        <div id="complianceChart" class="compliance-chart">
+                            <canvas id="complianceChartCanvas" width="800" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Alerts Tab -->
+        <section id="alerts" class="tab-content">
+            <div class="dashboard-grid">
+                <div class="grid-item full-width">
+                    <div class="card">
+                        <h3><i class="fas fa-bell"></i> Alert Management</h3>
+                        <div class="alert-filters">
+                            <select id="alertSeverity">
+                                <option value="all">All Severities</option>
+                                <option value="critical">Critical</option>
+                                <option value="warning">Warning</option>
+                                <option value="info">Info</option>
+                            </select>
+                            <select id="alertStatus">
+                                <option value="all">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="resolved">Resolved</option>
+                                <option value="acknowledged">Acknowledged</option>
+                            </select>
+                            <button id="acknowledgeAlert" class="btn btn-secondary">Acknowledge</button>
+                            <button id="resolveAlert" class="btn btn-success">Resolve</button>
+                        </div>
+                        <div id="alertsTable" class="alerts-table">
+                            <!-- Dynamic alerts table -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-chart-line"></i> Alert Trends</h3>
+                        <canvas id="alertTrendsChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <div class="card">
+                        <h3><i class="fas fa-cog"></i> Alert Rules</h3>
+                        <div id="alertRules" class="rules-list">
+                            <!-- Dynamic alert rules -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Dashboard Settings</h3>
+                <span class="close" id="closeSettings">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label>Theme:</label>
+                    <select id="themeSelect">
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                        <option value="auto">Auto</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Refresh Rate:</label>
+                    <select id="refreshRateSelect">
+                        <option value="5">5 seconds</option>
+                        <option value="10">10 seconds</option>
+                        <option value="30">30 seconds</option>
+                        <option value="60">1 minute</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="enableNotifications"> Enable Notifications
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="enableSound"> Enable Sound Alerts
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveSettings" class="btn btn-primary">Save Settings</button>
+                <button id="resetSettings" class="btn btn-secondary">Reset to Default</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./js/dashboard.js"></script>
+    <script src="./js/charts.js"></script>
+    <script src="./js/websocket.js"></script>
+    <script src="./js/export.js"></script>
+</body>
+</html>

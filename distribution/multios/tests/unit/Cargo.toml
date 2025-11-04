@@ -1,0 +1,61 @@
+# Unit Tests for MultiOS
+# This directory contains unit tests for all MultiOS components
+
+[package]
+name = "multios-unit-tests"
+version = "0.1.0"
+edition = "2021"
+authors = ["MultiOS Development Team"]
+description = "Unit tests for MultiOS components"
+
+[dependencies]
+# Core testing dependencies
+criterion = { version = "0.5", features = ["html_reports"] }
+proptest = "1.4"
+serial_test = "2.0"
+tempfile = "3.8"
+
+# Test utilities
+mockall = "0.12"
+predicates = "3.0"
+
+[dev-dependencies]
+# Additional test dependencies
+rstest = "0.18"
+pretty_assertions = "1.4"
+
+[[test]]
+name = "kernel_tests"
+harness = false
+
+[[test]]
+name = "bootloader_tests"
+harness = false
+
+[[test]]
+name = "memory_tests"
+harness = false
+
+[[test]]
+name = "scheduler_tests"
+harness = false
+
+[[test]]
+name = "ipc_tests"
+harness = false
+
+[[test]]
+name = "hal_tests"
+harness = false
+
+[features]
+default = ["qemu"]
+qemu = []
+# Architecture-specific test features
+x86_64 = []
+arm64 = []
+riscv64 = []
+
+[[bench]]
+name = "kernel_benchmarks"
+harness = false

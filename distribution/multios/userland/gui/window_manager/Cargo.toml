@@ -1,0 +1,51 @@
+[package]
+name = "window_manager"
+version = "0.1.0"
+edition = "2021"
+authors = ["MultiOS Team"]
+description = "Window management system for MultiOS GUI"
+license = "MIT"
+repository = "https://github.com/multios/window-manager"
+
+[lib]
+name = "window_manager"
+path = "src/lib.rs"
+
+[[example]]
+name = "basic_window_operations"
+path = "examples/basic_window_operations.rs"
+
+[[example]]
+name = "workspace_management"
+path = "examples/workspace_management.rs"
+
+[[example]]
+name = "window_decorations"
+path = "examples/window_decorations.rs"
+
+[dependencies]
+# No external dependencies required for core functionality
+# This keeps the window manager lightweight and suitable for embedded systems
+
+[dev-dependencies]
+# Add testing dependencies
+criterion = "0.5"
+
+[features]
+default = []
+# Enable debug features
+debug = []
+# Enable specific themes
+themes = []
+# Enable advanced rendering
+advanced_rendering = []
+
+[profile.dev]
+opt-level = 0
+debug = true
+
+[profile.release]
+opt-level = 3
+debug = false
+lto = true
+codegen-units = 1

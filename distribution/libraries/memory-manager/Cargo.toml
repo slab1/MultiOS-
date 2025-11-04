@@ -1,0 +1,63 @@
+[package]
+name = "multios-memory-manager"
+version = "0.1.0"
+edition = "2021"
+description = "MultiOS Memory Management System"
+license = "MIT OR Apache-2.0"
+authors = ["MultiOS Team"]
+
+[dependencies]
+# Core memory management
+linked_list_allocator = "0.10"
+spin = "0.9"
+bitflags = "2.4"
+log = "0.4"
+
+# Architecture-specific dependencies
+x86_64 = { version = "0.14", optional = true }
+
+# Cross-platform support
+raw-cpuid = { version = "11.0", optional = true }
+memchr = { version = "2.5", optional = true }
+
+# Zero-cost abstractions
+volatile = "0.4"
+bit_field = "0.10"
+
+# Testing
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+proptest = "1.4"
+
+[features]
+default = ["alloc", "x86_64"]
+alloc = []
+std = []
+test = ["alloc"]
+
+# Architecture support
+x86_64 = ["dep:x86_64"]
+aarch64 = []
+riscv64 = []
+arm64 = ["aarch64"]
+
+# Debug features
+debug_prints = []
+paranoid_checks = []
+
+# Page size configuration
+huge_pages = []
+small_pages = ["default"]
+
+[profile.dev]
+opt-level = 1
+debug = true
+lto = false
+codegen-units = 1
+panic = "abort"
+
+[profile.release]
+opt-level = "s"
+lto = "thin"
+codegen-units = 1
+panic = "abort"

@@ -1,0 +1,48 @@
+[package]
+name = "filesystem_testing"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Core dependencies
+spin = "0.9"
+bitflags = "2.4"
+log = "0.4"
+chrono = "0.4"
+rand = "0.8"
+
+# For cross-platform testing
+libc = "0.2"
+
+# Memory testing
+page_size = "0.2"
+
+# Mock/testing infrastructure
+mockall = { version = "0.12", optional = true }
+rand_distr = "0.4"
+
+[features]
+default = ["std"]
+std = []
+mock = ["mockall"]
+stress_test = []
+benchmark = []
+simulation = []
+
+[dev-dependencies]
+tempfile = "3.8"
+criterion = "0.5"
+proptest = "1.4"
+
+[[bench]]
+name = "fs_benchmarks"
+harness = false
+
+[profile.release]
+opt-level = 3
+debug = false
+lto = true
+
+[profile.bench]
+inherits = "release"
+debug = true

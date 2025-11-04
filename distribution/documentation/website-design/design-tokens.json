@@ -1,0 +1,318 @@
+{
+  "color": {
+    "accent": {
+      "base": {
+        "value": "#DC143C",
+        "type": "color",
+        "description": "Primary accent color - CTAs, active links, highlights"
+      },
+      "dark": {
+        "value": "#A01028",
+        "type": "color",
+        "description": "Darker accent for hover states"
+      }
+    },
+    "achromatic": {
+      "black": {
+        "value": "#000000",
+        "type": "color",
+        "description": "Primary text, strong rules, high-emphasis headings"
+      },
+      "charcoal-dark": {
+        "value": "#1A1A1A",
+        "type": "color",
+        "description": "Secondary headings, emphasized text"
+      },
+      "charcoal": {
+        "value": "#333333",
+        "type": "color",
+        "description": "Body text, primary reading content"
+      },
+      "gray-dark": {
+        "value": "#666666",
+        "type": "color",
+        "description": "Captions, metadata, secondary information"
+      },
+      "gray-mid": {
+        "value": "#999999",
+        "type": "color",
+        "description": "Disabled states, placeholder text"
+      },
+      "gray-light": {
+        "value": "#CCCCCC",
+        "type": "color",
+        "description": "Borders, dividers, subtle rules"
+      },
+      "gray-pale": {
+        "value": "#E5E5E5",
+        "type": "color",
+        "description": "Subtle backgrounds, hover states"
+      },
+      "surface": {
+        "value": "#F5F5F5",
+        "type": "color",
+        "description": "Card backgrounds, elevated surfaces"
+      },
+      "white": {
+        "value": "#FFFFFF",
+        "type": "color",
+        "description": "Primary background, inverted text"
+      }
+    },
+    "background": {
+      "page": {
+        "value": "#FFFFFF",
+        "type": "color",
+        "description": "Page background (base layer)"
+      },
+      "surface": {
+        "value": "#F5F5F5",
+        "type": "color",
+        "description": "Card/container backgrounds (elevated)"
+      },
+      "subtle": {
+        "value": "#E5E5E5",
+        "type": "color",
+        "description": "Hover states, inactive tabs"
+      }
+    },
+    "semantic": {
+      "text-primary": {
+        "value": "#333333",
+        "type": "color",
+        "description": "Body copy - WCAG AAA 12.6:1"
+      },
+      "text-heading": {
+        "value": "#000000",
+        "type": "color",
+        "description": "All headings - WCAG AAA 21:1"
+      },
+      "text-secondary": {
+        "value": "#666666",
+        "type": "color",
+        "description": "Captions, labels - WCAG AA 5.7:1"
+      },
+      "border-standard": {
+        "value": "#CCCCCC",
+        "type": "color",
+        "description": "Default borders, dividers"
+      },
+      "border-emphasis": {
+        "value": "#000000",
+        "type": "color",
+        "description": "Strong rules, active borders"
+      }
+    }
+  },
+  "typography": {
+    "font-family": {
+      "primary": {
+        "value": "'Helvetica Neue', Helvetica, Arial, sans-serif",
+        "type": "fontFamily",
+        "description": "Primary typeface - Swiss Design standard"
+      },
+      "mono": {
+        "value": "'SF Mono', 'Monaco', 'Consolas', monospace",
+        "type": "fontFamily",
+        "description": "Code blocks and technical content"
+      }
+    },
+    "font-size": {
+      "display": {
+        "value": "64px",
+        "type": "fontSize",
+        "description": "Page titles, hero headlines"
+      },
+      "h1": {
+        "value": "48px",
+        "type": "fontSize",
+        "description": "Section headers"
+      },
+      "h2": {
+        "value": "32px",
+        "type": "fontSize",
+        "description": "Subsection headers"
+      },
+      "h3": {
+        "value": "24px",
+        "type": "fontSize",
+        "description": "Component headers"
+      },
+      "large": {
+        "value": "20px",
+        "type": "fontSize",
+        "description": "Introductions, pull quotes"
+      },
+      "body": {
+        "value": "16px",
+        "type": "fontSize",
+        "description": "Standard content"
+      },
+      "small": {
+        "value": "14px",
+        "type": "fontSize",
+        "description": "Captions, bylines"
+      },
+      "caption": {
+        "value": "12px",
+        "type": "fontSize",
+        "description": "Metadata, footnotes"
+      }
+    },
+    "font-weight": {
+      "regular": {
+        "value": 400,
+        "type": "fontWeight"
+      },
+      "medium": {
+        "value": 500,
+        "type": "fontWeight"
+      },
+      "bold": {
+        "value": 700,
+        "type": "fontWeight"
+      }
+    },
+    "line-height": {
+      "tight": {
+        "value": 1.1,
+        "type": "lineHeight",
+        "description": "Display text"
+      },
+      "heading": {
+        "value": 1.2,
+        "type": "lineHeight",
+        "description": "H1 headings"
+      },
+      "subheading": {
+        "value": 1.3,
+        "type": "lineHeight",
+        "description": "H2, H3 headings"
+      },
+      "body": {
+        "value": 1.5,
+        "type": "lineHeight",
+        "description": "Body text, small text"
+      },
+      "relaxed": {
+        "value": 1.6,
+        "type": "lineHeight",
+        "description": "Large text, pull quotes"
+      }
+    },
+    "letter-spacing": {
+      "tight": {
+        "value": "-0.02em",
+        "type": "letterSpacing",
+        "description": "Display text"
+      },
+      "normal": {
+        "value": "0",
+        "type": "letterSpacing",
+        "description": "Body text, headings"
+      },
+      "wide": {
+        "value": "0.01em",
+        "type": "letterSpacing",
+        "description": "Captions"
+      },
+      "wider": {
+        "value": "0.05em",
+        "type": "letterSpacing",
+        "description": "Uppercase text, nav links"
+      }
+    }
+  },
+  "spacing": {
+    "xs": {
+      "value": "8px",
+      "type": "spacing",
+      "description": "Inline spacing (icon + text)"
+    },
+    "sm": {
+      "value": "16px",
+      "type": "spacing",
+      "description": "Related elements gap"
+    },
+    "md": {
+      "value": "24px",
+      "type": "spacing",
+      "description": "Paragraph spacing, list gaps"
+    },
+    "lg": {
+      "value": "32px",
+      "type": "spacing",
+      "description": "Component internal padding"
+    },
+    "xl": {
+      "value": "48px",
+      "type": "spacing",
+      "description": "Section spacing"
+    },
+    "2xl": {
+      "value": "64px",
+      "type": "spacing",
+      "description": "Major section boundaries"
+    },
+    "3xl": {
+      "value": "96px",
+      "type": "spacing",
+      "description": "Dramatic section breaks"
+    },
+    "4xl": {
+      "value": "128px",
+      "type": "spacing",
+      "description": "Page-level spacing"
+    }
+  },
+  "borderRadius": {
+    "none": {
+      "value": "0px",
+      "type": "borderRadius",
+      "description": "Default sharp corners"
+    },
+    "subtle": {
+      "value": "2px",
+      "type": "borderRadius",
+      "description": "Buttons, inputs (minimal softening)"
+    }
+  },
+  "boxShadow": {
+    "none": {
+      "value": "none",
+      "type": "boxShadow",
+      "description": "Default (flat hierarchy)"
+    },
+    "card": {
+      "value": "0 1px 3px rgba(0, 0, 0, 0.12)",
+      "type": "boxShadow",
+      "description": "Cards (minimal elevation if needed)"
+    }
+  },
+  "animation": {
+    "duration": {
+      "instant": {
+        "value": "150ms",
+        "type": "duration",
+        "description": "Button hover, focus states"
+      },
+      "fast": {
+        "value": "200ms",
+        "type": "duration",
+        "description": "Element transitions, fades"
+      }
+    },
+    "easing": {
+      "linear": {
+        "value": "linear",
+        "type": "cubicBezier",
+        "description": "Preferred - honest, mechanical"
+      },
+      "ease-out": {
+        "value": "ease-out",
+        "type": "cubicBezier",
+        "description": "Acceptable - slight deceleration"
+      }
+    }
+  }
+}
