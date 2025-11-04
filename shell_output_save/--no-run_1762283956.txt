@@ -1,0 +1,4278 @@
+warning: unused config key `build.default-target` in `/workspace/.cargo/config.toml`
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /workspace/kernel/Cargo.toml
+workspace: /workspace/Cargo.toml
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /workspace/libraries/memory-manager/Cargo.toml
+workspace: /workspace/Cargo.toml
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /workspace/bootloader/Cargo.toml
+workspace: /workspace/Cargo.toml
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /workspace/libraries/device-drivers/Cargo.toml
+workspace: /workspace/Cargo.toml
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /workspace/libraries/filesystem/Cargo.toml
+workspace: /workspace/Cargo.toml
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /workspace/libraries/ipc/Cargo.toml
+workspace: /workspace/Cargo.toml
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /workspace/libraries/scheduler/Cargo.toml
+workspace: /workspace/Cargo.toml
+   Compiling proc-macro2 v1.0.103
+   Compiling quote v1.0.41
+   Compiling unicode-ident v1.0.22
+   Compiling syn v2.0.108
+   Compiling serde_core v1.0.228
+   Compiling crossbeam-utils v0.8.21
+   Compiling zerocopy v0.8.27
+   Compiling rustversion v1.0.22
+   Compiling zerocopy-derive v0.8.27
+   Compiling scopeguard v1.2.0
+   Compiling bit_field v0.10.3
+   Compiling serde v1.0.228
+   Compiling autocfg v1.5.0
+   Compiling num-traits v0.2.19
+   Compiling lock_api v0.4.14
+   Compiling crossbeam-epoch v0.9.18
+   Compiling serde_derive v1.0.228
+   Compiling libc v0.2.177
+   Compiling serde_json v1.0.145
+   Compiling bitflags v2.10.0
+   Compiling either v1.15.0
+   Compiling cfg-if v1.0.4
+   Compiling rayon-core v1.13.0
+   Compiling half v2.7.1
+   Compiling crossbeam-deque v0.8.6
+   Compiling anstyle v1.0.13
+   Compiling plotters-backend v0.3.7
+   Compiling itoa v1.0.15
+   Compiling regex-syntax v0.8.8
+   Compiling bitflags v1.3.2
+   Compiling ryu v1.0.20
+   Compiling memchr v2.7.6
+   Compiling clap_lex v0.7.6
+   Compiling volatile v0.4.6
+   Compiling ciborium-io v0.2.2
+   Compiling x86 v0.52.0
+   Compiling ciborium-ll v0.2.2
+   Compiling x86_64 v0.14.13
+   Compiling clap_builder v4.5.51
+   Compiling raw-cpuid v10.7.0
+   Compiling regex-automata v0.4.13
+   Compiling plotters-svg v0.3.7
+   Compiling itertools v0.10.5
+   Compiling spinning_top v0.2.5
+   Compiling bootloader v0.9.33
+   Compiling cast v0.3.0
+   Compiling same-file v1.0.6
+   Compiling walkdir v2.5.0
+   Compiling criterion-plot v0.5.0
+   Compiling linked_list_allocator v0.10.5
+   Compiling is-terminal v0.4.17
+   Compiling rayon v1.11.0
+   Compiling plotters v0.3.7
+   Compiling regex v1.12.2
+   Compiling tinytemplate v1.2.1
+   Compiling clap v4.5.51
+   Compiling ciborium v0.2.2
+   Compiling spin v0.9.8
+   Compiling oorandom v11.1.5
+   Compiling anes v0.1.6
+   Compiling log v0.4.28
+   Compiling once_cell v1.21.3
+   Compiling criterion v0.5.1
+   Compiling multios-memory-manager v0.1.0 (/workspace/libraries/memory-manager)
+error[E0255]: the name `PageTable` is defined multiple times
+  --> libraries/memory-manager/src/arch_specific.rs:70:1
+   |
+13 | use x86_64::structures::paging::{PageTable, Page, FrameAllocator, Mapper...
+   |                                  --------- previous import of the type `PageTable` here
+...
+70 | pub trait PageTable {
+   | ^^^^^^^^^^^^^^^^^^^ `PageTable` redefined here
+   |
+   = note: `PageTable` must be defined only once in the type namespace of this module
+help: you can use `as` to change the binding name of the import
+   |
+13 | use x86_64::structures::paging::{PageTable as OtherPageTable, Page, FrameAllocator, Mapper, OffsetPageTable, Size4KiB};
+   |                                            +++++++++++++++++
+
+error[E0255]: the name `PhysAddr` is defined multiple times
+  --> libraries/memory-manager/src/memory_types.rs:58:1
+   |
+12 | use x86_64::PhysAddr;
+   |     ---------------- previous import of the type `PhysAddr` here
+...
+58 | pub struct PhysAddr(pub u64);
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `PhysAddr` redefined here
+   |
+   = note: `PhysAddr` must be defined only once in the type namespace of this module
+help: you can use `as` to change the binding name of the import
+   |
+12 | use x86_64::PhysAddr as OtherPhysAddr;
+   |                      ++++++++++++++++
+
+error: argument never used
+   --> libraries/memory-manager/src/virtual_memory.rs:405:51
+    |
+405 |                 core::arch::asm!("invlpg (%rax)", in(reg) 0);
+    |                                                   ^^^^^^^^^ argument never used
+    |
+    = help: if this argument is intentionally unused, consider using it in an asm comment: `"/* {0} */"`
+
+error[E0432]: unresolved import `x86_64::structures::paging::UnusedPhysFrame`
+  --> libraries/memory-manager/src/virtual_memory.rs:15:67
+   |
+15 | ...iB, UnusedPhysFrame,
+   |        ^^^^^^^^^^^^^^^ no `UnusedPhysFrame` in `structures::paging`
+
+error[E0432]: unresolved import `crate::MemoryError`
+ --> libraries/memory-manager/src/physical_memory.rs:8:13
+  |
+8 | use crate::{MemoryError, MemoryResult};
+  |             ^^^^^^^^^^^ no `MemoryError` in the root
+
+error[E0432]: unresolved import `crate::MemoryError`
+ --> libraries/memory-manager/src/virtual_memory.rs:8:13
+  |
+8 | use crate::{MemoryError, MemoryResult};
+  |             ^^^^^^^^^^^ no `MemoryError` in the root
+
+error[E0432]: unresolved import `crate::MemoryError`
+ --> libraries/memory-manager/src/allocator.rs:8:13
+  |
+8 | use crate::{MemoryError, MemoryResult};
+  |             ^^^^^^^^^^^ no `MemoryError` in the root
+
+error[E0432]: unresolved import `crate::MemoryError`
+ --> libraries/memory-manager/src/arch_specific.rs:9:13
+  |
+9 | use crate::{MemoryError, MemoryResult};
+  |             ^^^^^^^^^^^ no `MemoryError` in the root
+
+error[E0432]: unresolved import `crate::MemoryError`
+  --> libraries/memory-manager/src/numa.rs:20:43
+   |
+20 | ...dr, PageSize, MemoryError, MemoryResult, MemoryFlags};
+   |                  ^^^^^^^^^^^ no `MemoryError` in the root
+   |
+   = note: unresolved item `crate::arch_specific::x86_64_impl::MemoryError` exists but is inaccessible
+
+error[E0432]: unresolved import `crate::MemoryError`
+  --> libraries/memory-manager/src/large_scale_vm.rs:20:56
+   |
+20 | ... MemoryFlags, MemoryError, MemoryResult};
+   |                  ^^^^^^^^^^^ no `MemoryError` in the root
+   |
+   = note: unresolved item `crate::arch_specific::x86_64_impl::MemoryError` exists but is inaccessible
+
+error: cannot find macro `vec` in this scope
+    --> libraries/memory-manager/src/large_scale_vm.rs:1016:31
+     |
+1016 |             response_actions: vec![
+     |                               ^^^
+     |
+help: consider importing this macro
+     |
+  14 + use alloc::vec;
+     |
+
+error: cannot find macro `vec` in this scope
+   --> libraries/memory-manager/src/large_scale_vm.rs:830:23
+    |
+830 | ...   tb_pages: vec![HugePagePool::new(PageSize::Size1G << 20)], // 512...
+    |                 ^^^
+    |
+help: consider importing this macro
+    |
+ 14 + use alloc::vec;
+    |
+
+error: cannot find macro `vec` in this scope
+   --> libraries/memory-manager/src/large_scale_vm.rs:829:23
+    |
+829 |             mb_pages: vec![HugePagePool::new(PageSize::Size2M)],
+    |                       ^^^
+    |
+help: consider importing this macro
+    |
+ 14 + use alloc::vec;
+    |
+
+error: cannot find macro `vec` in this scope
+   --> libraries/memory-manager/src/large_scale_vm.rs:828:23
+    |
+828 |             gb_pages: vec![HugePagePool::new(PageSize::Size1G)],
+    |                       ^^^
+    |
+help: consider importing this macro
+    |
+ 14 + use alloc::vec;
+    |
+
+error: cannot find macro `vec` in this scope
+   --> libraries/memory-manager/src/large_scale_vm.rs:495:22
+    |
+495 |             entries: vec![None; 512], // 512 entries for level 1
+    |                      ^^^
+    |
+help: consider importing this macro
+    |
+ 14 + use alloc::vec;
+    |
+
+error: cannot find macro `vec` in this scope
+   --> libraries/memory-manager/src/arch_specific.rs:722:29
+    |
+722 |                 page_sizes: vec![PageSize::Size4K],
+    |                             ^^^
+    |
+help: consider importing this macro
+    |
+  8 + use alloc::vec;
+    |
+
+error: cannot find macro `vec` in this scope
+   --> libraries/memory-manager/src/arch_specific.rs:713:29
+    |
+713 |                 page_sizes: vec![PageSize::Size4K],
+    |                             ^^^
+    |
+help: consider importing this macro
+    |
+  8 + use alloc::vec;
+    |
+
+error: cannot find macro `vec` in this scope
+   --> libraries/memory-manager/src/arch_specific.rs:704:29
+    |
+704 | ...   page_sizes: vec![PageSize::Size4K, PageSize::Size2M, PageSize::Si...
+    |                   ^^^
+    |
+help: consider importing this macro
+    |
+  8 + use alloc::vec;
+    |
+
+error: cannot find macro `vec` in this scope
+  --> libraries/memory-manager/src/physical_memory.rs:65:28
+   |
+65 |         self.free_bitmap = vec![0xFF; bitmap_size];
+   |                            ^^^
+   |
+help: consider importing this macro
+   |
+ 7 + use alloc::vec;
+   |
+
+error[E0433]: failed to resolve: there are too many leading `super` keywords
+   --> libraries/memory-manager/src/physical_memory.rs:216:24
+    |
+216 | ...   super::super::kernel::MemoryType::Usable => MemoryRegion::Usable,
+    |              ^^^^^ there are too many leading `super` keywords
+
+error[E0433]: failed to resolve: there are too many leading `super` keywords
+   --> libraries/memory-manager/src/physical_memory.rs:217:24
+    |
+217 | ...   super::super::kernel::MemoryType::Reserved => MemoryRegion::Reser...
+    |              ^^^^^ there are too many leading `super` keywords
+
+error[E0433]: failed to resolve: there are too many leading `super` keywords
+   --> libraries/memory-manager/src/physical_memory.rs:218:24
+    |
+218 | ...   super::super::kernel::MemoryType::AcpiReclaimable => MemoryRegion...
+    |              ^^^^^ there are too many leading `super` keywords
+
+error[E0433]: failed to resolve: there are too many leading `super` keywords
+   --> libraries/memory-manager/src/physical_memory.rs:219:24
+    |
+219 | ...   super::super::kernel::MemoryType::AcpiNvs => MemoryRegion::AcpiNvs,
+    |              ^^^^^ there are too many leading `super` keywords
+
+error[E0433]: failed to resolve: there are too many leading `super` keywords
+   --> libraries/memory-manager/src/physical_memory.rs:220:24
+    |
+220 | ...   super::super::kernel::MemoryType::BadMemory => MemoryRegion::BadM...
+    |              ^^^^^ there are too many leading `super` keywords
+
+error[E0433]: failed to resolve: there are too many leading `super` keywords
+   --> libraries/memory-manager/src/physical_memory.rs:221:24
+    |
+221 | ...   super::super::kernel::MemoryType::BootloaderReclaimable => Memory...
+    |              ^^^^^ there are too many leading `super` keywords
+
+error[E0433]: failed to resolve: there are too many leading `super` keywords
+   --> libraries/memory-manager/src/physical_memory.rs:222:24
+    |
+222 | ...   super::super::kernel::MemoryType::KernelAndModules => MemoryRegio...
+    |              ^^^^^ there are too many leading `super` keywords
+
+error[E0407]: method `deallocate_frame` is not a member of trait `FrameAllocator`
+   --> libraries/memory-manager/src/virtual_memory.rs:162:5
+    |
+162 |       fn deallocate_frame(&mut self, frame: UnusedPhysFrame<Size4KiB>) {
+    |       ^  ---------------- help: there is an associated function with a similar name: `allocate_frame`
+    |  _____|
+    | |
+163 | |         // Simple implementation - just update used count
+164 | |         if self.used_frames > 0 {
+165 | |             self.used_frames -= 1;
+166 | |         }
+167 | |     }
+    | |_____^ not a member of trait `FrameAllocator`
+
+error: generic parameters may not be used in const operations
+   --> libraries/memory-manager/src/cache_coherency.rs:408:67
+    |
+408 |     _padding: [u8; DEFAULT_CACHE_LINE_SIZE - core::mem::size_of::<T>()],
+    |                                                                   ^ cannot perform const operation using `T`
+    |
+    = note: type parameters may not be used in const expressions
+    = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error[E0412]: cannot find type `Vec` in this scope
+  --> libraries/memory-manager/src/physical_memory.rs:22:23
+   |
+22 |     reserved_regions: Vec<MemoryRegionDescriptor>,
+   |                       ^^^ not found in this scope
+   |
+   = note: struct `crate::barriers::Vec` exists but is inaccessible
+help: consider importing this struct
+   |
+ 7 + use alloc::vec::Vec;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/physical_memory.rs:31:12
+   |
+31 |     start: PhysAddr,
+   |            ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+ 7 + use x86_64::PhysAddr;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/physical_memory.rs:33:10
+   |
+33 |     end: PhysAddr,
+   |          ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+ 7 + use x86_64::PhysAddr;
+   |
+
+error[E0412]: cannot find type `Vec` in this scope
+  --> libraries/memory-manager/src/physical_memory.rs:41:18
+   |
+41 |     free_bitmap: Vec<u8>,
+   |                  ^^^ not found in this scope
+   |
+   = note: struct `crate::barriers::Vec` exists but is inaccessible
+help: consider importing this struct
+   |
+ 7 + use alloc::vec::Vec;
+   |
+
+error[E0433]: failed to resolve: use of undeclared type `Vec`
+  --> libraries/memory-manager/src/physical_memory.rs:52:26
+   |
+52 |             free_bitmap: Vec::new(),
+   |                          ^^^ use of undeclared type `Vec`
+   |
+   = note: struct `crate::barriers::Vec` exists but is inaccessible
+help: consider importing this struct
+   |
+ 7 + use alloc::vec::Vec;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/physical_memory.rs:59:43
+   |
+59 |     pub fn init(&mut self, memory_map: &[(PhysAddr, usize, MemoryRegion)...
+   |                                           ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+ 7 + use x86_64::PhysAddr;
+   |
+
+error[E0433]: failed to resolve: use of undeclared type `Vec`
+   --> libraries/memory-manager/src/physical_memory.rs:202:31
+    |
+202 |             reserved_regions: Vec::new(),
+    |                               ^^^ use of undeclared type `Vec`
+    |
+    = note: struct `crate::barriers::Vec` exists but is inaccessible
+help: consider importing this struct
+    |
+  7 + use alloc::vec::Vec;
+    |
+
+error[E0412]: cannot find type `MemoryMapEntry` in this scope
+   --> libraries/memory-manager/src/physical_memory.rs:208:50
+    |
+208 |     pub fn init(&mut self, memory_map_entries: &[MemoryMapEntry]) {
+    |                                                  ^^^^^^^^^^^^^^ not found in this scope
+
+error[E0433]: failed to resolve: use of undeclared type `Vec`
+   --> libraries/memory-manager/src/physical_memory.rs:212:32
+    |
+212 |         let mut physical_map = Vec::new();
+    |                                ^^^ use of undeclared type `Vec`
+    |
+    = note: struct `crate::barriers::Vec` exists but is inaccessible
+help: consider importing this struct
+    |
+  7 + use alloc::vec::Vec;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/physical_memory.rs:226:29
+    |
+226 |             let phys_addr = PhysAddr::new(entry.base);
+    |                             ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+  7 - use crate::memory_types::*;
+  7 + use ;
+    |
+help: consider importing this struct
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/physical_memory.rs:285:54
+    |
+285 |     pub fn frame_to_addr(&self, frame: PageFrame) -> PhysAddr {
+    |                                                      ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/physical_memory.rs:290:39
+    |
+290 |     pub fn addr_to_frame(&self, addr: PhysAddr) -> PageFrame {
+    |                                       ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/physical_memory.rs:295:45
+    |
+295 |     pub fn is_range_available(&self, start: PhysAddr, size: usize) -> b...
+    |                                             ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/physical_memory.rs:306:24
+    |
+306 | ...   let max_addr = PhysAddr::new((self.total_pages * PageSize::Size4K...
+    |                      ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+  7 - use crate::memory_types::*;
+  7 + use ;
+    |
+help: consider importing this struct
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/physical_memory.rs:315:45
+    |
+315 |     pub fn reserve_region(&mut self, start: PhysAddr, size: usize, regi...
+    |                                             ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/physical_memory.rs:348:27
+    |
+348 | fn ranges_overlap(start1: PhysAddr, end1: PhysAddr, start2: PhysAddr, e...
+    |                           ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/physical_memory.rs:348:43
+    |
+348 | fn ranges_overlap(start1: PhysAddr, end1: PhysAddr, start2: PhysAddr, e...
+    |                                           ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/physical_memory.rs:348:61
+    |
+348 | ...end1: PhysAddr, start2: PhysAddr, end2: PhysAddr) -> bool {
+    |                            ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/physical_memory.rs:348:77
+    |
+348 | ...start2: PhysAddr, end2: PhysAddr) -> bool {
+    |                            ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Vec`
+   --> libraries/memory-manager/src/physical_memory.rs:358:28
+    |
+358 |     let empty_memory_map = Vec::new();
+    |                            ^^^ use of undeclared type `Vec`
+    |
+    = note: struct `crate::barriers::Vec` exists but is inaccessible
+help: consider importing this struct
+    |
+  7 + use alloc::vec::Vec;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/physical_memory.rs:398:33
+    |
+398 | pub fn free_physical_page(addr: PhysAddr) -> MemoryResult<()> {
+    |                                 ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+  --> libraries/memory-manager/src/virtual_memory.rs:31:13
+   |
+31 |     mapper: Box<dyn Mapper<Size4KiB>>,
+   |             ^^^ not found in this scope
+   |
+help: consider importing this struct
+   |
+ 7 + use alloc::boxed::Box;
+   |
+
+error[E0412]: cannot find type `Box` in this scope
+  --> libraries/memory-manager/src/virtual_memory.rs:33:22
+   |
+33 |     frame_allocator: Box<dyn FrameAllocator<Size4KiB>>,
+   |                      ^^^ not found in this scope
+   |
+help: consider importing this struct
+   |
+ 7 + use alloc::boxed::Box;
+   |
+
+error[E0412]: cannot find type `Vec` in this scope
+  --> libraries/memory-manager/src/virtual_memory.rs:37:15
+   |
+37 |     mappings: Vec<MemoryMapping>,
+   |               ^^^ not found in this scope
+   |
+   = note: struct `crate::barriers::Vec` exists but is inaccessible
+help: consider importing this struct
+   |
+ 7 + use alloc::vec::Vec;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/virtual_memory.rs:50:17
+   |
+50 |     phys_start: PhysAddr,
+   |                 ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+ 7 + use x86_64::PhysAddr;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/virtual_memory.rs:59:72
+   |
+59 | ...d: VirtAddr, phys_start: PhysAddr, flags: MemoryFlags) -> Self {
+   |                             ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+ 7 + use x86_64::PhysAddr;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/virtual_memory.rs:96:38
+   |
+96 |     const fn with_frame_flags(frame: PhysAddr, flags: MemoryFlags) -> Se...
+   |                                      ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+ 7 + use x86_64::PhysAddr;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/virtual_memory.rs:115:30
+    |
+115 |     const fn frame(&self) -> PhysAddr {
+    |                              ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/virtual_memory.rs:116:9
+    |
+116 |         PhysAddr::new(self.value & 0x000F_FFFF_FFFF_F000)
+    |         ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+  7 - use crate::memory_types::*;
+  7 + use ;
+    |
+help: consider importing this struct
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/virtual_memory.rs:132:17
+    |
+132 |     next_frame: PhysAddr,
+    |                 ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/virtual_memory.rs:139:34
+    |
+139 |     pub const fn new(start_addr: PhysAddr, max_frames: usize) -> Self {
+    |                                  ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/virtual_memory.rs:173:17
+    |
+173 |         mapper: Box<dyn Mapper<Size4KiB>>,
+    |                 ^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  7 + use alloc::boxed::Box;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/virtual_memory.rs:174:26
+    |
+174 |         frame_allocator: Box<dyn FrameAllocator<Size4KiB>>,
+    |                          ^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  7 + use alloc::boxed::Box;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Vec`
+   --> libraries/memory-manager/src/virtual_memory.rs:181:23
+    |
+181 |             mappings: Vec::new(),
+    |                       ^^^ use of undeclared type `Vec`
+    |
+    = note: struct `crate::barriers::Vec` exists but is inaccessible
+help: consider importing this struct
+    |
+  7 + use alloc::vec::Vec;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/virtual_memory.rs:204:20
+    |
+204 |         phys_addr: PhysAddr,
+    |                    ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/virtual_memory.rs:266:39
+    |
+266 |                 Some(phys_addr) => Ok(PhysAddr::new(phys_addr.as_u64())),
+    |                                       ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+  7 - use crate::memory_types::*;
+  7 + use ;
+    |
+help: consider importing this struct
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/virtual_memory.rs:363:60
+    |
+363 | ...r: VirtAddr, phys_addr: PhysAddr, flags: MemoryFlags) -> MemoryResul...
+    |                            ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Box`
+   --> libraries/memory-manager/src/virtual_memory.rs:439:22
+    |
+439 | ...   let mapper = Box::new(OffsetPageTable::new(level_4_table, PhysAdd...
+    |                    ^^^ use of undeclared type `Box`
+    |
+help: consider importing this struct
+    |
+  7 + use alloc::boxed::Box;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/virtual_memory.rs:439:67
+    |
+439 | ...vel_4_table, PhysAddr::new(0)));
+    |                 ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+  7 - use crate::memory_types::*;
+  7 + use ;
+    |
+help: consider importing this struct
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Box`
+   --> libraries/memory-manager/src/virtual_memory.rs:440:31
+    |
+440 | ...   let frame_allocator = Box::new(SimpleFrameAllocator::new(PhysAddr...
+    |                             ^^^ use of undeclared type `Box`
+    |
+help: consider importing this struct
+    |
+  7 + use alloc::boxed::Box;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/virtual_memory.rs:440:66
+    |
+440 | ...locator::new(PhysAddr::new(0x1000), 1000));
+    |                 ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+  7 - use crate::memory_types::*;
+  7 + use ;
+    |
+help: consider importing this struct
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/virtual_memory.rs:470:51
+    |
+470 | ...r: VirtAddr, phys_addr: PhysAddr, size: usize, flags: MemoryFlags) -...
+    |                            ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+  7 + use x86_64::PhysAddr;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/allocator.rs:216:51
+    |
+216 |     pub fn allocate_box<T>(&self) -> MemoryResult<Box<T>> {
+    |                                                   ^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  7 + use alloc::boxed::Box;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Box`
+   --> libraries/memory-manager/src/allocator.rs:221:21
+    |
+221 |         Ok(unsafe { Box::from_raw(ptr as *mut T) })
+    |                     ^^^ use of undeclared type `Box`
+    |
+help: consider importing this struct
+    |
+  7 + use alloc::boxed::Box;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/allocator.rs:225:69
+    |
+225 | ...ze) -> MemoryResult<Box<[T]>> {
+    |                        ^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  7 + use alloc::boxed::Box;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Box`
+   --> libraries/memory-manager/src/allocator.rs:231:30
+    |
+231 | ...   let slice = unsafe { Box::from_raw(core::slice::from_raw_parts_mu...
+    |                            ^^^ use of undeclared type `Box`
+    |
+help: consider importing this struct
+    |
+  7 + use alloc::boxed::Box;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/allocator.rs:236:54
+    |
+236 |     pub fn allocate_zeroed<T>(&self) -> MemoryResult<Box<T>> {
+    |                                                      ^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  7 + use alloc::boxed::Box;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Box`
+   --> libraries/memory-manager/src/allocator.rs:243:16
+    |
+243 |             Ok(Box::from_raw(ptr as *mut T))
+    |                ^^^ use of undeclared type `Box`
+    |
+help: consider importing this struct
+    |
+  7 + use alloc::boxed::Box;
+    |
+
+error[E0412]: cannot find type `Vec` in this scope
+   --> libraries/memory-manager/src/allocator.rs:269:11
+    |
+269 |     pool: Vec<Option<Box<T>>>,
+    |           ^^^ not found in this scope
+    |
+    = note: struct `crate::barriers::Vec` exists but is inaccessible
+help: consider importing this struct
+    |
+  7 + use alloc::vec::Vec;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/allocator.rs:269:22
+    |
+269 |     pool: Vec<Option<Box<T>>>,
+    |                      ^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  7 + use alloc::boxed::Box;
+    |
+
+error[E0412]: cannot find type `Vec` in this scope
+   --> libraries/memory-manager/src/allocator.rs:271:19
+    |
+271 |     free_indices: Vec<usize>,
+    |                   ^^^ not found in this scope
+    |
+    = note: struct `crate::barriers::Vec` exists but is inaccessible
+help: consider importing this struct
+    |
+  7 + use alloc::vec::Vec;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Vec`
+   --> libraries/memory-manager/src/allocator.rs:279:24
+    |
+279 |         let mut pool = Vec::with_capacity(capacity);
+    |                        ^^^ use of undeclared type `Vec`
+    |
+    = note: struct `crate::barriers::Vec` exists but is inaccessible
+help: consider importing this struct
+    |
+  7 + use alloc::vec::Vec;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Vec`
+   --> libraries/memory-manager/src/allocator.rs:280:32
+    |
+280 |         let mut free_indices = Vec::with_capacity(capacity);
+    |                                ^^^ use of undeclared type `Vec`
+    |
+    = note: struct `crate::barriers::Vec` exists but is inaccessible
+help: consider importing this struct
+    |
+  7 + use alloc::vec::Vec;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/allocator.rs:329:19
+    |
+329 |     inner: Option<Box<T>>,
+    |                   ^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  7 + use alloc::boxed::Box;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/allocator.rs:352:32
+    |
+352 |     pub fn into_inner(self) -> Box<T> {
+    |                                ^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  7 + use alloc::boxed::Box;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/arch_specific.rs:51:26
+   |
+51 |     fn with_frame(frame: PhysAddr, flags: MemoryFlags) -> Self;
+   |                          ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+ 8 + use x86_64::PhysAddr;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/arch_specific.rs:57:24
+   |
+57 |     fn frame(&self) -> PhysAddr;
+   |                        ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+ 8 + use x86_64::PhysAddr;
+   |
+
+error[E0412]: cannot find type `Box` in this scope
+  --> libraries/memory-manager/src/arch_specific.rs:72:42
+   |
+72 |     fn get_entry(&self, index: usize) -> Box<dyn PageTableEntry>;
+   |                                          ^^^ not found in this scope
+   |
+help: consider importing this struct
+   |
+ 8 + use alloc::boxed::Box;
+   |
+
+error[E0412]: cannot find type `Box` in this scope
+  --> libraries/memory-manager/src/arch_specific.rs:75:50
+   |
+75 |     fn set_entry(&mut self, index: usize, entry: Box<dyn PageTableEntry>);
+   |                                                  ^^^ not found in this scope
+   |
+help: consider importing this struct
+   |
+ 8 + use alloc::boxed::Box;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/arch_specific.rs:84:60
+   |
+84 | ...dr: VirtAddr, phys_addr: PhysAddr, flags: MemoryFlags) -> MemoryResul...
+   |                             ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+ 8 + use x86_64::PhysAddr;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/arch_specific.rs:123:27
+    |
+123 |         pub fn new(frame: PhysAddr, flags: MemoryFlags) -> Self {
+    |                           ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+107 +     use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/arch_specific.rs:136:36
+    |
+136 |         pub fn phys_addr(&self) -> PhysAddr {
+    |                                    ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+107 +     use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/arch_specific.rs:137:13
+    |
+137 |             PhysAddr::new(self.value & 0x000F_FFFF_FFFF_F000)
+    |             ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+107 -     use super::*;
+107 +     use ;
+    |
+help: consider importing this struct
+    |
+107 +     use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/arch_specific.rs:146:30
+    |
+146 |         fn with_frame(frame: PhysAddr, flags: MemoryFlags) -> Self {
+    |                              ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+107 +     use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/arch_specific.rs:154:28
+    |
+154 |         fn frame(&self) -> PhysAddr {
+    |                            ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+107 +     use x86_64::PhysAddr;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/arch_specific.rs:201:46
+    |
+201 |         fn get_entry(&self, index: usize) -> Box<dyn PageTableEntry> {
+    |                                              ^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+107 +     use alloc::boxed::Box;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Box`
+   --> libraries/memory-manager/src/arch_specific.rs:202:13
+    |
+202 |             Box::new(self.entries[index])
+    |             ^^^ use of undeclared type `Box`
+    |
+help: consider importing this struct
+    |
+107 +     use alloc::boxed::Box;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/arch_specific.rs:205:54
+    |
+205 | ...ndex: usize, entry: Box<dyn PageTableEntry>) {
+    |                        ^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+107 +     use alloc::boxed::Box;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/arch_specific.rs:219:22
+    |
+219 |         phys_offset: PhysAddr,
+    |                      ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+107 +     use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/arch_specific.rs:225:33
+    |
+225 | ...   pub fn new(phys_offset: PhysAddr, root_table: *mut X86PageTable) ...
+    |                               ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+107 +     use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/arch_specific.rs:250:64
+    |
+250 | ...r: VirtAddr, phys_addr: PhysAddr, flags: MemoryFlags) -> MemoryResul...
+    |                            ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+107 +     use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/arch_specific.rs:282:20
+    |
+282 | ...   Ok(PhysAddr::new(virt_addr.as_u64() + self.phys_offset.as_u64()))
+    |          ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+107 -     use super::*;
+107 +     use ;
+    |
+help: consider importing this struct
+    |
+107 +     use x86_64::PhysAddr;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/arch_specific.rs:654:13
+    |
+654 |     mapper: Box<dyn VirtualMemoryMapper>,
+    |             ^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  8 + use alloc::boxed::Box;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/arch_specific.rs:656:20
+    |
+656 |     fault_handler: Box<dyn PageFaultHandler>,
+    |                    ^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  8 + use alloc::boxed::Box;
+    |
+
+error[E0412]: cannot find type `String` in this scope
+   --> libraries/memory-manager/src/arch_specific.rs:667:17
+    |
+667 |     pub vendor: String,
+    |                 ^^^^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  8 + use alloc::string::String;
+    |
+
+error[E0412]: cannot find type `String` in this scope
+   --> libraries/memory-manager/src/arch_specific.rs:669:16
+    |
+669 |     pub model: String,
+    |                ^^^^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  8 + use alloc::string::String;
+    |
+
+error[E0412]: cannot find type `Vec` in this scope
+   --> libraries/memory-manager/src/arch_specific.rs:671:21
+    |
+671 |     pub page_sizes: Vec<PageSize>,
+    |                     ^^^ not found in this scope
+    |
+    = note: struct `crate::barriers::Vec` exists but is inaccessible
+help: consider importing this struct
+    |
+  8 + use alloc::vec::Vec;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/arch_specific.rs:684:17
+    |
+684 |         mapper: Box<dyn VirtualMemoryMapper>,
+    |                 ^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  8 + use alloc::boxed::Box;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/arch_specific.rs:685:24
+    |
+685 |         fault_handler: Box<dyn PageFaultHandler>,
+    |                        ^^^ not found in this scope
+    |
+help: consider importing this struct
+    |
+  8 + use alloc::boxed::Box;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/arch_specific.rs:762:31
+    |
+762 |             let phys_offset = PhysAddr::new(0);
+    |                               ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+  8 - use crate::memory_types::*;
+  8 + use ;
+    |
+help: consider importing this struct
+    |
+  8 + use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Box`
+   --> libraries/memory-manager/src/arch_specific.rs:764:26
+    |
+764 | ...   let mapper = Box::new(x86_64_impl::X86Mapper::new(phys_offset, ro...
+    |                    ^^^ use of undeclared type `Box`
+    |
+help: consider importing this struct
+    |
+  8 + use alloc::boxed::Box;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Box`
+   --> libraries/memory-manager/src/arch_specific.rs:765:33
+    |
+765 |             let fault_handler = Box::new(SimplePageFaultHandler::new());
+    |                                 ^^^ use of undeclared type `Box`
+    |
+help: consider importing this struct
+    |
+  8 + use alloc::boxed::Box;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/numa.rs:83:24
+   |
+83 |     pub physical_addr: PhysAddr,
+   |                        ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+14 + use x86_64::PhysAddr;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/numa.rs:232:43
+    |
+232 |     pub fn init(&mut self, memory_map: &[(PhysAddr, usize)], cpu_count:...
+    |                                           ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/numa.rs:274:54
+    |
+274 | ...ut self, memory_map: &[(PhysAddr, usize)], cpu_count: usize) -> Numa...
+    |                            ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/numa.rs:288:32
+    |
+288 |         let mut current_base = PhysAddr::new(0);
+    |                                ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+ 20 - use crate::{PhysAddr, VirtAddr, PageSize, MemoryError, MemoryResult, MemoryFlags};
+ 20 + use crate::{, VirtAddr, PageSize, MemoryError, MemoryResult, MemoryFlags};
+    |
+help: consider importing this struct
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/numa.rs:309:63
+    |
+309 | ...ut self, memory_map: &[(PhysAddr, usize)]) -> NumaResult<()> {
+    |                            ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/numa.rs:434:46
+    |
+434 |     pub fn migrate_pages(&mut self, pages: &[PhysAddr], target_node: Nu...
+    |                                              ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/numa.rs:468:42
+    |
+468 |     fn get_node_for_address(&self, addr: PhysAddr) -> NumaResult<NumaNo...
+    |                                          ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/numa.rs:488:43
+    |
+488 |     pub fn find_nearest_node(&self, addr: PhysAddr) -> NumaResult<NumaN...
+    |                                           ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/cache_coherency.rs:58:18
+   |
+58 |     pub address: PhysAddr,
+   |                  ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+12 + use x86_64::PhysAddr;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:121:18
+    |
+121 |     pub address: PhysAddr,
+    |                  ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 12 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:131:23
+    |
+131 |     pub line_address: PhysAddr,
+    |                       ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 12 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:442:38
+    |
+442 |     pub fn align_to_cache_line(addr: PhysAddr) -> PhysAddr {
+    |                                      ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+439 +     use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:442:51
+    |
+442 |     pub fn align_to_cache_line(addr: PhysAddr) -> PhysAddr {
+    |                                                   ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+439 +     use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:443:9
+    |
+443 | ...   PhysAddr::new((addr.as_u64() / DEFAULT_CACHE_LINE_SIZE as u64) * ...
+    |       ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+439 -     use super::*;
+439 +     use ;
+    |
+help: consider importing this struct
+    |
+439 +     use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:447:40
+    |
+447 |     pub fn is_cache_line_aligned(addr: PhysAddr) -> bool {
+    |                                        ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+439 +     use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:452:39
+    |
+452 |     pub fn get_cache_line_index(addr: PhysAddr, cache_size: usize) -> u...
+    |                                       ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+439 +     use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:458:49
+    |
+458 |     pub fn calculate_false_sharing_score(addr1: PhysAddr, addr2: PhysAd...
+    |                                                 ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+439 +     use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:458:66
+    |
+458 | ...addr1: PhysAddr, addr2: PhysAddr) -> f32 {
+    |                            ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+439 +     use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:547:30
+    |
+547 | ...   address: PhysAddr::new((i * DEFAULT_CACHE_LINE_SIZE) as u64),
+    |                ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+ 20 - use crate::PhysAddr;
+ 20 + use ;
+    |
+help: consider importing this struct
+    |
+ 12 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:567:68
+    |
+567 | ...cpu_id: usize, address: PhysAddr, request_type: CacheRequestType) ->...
+    |                            ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 12 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:594:45
+    |
+594 |     fn get_cache_line_index(&self, address: PhysAddr) -> usize {
+    |                                             ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 12 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:660:48
+    |
+660 |     fn check_false_sharing(&mut self, address: PhysAddr, cpu_id: usize) {
+    |                                                ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 12 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:732:51
+    |
+732 |     fn correct_false_sharing(&mut self, _address: PhysAddr) {
+    |                                                   ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 12 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:738:63
+    |
+738 | ...elf, data_structures: &[PhysAddr]) -> Vec<OptimizationRecommendation> {
+    |                            ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 12 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:760:46
+    |
+760 |     fn find_cache_line_index(&self, address: PhysAddr) -> Option<usize> {
+    |                                              ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 12 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/cache_coherency.rs:791:18
+    |
+791 |     pub address: PhysAddr,
+    |                  ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 12 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/large_scale_vm.rs:45:18
+   |
+45 |     pub address: PhysAddr,
+   |                  ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+14 + use x86_64::PhysAddr;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/large_scale_vm.rs:88:10
+   |
+88 |     File(PhysAddr),     // Physical address of file mapping
+   |          ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+14 + use x86_64::PhysAddr;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/large_scale_vm.rs:89:12
+   |
+89 |     Device(PhysAddr),   // Device memory mapping
+   |            ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+14 + use x86_64::PhysAddr;
+   |
+
+error[E0412]: cannot find type `NonNull` in this scope
+  --> libraries/memory-manager/src/large_scale_vm.rs:99:24
+   |
+99 |     pub parent: Option<NonNull<ExtendedPageTable>>,
+   |                        ^^^^^^^ not found in this scope
+   |
+   = note: struct `crate::barriers::NonNull` exists but is inaccessible
+help: consider importing this struct
+   |
+14 + use core::ptr::NonNull;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/large_scale_vm.rs:132:27
+    |
+132 |     pub physical_address: PhysAddr,
+    |                           ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/large_scale_vm.rs:195:27
+    |
+195 |     pub physical_address: PhysAddr,
+    |                           ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/large_scale_vm.rs:371:29
+    |
+371 |     pub original_phys_addr: PhysAddr,
+    |                             ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/large_scale_vm.rs:679:65
+    |
+679 | ...s: VirtAddr, file_addr: PhysAddr) -> MemoryResult<PhysAddr> {
+    |                            ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/large_scale_vm.rs:687:70
+    |
+687 | ... VirtAddr, device_addr: PhysAddr) -> MemoryResult<PhysAddr> {
+    |                            ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/large_scale_vm.rs:695:12
+    |
+695 |         Ok(PhysAddr::new(0x1000))
+    |            ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+ 20 - use crate::{PhysAddr, VirtAddr, PageSize, MemoryFlags, MemoryError, MemoryResult};
+ 20 + use crate::{, VirtAddr, PageSize, MemoryFlags, MemoryError, MemoryResult};
+    |
+help: consider importing this struct
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/large_scale_vm.rs:701:12
+    |
+701 |         Ok(PhysAddr::new(huge_id))
+    |            ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+ 20 - use crate::{PhysAddr, VirtAddr, PageSize, MemoryFlags, MemoryError, MemoryResult};
+ 20 + use crate::{, VirtAddr, PageSize, MemoryFlags, MemoryError, MemoryResult};
+    |
+help: consider importing this struct
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/large_scale_vm.rs:817:27
+    |
+817 |     pub physical_address: PhysAddr,
+    |                           ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/large_scale_vm.rs:878:35
+    |
+878 | ...   physical_address: PhysAddr::new((i * self.page_size.as_usize()) a...
+    |                         ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+ 20 - use crate::{PhysAddr, VirtAddr, PageSize, MemoryFlags, MemoryError, MemoryResult};
+ 20 + use crate::{, VirtAddr, PageSize, MemoryFlags, MemoryError, MemoryResult};
+    |
+help: consider importing this struct
+    |
+ 14 + use x86_64::PhysAddr;
+    |
+
+error[E0412]: cannot find type `MemoryError` in this scope
+  --> libraries/memory-manager/src/lib.rs:85:38
+   |
+85 | pub type MemoryResult<T> = Result<T, MemoryError>;
+   |                                      ^^^^^^^^^^^ not found in this scope
+   |
+help: you might be missing a type parameter
+   |
+85 | pub type MemoryResult<T, MemoryError> = Result<T, MemoryError>;
+   |                        +++++++++++++
+
+error[E0412]: cannot find type `Vec` in this scope
+  --> libraries/memory-manager/src/lib.rs:91:21
+   |
+91 |     pub memory_map: Vec<MemoryMapEntry>,
+   |                     ^^^ not found in this scope
+   |
+   = note: struct `crate::barriers::Vec` exists but is inaccessible
+help: consider importing this struct
+   |
+73 + use alloc::vec::Vec;
+   |
+
+error[E0412]: cannot find type `MemoryMapEntry` in this scope
+  --> libraries/memory-manager/src/lib.rs:91:25
+   |
+91 |     pub memory_map: Vec<MemoryMapEntry>,
+   |                         ^^^^^^^^^^^^^^ not found in this scope
+   |
+help: you might be missing a type parameter
+   |
+89 | pub struct MemoryInitContext<MemoryMapEntry> {
+   |                             ++++++++++++++++
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/lib.rs:93:23
+   |
+93 |     pub kernel_start: PhysAddr,
+   |                       ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+73 + use x86_64::PhysAddr;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/lib.rs:95:21
+   |
+95 |     pub kernel_end: PhysAddr,
+   |                     ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+73 + use x86_64::PhysAddr;
+   |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+  --> libraries/memory-manager/src/lib.rs:97:26
+   |
+97 |     pub physical_offset: PhysAddr,
+   |                          ^^^^^^^^ not a type
+   |
+help: consider importing this struct instead
+   |
+73 + use x86_64::PhysAddr;
+   |
+
+error[E0412]: cannot find type `Mutex` in this scope
+   --> libraries/memory-manager/src/lib.rs:103:24
+    |
+103 | static MEMORY_MANAGER: Mutex<Option<MemoryManager>> = Mutex::new(None);
+    |                        ^^^^^ not found in this scope
+    |
+    = note: type alias `crate::arch_specific::x86_64_impl::Mutex` exists but is inaccessible
+help: consider importing one of these items
+    |
+ 73 + use spin::Mutex;
+    |
+ 73 + use spin::lock_api::Mutex;
+    |
+ 73 + use spin::mutex::Mutex;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Mutex`
+   --> libraries/memory-manager/src/lib.rs:103:55
+    |
+103 | static MEMORY_MANAGER: Mutex<Option<MemoryManager>> = Mutex::new(None);
+    |                                                       ^^^^^ use of undeclared type `Mutex`
+    |
+    = note: type alias `crate::arch_specific::x86_64_impl::Mutex` exists but is inaccessible
+help: consider importing one of these items
+    |
+ 73 + use spin::Mutex;
+    |
+ 73 + use spin::lock_api::Mutex;
+    |
+ 73 + use spin::mutex::Mutex;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `PhysAddr`
+   --> libraries/memory-manager/src/lib.rs:200:26
+    |
+200 |         let phys_start = PhysAddr::new(0);
+    |                          ^^^^^^^^ use of undeclared type `PhysAddr`
+    |
+help: `PhysAddr` is defined here, but is not a type
+    |
+ 73 - pub use memory_types::*;
+ 73 + pub use ;
+    |
+help: consider importing this struct
+    |
+ 73 + use x86_64::PhysAddr;
+    |
+
+error[E0573]: expected type, found tuple struct `PhysAddr`
+   --> libraries/memory-manager/src/lib.rs:291:67
+    |
+291 | ...r: VirtAddr, phys_addr: PhysAddr, size: usize, flags: MemoryFlags) -...
+    |                            ^^^^^^^^ not a type
+    |
+help: consider importing this struct instead
+    |
+ 73 + use x86_64::PhysAddr;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/lib.rs:382:49
+    |
+382 |     pub fn allocate_zeroed<T>() -> MemoryResult<Box<T>> {
+    |                                                 ^^^ not found in this scope
+    |
+help: consider importing one of these structs
+    |
+379 +     use crate::alloc_helpers::alloc::boxed::Box;
+    |
+379 +     use alloc::boxed::Box;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Box`
+   --> libraries/memory-manager/src/lib.rs:385:16
+    |
+385 |             Ok(Box::new_zeroed().assume_init())
+    |                ^^^ use of undeclared type `Box`
+    |
+help: consider importing one of these structs
+    |
+379 +     use crate::alloc_helpers::alloc::boxed::Box;
+    |
+379 +     use alloc::boxed::Box;
+    |
+
+error[E0412]: cannot find type `Box` in this scope
+   --> libraries/memory-manager/src/lib.rs:390:58
+    |
+390 |     pub fn allocate_slice<T>(len: usize) -> MemoryResult<Box<[T]>> {
+    |                                                          ^^^ not found in this scope
+    |
+help: consider importing one of these structs
+    |
+379 +     use crate::alloc_helpers::alloc::boxed::Box;
+    |
+379 +     use alloc::boxed::Box;
+    |
+
+error[E0433]: failed to resolve: use of undeclared type `Box`
+   --> libraries/memory-manager/src/lib.rs:396:16
+    |
+396 | ...   Ok(Box::from_raw(core::slice::from_raw_parts_mut(ptr as *mut T, l...
+    |          ^^^ use of undeclared type `Box`
+    |
+help: consider importing one of these structs
+    |
+379 +     use crate::alloc_helpers::alloc::boxed::Box;
+    |
+379 +     use alloc::boxed::Box;
+    |
+
+warning: the feature `core_intrinsics` is internal to the compiler or standard library
+  --> libraries/memory-manager/src/lib.rs:47:12
+   |
+47 | #![feature(core_intrinsics)]
+   |            ^^^^^^^^^^^^^^^
+   |
+   = note: using it is strongly discouraged
+   = note: `#[warn(internal_features)]` on by default
+
+warning: unused doc comment
+   --> libraries/memory-manager/src/memory_types.rs:178:1
+    |
+178 | /// Memory permissions flags
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ rustdoc does not generate documentation for macro invocations
+    |
+    = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+    = note: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `x86_64::structures::paging::PageSize as X86PageSize`
+ --> libraries/memory-manager/src/memory_types.rs:9:5
+  |
+9 | use x86_64::structures::paging::PageSize as X86PageSize;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `error` and `warn`
+  --> libraries/memory-manager/src/physical_memory.rs:10:17
+   |
+10 | use log::{info, warn, error, debug};
+   |                 ^^^^  ^^^^^
+
+warning: unnecessary parentheses around assigned value
+   --> libraries/memory-manager/src/physical_memory.rs:186:41
+    |
+186 |         self.free_bitmap[byte_index] |= (1 << bit_index);
+    |                                         ^              ^
+    |
+    = note: `#[warn(unused_parens)]` (part of `#[warn(unused)]`) on by default
+help: remove these parentheses
+    |
+186 -         self.free_bitmap[byte_index] |= (1 << bit_index);
+186 +         self.free_bitmap[byte_index] |= 1 << bit_index;
+    |
+
+warning: unused imports: `error` and `warn`
+  --> libraries/memory-manager/src/virtual_memory.rs:10:17
+   |
+10 | use log::{info, warn, error, debug};
+   |                 ^^^^  ^^^^^
+
+warning: unused import: `error`
+  --> libraries/memory-manager/src/allocator.rs:12:24
+   |
+12 | use log::{info, debug, error};
+   |                        ^^^^^
+
+warning: unused imports: `FrameAllocator`, `Mapper`, `OffsetPageTable`, `PageTable`, `Page`, and `Size4KiB`
+  --> libraries/memory-manager/src/arch_specific.rs:13:34
+   |
+13 | ...::{PageTable, Page, FrameAllocator, Mapper, OffsetPageTable, Size4KiB};
+   |       ^^^^^^^^^  ^^^^  ^^^^^^^^^^^^^^  ^^^^^^  ^^^^^^^^^^^^^^^  ^^^^^^^^
+
+warning: unused import: `PhysAddr as X86PhysAddr`
+  --> libraries/memory-manager/src/arch_specific.rs:15:24
+   |
+15 | use x86_64::{VirtAddr, PhysAddr as X86PhysAddr};
+   |                        ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `spin::Mutex`
+  --> libraries/memory-manager/src/arch_specific.rs:33:5
+   |
+33 | use spin::Mutex;
+   |     ^^^^^^^^^^^
+
+warning: unused imports: `error` and `warn`
+  --> libraries/memory-manager/src/arch_specific.rs:34:24
+   |
+34 | use log::{info, debug, warn, error};
+   |                        ^^^^  ^^^^^
+
+warning: unused import: `spin::Mutex`
+  --> libraries/memory-manager/src/numa.rs:15:5
+   |
+15 | use spin::Mutex;
+   |     ^^^^^^^^^^^
+
+warning: unused import: `bitflags::bitflags`
+  --> libraries/memory-manager/src/numa.rs:16:5
+   |
+16 | use bitflags::bitflags;
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `MemoryFlags`, `MemoryResult`, and `VirtAddr`
+  --> libraries/memory-manager/src/numa.rs:20:23
+   |
+20 | ...ddr, VirtAddr, PageSize, MemoryError, MemoryResult, MemoryFlags};
+   |         ^^^^^^^^                         ^^^^^^^^^^^^  ^^^^^^^^^^^
+
+warning: unused import: `spin::Mutex`
+  --> libraries/memory-manager/src/cache_coherency.rs:13:5
+   |
+13 | use spin::Mutex;
+   |     ^^^^^^^^^^^
+
+warning: unused import: `bitflags::bitflags`
+  --> libraries/memory-manager/src/cache_coherency.rs:14:5
+   |
+14 | use bitflags::bitflags;
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `AtomicUsize`
+  --> libraries/memory-manager/src/cache_coherency.rs:15:48
+   |
+15 | use core::sync::atomic::{AtomicU64, AtomicU32, AtomicUsize, AtomicPtr, O...
+   |                                                ^^^^^^^^^^^
+
+warning: unused import: `core::time::Duration`
+  --> libraries/memory-manager/src/cache_coherency.rs:16:5
+   |
+16 | use core::time::Duration;
+   |     ^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `core::ptr::NonNull`
+  --> libraries/memory-manager/src/cache_coherency.rs:18:5
+   |
+18 | use core::ptr::NonNull;
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused doc comment
+  --> libraries/memory-manager/src/large_scale_vm.rs:28:1
+   |
+28 | /// Page table entry flags
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^ rustdoc does not generate documentation for macro invocations
+   |
+   = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+
+warning: unused doc comment
+  --> libraries/memory-manager/src/large_scale_vm.rs:66:1
+   |
+66 | /// VMA flags
+   | ^^^^^^^^^^^^^ rustdoc does not generate documentation for macro invocations
+   |
+   = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+
+warning: unused doc comment
+   --> libraries/memory-manager/src/large_scale_vm.rs:141:1
+    |
+141 | /// Huge page flags
+    | ^^^^^^^^^^^^^^^^^^^ rustdoc does not generate documentation for macro invocations
+    |
+    = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+
+warning: unused doc comment
+   --> libraries/memory-manager/src/large_scale_vm.rs:435:1
+    |
+435 | /// Swap flags
+    | ^^^^^^^^^^^^^^ rustdoc does not generate documentation for macro invocations
+    |
+    = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+
+warning: unused import: `spin::Mutex`
+  --> libraries/memory-manager/src/large_scale_vm.rs:15:5
+   |
+15 | use spin::Mutex;
+   |     ^^^^^^^^^^^
+
+warning: unused import: `core::ops::Range`
+  --> libraries/memory-manager/src/large_scale_vm.rs:18:5
+   |
+18 | use core::ops::Range;
+   |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `MemoryFlags`
+  --> libraries/memory-manager/src/large_scale_vm.rs:20:43
+   |
+20 | use crate::{PhysAddr, VirtAddr, PageSize, MemoryFlags, MemoryError, Memo...
+   |                                           ^^^^^^^^^^^
+
+warning: unused imports: `error` and `warn`
+  --> libraries/memory-manager/src/lib.rs:82:24
+   |
+82 | use log::{info, debug, warn, error};
+   |                        ^^^^  ^^^^^
+
+warning: the feature `const_option_ext` has been stable since 1.84.0 and no longer requires an attribute to enable
+  --> libraries/memory-manager/src/lib.rs:46:12
+   |
+46 | #![feature(const_option_ext)]
+   |            ^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(stable_features)]` on by default
+
+warning: the feature `ptr_as_ref` has been stable since 1.9.0 and no longer requires an attribute to enable
+  --> libraries/memory-manager/src/lib.rs:48:12
+   |
+48 | #![feature(ptr_as_ref)]
+   |            ^^^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+  --> libraries/memory-manager/src/numa.rs:41:43
+   |
+41 |     pub node_memory_ranges: [Option<Range<PhysAddr>>; MAX_NUMA_NODES],
+   |                                           ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/numa.rs:141:22
+    |
+141 |     free_lists: [Vec<PhysAddr>; MAX_NUMA_NODES],
+    |                      ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/large_scale_vm.rs:409:27
+    |
+409 |     pub file_path: Option<PhysAddr>, // Physical address of file path
+    |                           ^^^^^^^^
+
+error[E0117]: only traits defined in the current crate can be implemented for types defined outside of the crate
+  --> libraries/memory-manager/src/memory_types.rs:57:10
+   |
+57 | #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+   |          ^^^^^ `x86_64::PhysAddr` is not defined in the current crate
+   |
+   = note: impl doesn't have any local type before any uncovered type parameters
+   = note: for more information see https://doc.rust-lang.org/reference/items/implementations.html#orphan-rules
+   = note: define and implement a trait or new type instead
+
+error[E0117]: only traits defined in the current crate can be implemented for types defined outside of the crate
+  --> libraries/memory-manager/src/memory_types.rs:57:17
+   |
+57 | #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+   |                 ^^^^^ `x86_64::PhysAddr` is not defined in the current crate
+   |
+   = note: impl doesn't have any local type before any uncovered type parameters
+   = note: for more information see https://doc.rust-lang.org/reference/items/implementations.html#orphan-rules
+   = note: define and implement a trait or new type instead
+
+error[E0117]: only traits defined in the current crate can be implemented for types defined outside of the crate
+  --> libraries/memory-manager/src/memory_types.rs:57:24
+   |
+57 | #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+   |                        ^^^^ `x86_64::PhysAddr` is not defined in the current crate
+   |
+   = note: impl doesn't have any local type before any uncovered type parameters
+   = note: for more information see https://doc.rust-lang.org/reference/items/implementations.html#orphan-rules
+   = note: define and implement a trait or new type instead
+
+error[E0204]: the trait `core::marker::Copy` cannot be implemented for this type
+   --> libraries/memory-manager/src/memory_types.rs:327:24
+    |
+327 | #[derive(Debug, Clone, Copy)]
+    |                        ^^^^
+...
+330 |     pub phys_addr: PhysAddr,
+    |     ----------------------- this field does not implement `core::marker::Copy`
+
+error[E0204]: the trait `core::marker::Copy` cannot be implemented for this type
+  --> libraries/memory-manager/src/large_scale_vm.rs:43:24
+   |
+43 | #[derive(Debug, Clone, Copy)]
+   |                        ^^^^
+...
+46 |     pub flags: PageTableFlags,
+   |     ------------------------- this field does not implement `core::marker::Copy`
+...
+50 |     pub ref_count: AtomicUsize,
+   |     -------------------------- this field does not implement `core::marker::Copy`
+
+error[E0117]: only traits defined in the current crate can be implemented for types defined outside of the crate
+  --> libraries/memory-manager/src/memory_types.rs:57:30
+   |
+57 | #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+   |                              ^^^^^^^^^ `x86_64::PhysAddr` is not defined in the current crate
+   |
+   = note: impl doesn't have any local type before any uncovered type parameters
+   = note: for more information see https://doc.rust-lang.org/reference/items/implementations.html#orphan-rules
+   = note: define and implement a trait or new type instead
+
+error[E0117]: only traits defined in the current crate can be implemented for types defined outside of the crate
+  --> libraries/memory-manager/src/memory_types.rs:57:30
+   |
+57 | #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+   |                              ^^^^^^^^^
+   |                              |
+   |                              `x86_64::PhysAddr` is not defined in the current crate
+   |                              `x86_64::PhysAddr` is not defined in the current crate
+   |
+   = note: impl doesn't have any local type before any uncovered type parameters
+   = note: for more information see https://doc.rust-lang.org/reference/items/implementations.html#orphan-rules
+   = note: define and implement a trait or new type instead
+
+error[E0117]: only traits defined in the current crate can be implemented for types defined outside of the crate
+  --> libraries/memory-manager/src/memory_types.rs:57:41
+   |
+57 | #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+   |                                         ^^ `x86_64::PhysAddr` is not defined in the current crate
+   |
+   = note: impl doesn't have any local type before any uncovered type parameters
+   = note: for more information see https://doc.rust-lang.org/reference/items/implementations.html#orphan-rules
+   = note: define and implement a trait or new type instead
+
+error[E0117]: only traits defined in the current crate can be implemented for types defined outside of the crate
+  --> libraries/memory-manager/src/memory_types.rs:57:45
+   |
+57 | #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+   |                                             ^^^^^^^^^^
+   |                                             |
+   |                                             `x86_64::PhysAddr` is not defined in the current crate
+   |                                             `x86_64::PhysAddr` is not defined in the current crate
+   |
+   = note: impl doesn't have any local type before any uncovered type parameters
+   = note: for more information see https://doc.rust-lang.org/reference/items/implementations.html#orphan-rules
+   = note: define and implement a trait or new type instead
+
+error[E0117]: only traits defined in the current crate can be implemented for types defined outside of the crate
+  --> libraries/memory-manager/src/memory_types.rs:57:57
+   |
+57 | #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+   |                                                         ^^^ `x86_64::PhysAddr` is not defined in the current crate
+   |
+   = note: impl doesn't have any local type before any uncovered type parameters
+   = note: for more information see https://doc.rust-lang.org/reference/items/implementations.html#orphan-rules
+   = note: define and implement a trait or new type instead
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/physical_memory.rs:380:49
+    |
+380 | pub fn allocate_physical_page() -> MemoryResult<PhysAddr> {
+    |                                                 ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/physical_memory.rs:389:62
+    |
+389 | pub fn allocate_physical_pages(count: usize) -> MemoryResult<PhysAddr> {
+    |                                                              ^^^^^^^^
+
+error[E0277]: `*mut x86_64::structures::paging::PageTable` cannot be sent between threads safely
+  --> libraries/memory-manager/src/virtual_memory.rs:26:32
+   |
+26 | ...ORY_MANAGER: Mutex<Option<VirtualMemoryManager>> = Mutex::new(None);
+   |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `*mut x86_64::structures::paging::PageTable` cannot be sent between threads safely
+   |
+   = help: within `Option<VirtualMemoryManager>`, the trait `Send` is not implemented for `*mut x86_64::structures::paging::PageTable`
+note: required because it appears within the type `VirtualMemoryManager`
+  --> libraries/memory-manager/src/virtual_memory.rs:29:12
+   |
+29 | pub struct VirtualMemoryManager {
+   |            ^^^^^^^^^^^^^^^^^^^^
+note: required because it appears within the type `Option<VirtualMemoryManager>`
+  --> /rustc/20383c9f1d84eb9b9c6668a1668ef68a81eae274/library/core/src/option.rs:599:10
+   = note: required for `Mutex<Option<VirtualMemoryManager>>` to implement `Sync`
+   = note: shared static variables must have a type that implements `Sync`
+
+error[E0200]: the trait `FrameAllocator<x86_64::structures::paging::Size4KiB>` requires an `unsafe impl` declaration
+   --> libraries/memory-manager/src/virtual_memory.rs:149:1
+    |
+149 | impl FrameAllocator<Size4KiB> for SimpleFrameAllocator {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: the trait `FrameAllocator<x86_64::structures::paging::Size4KiB>` enforces invariants that the compiler can't check. Review the trait documentation and make sure this implementation upholds those invariants before adding the `unsafe` keyword
+help: add `unsafe` to this trait implementation
+    |
+149 | unsafe impl FrameAllocator<Size4KiB> for SimpleFrameAllocator {
+    | ++++++
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/virtual_memory.rs:486:55
+    |
+486 | pub fn translate(virt_addr: VirtAddr) -> MemoryResult<PhysAddr> {
+    |                                                       ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+  --> libraries/memory-manager/src/arch_specific.rs:93:62
+   |
+93 |     fn translate(&self, virt_addr: VirtAddr) -> MemoryResult<PhysAddr>;
+   |                                                              ^^^^^^^^
+
+error[E0220]: associated type `T` not found for `Self`
+   --> libraries/memory-manager/src/allocator.rs:378:43
+    |
+378 |     fn deref_mut(&mut self) -> &mut Self::T {
+    |                                           ^ help: `Self` has the following associated type: `Target`
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/arch_specific.rs:274:66
+    |
+274 | ...dr: VirtAddr) -> MemoryResult<PhysAddr> {
+    |                                  ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/virtual_memory.rs:261:66
+    |
+261 | ...dr: VirtAddr) -> MemoryResult<PhysAddr> {
+    |                                  ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/numa.rs:333:100
+    |
+333 | ...unt: usize) -> NumaResult<Vec<PhysAddr>> {
+    |                                  ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/numa.rs:359:101
+    |
+359 | ...unt: usize) -> NumaResult<Vec<PhysAddr>> {
+    |                                  ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/numa.rs:386:79
+    |
+386 | ...unt: usize) -> NumaResult<Vec<PhysAddr>> {
+    |                                  ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/numa.rs:396:77
+    |
+396 | ...unt: usize) -> NumaResult<Vec<PhysAddr>> {
+    |                                  ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/numa.rs:417:80
+    |
+417 | ...unt: usize) -> NumaResult<Vec<PhysAddr>> {
+    |                                  ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/large_scale_vm.rs:566:103
+    |
+566 | ...PageSize) -> MemoryResult<Vec<PhysAddr>> {
+    |                                  ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/large_scale_vm.rs:679:91
+    |
+679 | ...dr: PhysAddr) -> MemoryResult<PhysAddr> {
+    |                                  ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/large_scale_vm.rs:687:96
+    |
+687 | ...dr: PhysAddr) -> MemoryResult<PhysAddr> {
+    |                                  ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/large_scale_vm.rs:693:58
+    |
+693 |     fn allocate_physical_page(&mut self) -> MemoryResult<PhysAddr> {
+    |                                                          ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/large_scale_vm.rs:699:59
+    |
+699 |     fn get_huge_page(&self, huge_id: u64) -> MemoryResult<PhysAddr> {
+    |                                                           ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/large_scale_vm.rs:705:70
+    |
+705 | ...ss: VirtAddr) -> MemoryResult<PhysAddr> {
+    |                                  ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/lib.rs:285:57
+    |
+285 |     pub fn allocate_physical(&mut self) -> MemoryResult<PhysAddr> {
+    |                                                         ^^^^^^^^
+
+error[E0747]: constant provided when a type was expected
+   --> libraries/memory-manager/src/lib.rs:296:66
+    |
+296 | ...dr: VirtAddr) -> MemoryResult<PhysAddr> {
+    |                                  ^^^^^^^^
+
+error[E0116]: cannot define inherent `impl` for a type outside of the crate where the type is defined
+  --> libraries/memory-manager/src/memory_types.rs:60:1
+   |
+60 | impl PhysAddr {
+   | ^^^^^^^^^^^^^ impl for type defined outside of crate
+   |
+   = note: define and implement a trait or new type instead
+
+error[E0616]: field `0` of struct `x86_64::PhysAddr` is private
+  --> libraries/memory-manager/src/memory_types.rs:58:21
+   |
+58 | pub struct PhysAddr(pub u64);
+   |                     ^^^^^^^ private field
+
+error[E0308]: mismatched types
+  --> libraries/memory-manager/src/memory_types.rs:63:9
+   |
+62 |     pub const fn new(addr: u64) -> Self {
+   |                                    ---- expected `x86_64::PhysAddr` because of return type
+63 |         PhysAddr(addr)
+   |         ^^^^^^^^^^^^^^ expected `x86_64::PhysAddr`, found `memory_types::PhysAddr`
+   |
+   = note: `memory_types::PhysAddr` and `x86_64::PhysAddr` have similar names, but are actually distinct types
+note: `memory_types::PhysAddr` is defined in the current crate
+  --> libraries/memory-manager/src/memory_types.rs:58:1
+   |
+58 | pub struct PhysAddr(pub u64);
+   | ^^^^^^^^^^^^^^^^^^^
+note: `x86_64::PhysAddr` is defined in crate `x86_64`
+  --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x86_64-0.14.13/src/addr.rs:40:1
+   |
+40 | pub struct PhysAddr(u64);
+   | ^^^^^^^^^^^^^^^^^^^
+
+error[E0616]: field `0` of struct `x86_64::PhysAddr` is private
+  --> libraries/memory-manager/src/memory_types.rs:68:14
+   |
+68 |         self.0
+   |              ^ private field
+
+error[E0616]: field `0` of struct `x86_64::PhysAddr` is private
+  --> libraries/memory-manager/src/memory_types.rs:73:24
+   |
+73 | ...   PhysAddr((self.0 + page_size.as_usize() - 1) & !(page_size.as_usiz...
+   |                      ^ private field
+
+error[E0308]: mismatched types
+  --> libraries/memory-manager/src/memory_types.rs:73:9
+   |
+72 | ...ub const fn align_up(&self, page_size: PageSize) -> Self {
+   |                                                        ---- expected `x86_64::PhysAddr` because of return type
+73 | ...   PhysAddr((self.0 + page_size.as_usize() - 1) & !(page_size.as_usize() - 1))
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `x86_64::PhysAddr`, found `memory_types::PhysAddr`
+   |
+   = note: `memory_types::PhysAddr` and `x86_64::PhysAddr` have similar names, but are actually distinct types
+note: `memory_types::PhysAddr` is defined in the current crate
+  --> libraries/memory-manager/src/memory_types.rs:58:1
+   |
+58 | pub struct PhysAddr(pub u64);
+   | ^^^^^^^^^^^^^^^^^^^
+note: `x86_64::PhysAddr` is defined in crate `x86_64`
+  --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x86_64-0.14.13/src/addr.rs:40:1
+   |
+40 | pub struct PhysAddr(u64);
+   | ^^^^^^^^^^^^^^^^^^^
+
+error[E0616]: field `0` of struct `x86_64::PhysAddr` is private
+  --> libraries/memory-manager/src/memory_types.rs:78:23
+   |
+78 |         PhysAddr(self.0 & !(page_size.as_usize() - 1))
+   |                       ^ private field
+
+error[E0308]: mismatched types
+  --> libraries/memory-manager/src/memory_types.rs:78:9
+   |
+77 |     pub const fn align_down(&self, page_size: PageSize) -> Self {
+   |                                                            ---- expected `x86_64::PhysAddr` because of return type
+78 |         PhysAddr(self.0 & !(page_size.as_usize() - 1))
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `x86_64::PhysAddr`, found `memory_types::PhysAddr`
+   |
+   = note: `memory_types::PhysAddr` and `x86_64::PhysAddr` have similar names, but are actually distinct types
+note: `memory_types::PhysAddr` is defined in the current crate
+  --> libraries/memory-manager/src/memory_types.rs:58:1
+   |
+58 | pub struct PhysAddr(pub u64);
+   | ^^^^^^^^^^^^^^^^^^^
+note: `x86_64::PhysAddr` is defined in crate `x86_64`
+  --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x86_64-0.14.13/src/addr.rs:40:1
+   |
+40 | pub struct PhysAddr(u64);
+   | ^^^^^^^^^^^^^^^^^^^
+
+error[E0616]: field `0` of struct `x86_64::PhysAddr` is private
+  --> libraries/memory-manager/src/memory_types.rs:83:15
+   |
+83 |         (self.0 & (page_size.as_usize() - 1)) == 0
+   |               ^ private field
+
+error[E0616]: field `0` of struct `x86_64::PhysAddr` is private
+  --> libraries/memory-manager/src/memory_types.rs:88:23
+   |
+88 |         PhysAddr(self.0 + offset)
+   |                       ^ private field
+
+error[E0308]: mismatched types
+  --> libraries/memory-manager/src/memory_types.rs:88:9
+   |
+87 |     pub const fn offset(&self, offset: u64) -> Self {
+   |                                                ---- expected `x86_64::PhysAddr` because of return type
+88 |         PhysAddr(self.0 + offset)
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^ expected `x86_64::PhysAddr`, found `memory_types::PhysAddr`
+   |
+   = note: `memory_types::PhysAddr` and `x86_64::PhysAddr` have similar names, but are actually distinct types
+note: `memory_types::PhysAddr` is defined in the current crate
+  --> libraries/memory-manager/src/memory_types.rs:58:1
+   |
+58 | pub struct PhysAddr(pub u64);
+   | ^^^^^^^^^^^^^^^^^^^
+note: `x86_64::PhysAddr` is defined in crate `x86_64`
+  --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x86_64-0.14.13/src/addr.rs:40:1
+   |
+40 | pub struct PhysAddr(u64);
+   | ^^^^^^^^^^^^^^^^^^^
+
+error[E0616]: field `0` of struct `x86_64::PhysAddr` is private
+  --> libraries/memory-manager/src/memory_types.rs:94:36
+   |
+94 |         x86_64::PhysAddr::new(self.0)
+   |                                    ^ private field
+
+error[E0308]: mismatched types
+   --> libraries/memory-manager/src/memory_types.rs:121:28
+    |
+121 | ...self.0 + page_size.as_usize() - 1) & !(page_size.as_usize() - 1))
+    |             ^^^^^^^^^^^^^^^^^^^^ expected `u64`, found `usize`
+
+error[E0277]: cannot add `usize` to `u64`
+   --> libraries/memory-manager/src/memory_types.rs:121:26
+    |
+121 | ...   VirtAddr((self.0 + page_size.as_usize() - 1) & !(page_size.as_usi...
+    |                        ^ no implementation for `u64 + usize`
+    |
+    = help: the trait `Add<usize>` is not implemented for `u64`
+help: the following other types implement trait `Add<Rhs>`
+   --> /rustc/20383c9f1d84eb9b9c6668a1668ef68a81eae274/library/core/src/ops/arith.rs:114:1
+    |
+    = note: `&u64` implements `Add<u64>`
+    |
+    = note: `&u64` implements `Add`
+    |
+    = note: `u64` implements `Add<&u64>`
+    |
+    = note: `u64` implements `Add`
+    = note: this error originates in the macro `forward_ref_binop` which comes from the expansion of the macro `add_impl` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0308]: mismatched types
+   --> libraries/memory-manager/src/memory_types.rs:121:56
+    |
+121 | ...1) & !(page_size.as_usize() - 1))
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `u64`, found `usize`
+
+error[E0277]: no implementation for `u64 & usize`
+   --> libraries/memory-manager/src/memory_types.rs:121:54
+    |
+121 | ...s_usize() - 1) & !(page_size.as_usize() - 1))
+    |                   ^ no implementation for `u64 & usize`
+    |
+    = help: the trait `BitAnd<usize>` is not implemented for `u64`
+help: the following other types implement trait `BitAnd<Rhs>`
+   --> /rustc/20383c9f1d84eb9b9c6668a1668ef68a81eae274/library/core/src/ops/bit.rs:187:1
+    |
+    = note: `&u64` implements `BitAnd<u64>`
+    |
+    = note: `&u64` implements `BitAnd`
+    |
+    = note: `u64` implements `BitAnd<&u64>`
+    |
+    = note: `u64` implements `BitAnd`
+    = note: this error originates in the macro `forward_ref_binop` which comes from the expansion of the macro `bitand_impl` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0308]: mismatched types
+   --> libraries/memory-manager/src/memory_types.rs:126:27
+    |
+126 |         VirtAddr(self.0 & !(page_size.as_usize() - 1))
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `u64`, found `usize`
+
+error[E0277]: no implementation for `u64 & usize`
+   --> libraries/memory-manager/src/memory_types.rs:126:25
+    |
+126 |         VirtAddr(self.0 & !(page_size.as_usize() - 1))
+    |                         ^ no implementation for `u64 & usize`
+    |
+    = help: the trait `BitAnd<usize>` is not implemented for `u64`
+help: the following other types implement trait `BitAnd<Rhs>`
+   --> /rustc/20383c9f1d84eb9b9c6668a1668ef68a81eae274/library/core/src/ops/bit.rs:187:1
+    |
+    = note: `&u64` implements `BitAnd<u64>`
+    |
+    = note: `&u64` implements `BitAnd`
+    |
+    = note: `u64` implements `BitAnd<&u64>`
+    |
+    = note: `u64` implements `BitAnd`
+    = note: this error originates in the macro `forward_ref_binop` which comes from the expansion of the macro `bitand_impl` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0308]: mismatched types
+   --> libraries/memory-manager/src/memory_types.rs:131:19
+    |
+131 |         (self.0 & (page_size.as_usize() - 1)) == 0
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `u64`, found `usize`
+
+error[E0277]: no implementation for `u64 & usize`
+   --> libraries/memory-manager/src/memory_types.rs:131:17
+    |
+131 |         (self.0 & (page_size.as_usize() - 1)) == 0
+    |                 ^ no implementation for `u64 & usize`
+    |
+    = help: the trait `BitAnd<usize>` is not implemented for `u64`
+help: the following other types implement trait `BitAnd<Rhs>`
+   --> /rustc/20383c9f1d84eb9b9c6668a1668ef68a81eae274/library/core/src/ops/bit.rs:187:1
+    |
+    = note: `&u64` implements `BitAnd<u64>`
+    |
+    = note: `&u64` implements `BitAnd`
+    |
+    = note: `u64` implements `BitAnd<&u64>`
+    |
+    = note: `u64` implements `BitAnd`
+    = note: this error originates in the macro `forward_ref_binop` which comes from the expansion of the macro `bitand_impl` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0308]: mismatched types
+   --> libraries/memory-manager/src/memory_types.rs:136:19
+    |
+136 |         (self.0 / page_size.as_usize()) as usize
+    |                   ^^^^^^^^^^^^^^^^^^^^ expected `u64`, found `usize`
+
+error[E0277]: cannot divide `u64` by `usize`
+   --> libraries/memory-manager/src/memory_types.rs:136:17
+    |
+136 |         (self.0 / page_size.as_usize()) as usize
+    |                 ^ no implementation for `u64 / usize`
+    |
+    = help: the trait `Div<usize>` is not implemented for `u64`
+    = help: the following other types implement trait `Div<Rhs>`:
+              `&u64` implements `Div<u64>`
+              `&u64` implements `Div`
+              `u64` implements `Div<&u64>`
+              `u64` implements `Div<NonZero<u64>>`
+              `u64` implements `Div`
+
+error[E0308]: mismatched types
+   --> libraries/memory-manager/src/memory_types.rs:141:18
+    |
+141 |         self.0 & (page_size.as_usize() - 1)
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `u64`, found `usize`
+
+error[E0277]: no implementation for `u64 & usize`
+   --> libraries/memory-manager/src/memory_types.rs:141:16
+    |
+141 |         self.0 & (page_size.as_usize() - 1)
+    |                ^ no implementation for `u64 & usize`
+    |
+    = help: the trait `BitAnd<usize>` is not implemented for `u64`
+help: the following other types implement trait `BitAnd<Rhs>`
+   --> /rustc/20383c9f1d84eb9b9c6668a1668ef68a81eae274/library/core/src/ops/bit.rs:187:1
+    |
+    = note: `&u64` implements `BitAnd<u64>`
+    |
+    = note: `&u64` implements `BitAnd`
+    |
+    = note: `u64` implements `BitAnd<&u64>`
+    |
+    = note: `u64` implements `BitAnd`
+    = note: this error originates in the macro `forward_ref_binop` which comes from the expansion of the macro `bitand_impl` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0308]: mismatched types
+   --> libraries/memory-manager/src/memory_types.rs:174:41
+    |
+174 |         PageFrame::new((addr.as_u64() / page_size.as_usize()) as usize)
+    |                                         ^^^^^^^^^^^^^^^^^^^^ expected `u64`, found `usize`
+
+error[E0277]: cannot divide `u64` by `usize`
+   --> libraries/memory-manager/src/memory_types.rs:174:39
+    |
+174 |         PageFrame::new((addr.as_u64() / page_size.as_usize()) as usize)
+    |                                       ^ no implementation for `u64 / usize`
+    |
+    = help: the trait `Div<usize>` is not implemented for `u64`
+    = help: the following other types implement trait `Div<Rhs>`:
+              `&u64` implements `Div<u64>`
+              `&u64` implements `Div`
+              `u64` implements `Div<&u64>`
+              `u64` implements `Div<NonZero<u64>>`
+              `u64` implements `Div`
+
+error[E0282]: type annotations needed
+   --> libraries/memory-manager/src/physical_memory.rs:159:19
+    |
+159 |             .map(|byte| byte.count_ones() as usize)
+    |                   ^^^^  ---- type must be known at this point
+    |
+help: consider giving this closure parameter an explicit type
+    |
+159 |             .map(|byte: /* Type */| byte.count_ones() as usize)
+    |                       ++++++++++++
+
+error[E0282]: type annotations needed
+   --> libraries/memory-manager/src/physical_memory.rs:373:20
+    |
+373 |         .and_then(|guard| {
+    |                    ^^^^^
+374 |             guard.as_ref().ok_or(MemoryError::AllocationFailed)
+    |             ----- type must be known at this point
+    |
+help: consider giving this closure parameter an explicit type
+    |
+373 |         .and_then(|guard: /* Type */| {
+    |                         ++++++++++++
+
+error[E0599]: no variant or associated item named `SIZE` found for enum `x86_64::structures::paging::Size4KiB` in the current scope
+   --> libraries/memory-manager/src/virtual_memory.rs:156:60
+    |
+156 |         self.next_frame = self.next_frame.offset(Size4KiB::SIZE as u64);
+    |                                                            ^^^^ variant or associated item not found in `x86_64::structures::paging::Size4KiB`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `PageSize` which provides `SIZE` is implemented but not in scope; perhaps you want to import it
+    |
+  7 + use crate::x86_64::structures::paging::PageSize;
+    |
+
+error[E0599]: no method named `offset` found for struct `memory_types::VirtAddr` in the current scope
+   --> libraries/memory-manager/src/virtual_memory.rs:214:42
+    |
+214 | ...   let current_virt = virt_addr.offset((i * page_size.as_usize()) as...
+    |                                    ^^^^^^
+    |
+   ::: libraries/memory-manager/src/memory_types.rs:106:1
+    |
+106 | pub struct VirtAddr(pub u64);
+    | ------------------- method `offset` not found for this struct
+    |
+help: there is a method `page_offset` with a similar name
+    |
+214 |             let current_virt = virt_addr.page_offset((i * page_size.as_usize()) as u64);
+    |                                          +++++
+
+error[E0599]: no method named `offset` found for struct `memory_types::VirtAddr` in the current scope
+   --> libraries/memory-manager/src/virtual_memory.rs:229:23
+    |
+229 |             virt_addr.offset(size as u64),
+    |                       ^^^^^^
+    |
+   ::: libraries/memory-manager/src/memory_types.rs:106:1
+    |
+106 | pub struct VirtAddr(pub u64);
+    | ------------------- method `offset` not found for this struct
+    |
+help: there is a method `page_offset` with a similar name
+    |
+229 |             virt_addr.page_offset(size as u64),
+    |                       +++++
+
+error[E0599]: no method named `offset` found for struct `memory_types::VirtAddr` in the current scope
+   --> libraries/memory-manager/src/virtual_memory.rs:247:42
+    |
+247 | ...   let current_virt = virt_addr.offset((i * page_size.as_usize()) as...
+    |                                    ^^^^^^
+    |
+   ::: libraries/memory-manager/src/memory_types.rs:106:1
+    |
+106 | pub struct VirtAddr(pub u64);
+    | ------------------- method `offset` not found for this struct
+    |
+help: there is a method `page_offset` with a similar name
+    |
+247 |             let current_virt = virt_addr.page_offset((i * page_size.as_usize()) as u64);
+    |                                          +++++
+
+error[E0282]: type annotations needed
+   --> libraries/memory-manager/src/virtual_memory.rs:254:31
+    |
+254 |         self.mappings.retain(|m| !m.contains(virt_addr));
+    |                               ^   - type must be known at this point
+    |
+help: consider giving this closure parameter an explicit type
+    |
+254 |         self.mappings.retain(|m: /* Type */| !m.contains(virt_addr));
+    |                                ++++++++++++
+
+error[E0282]: type annotations needed
+   --> libraries/memory-manager/src/virtual_memory.rs:266:53
+    |
+266 |                 Some(phys_addr) => Ok(PhysAddr::new(phys_addr.as_u64())),
+    |                                                     ^^^^^^^^^ cannot infer type
+
+error[E0599]: no method named `offset` found for struct `memory_types::VirtAddr` in the current scope
+   --> libraries/memory-manager/src/virtual_memory.rs:294:42
+    |
+294 | ...   let current_virt = virt_addr.offset((i * page_size.as_usize()) as...
+    |                                    ^^^^^^
+    |
+   ::: libraries/memory-manager/src/memory_types.rs:106:1
+    |
+106 | pub struct VirtAddr(pub u64);
+    | ------------------- method `offset` not found for this struct
+    |
+help: there is a method `page_offset` with a similar name
+    |
+294 |             let current_virt = virt_addr.page_offset((i * page_size.as_usize()) as u64);
+    |                                          +++++
+
+error[E0282]: type annotations needed
+   --> libraries/memory-manager/src/virtual_memory.rs:302:16
+    |
+302 |             if mapping.contains(virt_addr) {
+    |                ^^^^^^^ cannot infer type
+
+error[E0282]: type annotations needed
+   --> libraries/memory-manager/src/virtual_memory.rs:317:16
+    |
+317 |             if mapping.contains(fault_info.fault_addr) {
+    |                ^^^^^^^ cannot infer type
+
+error[E0308]: mismatched types
+   --> libraries/memory-manager/src/virtual_memory.rs:439:52
+    |
+439 | ...r = Box::new(OffsetPageTable::new(level_4_table, PhysAddr::new(0)));
+    |                 -------------------- ^^^^^^^^^^^^^ expected `&mut PageTable`, found `*mut PageTable`
+    |                 |
+    |                 arguments to this function are incorrect
+    |
+    = note: expected mutable reference `&mut x86_64::structures::paging::PageTable`
+                     found raw pointer `*mut x86_64::structures::paging::PageTable`
+note: associated function defined here
+   --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x86_64-0.14.13/src/structures/paging/mapper/offset_page_table.rs:32:19
+    |
+ 32 |     pub unsafe fn new(level_4_table: &'a mut PageTable, phys_offset: Vi...
+    |                   ^^^
+
+error[E0282]: type annotations needed
+   --> libraries/memory-manager/src/virtual_memory.rs:463:20
+    |
+463 |         .and_then(|guard| {
+    |                    ^^^^^
+464 |             guard.as_ref().ok_or(MemoryError::AllocationFailed)
+    |             ----- type must be known at this point
+    |
+help: consider giving this closure parameter an explicit type
+    |
+463 |         .and_then(|guard: /* Type */| {
+    |                         ++++++++++++
+
+error[E0061]: this function takes 2 arguments but 0 arguments were supplied
+   --> libraries/memory-manager/src/allocator.rs:16:37
+    |
+ 16 | static HEAP_ALLOCATOR: LockedHeap = LockedHeap::new();
+    |                                     ^^^^^^^^^^^^^^^-- two arguments of type `*mut u8` and `usize` are missing
+    |
+note: associated function defined here
+   --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linked_list_allocator-0.10.5/src/lib.rs:315:19
+    |
+315 |     pub unsafe fn new(heap_bottom: *mut u8, heap_size: usize) -> Locked...
+    |                   ^^^
+help: provide the arguments
+    |
+ 16 | static HEAP_ALLOCATOR: LockedHeap = LockedHeap::new(/* *mut u8 */, /* usize */);
+    |                                                     ++++++++++++++++++++++++++
+
+error[E0599]: no method named `offset` found for struct `memory_types::VirtAddr` in the current scope
+   --> libraries/memory-manager/src/allocator.rs:419:25
+    |
+419 |             last: start.offset(size as u64),
+    |                         ^^^^^^
+    |
+   ::: libraries/memory-manager/src/memory_types.rs:106:1
+    |
+106 | pub struct VirtAddr(pub u64);
+    | ------------------- method `offset` not found for this struct
+    |
+help: there is a method `page_offset` with a similar name
+    |
+419 |             last: start.page_offset(size as u64),
+    |                         +++++
+
+error[E0308]: mismatched types
+   --> libraries/memory-manager/src/arch_specific.rs:245:19
+    |
+245 |             Some((p4_index, p3_index, p2_index, p1_index))
+    |                   ^^^^^^^^ expected `usize`, found `u64`
+    |
+help: you can convert a `u64` to a `usize` and panic if the converted value doesn't fit
+    |
+245 |             Some((p4_index.try_into().unwrap(), p3_index, p2_index, p1_index))
+    |                           ++++++++++++++++++++
+
+error[E0308]: mismatched types
+   --> libraries/memory-manager/src/arch_specific.rs:245:29
+    |
+245 |             Some((p4_index, p3_index, p2_index, p1_index))
+    |                             ^^^^^^^^ expected `usize`, found `u64`
+    |
+help: you can convert a `u64` to a `usize` and panic if the converted value doesn't fit
+    |
+245 |             Some((p4_index, p3_index.try_into().unwrap(), p2_index, p1_index))
+    |                                     ++++++++++++++++++++
+
+error[E0308]: mismatched types
+   --> libraries/memory-manager/src/arch_specific.rs:245:39
+    |
+245 |             Some((p4_index, p3_index, p2_index, p1_index))
+    |                                       ^^^^^^^^ expected `usize`, found `u64`
+    |
+help: you can convert a `u64` to a `usize` and panic if the converted value doesn't fit
+    |
+245 |             Some((p4_index, p3_index, p2_index.try_into().unwrap(), p1_index))
+    |                                               ++++++++++++++++++++
+
+error[E0308]: mismatched types
+   --> libraries/memory-manager/src/arch_specific.rs:245:49
+    |
+245 |             Some((p4_index, p3_index, p2_index, p1_index))
+    |                                                 ^^^^^^^^ expected `usize`, found `u64`
+    |
+help: you can convert a `u64` to a `usize` and panic if the converted value doesn't fit
+    |
+245 |             Some((p4_index, p3_index, p2_index, p1_index.try_into().unwrap()))
+    |                                                         ++++++++++++++++++++
+
+error[E0599]: no method named `to_string` found for reference `&'static str` in the current scope
+   --> libraries/memory-manager/src/arch_specific.rs:702:34
+    |
+702 |                 vendor: "x86_64".to_string(),
+    |                                  ^^^^^^^^^ method not found in `&'static str`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `ToString` which provides `to_string` is implemented but not in scope; perhaps you want to import it
+    |
+  8 + use crate::alloc::string::ToString;
+    |
+
+error[E0599]: no method named `to_string` found for reference `&'static str` in the current scope
+   --> libraries/memory-manager/src/arch_specific.rs:703:41
+    |
+703 |                 model: "Generic x86_64".to_string(),
+    |                                         ^^^^^^^^^ method not found in `&'static str`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `ToString` which provides `to_string` is implemented but not in scope; perhaps you want to import it
+    |
+  8 + use crate::alloc::string::ToString;
+    |
+
+error[E0599]: no method named `to_string` found for reference `&'static str` in the current scope
+   --> libraries/memory-manager/src/arch_specific.rs:711:31
+    |
+711 |                 vendor: "ARM".to_string(),
+    |                               ^^^^^^^^^ method not found in `&'static str`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `ToString` which provides `to_string` is implemented but not in scope; perhaps you want to import it
+    |
+  8 + use crate::alloc::string::ToString;
+    |
+
+error[E0599]: no method named `to_string` found for reference `&'static str` in the current scope
+   --> libraries/memory-manager/src/arch_specific.rs:712:34
+    |
+712 |                 model: "AArch64".to_string(),
+    |                                  ^^^^^^^^^ method not found in `&'static str`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `ToString` which provides `to_string` is implemented but not in scope; perhaps you want to import it
+    |
+  8 + use crate::alloc::string::ToString;
+    |
+
+error[E0599]: no method named `to_string` found for reference `&'static str` in the current scope
+   --> libraries/memory-manager/src/arch_specific.rs:720:34
+    |
+720 |                 vendor: "RISC-V".to_string(),
+    |                                  ^^^^^^^^^ method not found in `&'static str`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `ToString` which provides `to_string` is implemented but not in scope; perhaps you want to import it
+    |
+  8 + use crate::alloc::string::ToString;
+    |
+
+error[E0599]: no method named `to_string` found for reference `&'static str` in the current scope
+   --> libraries/memory-manager/src/arch_specific.rs:721:31
+    |
+721 |                 model: "RV64".to_string(),
+    |                               ^^^^^^^^^ method not found in `&'static str`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `ToString` which provides `to_string` is implemented but not in scope; perhaps you want to import it
+    |
+  8 + use crate::alloc::string::ToString;
+    |
+
+error[E0277]: the trait bound `[usize; 128]: Default` is not satisfied
+  --> libraries/memory-manager/src/numa.rs:68:5
+   |
+65 | #[derive(Debug, Default, Clone)]
+   |                 ------- in this derive macro expansion
+...
+68 |     pub total_memory: [usize; MAX_NUMA_NODES],
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Default` is not implemented for `[usize; 128]`
+   |
+   = help: the following other types implement trait `Default`:
+             &[T]
+             &mut [T]
+             [T; 0]
+             [T; 1]
+             [T; 2]
+             [T; 3]
+             [T; 4]
+             [T; 5]
+           and 27 others
+
+error[E0277]: the trait bound `[usize; 128]: Default` is not satisfied
+  --> libraries/memory-manager/src/numa.rs:70:5
+   |
+65 | #[derive(Debug, Default, Clone)]
+   |                 ------- in this derive macro expansion
+...
+70 |     pub used_memory: [usize; MAX_NUMA_NODES],
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Default` is not implemented for `[usize; 128]`
+   |
+   = help: the following other types implement trait `Default`:
+             &[T]
+             &mut [T]
+             [T; 0]
+             [T; 1]
+             [T; 2]
+             [T; 3]
+             [T; 4]
+             [T; 5]
+           and 27 others
+
+error[E0277]: the trait bound `[usize; 128]: Default` is not satisfied
+  --> libraries/memory-manager/src/numa.rs:72:5
+   |
+65 | #[derive(Debug, Default, Clone)]
+   |                 ------- in this derive macro expansion
+...
+72 |     pub free_memory: [usize; MAX_NUMA_NODES],
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Default` is not implemented for `[usize; 128]`
+   |
+   = help: the following other types implement trait `Default`:
+             &[T]
+             &mut [T]
+             [T; 0]
+             [T; 1]
+             [T; 2]
+             [T; 3]
+             [T; 4]
+             [T; 5]
+           and 27 others
+
+error[E0277]: the trait bound `[u64; 128]: Default` is not satisfied
+  --> libraries/memory-manager/src/numa.rs:74:5
+   |
+65 | #[derive(Debug, Default, Clone)]
+   |                 ------- in this derive macro expansion
+...
+74 |     pub migrations: [u64; MAX_NUMA_NODES],
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Default` is not implemented for `[u64; 128]`
+   |
+   = help: the following other types implement trait `Default`:
+             &[T]
+             &mut [T]
+             [T; 0]
+             [T; 1]
+             [T; 2]
+             [T; 3]
+             [T; 4]
+             [T; 5]
+           and 27 others
+
+error[E0277]: the trait bound `[u64; 128]: Default` is not satisfied
+  --> libraries/memory-manager/src/numa.rs:76:5
+   |
+65 | #[derive(Debug, Default, Clone)]
+   |                 ------- in this derive macro expansion
+...
+76 |     pub remote_accesses: [u64; MAX_NUMA_NODES],
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Default` is not implemented for `[u64; 128]`
+   |
+   = help: the following other types implement trait `Default`:
+             &[T]
+             &mut [T]
+             [T; 0]
+             [T; 1]
+             [T; 2]
+             [T; 3]
+             [T; 4]
+             [T; 5]
+           and 27 others
+
+error[E0277]: the trait bound `AtomicUsize: Clone` is not satisfied
+  --> libraries/memory-manager/src/numa.rs:87:5
+   |
+80 | #[derive(Debug, Clone)]
+   |                 ----- in this derive macro expansion
+...
+87 |     pub ref_count: AtomicUsize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `AtomicUsize`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/numa.rs:107:5
+    |
+104 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+107 |     pub balance_operations: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/numa.rs:109:5
+    |
+104 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+109 |     pub pages_migrated: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/numa.rs:111:5
+    |
+104 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+111 |     pub access_improvements: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/numa.rs:113:5
+    |
+104 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+113 |     pub avg_migration_latency: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `AtomicUsize: core::marker::Copy` is not satisfied
+   --> libraries/memory-manager/src/numa.rs:215:37
+    |
+215 |                 allocation_counts: [AtomicUsize::new(0); MAX_NUMA_NODES],
+    |                                     ^^^^^^^^^^^^^^^^^^^ the trait `core::marker::Copy` is not implemented for `AtomicUsize`
+    |
+    = note: the `Copy` trait is required because this value will be copied for each element of the array
+help: create an inline `const` block
+    |
+215 |                 allocation_counts: [const { AtomicUsize::new(0) }; MAX_NUMA_NODES],
+    |                                     +++++++                     +
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+  --> libraries/memory-manager/src/cache_coherency.rs:90:5
+   |
+87 | #[derive(Debug, Default, Clone)]
+   |                          ----- in this derive macro expansion
+...
+90 |     pub state_transitions: [AtomicU64; 6], // One per state
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+   |
+   = note: required for `[core::sync::atomic::AtomicU64; 6]` to implement `Clone`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+  --> libraries/memory-manager/src/cache_coherency.rs:92:5
+   |
+87 | #[derive(Debug, Default, Clone)]
+   |                          ----- in this derive macro expansion
+...
+92 |     pub cache_misses: AtomicU64,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+  --> libraries/memory-manager/src/cache_coherency.rs:94:5
+   |
+87 | #[derive(Debug, Default, Clone)]
+   |                          ----- in this derive macro expansion
+...
+94 |     pub cache_hits: AtomicU64,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+  --> libraries/memory-manager/src/cache_coherency.rs:96:5
+   |
+87 | #[derive(Debug, Default, Clone)]
+   |                          ----- in this derive macro expansion
+...
+96 |     pub coherency_events: AtomicU64,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+  --> libraries/memory-manager/src/cache_coherency.rs:98:5
+   |
+87 | #[derive(Debug, Default, Clone)]
+   |                          ----- in this derive macro expansion
+...
+98 |     pub invalidations: AtomicU64,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/cache_coherency.rs:100:5
+    |
+ 87 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+100 |     pub writebacks: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/cache_coherency.rs:102:5
+    |
+ 87 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+102 |     pub protocol_overhead_ns: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/cache_coherency.rs:152:5
+    |
+149 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+152 |     pub protocol_ops: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/cache_coherency.rs:154:5
+    |
+149 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+154 |     pub avg_latency_ns: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `AtomicU32: Clone` is not satisfied
+   --> libraries/memory-manager/src/cache_coherency.rs:156:5
+    |
+149 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+156 |     pub efficiency: AtomicU32,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `AtomicU32`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/cache_coherency.rs:158:5
+    |
+149 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+158 |     pub migrations: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/cache_coherency.rs:160:5
+    |
+149 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+160 |     pub contention_events: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/cache_coherency.rs:176:5
+    |
+173 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+176 |     pub total_barriers: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/cache_coherency.rs:178:5
+    |
+173 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+178 |     pub acquires: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/cache_coherency.rs:180:5
+    |
+173 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+180 |     pub releases: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/cache_coherency.rs:182:5
+    |
+173 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+182 |     pub full_barriers: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/cache_coherency.rs:184:5
+    |
+173 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+184 |     pub avg_latency_ns: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error: constant expression depends on a generic parameter
+   --> libraries/memory-manager/src/cache_coherency.rs:416:27
+    |
+416 | ...ng: [0; DEFAULT_CACHE_LINE_SIZE - core::mem::size_of::<T>()],
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: this may fail depending on what value the parameter takes
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: core::marker::Copy` is not satisfied
+   --> libraries/memory-manager/src/cache_coherency.rs:821:28
+    |
+821 |             cpu_barriers: [AtomicU64::new(0); 1024],
+    |                            ^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+    = help: the trait `core::marker::Copy` is not implemented for `core::sync::atomic::AtomicU64`
+    = note: the `Copy` trait is required because this value will be copied for each element of the array
+help: create an inline `const` block
+    |
+821 |             cpu_barriers: [const { AtomicU64::new(0) }; 1024],
+    |                            +++++++                   +
+
+error[E0308]: mismatched types
+   --> libraries/memory-manager/src/cache_coherency.rs:830:9
+    |
+830 | / ...   match barrier_type {
+831 | | ...       BarrierType::Acquire => self.barrier_stats.acquires.fetch_a...
+832 | | ...       BarrierType::Release => self.barrier_stats.releases.fetch_a...
+833 | | ...       BarrierType::Full => self.barrier_stats.full_barriers.fetch...
+834 | | ...   }
+    | |_______^ expected `()`, found `u64`
+    |
+help: consider using a semicolon here
+    |
+834 |         };
+    |          +
+help: try adding a return type
+    |
+826 |     pub fn record_barrier(&self, barrier_type: BarrierType, cpu_id: usize) -> u64 {
+    |                                                                            ++++++
+
+error[E0747]: constant provided when a type was expected
+  --> libraries/memory-manager/src/large_scale_vm.rs:45:18
+   |
+45 |     pub address: PhysAddr,
+   |                  ^^^^^^^^
+
+error[E0277]: the trait bound `large_scale_vm::PageTableFlags: Clone` is not satisfied
+  --> libraries/memory-manager/src/large_scale_vm.rs:46:5
+   |
+43 | #[derive(Debug, Clone, Copy)]
+   |                 ----- in this derive macro expansion
+...
+46 |     pub flags: PageTableFlags,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `large_scale_vm::PageTableFlags`
+   |
+note: required by a bound in `AssertParamIsClone`
+  --> /rustc/20383c9f1d84eb9b9c6668a1668ef68a81eae274/library/core/src/clone.rs:325:1
+help: consider annotating `large_scale_vm::PageTableFlags` with `#[derive(Clone)]`
+  --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.10.0/src/public.rs:17:9
+   |
+17 +         #[derive(Clone)]
+18 |         $vis struct $PublicBitFlags(<$PublicBitFlags as $crate::__private::PublicFlags>::Internal);
+   |
+
+error[E0277]: the trait bound `AtomicUsize: Clone` is not satisfied
+  --> libraries/memory-manager/src/large_scale_vm.rs:50:5
+   |
+43 | #[derive(Debug, Clone, Copy)]
+   |                 ----- in this derive macro expansion
+...
+50 |     pub ref_count: AtomicUsize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `AtomicUsize`
+   |
+note: required by a bound in `AssertParamIsClone`
+  --> /rustc/20383c9f1d84eb9b9c6668a1668ef68a81eae274/library/core/src/clone.rs:325:1
+
+error[E0277]: `VmaFlags` doesn't implement `core::fmt::Debug`
+  --> libraries/memory-manager/src/large_scale_vm.rs:58:5
+   |
+54 | #[derive(Debug, Clone)]
+   |          ----- in this derive macro expansion
+...
+58 |     pub flags: VmaFlags,
+   |     ^^^^^^^^^^^^^^^^^^^ the trait `core::fmt::Debug` is not implemented for `VmaFlags`
+   |
+   = note: add `#[derive(Debug)]` to `VmaFlags` or manually `impl core::fmt::Debug for VmaFlags`
+help: consider annotating `VmaFlags` with `#[derive(Debug)]`
+  --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.10.0/src/public.rs:17:9
+   |
+17 +         #[derive(Debug)]
+18 |         $vis struct $PublicBitFlags(<$PublicBitFlags as $crate::__private::PublicFlags>::Internal);
+   |
+
+error[E0277]: the trait bound `VmaFlags: Clone` is not satisfied
+  --> libraries/memory-manager/src/large_scale_vm.rs:58:5
+   |
+54 | #[derive(Debug, Clone)]
+   |                 ----- in this derive macro expansion
+...
+58 |     pub flags: VmaFlags,
+   |     ^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `VmaFlags`
+   |
+help: consider annotating `VmaFlags` with `#[derive(Clone)]`
+  --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.10.0/src/public.rs:17:9
+   |
+17 +         #[derive(Clone)]
+18 |         $vis struct $PublicBitFlags(<$PublicBitFlags as $crate::__private::PublicFlags>::Internal);
+   |
+
+error[E0277]: the trait bound `AtomicUsize: Clone` is not satisfied
+  --> libraries/memory-manager/src/large_scale_vm.rs:61:5
+   |
+54 | #[derive(Debug, Clone)]
+   |                 ----- in this derive macro expansion
+...
+61 |     pub access_count: AtomicUsize,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `AtomicUsize`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+  --> libraries/memory-manager/src/large_scale_vm.rs:62:5
+   |
+54 | #[derive(Debug, Clone)]
+   |                 ----- in this derive macro expansion
+...
+62 |     pub last_access: AtomicU64,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0747]: constant provided when a type was expected
+  --> libraries/memory-manager/src/large_scale_vm.rs:88:10
+   |
+88 |     File(PhysAddr),     // Physical address of file mapping
+   |          ^^^^^^^^
+
+error[E0277]: the trait bound `HugePageFlags: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:135:5
+    |
+130 | #[derive(Debug, Clone)]
+    |                 ----- in this derive macro expansion
+...
+135 |     pub flags: HugePageFlags,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `HugePageFlags`
+    |
+help: consider annotating `HugePageFlags` with `#[derive(Clone)]`
+   --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.10.0/src/public.rs:17:9
+    |
+ 17 +         #[derive(Clone)]
+ 18 |         $vis struct $PublicBitFlags(<$PublicBitFlags as $crate::__private::PublicFlags>::Internal);
+    |
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:137:5
+    |
+130 | #[derive(Debug, Clone)]
+    |                 ----- in this derive macro expansion
+...
+137 |     pub last_used: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `AtomicUsize: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:138:5
+    |
+130 | #[derive(Debug, Clone)]
+    |                 ----- in this derive macro expansion
+...
+138 |     pub ref_count: AtomicUsize,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `AtomicUsize`
+
+error[E0277]: the trait bound `AtomicUsize: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:196:5
+    |
+192 | #[derive(Debug, Clone)]
+    |                 ----- in this derive macro expansion
+...
+196 |     pub reference_count: AtomicUsize,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `AtomicUsize`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:198:5
+    |
+192 | #[derive(Debug, Clone)]
+    |                 ----- in this derive macro expansion
+...
+198 |     pub last_accessed: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:211:5
+    |
+202 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+211 |     pub page_faults: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:212:5
+    |
+202 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+212 |     pub major_page_faults: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:213:5
+    |
+202 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+213 |     pub minor_page_faults: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:214:5
+    |
+202 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+214 |     pub huge_page_faults: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:215:5
+    |
+202 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+215 |     pub swap_faults: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:216:5
+    |
+202 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+216 |     pub copy_on_write_faults: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `AtomicUsize: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:217:5
+    |
+202 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+217 |     pub total_vmas: AtomicUsize,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `AtomicUsize`
+
+error[E0277]: the trait bound `AtomicUsize: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:218:5
+    |
+202 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+218 |     pub active_vmas: AtomicUsize,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `AtomicUsize`
+
+error[E0277]: the trait bound `AtomicUsize: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:245:5
+    |
+242 | #[derive(Debug, Clone)]
+    |                 ----- in this derive macro expansion
+...
+245 |     pub current_size: AtomicUsize,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `AtomicUsize`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:352:5
+    |
+350 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+351 | pub struct DefragmentationStats {
+352 |     pub defrag_attempts: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:353:5
+    |
+350 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+353 |     pub successful_defrags: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:354:5
+    |
+350 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+354 |     pub pages_consolidated: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:355:5
+    |
+350 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+355 |     pub time_spent_defragging_ns: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:356:5
+    |
+350 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+356 |     pub fragmentation_score: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:374:5
+    |
+369 | #[derive(Debug, Clone)]
+    |                 ----- in this derive macro expansion
+...
+374 |     pub decompressed_at: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `AtomicUsize: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:375:5
+    |
+369 | #[derive(Debug, Clone)]
+    |                 ----- in this derive macro expansion
+...
+375 |     pub access_count: AtomicUsize,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `AtomicUsize`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:381:5
+    |
+379 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+380 | pub struct CompressionStats {
+381 |     pub pages_compressed: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:382:5
+    |
+379 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+382 |     pub pages_decompressed: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:383:5
+    |
+379 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+383 |     pub total_compressed_bytes: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:384:5
+    |
+379 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+384 |     pub total_original_bytes: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:385:5
+    |
+379 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+385 |     pub compression_ratio_avg: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:386:5
+    |
+379 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+386 |     pub cpu_cycles_spent: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:392:5
+    |
+390 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+391 | pub struct DeduplicationStats {
+392 |     pub duplicate_pages_detected: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:393:5
+    |
+390 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+393 |     pub pages_deduplicated: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:394:5
+    |
+390 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+394 |     pub memory_saved_bytes: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:395:5
+    |
+390 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+395 |     pub hash_collisions: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: `SwapFlags` doesn't implement `core::fmt::Debug`
+   --> libraries/memory-manager/src/large_scale_vm.rs:413:5
+    |
+407 | #[derive(Debug, Clone)]
+    |          ----- in this derive macro expansion
+...
+413 |     pub flags: SwapFlags,
+    |     ^^^^^^^^^^^^^^^^^^^^ the trait `core::fmt::Debug` is not implemented for `SwapFlags`
+    |
+    = note: add `#[derive(Debug)]` to `SwapFlags` or manually `impl core::fmt::Debug for SwapFlags`
+help: consider annotating `SwapFlags` with `#[derive(Debug)]`
+   --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.10.0/src/public.rs:17:9
+    |
+ 17 +         #[derive(Debug)]
+ 18 |         $vis struct $PublicBitFlags(<$PublicBitFlags as $crate::__private::PublicFlags>::Internal);
+    |
+
+error[E0277]: the trait bound `AtomicUsize: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:411:5
+    |
+407 | #[derive(Debug, Clone)]
+    |                 ----- in this derive macro expansion
+...
+411 |     pub used_size: AtomicUsize,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `AtomicUsize`
+
+error[E0277]: the trait bound `SwapFlags: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:413:5
+    |
+407 | #[derive(Debug, Clone)]
+    |                 ----- in this derive macro expansion
+...
+413 |     pub flags: SwapFlags,
+    |     ^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `SwapFlags`
+    |
+help: consider annotating `SwapFlags` with `#[derive(Clone)]`
+   --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.10.0/src/public.rs:17:9
+    |
+ 17 +         #[derive(Clone)]
+ 18 |         $vis struct $PublicBitFlags(<$PublicBitFlags as $crate::__private::PublicFlags>::Internal);
+    |
+
+error[E0277]: the trait bound `AtomicUsize: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:430:5
+    |
+426 | #[derive(Debug, Clone)]
+    |                 ----- in this derive macro expansion
+...
+430 |     pub access_count: AtomicUsize,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `AtomicUsize`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:431:5
+    |
+426 | #[derive(Debug, Clone)]
+    |                 ----- in this derive macro expansion
+...
+431 |     pub last_accessed: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `AtomicUsize: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:448:5
+    |
+446 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+447 | pub struct CommittedStats {
+448 |     pub committed_memory: AtomicUsize,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `AtomicUsize`
+
+error[E0277]: the trait bound `AtomicUsize: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:449:5
+    |
+446 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+449 |     pub commit_limit: AtomicUsize,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `AtomicUsize`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:450:5
+    |
+446 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+450 |     pub commit_failure_count: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0277]: the trait bound `core::sync::atomic::AtomicU64: Clone` is not satisfied
+   --> libraries/memory-manager/src/large_scale_vm.rs:451:5
+    |
+446 | #[derive(Debug, Default, Clone)]
+    |                          ----- in this derive macro expansion
+...
+451 |     pub overcommit_ratio: AtomicU64,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Clone` is not implemented for `core::sync::atomic::AtomicU64`
+
+error[E0599]: no method named `offset` found for struct `memory_types::VirtAddr` in the current scope
+   --> libraries/memory-manager/src/large_scale_vm.rs:526:24
+    |
+526 |             end: start.offset(size as u64),
+    |                        ^^^^^^
+    |
+   ::: libraries/memory-manager/src/memory_types.rs:106:1
+    |
+106 | pub struct VirtAddr(pub u64);
+    | ------------------- method `offset` not found for this struct
+    |
+help: there is a method `page_offset` with a similar name
+    |
+526 |             end: start.page_offset(size as u64),
+    |                        +++++
+
+error[E0609]: no field `compression_stats` on type `VirtualMemoryStats`
+   --> libraries/memory-manager/src/large_scale_vm.rs:709:28
+    |
+709 | ...   self.stats.compression_stats.pages_decompressed.fetch_add(1, Orde...
+    |                  ^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `total_virtual_memory`, `used_virtual_memory`, `mapped_memory`, `shared_memory`, `compressed_memory` ... and 10 others
+
+error[E0433]: failed to resolve: use of undeclared type `MemoryError`
+   --> libraries/memory-manager/src/lib.rs:140:24
+    |
+140 |             return Err(MemoryError::AllocationFailed);
+    |                        ^^^^^^^^^^^ use of undeclared type `MemoryError`
+
+error[E0061]: this method takes 3 arguments but 4 arguments were supplied
+   --> libraries/memory-manager/src/lib.rs:180:43
+    |
+180 |         self.virtual_manager.mapper_mut().map_page(
+    |                                           ^^^^^^^^
+181 |             VirtAddr::new(context.kernel_start.as_u64()),
+    |             -------------------------------------------- expected `x86_64::VirtAddr`, found `memory_types::VirtAddr`
+...
+184 |             kernel_flags,
+    |             ------------ unexpected argument #4 of type `memory_types::MemoryFlags`
+    |
+    = note: `memory_types::VirtAddr` and `x86_64::VirtAddr` have similar names, but are actually distinct types
+note: `memory_types::VirtAddr` is defined in the current crate
+   --> libraries/memory-manager/src/memory_types.rs:106:1
+    |
+106 | pub struct VirtAddr(pub u64);
+    | ^^^^^^^^^^^^^^^^^^^
+note: `x86_64::VirtAddr` is defined in crate `x86_64`
+   --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x86_64-0.14.13/src/addr.rs:27:1
+    |
+ 27 | pub struct VirtAddr(u64);
+    | ^^^^^^^^^^^^^^^^^^^
+note: method defined here
+   --> libraries/memory-manager/src/arch_specific.rs:84:8
+    |
+ 84 |     fn map_page(&mut self, virt_addr: VirtAddr, phys_addr: PhysAddr, fl...
+    |        ^^^^^^^^            ---------
+help: remove the extra argument
+    |
+181 ~             /* x86_64::VirtAddr */,
+182 |             context.kernel_start,
+183 ~             kernel_size,
+    |
+
+error[E0061]: this method takes 3 arguments but 4 arguments were supplied
+   --> libraries/memory-manager/src/lib.rs:202:43
+    |
+202 |         self.virtual_manager.mapper_mut().map_page(
+    |                                           ^^^^^^^^
+203 |             virt_start,
+    |             ---------- expected `x86_64::VirtAddr`, found `memory_types::VirtAddr`
+204 |             phys_start,
+205 |             map_size,
+    |             -------- unexpected argument #3 of type `usize`
+    |
+    = note: `memory_types::VirtAddr` and `x86_64::VirtAddr` have similar names, but are actually distinct types
+note: `memory_types::VirtAddr` is defined in the current crate
+   --> libraries/memory-manager/src/memory_types.rs:106:1
+    |
+106 | pub struct VirtAddr(pub u64);
+    | ^^^^^^^^^^^^^^^^^^^
+note: `x86_64::VirtAddr` is defined in crate `x86_64`
+   --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x86_64-0.14.13/src/addr.rs:27:1
+    |
+ 27 | pub struct VirtAddr(u64);
+    | ^^^^^^^^^^^^^^^^^^^
+note: method defined here
+   --> libraries/memory-manager/src/arch_specific.rs:84:8
+    |
+ 84 |     fn map_page(&mut self, virt_addr: VirtAddr, phys_addr: PhysAddr, fl...
+    |        ^^^^^^^^            ---------
+help: remove the extra argument
+    |
+203 ~             /* x86_64::VirtAddr */,
+204 ~             phys_start,
+    |
+
+error[E0061]: this method takes 3 arguments but 4 arguments were supplied
+   --> libraries/memory-manager/src/lib.rs:239:43
+    |
+239 |         self.virtual_manager.mapper_mut().map_page(
+    |                                           ^^^^^^^^
+240 |             stack_start,
+    |             ----------- expected `x86_64::VirtAddr`, found `memory_types::VirtAddr`
+241 |             stack_phys.to_phys_addr(PageSize::Size4K),
+242 |             stack_size,
+    |             ---------- unexpected argument #3 of type `usize`
+    |
+    = note: `memory_types::VirtAddr` and `x86_64::VirtAddr` have similar names, but are actually distinct types
+note: `memory_types::VirtAddr` is defined in the current crate
+   --> libraries/memory-manager/src/memory_types.rs:106:1
+    |
+106 | pub struct VirtAddr(pub u64);
+    | ^^^^^^^^^^^^^^^^^^^
+note: `x86_64::VirtAddr` is defined in crate `x86_64`
+   --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x86_64-0.14.13/src/addr.rs:27:1
+    |
+ 27 | pub struct VirtAddr(u64);
+    | ^^^^^^^^^^^^^^^^^^^
+note: method defined here
+   --> libraries/memory-manager/src/arch_specific.rs:84:8
+    |
+ 84 |     fn map_page(&mut self, virt_addr: VirtAddr, phys_addr: PhysAddr, fl...
+    |        ^^^^^^^^            ---------
+help: remove the extra argument
+    |
+240 ~             /* x86_64::VirtAddr */,
+241 ~             stack_phys.to_phys_addr(PageSize::Size4K),
+    |
+
+error[E0061]: this method takes 3 arguments but 4 arguments were supplied
+   --> libraries/memory-manager/src/lib.rs:292:43
+    |
+292 | ...mapper_mut().map_page(virt_addr, phys_addr, size, flags)
+    |                 ^^^^^^^^ ---------             ---- unexpected argument #3 of type `usize`
+    |                          |
+    |                          expected `x86_64::VirtAddr`, found `memory_types::VirtAddr`
+    |
+    = note: `memory_types::VirtAddr` and `x86_64::VirtAddr` have similar names, but are actually distinct types
+note: `memory_types::VirtAddr` is defined in the current crate
+   --> libraries/memory-manager/src/memory_types.rs:106:1
+    |
+106 | pub struct VirtAddr(pub u64);
+    | ^^^^^^^^^^^^^^^^^^^
+note: `x86_64::VirtAddr` is defined in crate `x86_64`
+   --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x86_64-0.14.13/src/addr.rs:27:1
+    |
+ 27 | pub struct VirtAddr(u64);
+    | ^^^^^^^^^^^^^^^^^^^
+note: method defined here
+   --> libraries/memory-manager/src/arch_specific.rs:84:8
+    |
+ 84 |     fn map_page(&mut self, virt_addr: VirtAddr, phys_addr: PhysAddr, fl...
+    |        ^^^^^^^^            ---------
+help: remove the extra argument
+    |
+292 -         self.virtual_manager.mapper_mut().map_page(virt_addr, phys_addr, size, flags)
+292 +         self.virtual_manager.mapper_mut().map_page(/* x86_64::VirtAddr */, phys_addr, flags)
+    |
+
+error[E0308]: mismatched types
+   --> libraries/memory-manager/src/lib.rs:297:49
+    |
+297 |         self.virtual_manager.mapper().translate(virt_addr)
+    |                                       --------- ^^^^^^^^^ expected `x86_64::VirtAddr`, found `memory_types::VirtAddr`
+    |                                       |
+    |                                       arguments to this method are incorrect
+    |
+    = note: `memory_types::VirtAddr` and `x86_64::VirtAddr` have similar names, but are actually distinct types
+note: `memory_types::VirtAddr` is defined in the current crate
+   --> libraries/memory-manager/src/memory_types.rs:106:1
+    |
+106 | pub struct VirtAddr(pub u64);
+    | ^^^^^^^^^^^^^^^^^^^
+note: `x86_64::VirtAddr` is defined in crate `x86_64`
+   --> /home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/x86_64-0.14.13/src/addr.rs:27:1
+    |
+ 27 | pub struct VirtAddr(u64);
+    | ^^^^^^^^^^^^^^^^^^^
+note: method defined here
+   --> libraries/memory-manager/src/arch_specific.rs:93:8
+    |
+ 93 |     fn translate(&self, virt_addr: VirtAddr) -> MemoryResult<PhysAddr>;
+    |        ^^^^^^^^^        ---------
+
+error[E0433]: failed to resolve: use of undeclared type `MemoryError`
+   --> libraries/memory-manager/src/lib.rs:369:16
+    |
+369 |         .ok_or(MemoryError::AllocationFailed)
+    |                ^^^^^^^^^^^ use of undeclared type `MemoryError`
+
+error[E0282]: type annotations needed
+   --> libraries/memory-manager/src/lib.rs:371:20
+    |
+371 |         .and_then(|guard| {
+    |                    ^^^^^
+372 |             guard.as_ref().ok_or(MemoryError::AllocationFailed)
+    |             ----- type must be known at this point
+    |
+help: consider giving this closure parameter an explicit type
+    |
+371 |         .and_then(|guard: /* Type */| {
+    |                         ++++++++++++
+
+error[E0433]: failed to resolve: use of undeclared type `MemoryError`
+   --> libraries/memory-manager/src/lib.rs:372:34
+    |
+372 |             guard.as_ref().ok_or(MemoryError::AllocationFailed)
+    |                                  ^^^^^^^^^^^ use of undeclared type `MemoryError`
+
+error[E0433]: failed to resolve: use of undeclared type `MemoryError`
+   --> libraries/memory-manager/src/lib.rs:394:30
+    |
+394 |                 .map_err(|_| MemoryError::InvalidAddress)?;
+    |                              ^^^^^^^^^^^ use of undeclared type `MemoryError`
+
+error[E0599]: no method named `offset` found for struct `memory_types::VirtAddr` in the current scope
+   --> libraries/memory-manager/src/lib.rs:424:25
+    |
+424 |         let end = start.offset(size as u64);
+    |                         ^^^^^^
+    |
+   ::: libraries/memory-manager/src/memory_types.rs:106:1
+    |
+106 | pub struct VirtAddr(pub u64);
+    | ------------------- method `offset` not found for this struct
+    |
+help: there is a method `page_offset` with a similar name
+    |
+424 |         let end = start.page_offset(size as u64);
+    |                         +++++
+
+error[E0433]: failed to resolve: use of undeclared type `MemoryError`
+   --> libraries/memory-manager/src/lib.rs:428:24
+    |
+428 |             return Err(MemoryError::InvalidAddress);
+    |                        ^^^^^^^^^^^ use of undeclared type `MemoryError`
+
+error[E0433]: failed to resolve: use of undeclared type `MemoryError`
+   --> libraries/memory-manager/src/lib.rs:443:24
+    |
+443 |             return Err(MemoryError::InvalidAddress);
+    |                        ^^^^^^^^^^^ use of undeclared type `MemoryError`
+
+error[E0015]: cannot call non-const operator in constant functions
+   --> libraries/memory-manager/src/memory_types.rs:207:9
+    |
+207 |         Self::READ | Self::WRITE
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: impl defined here, but it is not `const`
+   --> libraries/memory-manager/src/memory_types.rs:179:1
+    |
+179 | / bitflags! {
+180 | |     /// Memory protection and access flags
+181 | |     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+182 | |     pub struct MemoryFlags: u8 {
+...   |
+202 | | }
+    | |_^
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::__impl_public_bitflags_ops` which comes from the expansion of the macro `bitflags` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const operator in constant functions
+   --> libraries/memory-manager/src/memory_types.rs:217:9
+    |
+217 |         Self::READ | Self::WRITE | Self::USER
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: impl defined here, but it is not `const`
+   --> libraries/memory-manager/src/memory_types.rs:179:1
+    |
+179 | / bitflags! {
+180 | |     /// Memory protection and access flags
+181 | |     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+182 | |     pub struct MemoryFlags: u8 {
+...   |
+202 | | }
+    | |_^
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::__impl_public_bitflags_ops` which comes from the expansion of the macro `bitflags` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const operator in constant functions
+   --> libraries/memory-manager/src/memory_types.rs:217:9
+    |
+217 |         Self::READ | Self::WRITE | Self::USER
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: impl defined here, but it is not `const`
+   --> libraries/memory-manager/src/memory_types.rs:179:1
+    |
+179 | / bitflags! {
+180 | |     /// Memory protection and access flags
+181 | |     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+182 | |     pub struct MemoryFlags: u8 {
+...   |
+202 | | }
+    | |_^
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::__impl_public_bitflags_ops` which comes from the expansion of the macro `bitflags` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const operator in constant functions
+   --> libraries/memory-manager/src/memory_types.rs:222:9
+    |
+222 |         Self::READ | Self::USER
+    |         ^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: impl defined here, but it is not `const`
+   --> libraries/memory-manager/src/memory_types.rs:179:1
+    |
+179 | / bitflags! {
+180 | |     /// Memory protection and access flags
+181 | |     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+182 | |     pub struct MemoryFlags: u8 {
+...   |
+202 | | }
+    | |_^
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::__impl_public_bitflags_ops` which comes from the expansion of the macro `bitflags` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const operator in constant functions
+   --> libraries/memory-manager/src/virtual_memory.rs:76:9
+    |
+ 76 |         self.flags == flags
+    |         ^^^^^^^^^^^^^^^^^^^
+    |
+note: impl defined here, but it is not `const`
+   --> libraries/memory-manager/src/memory_types.rs:181:34
+    |
+181 |     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+    |                                  ^^^^^^^^^
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+error[E0015]: cannot call non-const operator in constant functions
+   --> libraries/memory-manager/src/virtual_memory.rs:122:38
+    |
+122 |         if (self.value & 0x1) != 0 { flags |= MemoryFlags::READ; }
+    |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: impl defined here, but it is not `const`
+   --> libraries/memory-manager/src/memory_types.rs:179:1
+    |
+179 | / bitflags! {
+180 | |     /// Memory protection and access flags
+181 | |     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+182 | |     pub struct MemoryFlags: u8 {
+...   |
+202 | | }
+    | |_^
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::__impl_public_bitflags_ops` which comes from the expansion of the macro `bitflags` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const operator in constant functions
+   --> libraries/memory-manager/src/virtual_memory.rs:123:38
+    |
+123 |         if (self.value & 0x2) != 0 { flags |= MemoryFlags::WRITE; }
+    |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: impl defined here, but it is not `const`
+   --> libraries/memory-manager/src/memory_types.rs:179:1
+    |
+179 | / bitflags! {
+180 | |     /// Memory protection and access flags
+181 | |     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+182 | |     pub struct MemoryFlags: u8 {
+...   |
+202 | | }
+    | |_^
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::__impl_public_bitflags_ops` which comes from the expansion of the macro `bitflags` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const operator in constant functions
+   --> libraries/memory-manager/src/virtual_memory.rs:124:38
+    |
+124 |         if (self.value & 0x8) != 0 { flags |= MemoryFlags::EXECUTE; }
+    |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: impl defined here, but it is not `const`
+   --> libraries/memory-manager/src/memory_types.rs:179:1
+    |
+179 | / bitflags! {
+180 | |     /// Memory protection and access flags
+181 | |     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+182 | |     pub struct MemoryFlags: u8 {
+...   |
+202 | | }
+    | |_^
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::__impl_public_bitflags_ops` which comes from the expansion of the macro `bitflags` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0015]: cannot call non-const operator in constant functions
+   --> libraries/memory-manager/src/virtual_memory.rs:125:38
+    |
+125 |         if (self.value & 0x4) != 0 { flags |= MemoryFlags::USER; }
+    |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: impl defined here, but it is not `const`
+   --> libraries/memory-manager/src/memory_types.rs:179:1
+    |
+179 | / bitflags! {
+180 | |     /// Memory protection and access flags
+181 | |     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+182 | |     pub struct MemoryFlags: u8 {
+...   |
+202 | | }
+    | |_^
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+    = note: this error originates in the macro `$crate::__impl_public_bitflags_ops` which comes from the expansion of the macro `bitflags` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0507]: cannot move out of `self.stats` which is behind a shared reference
+   --> libraries/memory-manager/src/numa.rs:579:9
+    |
+579 |         self.stats
+    |         ^^^^^^^^^^ move occurs because `self.stats` has type `NumaMemoryStats`, which does not implement the `Copy` trait
+    |
+help: consider cloning the value if the performance cost is acceptable
+    |
+579 |         self.stats.clone()
+    |                   ++++++++
+
+warning: unused variable: `cpu_id`
+   --> libraries/memory-manager/src/cache_coherency.rs:600:82
+    |
+600 | ..._type: CacheRequestType, cpu_id: usize) -> CacheState {
+    |                             ^^^^^^ help: if this is intentional, prefix it with an underscore: `_cpu_id`
+    |
+    = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `request_type`
+   --> libraries/memory-manager/src/cache_coherency.rs:637:79
+    |
+637 | ...new_state: CacheState, request_type: CacheRequestType) -> CacheRespo...
+    |                           ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_request_type`
+
+warning: unused variable: `line_index`
+   --> libraries/memory-manager/src/cache_coherency.rs:683:39
+    |
+683 |     fn count_accessing_threads(&self, line_index: usize) -> usize {
+    |                                       ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_line_index`
+
+warning: unused variable: `page_table_size`
+   --> libraries/memory-manager/src/large_scale_vm.rs:457:13
+    |
+457 |         let page_table_size = max_virtual_size / PageSize::Size4K.as_us...
+    |             ^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_page_table_size`
+
+Some errors have detailed explanations: E0015, E0061, E0116, E0117, E0200, E0204, E0220, E0255, E0277...
+For more information about an error, try `rustc --explain E0015`.
+warning: `multios-memory-manager` (lib) generated 33 warnings
+error: could not compile `multios-memory-manager` (lib) due to 358 previous errors; 33 warnings emitted

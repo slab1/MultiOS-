@@ -1,0 +1,1133 @@
+openapi: 3.0.0
+info:
+  title: MultiOS Administrative API
+  description: |
+    Comprehensive administrative API for MultiOS kernel management.
+    Provides REST-like endpoints for system administration including:
+    - System information and control
+    - Process and service management  
+    - Memory management and monitoring
+    - Security and user management
+    - Configuration and logging
+  version: 1.0.0
+  contact:
+    name: MultiOS Development Team
+    email: dev@multios.org
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+  - url: https://api.multios.org:8443
+    description: Production server
+  - url: http://{host}:{port}
+    description: Custom server
+    variables:
+      host:
+        default: localhost
+        description: Server hostname
+      port:
+        default: "8080"
+        description: Server port
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+paths:
+  # System Management Endpoints
+  /api/v1/system/info:
+    get:
+      summary: Get system information
+      description: Returns comprehensive system information including kernel version, architecture, uptime, and resource usage
+      tags: [System]
+      security:
+        - ApiKeyAuth: [SystemRead]
+      responses:
+        '200':
+          description: System information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemInfo'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/system/shutdown:
+    post:
+      summary: Shutdown the system
+      description: Initiates a graceful system shutdown
+      tags: [System]
+      security:
+        - ApiKeyAuth: [SystemAdmin]
+      responses:
+        '200':
+          description: Shutdown initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /api/v1/system/reboot:
+    post:
+      summary: Reboot the system
+      description: Initiates a system reboot
+      tags: [System]
+      security:
+        - ApiKeyAuth: [SystemAdmin]
+      responses:
+        '200':
+          description: Reboot initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /api/v1/system/log-level:
+    post:
+      summary: Set logging level
+      description: Changes the system logging level
+      tags: [System]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - level
+              properties:
+                level:
+                  type: string
+                  enum: [trace, debug, info, warn, error, critical]
+                  description: New logging level
+      security:
+        - ApiKeyAuth: [SystemWrite]
+      responses:
+        '200':
+          description: Log level updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  # Process Management Endpoints
+  /api/v1/processes:
+    get:
+      summary: List all processes
+      description: Returns a list of all running processes with their information
+      tags: [Processes]
+      security:
+        - ApiKeyAuth: [ProcessRead]
+      parameters:
+        - name: include_details
+          in: query
+          description: Include detailed process information
+          schema:
+            type: boolean
+            default: false
+        - name: filter_state
+          in: query
+          description: Filter processes by state
+          schema:
+            type: string
+            enum: [running, stopped, sleeping, zombie]
+      responses:
+        '200':
+          description: Process list retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProcessInfo'
+                  total:
+                    type: integer
+                    description: Total number of processes
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/processes/{pid}:
+    get:
+      summary: Get process information
+      description: Returns detailed information about a specific process
+      tags: [Processes]
+      security:
+        - ApiKeyAuth: [ProcessRead]
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Process ID
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 65535
+      responses:
+        '200':
+          description: Process information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/processes/{pid}/terminate:
+    post:
+      summary: Terminate process
+      description: Terminates the specified process gracefully
+      tags: [Processes]
+      security:
+        - ApiKeyAuth: [ProcessAdmin]
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Process ID to terminate
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 65535
+      responses:
+        '200':
+          description: Process termination initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  # Memory Management Endpoints
+  /api/v1/memory/stats:
+    get:
+      summary: Get memory statistics
+      description: Returns comprehensive memory usage statistics
+      tags: [Memory]
+      security:
+        - ApiKeyAuth: [SystemRead]
+      responses:
+        '200':
+          description: Memory statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemoryInfo'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/memory/alloc:
+    post:
+      summary: Allocate memory
+      description: Allocates a specified amount of memory
+      tags: [Memory]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - size
+              properties:
+                size:
+                  type: integer
+                  minimum: 1
+                  maximum: 1073741824
+                  description: Size in bytes (max 1GB)
+                persistent:
+                  type: boolean
+                  default: false
+                  description: Whether the allocation should persist
+      security:
+        - ApiKeyAuth: [SystemWrite]
+      responses:
+        '200':
+          description: Memory allocated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: integer
+                    description: Allocated memory address
+                  size:
+                    type: integer
+                    description: Actual allocated size
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /api/v1/memory/free:
+    post:
+      summary: Free memory
+      description: Frees previously allocated memory
+      tags: [Memory]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - address
+              properties:
+                address:
+                  type: integer
+                  description: Memory address to free
+      security:
+        - ApiKeyAuth: [SystemWrite]
+      responses:
+        '200':
+          description: Memory freed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  # Service Management Endpoints
+  /api/v1/services:
+    get:
+      summary: List all services
+      description: Returns a list of all system services with their status
+      tags: [Services]
+      security:
+        - ApiKeyAuth: [ServiceRead]
+      responses:
+        '200':
+          description: Service list retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServiceInfo'
+                  total:
+                    type: integer
+                    description: Total number of services
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/services/{service_id}/start:
+    post:
+      summary: Start service
+      description: Starts the specified service
+      tags: [Services]
+      security:
+        - ApiKeyAuth: [ServiceAdmin]
+      parameters:
+        - name: service_id
+          in: path
+          required: true
+          description: Service ID to start
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Service start initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /api/v1/services/{service_id}/stop:
+    post:
+      summary: Stop service
+      description: Stops the specified service
+      tags: [Services]
+      security:
+        - ApiKeyAuth: [ServiceAdmin]
+      parameters:
+        - name: service_id
+          in: path
+          required: true
+          description: Service ID to stop
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Service stop initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /api/v1/services/{service_id}/restart:
+    post:
+      summary: Restart service
+      description: Restarts the specified service
+      tags: [Services]
+      security:
+        - ApiKeyAuth: [ServiceAdmin]
+      parameters:
+        - name: service_id
+          in: path
+          required: true
+          description: Service ID to restart
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Service restart initiated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /api/v1/services/{service_id}/status:
+    get:
+      summary: Get service status
+      description: Returns detailed status information for a specific service
+      tags: [Services]
+      security:
+        - ApiKeyAuth: [ServiceRead]
+      parameters:
+        - name: service_id
+          in: path
+          required: true
+          description: Service ID
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Service status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  # Security Endpoints
+  /api/v1/security/status:
+    get:
+      summary: Get security status
+      description: Returns current security configuration and status
+      tags: [Security]
+      security:
+        - ApiKeyAuth: [SecurityRead]
+      responses:
+        '200':
+          description: Security status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityInfo'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/users:
+    get:
+      summary: List users
+      description: Returns a list of all system users
+      tags: [Users]
+      security:
+        - ApiKeyAuth: [UserRead]
+      responses:
+        '200':
+          description: User list retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserInfo'
+                  total:
+                    type: integer
+                    description: Total number of users
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      summary: Create user
+      description: Creates a new system user
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password_hash
+                - full_name
+              properties:
+                username:
+                  type: string
+                  minLength: 3
+                  maxLength: 50
+                  pattern: '^[a-zA-Z0-9_-]+$'
+                  description: Unique username
+                password_hash:
+                  type: string
+                  minLength: 40
+                  maxLength: 128
+                  description: Hashed password
+                full_name:
+                  type: string
+                  maxLength: 100
+                  description: User's full name
+                home_directory:
+                  type: string
+                  description: User's home directory
+                shell:
+                  type: string
+                  default: "/bin/sh"
+                  description: User's default shell
+      security:
+        - ApiKeyAuth: [UserAdmin]
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  # Network Endpoints
+  /api/v1/network/info:
+    get:
+      summary: Get network information
+      description: Returns network configuration and statistics
+      tags: [Network]
+      security:
+        - ApiKeyAuth: [NetworkRead]
+      responses:
+        '200':
+          description: Network information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkInfo'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: X-API-Key
+      in: header
+      description: API key for authentication
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token for authentication
+
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates if the request was successful
+        status_code:
+          type: integer
+          description: HTTP status code
+        message:
+          type: string
+          description: Human-readable response message
+        timestamp:
+          type: integer
+          description: Unix timestamp of the response
+        request_id:
+          type: string
+          description: Unique request identifier
+      required:
+        - success
+        - status_code
+        - message
+        - timestamp
+
+    SystemInfo:
+      type: object
+      properties:
+        kernel_name:
+          type: string
+          description: Name of the kernel
+        kernel_version:
+          type: string
+          description: Kernel version
+        architecture:
+          type: string
+          enum: [X86_64, AArch64, Riscv64, Unknown]
+          description: System architecture
+        boot_time:
+          type: integer
+          description: System boot timestamp (Unix)
+        uptime:
+          type: integer
+          description: System uptime in seconds
+        total_memory:
+          type: integer
+          description: Total system memory in bytes
+        used_memory:
+          type: integer
+          description: Used memory in bytes
+        available_memory:
+          type: integer
+          description: Available memory in bytes
+        cpu_count:
+          type: integer
+          description: Number of CPU cores
+        load_average:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+          description: System load averages (1, 5, 15 minutes)
+        processes:
+          type: integer
+          description: Number of running processes
+        services:
+          type: integer
+          description: Number of system services
+
+    ProcessInfo:
+      type: object
+      properties:
+        pid:
+          type: integer
+          description: Process ID
+        name:
+          type: string
+          description: Process name
+        state:
+          type: string
+          enum: [running, stopped, sleeping, zombie]
+          description: Process state
+        cpu_usage:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100
+          description: CPU usage percentage
+        memory_usage:
+          type: integer
+          description: Memory usage in bytes
+        parent_pid:
+          type: integer
+          description: Parent process ID
+        start_time:
+          type: integer
+          description: Process start timestamp (Unix)
+        priority:
+          type: integer
+          description: Process priority
+        threads:
+          type: integer
+          description: Number of threads
+      required:
+        - pid
+        - name
+        - state
+        - cpu_usage
+        - memory_usage
+
+    MemoryInfo:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: Total memory in bytes
+        used:
+          type: integer
+          description: Used memory in bytes
+        available:
+          type: integer
+          description: Available memory in bytes
+        swap_total:
+          type: integer
+          description: Total swap space in bytes
+        swap_used:
+          type: integer
+          description: Used swap space in bytes
+        page_faults:
+          type: integer
+          description: Total page faults
+        physical_pages:
+          type: integer
+          description: Number of physical pages
+        virtual_pages:
+          type: integer
+          description: Number of virtual pages
+      required:
+        - total
+        - used
+        - available
+
+    ServiceInfo:
+      type: object
+      properties:
+        service_id:
+          type: integer
+          description: Unique service identifier
+        name:
+          type: string
+          description: Service name
+        description:
+          type: string
+          description: Service description
+        state:
+          type: string
+          enum: [Stopped, Starting, Running, Stopping, Failed, Disabled, Paused]
+          description: Current service state
+        service_type:
+          type: string
+          enum: [SystemService, UserService, ServiceGroup, MonitoringService, LoadBalancerService, DiscoveryService]
+          description: Service type
+        health:
+          type: string
+          enum: [healthy, unhealthy, unknown]
+          description: Service health status
+        uptime:
+          type: integer
+          description: Service uptime in seconds
+        restart_count:
+          type: integer
+          description: Number of restarts
+        dependencies:
+          type: array
+          items:
+            type: integer
+          description: Service dependencies
+      required:
+        - service_id
+        - name
+        - state
+        - service_type
+
+    SecurityInfo:
+      type: object
+      properties:
+        enabled_security_features:
+          type: array
+          items:
+            type: string
+          description: List of enabled security features
+        failed_login_attempts:
+          type: integer
+          description: Number of failed login attempts
+        last_failed_login:
+          type: integer
+          description: Timestamp of last failed login
+        active_sessions:
+          type: integer
+          description: Number of active user sessions
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionInfo'
+          description: Permission information
+        audit_enabled:
+          type: boolean
+          description: Whether audit logging is enabled
+        encryption_level:
+          type: string
+          description: Current encryption level
+
+    PermissionInfo:
+      type: object
+      properties:
+        user:
+          type: string
+          description: User or group name
+        resource:
+          type: string
+          description: Resource being controlled
+        permissions:
+          type: array
+          items:
+            type: string
+          description: Granted permissions
+        granted:
+          type: integer
+          description: When permission was granted (Unix timestamp)
+        expires:
+          type: integer
+          nullable: true
+          description: When permission expires (Unix timestamp)
+      required:
+        - user
+        - resource
+        - permissions
+        - granted
+
+    UserInfo:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: Unique user identifier
+        username:
+          type: string
+          description: Username
+        full_name:
+          type: string
+          description: User's full name
+        home_directory:
+          type: string
+          description: User's home directory
+        shell:
+          type: string
+          description: User's default shell
+        groups:
+          type: array
+          items:
+            type: string
+          description: User's group memberships
+        last_login:
+          type: integer
+          description: Last login timestamp (Unix)
+        account_expires:
+          type: integer
+          nullable: true
+          description: Account expiration timestamp (Unix)
+        locked:
+          type: boolean
+          description: Whether the account is locked
+      required:
+        - user_id
+        - username
+        - full_name
+
+    NetworkInfo:
+      type: object
+      properties:
+        interfaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/NetworkInterface'
+          description: Network interfaces
+        routes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteInfo'
+          description: Routing table
+        connections:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectionInfo'
+          description: Active network connections
+
+    NetworkInterface:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Interface name
+        address:
+          type: string
+          description: IP address
+        netmask:
+          type: string
+          description: Network mask
+        broadcast:
+          type: string
+          description: Broadcast address
+        is_up:
+          type: boolean
+          description: Whether the interface is active
+        mtu:
+          type: integer
+          description: Maximum transmission unit
+        speed:
+          type: integer
+          description: Interface speed in Mbps
+      required:
+        - name
+        - address
+        - netmask
+        - is_up
+
+    RouteInfo:
+      type: object
+      properties:
+        destination:
+          type: string
+          description: Destination network
+        gateway:
+          type: string
+          description: Gateway address
+        netmask:
+          type: string
+          description: Network mask
+        interface:
+          type: string
+          description: Output interface
+        metric:
+          type: integer
+          description: Route metric
+      required:
+        - destination
+        - netmask
+        - interface
+
+    ConnectionInfo:
+      type: object
+      properties:
+        local_address:
+          type: string
+          description: Local socket address
+        remote_address:
+          type: string
+          description: Remote socket address
+        state:
+          type: string
+          description: Connection state
+        protocol:
+          type: string
+          enum: [TCP, UDP]
+          description: Protocol used
+        pid:
+          type: integer
+          description: Process ID that owns the connection
+      required:
+        - local_address
+        - remote_address
+        - state
+        - protocol
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            success: false
+            status_code: 400
+            message: "Invalid request parameters"
+            timestamp: 1640995200
+
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            success: false
+            status_code: 401
+            message: "Authentication required"
+            timestamp: 1640995200
+
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            success: false
+            status_code: 403
+            message: "Insufficient permissions"
+            timestamp: 1640995200
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            success: false
+            status_code: 404
+            message: "Resource not found"
+            timestamp: 1640995200
+
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            success: false
+            status_code: 429
+            message: "Rate limit exceeded"
+            timestamp: 1640995200
+
+    Conflict:
+      description: Resource conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            success: false
+            status_code: 409
+            message: "Resource already exists"
+            timestamp: 1640995200
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponse'
+          example:
+            success: false
+            status_code: 500
+            message: "Internal server error"
+            timestamp: 1640995200
+
+tags:
+  - name: System
+    description: System management operations
+  - name: Processes
+    description: Process management operations
+  - name: Memory
+    description: Memory management operations
+  - name: Services
+    description: Service management operations
+  - name: Security
+    description: Security and access control
+  - name: Users
+    description: User management operations
+  - name: Network
+    description: Network configuration and monitoring

@@ -26,6 +26,21 @@ pub mod hal;
 // System Services
 pub mod services;
 
+// System Administration
+pub mod admin;
+
+// Testing Framework (User Acceptance Testing)
+pub mod testing;
+
+// Security Module
+pub mod security;
+
+// Service Management
+pub mod service_manager;
+
+// Update Management System
+pub mod update;
+
 pub mod log; // Simple bootstrap logger
 
 // Fonts and text rendering
@@ -96,7 +111,19 @@ pub enum KernelError {
     FontLoadFailed,
     AlreadyExists,
     NotFound,
+    // Testing-specific errors
+    TestFailed,
 }
+
+/// Re-export key types for external modules
+pub use admin::process_manager::{
+    ProcessId, ProcessState, ProcessPriority, ProcessPriorityClass, 
+    ProcessResult, ProcessError, ProcessResourceUsage
+};
+
+pub use service_manager::{
+    ServiceId, ServiceResult, ServiceError, ServiceManager, SERVICE_MANAGER
+};
 
 /// Initialize the kernel
 /// 
@@ -157,6 +184,87 @@ pub fn kernel_main(arch: ArchType, boot_info: &BootInfo, boot_method: bootstrap:
     services::init()
         .map_err(|e| {
             error!("System Services initialization failed: {:?}", e);
+            KernelError::InitializationFailed
+        })?;
+    
+    // Initialize Service Manager
+    info!("Initializing Service Manager...");
+    service_manager::kernel_init()
+        .map_err(|e| {
+            error!("Service Manager initialization failed: {:?}", e);
+            KernelError::InitializationFailed
+        })?;
+    
+    // Initialize System Administration
+    info!("Initializing System Administration...");
+    admin::init()
+        .map_err(|e| {
+            error!("System Administration initialization failed: {:?}", e);
+            KernelError::InitializationFailed
+        })?;
+    
+    // Initialize Security Subsystem
+    info!("Initializing Security Subsystem...");
+    security::init_security()
+        .map_err(|e| {
+            error!("Security subsystem initialization failed: {:?}", e);
+            KernelError::InitializationFailed
+        })?;
+    
+    // Initialize Authentication System with default configuration
+    info!("Initializing Authentication System...");
+    let auth_config = security::AuthConfig {
+        session_timeout_minutes: 30,
+        max_concurrent_sessions: 5,
+        max_failed_attempts: 5,
+        lockout_duration_minutes: 15,
+        rate_limit_requests_per_hour: 100,
+        require_multi_factor: false,
+        allowed_auth_methods: vec![
+            security::AuthMethod::Password,
+            security::AuthMethod::TOTP,
+            security::AuthMethod::BiometricFingerprint,
+            security::AuthMethod::HardwareToken,
+        ],
+        biometric_timeout_seconds: 30,
+        password_policy: security::PasswordPolicy {
+            min_length: 8,
+            max_length: 128,
+            require_uppercase: true,
+            require_lowercase: true,
+            require_digits: true,
+            require_symbols: true,
+            require_non_alphabetic: true,
+            prevent_common_passwords: true,
+            prevent_user_info: true,
+            max_age_days: Some(90),
+            min_age_days: 1,
+            history_count: 5,
+            complexity_score_required: 3,
+        },
+        audit_successful_logins: true,
+        audit_failed_logins: true,
+        session_persistence: true,
+    };
+    
+    security::init_authentication(auth_config)
+        .map_err(|e| {
+            error!("Authentication system initialization failed: {:?}", e);
+            KernelError::InitializationFailed
+        })?;
+    
+    // Initialize comprehensive security system (boot verification + network security)
+    security::init_comprehensive_security()
+        .map_err(|e| {
+            error!("Comprehensive security system initialization failed: {:?}", e);
+            KernelError::InitializationFailed
+        })?;
+    
+    // Initialize Update Management System with rollback capabilities
+    info!("Initializing Update Management System...");
+    update::init_update_system()
+        .map_err(|e| {
+            error!("Update Management System initialization failed: {:?}", e);
             KernelError::InitializationFailed
         })?;
     
@@ -251,9 +359,20 @@ pub extern "C" fn kernel_main_64bit(boot_info_ptr: *const BootInfo) -> ! {
 fn kernel_main_loop() -> ! {
     info!("Entering main kernel loop...");
     
+    // Initialize resource monitoring timer
+    let monitoring_interval_ns = 5_000_000_000; // 5 seconds
+    let mut last_monitoring_time = 0u64;
+    
     loop {
         // Main kernel processing loop
         // This would handle system calls, interrupts, etc.
+        
+        // Update resource monitoring periodically
+        let current_time = crate::hal::timers::get_system_time_ms();
+        if current_time - last_monitoring_time >= 5000 { // Every 5 seconds
+            let _ = admin::update_resource_monitoring();
+            last_monitoring_time = current_time;
+        }
         
         // For now, just halt and wait for interrupts
         unsafe {

@@ -640,7 +640,94 @@ pub mod syscall_numbers {
     pub const LICENSE_DEACTIVATE: usize = 630;
 
     // ========================================
-    // Reserved for Future Use (700-999)
+    // User and Group Management (700-799)
+    // ========================================
+
+    /// Create a new user
+    pub const USER_CREATE: usize = 700;
+    /// Delete a user
+    pub const USER_DELETE: usize = 701;
+    /// Modify user information
+    pub const USER_MODIFY: usize = 702;
+    /// Get user information
+    pub const USER_GETINFO: usize = 703;
+    /// List all users
+    pub const USER_LIST: usize = 704;
+    /// User authentication
+    pub const USER_AUTHENTICATE: usize = 705;
+    /// User logout
+    pub const USER_LOGOUT: usize = 706;
+    /// Get current user session
+    pub const USER_GETCURRENT: usize = 707;
+    /// Set user password
+    pub const USER_SETPASSWORD: usize = 708;
+    /// Change user password
+    pub const USER_CHANGEPASSWORD: usize = 709;
+    /// Get user groups
+    pub const USER_GETGROUPS: usize = 710;
+    /// Add user to group
+    pub const USER_ADDGROUP: usize = 711;
+    /// Remove user from group
+    pub const USER_REMOVEGROUP: usize = 712;
+    /// Get user permissions
+    pub const USER_GETPERMISSIONS: usize = 713;
+    /// Set user permissions
+    pub const USER_SETPERMISSIONS: usize = 714;
+    /// Get user session information
+    pub const USER_GETSESSION: usize = 715;
+    /// Terminate user session
+    pub const USER_TERMINATESESSION: usize = 716;
+    /// Create user group
+    pub const GROUP_CREATE: usize = 717;
+    /// Delete user group
+    pub const GROUP_DELETE: usize = 718;
+    /// Modify user group
+    pub const GROUP_MODIFY: usize = 719;
+    /// Get group information
+    pub const GROUP_GETINFO: usize = 720;
+    /// List all groups
+    pub const GROUP_LIST: usize = 721;
+    /// Get group members
+    pub const GROUP_GETMEMBERS: usize = 722;
+    /// Add member to group
+    pub const GROUP_ADDMEMBER: usize = 723;
+    /// Remove member from group
+    pub const GROUP_REMOVEMEMBER: usize = 724;
+    /// Get group permissions
+    pub const GROUP_GETPERMISSIONS: usize = 725;
+    /// Set group permissions
+    pub const GROUP_SETPERMISSIONS: usize = 726;
+    /// Multi-factor authentication setup
+    pub const USER_SETUP_MFA: usize = 727;
+    /// Multi-factor authentication verify
+    pub const USER_VERIFY_MFA: usize = 728;
+    /// Multi-factor authentication disable
+    pub const USER_DISABLE_MFA: usize = 729;
+    /// Get user security context
+    pub const USER_GETSECURITYCTX: usize = 730;
+    /// Set user security context
+    pub const USER_SETSECURITYCTX: usize = 731;
+    /// User privilege escalation
+    pub const USER_ESCALATE_PRIV: usize = 732;
+    /// User privilege de-escalation
+    pub const USER_DEESCALATE_PRIV: usize = 733;
+    /// Get user login history
+    pub const USER_GETHISTORY: usize = 734;
+    /// Get user audit logs
+    pub const USER_GETAUDIT: usize = 735;
+    /// Set user account status
+    pub const USER_SETSTATUS: usize = 736;
+    /// Get user account status
+    pub const USER_GETSTATUS: usize = 737;
+    /// Lock user account
+    pub const USER_LOCK: usize = 738;
+    /// Unlock user account
+    pub const USER_UNLOCK: usize = 739;
+    /// Reset user session
+    pub const USER_RESETSESSION: usize = 740;
+
+    // ========================================
+    // Reserved for Future Use (800-999)
     // ========================================
 
     /// Experimental features
@@ -675,6 +762,7 @@ pub enum SyscallCategory {
     LegacyCompatibility,
     AdvancedFeatures,
     SystemAdministration,
+    UserManagement,
     Experimental,
     Reserved,
 }
@@ -696,8 +784,9 @@ impl SyscallCategory {
             SyscallCategory::LegacyCompatibility => (450, 499),
             SyscallCategory::AdvancedFeatures => (500, 599),
             SyscallCategory::SystemAdministration => (600, 699),
-            SyscallCategory::Experimental => (700, 799),
-            SyscallCategory::Reserved => (800, 999),
+            SyscallCategory::UserManagement => (700, 799),
+            SyscallCategory::Experimental => (800, 899),
+            SyscallCategory::Reserved => (900, 999),
         }
     }
 
@@ -717,6 +806,7 @@ impl SyscallCategory {
             SyscallCategory::LegacyCompatibility => "Backward compatibility with legacy interfaces",
             SyscallCategory::AdvancedFeatures => "Real-time, containers, virtualization, AI/ML",
             SyscallCategory::SystemAdministration => "System control, power management, updates",
+            SyscallCategory::UserManagement => "User accounts, authentication, groups, and access control",
             SyscallCategory::Experimental => "Experimental and research features",
             SyscallCategory::Reserved => "Reserved for future system call definitions",
         }
@@ -854,6 +944,10 @@ pub fn get_syscall_category(syscall_num: usize) -> Option<SyscallCategory> {
         Some(SyscallCategory::AdvancedFeatures)
     } else if syscall_num <= 699 {
         Some(SyscallCategory::SystemAdministration)
+    } else if syscall_num <= 799 {
+        Some(SyscallCategory::UserManagement)
+    } else if syscall_num <= 899 {
+        Some(SyscallCategory::Experimental)
     } else {
         Some(SyscallCategory::Reserved)
     }
