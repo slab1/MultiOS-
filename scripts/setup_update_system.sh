@@ -190,7 +190,7 @@ check_dependencies() {
         if ! command -v "$tool" >/dev/null 2>&1; then
             missing_deps+=("$tool")
         fi
-    fi
+    done
     
     # Install missing dependencies if any
     if [ ${#missing_deps[@]} -gt 0 ]; then

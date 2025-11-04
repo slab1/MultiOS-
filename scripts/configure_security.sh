@@ -308,8 +308,8 @@ audit_retention = $(
     case "$SECURITY_LEVEL" in
         basic) echo "180d" ;;
         standard) echo "365d" ;;
-        high) echo="730d" ;;
-        paranoia) echo="2555d" ;;
+        high) echo "730d" ;;
+        paranoia) echo "2555d" ;;
     esac
 )
 log_retention = 90d
@@ -1517,7 +1517,7 @@ main() {
     echo "  4. Implement security policies and procedures"
     echo "  5. Conduct security testing and validation"
     echo
-    echo "Security Services: $([ "$ENABLE_SERVICES" == "true" ] && echo "Enabled and Running" || echo "Created (not started)")
+    echo "Security Services: $([ '$ENABLE_SERVICES' == 'true' ] && echo 'Enabled and Running' || echo 'Created (not started)')"
     echo "Security Report: $SECURITY_DIR/security-report.txt"
     echo
     
@@ -1529,7 +1529,7 @@ main() {
 }
 
 # Error handling
-trap 'log_error "Security configuration failed at line $LINENO. Exit code: $?"' ERR
+# # trap "log_error \"Security configuration failed at line \$LINENO. Exit code: \$?\"" ERR
 
 # Run main function
 main "$@"
