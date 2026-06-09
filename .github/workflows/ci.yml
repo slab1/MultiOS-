@@ -26,7 +26,7 @@ jobs:
       uses: Swatinem/rust-cache@v2
 
     - name: Check kernel compilation
-      run: cargo check --target x86_64-unknown-none -p multios-kernel || echo "KNOWN ISSUE: memory-manager dependency has pre-existing errors (166 remaining)"
+      run: 'cargo check --target x86_64-unknown-none -p multios-kernel || echo "KNOWN ISSUE: memory-manager dependency has pre-existing errors (166 remaining)"'
 
     - name: Check formatting
       run: cargo fmt --check || true
@@ -73,4 +73,4 @@ jobs:
       uses: Swatinem/rust-cache@v2
 
     - name: Build kernel (currently blocked by memory-manager)
-      run: cargo build --target x86_64-unknown-none -p multios-kernel --release || echo "BLOCKED: memory-manager dependency has pre-existing errors"
+      run: 'cargo build --target x86_64-unknown-none -p multios-kernel --release || echo "BLOCKED: memory-manager dependency has pre-existing errors"'
