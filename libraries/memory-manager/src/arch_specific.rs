@@ -5,12 +5,17 @@
 //! management, address translation, and page fault handling tailored to each
 //! processor architecture.
 
+extern crate alloc;
 use crate::memory_types::*;
 use crate::{MemoryError, MemoryResult};
+use alloc::boxed::Box;
+use alloc::string::String;
+use alloc::vec;
+use alloc::vec::Vec;
 
 // Feature-gated imports
 #[cfg(feature = "x86_64")]
-use x86_64::structures::paging::{PageTable, Page, FrameAllocator, Mapper, OffsetPageTable, Size4KiB};
+use x86_64::structures::paging::{PageTable as X86PageTable, Page, FrameAllocator, Mapper, OffsetPageTable, Size4KiB};
 #[cfg(feature = "x86_64")]
 use x86_64::{VirtAddr, PhysAddr as X86PhysAddr};
 

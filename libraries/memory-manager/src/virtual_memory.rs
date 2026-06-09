@@ -4,15 +4,18 @@
 //! for x86_64, ARM64, and RISC-V architectures. It handles page table management,
 //! virtual address translation, page fault handling, and memory protection.
 
+extern crate alloc;
 use crate::memory_types::*;
 use crate::{MemoryError, MemoryResult};
 use spin::Mutex;
 use log::{info, warn, error, debug};
+use alloc::boxed::Box;
+use alloc::vec::Vec;
 
 // Architecture-specific imports
 #[cfg(feature = "x86_64")]
 use x86_64::structures::paging::{
-    PageTable, FrameAllocator, Mapper, OffsetPageTable, Size4KiB, UnusedPhysFrame,
+    PageTable, PhysFrame, FrameAllocator, Mapper, OffsetPageTable, Size4KiB,
 };
 #[cfg(feature = "x86_64")]
 use x86_64::VirtAddr as X86VirtAddr;
@@ -73,7 +76,7 @@ impl MemoryMapping {
 
     /// Check if mapping is compatible with requested flags
     const fn is_compatible(&self, flags: MemoryFlags) -> bool {
-        self.flags == flags
+        self.flags.bits() == flags.bits()
     }
 }
 
@@ -118,12 +121,12 @@ impl PageTableEntry {
 
     /// Get flags
     const fn flags(&self) -> MemoryFlags {
-        let mut flags = MemoryFlags::NONE;
-        if (self.value & 0x1) != 0 { flags |= MemoryFlags::READ; }
-        if (self.value & 0x2) != 0 { flags |= MemoryFlags::WRITE; }
-        if (self.value & 0x8) != 0 { flags |= MemoryFlags::EXECUTE; }
-        if (self.value & 0x4) != 0 { flags |= MemoryFlags::USER; }
-        flags
+        let mut bits = 0u8;
+        if (self.value & 0x1) != 0 { bits |= MemoryFlags::READ.bits(); }
+        if (self.value & 0x2) != 0 { bits |= MemoryFlags::WRITE.bits(); }
+        if (self.value & 0x8) != 0 { bits |= MemoryFlags::EXECUTE.bits(); }
+        if (self.value & 0x4) != 0 { bits |= MemoryFlags::USER.bits(); }
+        MemoryFlags::from_bits_retain(bits)
     }
 }
 
@@ -147,23 +150,16 @@ impl SimpleFrameAllocator {
 
 #[cfg(feature = "x86_64")]
 impl FrameAllocator<Size4KiB> for SimpleFrameAllocator {
-    fn allocate_frame(&mut self) -> Option<UnusedPhysFrame<Size4KiB>> {
+    fn allocate_frame(&mut self) -> Option<PhysFrame<Size4KiB>> {
         if self.used_frames >= self.max_frames {
             return None;
         }
 
-        let frame = UnusedPhysFrame::from_address(self.next_frame.as_x86_64());
+        let frame = PhysFrame::from_start_address(self.next_frame.as_x86_64()).ok()?;
         self.next_frame = self.next_frame.offset(Size4KiB::SIZE as u64);
         self.used_frames += 1;
         
         Some(frame)
-    }
-
-    fn deallocate_frame(&mut self, frame: UnusedPhysFrame<Size4KiB>) {
-        // Simple implementation - just update used count
-        if self.used_frames > 0 {
-            self.used_frames -= 1;
-        }
     }
 }
 

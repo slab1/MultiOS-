@@ -11,6 +11,7 @@
 //! - Memory overcommitment and ballooning
 //! - Huge page defragmentation and consolidation
 
+use alloc::vec;
 use alloc::vec::Vec;
 use spin::Mutex;
 use bitflags::bitflags;

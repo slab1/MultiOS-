@@ -4,10 +4,13 @@
 //! It integrates with the physical memory manager to provide page-based allocation
 //! and uses a linked list allocator for small allocations.
 
+extern crate alloc;
 use crate::memory_types::*;
 use crate::{MemoryError, MemoryResult};
 use linked_list_allocator::LockedHeap;
 use spin::Mutex;
+use alloc::boxed::Box;
+use alloc::vec::Vec;
 use core::alloc::{GlobalAlloc, Layout};
 use log::{info, debug, error};
 

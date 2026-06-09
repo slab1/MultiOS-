@@ -18,7 +18,7 @@ authors = ["MultiOS Team"]
 [workspace.dependencies]
 # Shared dependencies across the workspace - VERSIONS MUST BE CONSISTENT
 spin = "0.9"
-bitflags = "2.6"       # Updated from 2.4
+bitflags = "=2.6.0"     # Pin to 2.6.0 - 2.13+ has breaking API changes (non-const ops, non-derived traits)
 log = "0.4"
 bootloader = "0.9"
 pic8259 = "0.10"

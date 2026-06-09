@@ -4,10 +4,13 @@
 //! It handles physical page allocation, memory map initialization, and physical
 //! memory tracking for the entire system.
 
+extern crate alloc;
 use crate::memory_types::*;
 use crate::{MemoryError, MemoryResult};
 use spin::Mutex;
 use log::{info, warn, error, debug};
+use alloc::vec;
+use alloc::vec::Vec;
 
 /// Global physical memory manager instance
 static PHYSICAL_MEMORY_MANAGER: Mutex<Option<PhysicalMemoryManager>> = Mutex::new(None);

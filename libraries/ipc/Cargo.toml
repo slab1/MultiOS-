@@ -9,7 +9,7 @@ authors = ["MultiOS Team"]
 [dependencies]
 # Core IPC
 spin = "0.9"
-bitflags = "2.6"
+bitflags.workspace = true
 log = "0.4"
 
 # Message passing

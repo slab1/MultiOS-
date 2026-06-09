@@ -10,6 +10,7 @@
 //! - Performance monitoring for coherency protocols
 
 use alloc::vec::Vec;
+use alloc::boxed::Box;
 use spin::Mutex;
 use bitflags::bitflags;
 use core::sync::atomic::{AtomicU64, AtomicU32, AtomicUsize, AtomicPtr, Ordering};

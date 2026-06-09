@@ -488,13 +488,7 @@ pub mod test_utils {
     /// Create a test memory manager
     pub fn create_test_manager() -> MemoryResult<MemoryManager> {
         let context = MemoryInitContext {
-            memory_map: vec![
-                super::super::kernel::MemoryMapEntry {
-                    base: 0,
-                    size: 0x1000,
-                    entry_type: super::super::kernel::MemoryType::Usable,
-                },
-            ],
+            memory_map: Vec::new(),
             kernel_start: PhysAddr::new(0x100000),
             kernel_end: PhysAddr::new(0x200000),
             physical_offset: PhysAddr::new(0),

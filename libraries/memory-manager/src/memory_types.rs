@@ -4,12 +4,34 @@
 //! used throughout the memory management system.
 
 use bitflags::bitflags;
+use core::fmt;
 
-#[cfg(feature = "x86_64")]
-use x86_64::structures::paging::PageSize as X86PageSize;
+/// Memory error type for all memory management operations
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MemoryError {
+    /// Allocation failed
+    AllocationFailed,
+    /// Invalid memory address
+    InvalidAddress,
+    /// Out of memory
+    OutOfMemory,
+    /// Page fault occurred
+    PageFault,
+    /// Unsupported architecture
+    UnsupportedArchitecture,
+}
 
-#[cfg(feature = "x86_64")]
-use x86_64::PhysAddr;
+impl fmt::Display for MemoryError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            MemoryError::AllocationFailed => write!(f, "Memory allocation failed"),
+            MemoryError::InvalidAddress => write!(f, "Invalid memory address"),
+            MemoryError::OutOfMemory => write!(f, "Out of memory"),
+            MemoryError::PageFault => write!(f, "Page fault occurred"),
+            MemoryError::UnsupportedArchitecture => write!(f, "Unsupported architecture"),
+        }
+    }
+}
 
 /// Page size constants for different architectures
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -204,22 +226,22 @@ bitflags! {
 impl MemoryFlags {
     /// Standard kernel read-write flags
     pub const fn kernel_rw() -> Self {
-        Self::READ | Self::WRITE
+        Self::from_bits_retain(Self::READ.bits() | Self::WRITE.bits())
     }
 
     /// Standard kernel read-only flags
     pub const fn kernel_ro() -> Self {
-        Self::READ
+        Self::from_bits_retain(Self::READ.bits())
     }
 
     /// Standard user read-write flags
     pub const fn user_rw() -> Self {
-        Self::READ | Self::WRITE | Self::USER
+        Self::from_bits_retain(Self::READ.bits() | Self::WRITE.bits() | Self::USER.bits())
     }
 
     /// Standard user read-only flags
     pub const fn user_ro() -> Self {
-        Self::READ | Self::USER
+        Self::from_bits_retain(Self::READ.bits() | Self::USER.bits())
     }
 
     /// Check if memory is readable
