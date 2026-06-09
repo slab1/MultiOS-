@@ -4,6 +4,7 @@
 //! and threads in the MultiOS hybrid microkernel architecture.
 
 #![no_std]
+extern crate alloc;
 
 use spin::Mutex;
 use bitflags::bitflags;

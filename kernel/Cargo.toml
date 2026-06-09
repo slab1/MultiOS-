@@ -7,11 +7,11 @@ license = "MIT OR Apache-2.0"
 authors = ["MultiOS Team"]
 
 [dependencies]
-# Core kernel dependencies
+# Core kernel dependencies - use workspace deps consistently
 spin = "0.9"
-bitflags = "2.4"
+bitflags = "2.6"
 log = "0.4"
-x86_64 = "0.14"
+x86_64 = "0.15"          # Fixed: was 0.14, now matches workspace
 pic8259 = "0.10"
 linked_list_allocator = "0.10"
 uart_16550 = "0.3"
@@ -24,14 +24,13 @@ bootloader = { version = "0.9", features = ["map_physical_memory"] }
 # Memory management
 multios-memory-manager = { path = "../libraries/memory-manager", features = ["x86_64"] }
 
-# HAL dependencies - rust-std is built-in to rustc, no need to specify
-
 # Testing
 [dev-dependencies]
 criterion = { version = "0.5", features = ["html_reports"] }
 
 [features]
 default = []
+hal_timers = []    # Make HAL timer dependency optional
 
 [profile.dev]
 opt-level = 1

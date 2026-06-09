@@ -3,7 +3,11 @@ resolver = "2"
 members = [
     "kernel",
     "bootloader", 
-    "libraries/*"
+    "libraries/memory-manager",
+    "libraries/scheduler",
+    "libraries/ipc",
+    "libraries/filesystem",
+    "libraries/device-drivers",
 ]
 
 [workspace.package]
@@ -12,13 +16,13 @@ license = "MIT OR Apache-2.0"
 authors = ["MultiOS Team"]
 
 [workspace.dependencies]
-# Shared dependencies across the workspace
+# Shared dependencies across the workspace - VERSIONS MUST BE CONSISTENT
 spin = "0.9"
-bitflags = "2.4"
+bitflags = "2.6"       # Updated from 2.4
 log = "0.4"
 bootloader = "0.9"
 pic8259 = "0.10"
-x86_64 = "0.15"
+x86_64 = "0.15"        # Was 0.14 - now consistent across all crates
 linked_list_allocator = "0.10"
 uart_16550 = "0.3"
 pc-keyboard = "0.7"
@@ -49,3 +53,6 @@ opt-level = 0
 
 [profile.release.package."*"]
 opt-level = "s"
+
+# Lock file ensures reproducible builds for this OS project
+# Remove Cargo.lock from .gitignore

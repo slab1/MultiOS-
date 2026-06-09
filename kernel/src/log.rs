@@ -4,7 +4,7 @@
 //! It uses a simple console output mechanism that works during early boot.
 
 use core::fmt::{self, Write};
-use crate::ArchType;
+use core::sync::atomic::{AtomicU16, Ordering};
 
 /// Log levels
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -19,15 +19,20 @@ pub enum LogLevel {
 /// Simple logger that outputs to VGA/SERIAL during bootstrap
 pub struct BootstrapLogger {
     level: LogLevel,
+    vga_cursor: AtomicU16,  // Tracks VGA cursor position
 }
 
 /// Global logger instance
-static mut LOGGER: BootstrapLogger = BootstrapLogger { level: LogLevel::Info };
+static mut LOGGER: BootstrapLogger = BootstrapLogger {
+    level: LogLevel::Info,
+    vga_cursor: AtomicU16::new(0),
+};
 
 /// Initialize the bootstrap logger
 pub fn init_logger(level: LogLevel) {
     unsafe {
         LOGGER.level = level;
+        LOGGER.vga_cursor.store(0, Ordering::SeqCst);
     }
 }
 
@@ -88,20 +93,55 @@ fn try_serial_log(level_str: &str, msg: &str) -> bool {
     false
 }
 
-/// VGA console logging
+/// VGA console logging with cursor position tracking
 fn vga_log(level_str: &str, msg: &str) {
     unsafe {
-        // VGA text mode buffer
-        let vga_buffer = 0xb8000 as *mut u8;
+        // VGA text mode buffer starts at 0xB8000 in x86 real mode
+        const VGA_ADDRESS: *mut u8 = 0xB8000 as *mut u8;
+        const VGA_COLS: u16 = 80;
+        const VGA_ROWS: u16 = 25;
+        const VGA_CELLS: u16 = VGA_COLS * VGA_ROWS;
         
-        let combined = format!("{}{}\r\n", level_str, msg);
+        let cursor = LOGGER.vga_cursor.load(Ordering::SeqCst);
+        let mut pos = cursor;
         
-        for (i, byte) in combined.bytes().enumerate() {
-            if i < 80 * 25 * 2 {
-                vga_buffer.add(i * 2).write(byte);
-                vga_buffer.add(i * 2 + 1).write(0x07); // Light gray on black
+        // Write combined string (level + msg)
+        for byte in level_str.bytes().chain(msg.bytes()).chain(b"\r\n".iter().copied()) {
+            if byte == b'\n' {
+                // Newline: advance to next row
+                pos = (pos / VGA_COLS + 1) * VGA_COLS;
+            } else if byte == b'\r' {
+                // Carriage return: go to start of current row
+                pos = (pos / VGA_COLS) * VGA_COLS;
+            } else if pos < VGA_CELLS {
+                // Write character + attribute
+                VGA_ADDRESS.add((pos * 2) as usize).write(byte);
+                VGA_ADDRESS.add((pos * 2 + 1) as usize).write(0x07); // Light gray on black
+                pos += 1;
+            }
+            
+            // Handle screen scrolling (simple: wrap to top)
+            if pos >= VGA_CELLS {
+                // Scroll: move everything up one row
+                for row in 0..(VGA_ROWS - 1) {
+                    for col in 0..VGA_COLS {
+                        let src = ((row + 1) * VGA_COLS + col) * 2;
+                        let dst = (row * VGA_COLS + col) * 2;
+                        VGA_ADDRESS.add(dst as usize).write(VGA_ADDRESS.add(src as usize).read());
+                        VGA_ADDRESS.add((dst + 1) as usize).write(VGA_ADDRESS.add((src + 1) as usize).read());
+                    }
+                }
+                // Clear last row
+                for col in 0..VGA_COLS {
+                    let offset = ((VGA_ROWS - 1) * VGA_COLS + col) * 2;
+                    VGA_ADDRESS.add(offset as usize).write(b' ');
+                    VGA_ADDRESS.add((offset + 1) as usize).write(0x07);
+                }
+                pos = (VGA_ROWS - 1) * VGA_COLS;
             }
         }
+        
+        LOGGER.vga_cursor.store(pos, Ordering::SeqCst);
     }
 }
 
@@ -116,14 +156,27 @@ fn serial_write_str(s: &str) {
 
 /// Output byte to port
 unsafe fn outb(port: u16, value: u8) {
-    core::arch::asm!("out dx, al", in("dx") port, in("al") value);
+    #[cfg(target_arch = "x86_64")]
+    core::arch::asm!("out dx, al", in("dx") port, in("al") value, options(nomem, nostack));
+    #[cfg(not(target_arch = "x86_64"))]
+    {
+        let _ = (port, value); // No-op on non-x86
+    }
 }
 
 /// Input byte from port
 unsafe fn inb(port: u16) -> u8 {
-    let result: u8;
-    core::arch::asm!("in al, dx", out("al") result, in("dx") port);
-    result
+    #[cfg(target_arch = "x86_64")]
+    {
+        let result: u8;
+        core::arch::asm!("in al, dx", out("al") result, in("dx") port, options(nomem, nostack));
+        result
+    }
+    #[cfg(not(target_arch = "x86_64"))]
+    {
+        let _ = port;
+        0x60 // Mock value: always ready on non-x86
+    }
 }
 
 /// Simple Write implementation for core::fmt

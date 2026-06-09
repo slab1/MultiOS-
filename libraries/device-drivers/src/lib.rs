@@ -4,6 +4,7 @@
 //! MultiOS hybrid microkernel architecture, supporting various hardware platforms.
 
 #![no_std]
+extern crate alloc;
 
 use spin::Mutex;
 use bitflags::bitflags;

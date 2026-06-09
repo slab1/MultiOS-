@@ -4,6 +4,7 @@
 //! supporting various file system types in a unified interface.
 
 #![no_std]
+extern crate alloc;
 
 use spin::Mutex;
 use bitflags::bitflags;

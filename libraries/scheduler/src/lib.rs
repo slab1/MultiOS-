@@ -13,6 +13,7 @@
 //! - Performance regression detection and auto-tuning
 
 #![no_std]
+extern crate alloc;
 
 use spin::Mutex;
 use bitflags::bitflags;

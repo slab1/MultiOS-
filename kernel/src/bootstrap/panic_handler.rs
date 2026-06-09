@@ -91,7 +91,7 @@ pub struct RegisterState {
     // RISC-V registers
     pub zero: Option<u64>,
     pub ra: Option<u64>,
-    pub sp: Option<u64>,
+    pub sp_riscv: Option<u64>,
     pub gp: Option<u64>,
     pub tp: Option<u64>,
     pub t0: Option<u64>,

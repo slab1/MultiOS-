@@ -11,13 +11,14 @@
 //! - Support for both system and user services with proper isolation
 
 #![no_std]
-#![feature(alloc)]
+extern crate alloc;
 
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::String;
-use alloc::collections::HashSet;
-use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
+use alloc::collections::{BTreeMap, HashSet};
+use core::sync::atomic::{AtomicU64, Ordering};
+use alloc::format;
 
 pub mod service;
 pub mod config;
@@ -44,8 +45,10 @@ use fault_tolerance::{FaultDetector, RecoveryManager};
 
 /// Get current system time (in milliseconds since boot)
 fn get_current_time() -> u64 {
-    // Integrate with kernel's time subsystem
-    crate::hal::get_current_time()
+    #[cfg(feature = "hal_timers")]
+    { crate::hal::get_current_time() }
+    #[cfg(not(feature = "hal_timers"))]
+    { 0 }
 }
 
 // Re-export key types
@@ -84,7 +87,7 @@ pub enum ServiceError {
 
 /// Service Manager - Main orchestrator for all service operations
 pub struct ServiceManager {
-    services: RwLock<alloc::collections::BTreeMap<ServiceId, ServiceHandle>>,
+    services: RwLock<BTreeMap<ServiceId, ServiceHandle>>,
     config_manager: ServiceConfigManager,
     registry: ServiceRegistry,
     discovery: ServiceDiscovery,
@@ -126,7 +129,7 @@ impl ServiceManager {
     /// Create a new Service Manager instance
     pub fn new() -> Self {
         ServiceManager {
-            services: RwLock::new(alloc::collections::BTreeMap::new()),
+            services: RwLock::new(BTreeMap::new()),
             config_manager: ServiceConfigManager::new(),
             registry: ServiceRegistry::new(),
             discovery: ServiceDiscovery::new(),
@@ -199,7 +202,7 @@ impl ServiceManager {
         let mut services = self.services.write();
         services.insert(service_id, handle);
         
-        info!("Service registered with ID: {}", service_id);
+        info!("Service registered with ID: {}", service_id.0);
         Ok(service_id)
     }
 
@@ -221,7 +224,7 @@ impl ServiceManager {
             self.stop_service(service_id)?;
         }
         
-        info!("Service unregistered: {}", service_id);
+        info!("Service unregistered: {}", service_id.0);
         Ok(())
     }
 
@@ -247,7 +250,7 @@ impl ServiceManager {
         service.state = ServiceState::Running;
         service.start_time = Some(get_current_time());
         
-        info!("Service started: {}", service_id);
+        info!("Service started: {}", service_id.0);
         Ok(())
     }
 
@@ -270,7 +273,7 @@ impl ServiceManager {
         service.state = ServiceState::Stopped;
         service.stop_time = Some(get_current_time());
         
-        info!("Service stopped: {}", service_id);
+        info!("Service stopped: {}", service_id.0);
         Ok(())
     }
 
@@ -279,11 +282,12 @@ impl ServiceManager {
         self.stop_service(service_id)?;
         
         // Wait a bit for graceful shutdown
+        #[cfg(feature = "hal_timers")]
         crate::hal::sleep_ms(100);
         
         self.start_service(service_id)?;
         
-        info!("Service restarted: {}", service_id);
+        info!("Service restarted: {}", service_id.0);
         Ok(())
     }
 
@@ -296,7 +300,7 @@ impl ServiceManager {
         let mut service = handle.lock();
         service.enabled = true;
         
-        info!("Service enabled: {}", service_id);
+        info!("Service enabled: {}", service_id.0);
         Ok(())
     }
 
@@ -309,7 +313,7 @@ impl ServiceManager {
         let mut service = handle.lock();
         service.enabled = false;
         
-        info!("Service disabled: {}", service_id);
+        info!("Service disabled: {}", service_id.0);
         Ok(())
     }
 
@@ -365,7 +369,7 @@ impl ServiceManager {
             let service_id = handle.lock().service_id;
             
             if let Err(e) = self.monitor.check_health(service_id) {
-                warn!("Health check failed for service {}: {:?}", service_id, e);
+                warn!("Health check failed for service {}: {:?}", service_id.0, e);
                 
                 // Trigger fault detection and recovery
                 self.fault_detector.detect_fault(service_id, &e)?;
@@ -507,7 +511,7 @@ impl ServiceManager {
 
     /// Internal method to start a system service
     fn start_system_service(&self, service: &mut service::Service) -> ServiceResult<()> {
-        info!("Starting system service: {}", service.service_id);
+        info!("Starting system service: {}", service.service_id.0);
         
         // Apply security constraints for system services
         if let Some(ref security_config) = service.config {
@@ -524,15 +528,12 @@ impl ServiceManager {
             self.apply_resource_limits(service.service_id, resource_limits)?;
         }
 
-        // Initialize service components
-        self.initialize_service_components(service)?;
-
         Ok(())
     }
 
     /// Internal method to start a user service
     fn start_user_service(&self, service: &mut service::Service) -> ServiceResult<()> {
-        info!("Starting user service: {}", service.service_id);
+        info!("Starting user service: {}", service.service_id.0);
 
         // Apply restricted security constraints for user services
         if let Some(ref security_config) = service.config {
@@ -549,143 +550,106 @@ impl ServiceManager {
             self.apply_strict_resource_limits(service.service_id, resource_limits)?;
         }
 
-        // Initialize service components
-        self.initialize_service_components(service)?;
-
         Ok(())
     }
 
     /// Internal method to start a service group
     fn start_service_group(&self, service: &mut service::Service) -> ServiceResult<()> {
-        info!("Starting service group: {}", service.service_id);
-        
-        // Service groups start member services
+        info!("Starting service group: {}", service.service_id.0);
         self.start_service_group_members(service)?;
         Ok(())
     }
 
     /// Internal method to stop a system service
     fn stop_system_service(&self, service: &mut service::Service) -> ServiceResult<()> {
-        info!("Stopping system service: {}", service.service_id);
+        info!("Stopping system service: {}", service.service_id.0);
         
-        // Graceful shutdown
         if let Some(pid) = service.pid {
-            self.graceful_process_shutdown(pid, 5000)?; // 5 second timeout
+            self.graceful_process_shutdown(pid, 5000)?;
         }
 
-        // Clean up resources
         self.cleanup_service_resources(service.service_id)?;
-
         Ok(())
     }
 
     /// Internal method to stop a user service
     fn stop_user_service(&self, service: &mut service::Service) -> ServiceResult<()> {
-        info!("Stopping user service: {}", service.service_id);
+        info!("Stopping user service: {}", service.service_id.0);
         
-        // Forceful shutdown if graceful fails
         if let Some(pid) = service.pid {
-            if let Err(_) = self.graceful_process_shutdown(pid, 3000) { // 3 second timeout
-                warn!("Graceful shutdown failed, forcing termination for service {}", service.service_id);
+            if self.graceful_process_shutdown(pid, 3000).is_err() {
+                warn!("Graceful shutdown failed, forcing termination for service {}", service.service_id.0);
                 self.force_process_termination(pid)?;
             }
         }
 
-        // Clean up resources
         self.cleanup_service_resources(service.service_id)?;
-
         Ok(())
     }
 
     /// Internal method to stop a service group
     fn stop_service_group(&self, service: &mut service::Service) -> ServiceResult<()> {
-        info!("Stopping service group: {}", service.service_id);
-        
-        // Stop member services
+        info!("Stopping service group: {}", service.service_id.0);
         self.stop_service_group_members(service)?;
         Ok(())
     }
 
     /// Create a new process/thread for a service
-    fn create_service_process(&self, service: &service::Service, elevated_privileges: bool) -> ServiceResult<ProcessInfo> {
-        // This would integrate with the kernel's process/thread management
-        // For now, return mock process information
-        
+    fn create_service_process(&self, service: &service::Service, _elevated_privileges: bool) -> ServiceResult<ProcessInfo> {
         let pid = crate::scheduler::allocate_process_id();
         let process_id = crate::scheduler::allocate_process_id();
         
         info!("Created process for service {}: PID={}, ProcessID={}", 
-              service.service_id, pid, process_id);
+              service.service_id.0, pid, process_id);
         
         Ok(ProcessInfo { pid, process_id })
     }
 
     /// Apply security constraints to a service
-    fn apply_security_constraints(&self, service_id: ServiceId, security_config: &super::config::SecurityConfig) -> ServiceResult<()> {
-        // Implementation would apply Linux capabilities, namespaces, etc.
+    fn apply_security_constraints(&self, service_id: ServiceId, _security_config: &super::config::SecurityConfig) -> ServiceResult<()> {
         info!("Applied security constraints to service: {}", service_id.0);
         Ok(())
     }
 
     /// Apply restricted security constraints for user services
-    fn apply_restricted_security_constraints(&self, service_id: ServiceId, security_config: &super::config::SecurityConfig) -> ServiceResult<()> {
-        // Implementation would apply strict security constraints
+    fn apply_restricted_security_constraints(&self, service_id: ServiceId, _security_config: &super::config::SecurityConfig) -> ServiceResult<()> {
         info!("Applied restricted security constraints to service: {}", service_id.0);
         Ok(())
     }
 
     /// Apply resource limits to a service
-    fn apply_resource_limits(&self, service_id: ServiceId, limits: &service::ResourceLimits) -> ServiceResult<()> {
-        // Implementation would set resource limits via cgroups or similar
+    fn apply_resource_limits(&self, service_id: ServiceId, _limits: &service::ResourceLimits) -> ServiceResult<()> {
         info!("Applied resource limits to service: {}", service_id.0);
         Ok(())
     }
 
     /// Apply strict resource limits for user services
-    fn apply_strict_resource_limits(&self, service_id: ServiceId, limits: &service::ResourceLimits) -> ServiceResult<()> {
-        // Implementation would apply stricter resource limits
+    fn apply_strict_resource_limits(&self, service_id: ServiceId, _limits: &service::ResourceLimits) -> ServiceResult<()> {
         info!("Applied strict resource limits to service: {}", service_id.0);
         Ok(())
     }
 
-    /// Initialize service components
-    fn initialize_service_components(&self, service: &service::Service) -> ServiceResult<()> {
-        // Initialize any service-specific components
-        info!("Initialized components for service: {}", service.service_id);
+    fn start_service_group_members(&self, _service: &service::Service) -> ServiceResult<()> {
+        info!("Started service group members");
         Ok(())
     }
 
-    /// Start service group member services
-    fn start_service_group_members(&self, service: &service::Service) -> ServiceResult<()> {
-        // Implementation would start member services of a service group
-        info!("Started service group members for: {}", service.service_id);
+    fn stop_service_group_members(&self, _service: &service::Service) -> ServiceResult<()> {
+        info!("Stopped service group members");
         Ok(())
     }
 
-    /// Stop service group member services
-    fn stop_service_group_members(&self, service: &service::Service) -> ServiceResult<()> {
-        // Implementation would stop member services of a service group
-        info!("Stopped service group members for: {}", service.service_id);
-        Ok(())
-    }
-
-    /// Gracefully shutdown a process
     fn graceful_process_shutdown(&self, pid: u32, timeout_ms: u32) -> ServiceResult<()> {
-        // Implementation would send SIGTERM and wait for graceful shutdown
         info!("Gracefully shutting down process: {} (timeout: {}ms)", pid, timeout_ms);
         Ok(())
     }
 
-    /// Forcefully terminate a process
     fn force_process_termination(&self, pid: u32) -> ServiceResult<()> {
-        // Implementation would send SIGKILL to forcefully terminate process
         warn!("Forcefully terminating process: {}", pid);
         Ok(())
     }
 
-    /// Clean up service resources
     fn cleanup_service_resources(&self, service_id: ServiceId) -> ServiceResult<()> {
-        // Implementation would clean up resources like memory, file descriptors, etc.
         info!("Cleaned up resources for service: {}", service_id.0);
         Ok(())
     }
@@ -816,17 +780,7 @@ pub fn init_service_manager() -> ServiceResult<()> {
     ServiceManager::init()?;
     ServiceManager::start()?;
     
-    // Start background health check thread
-    start_health_check_thread()?;
-    
-    Ok(())
-}
-
-/// Start background health check thread
-fn start_health_check_thread() -> ServiceResult<()> {
-    // This would create a background thread that periodically checks service health
-    // For now, just a placeholder
-    info!("Health check thread started");
+    info!("Service Manager initialized");
     Ok(())
 }
 
@@ -838,9 +792,7 @@ pub fn get_service_manager() -> Option<&'static Mutex<Option<ServiceManager>>> {
 /// Initialize during kernel startup
 pub fn kernel_init() -> ServiceResult<()> {
     info!("Initializing MultiOS Service Management Framework...");
-    
     init_service_manager()?;
-    
     info!("Service Management Framework initialized successfully");
     Ok(())
 }
@@ -868,22 +820,5 @@ mod tests {
         assert_eq!(ServiceError::ServiceNotFound as u8, 0);
         assert_eq!(ServiceError::ServiceAlreadyExists as u8, 1);
         assert_eq!(ServiceError::FaultToleranceError as u8, 11);
-    }
-}
-
-/// Additional utility functions for testing
-#[cfg(test)]
-mod test_utils {
-    use super::*;
-    use alloc::vec::Vec;
-
-    /// Get current time (for testing)
-    pub fn get_current_time() -> u64 {
-        1000000 // Mock time for testing
-    }
-
-    /// Generate random ID (for testing)
-    pub fn generate_random_id() -> u64 {
-        12345 // Mock random ID for testing
     }
 }

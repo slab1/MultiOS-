@@ -5,10 +5,15 @@
 //! multiple architectures and device types.
 
 #![no_std]
-#![feature(alloc)]
-#![feature(asm)]
-#![feature(const_fn)]
-#![feature(core_intrinsics)]
+#![cfg_attr(not(test), no_main)]
+
+// Stable Rust-compatible attributes
+// alloc is available via extern crate, not #![feature(alloc)]
+extern crate alloc;
+
+// Required for no_std kernel development
+// asm! macro is stable since Rust 1.59
+// const_fn was stabilized in Rust 1.54
 
 // Core kernel modules
 pub mod bootstrap;
@@ -47,8 +52,10 @@ pub mod log; // Simple bootstrap logger
 pub mod fonts;
 
 use alloc::vec::Vec;
+use alloc::string::String;
+use alloc::format;
 use spin::Mutex;
-use log::{info, warn, error};
+use log::{info, warn, error}; // Requires the `log` crate
 
 // Version information
 const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -58,7 +65,7 @@ const KERNEL_NAME: &str = "MultiOS";
 static KERNEL_STATE: Mutex<Option<KernelState>> = Mutex::new(None);
 
 /// Main kernel state structure
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct KernelState {
     pub initialized: bool,
     pub boot_time: u64,
@@ -220,7 +227,7 @@ pub fn kernel_main(arch: ArchType, boot_info: &BootInfo, boot_method: bootstrap:
         lockout_duration_minutes: 15,
         rate_limit_requests_per_hour: 100,
         require_multi_factor: false,
-        allowed_auth_methods: vec![
+        allowed_auth_methods: alloc::vec![
             security::AuthMethod::Password,
             security::AuthMethod::TOTP,
             security::AuthMethod::BiometricFingerprint,
@@ -312,42 +319,31 @@ pub extern "C" fn kernel_main_64bit(boot_info_ptr: *const BootInfo) -> ! {
     
     if boot_info_ptr.is_null() {
         log::error!("Null boot information pointer");
-        bootstrap::panic_handler::bootstrap_panic_handler(
-            &core::panic::PanicInfo::new(
-                Some("Null boot information pointer"),
-                core::panic::Location::new(file!(), line!(), column!()),
-            ),
-            None,
-        );
+        // Use safe panic - no unstable APIs
+        panic!("Null boot information pointer");
     }
     
-    unsafe {
-        let boot_info = &*boot_info_ptr;
-        log::info!("Boot time: {}", boot_info.boot_time);
-        
-        if let Some(cmdline) = boot_info.command_line {
-            log::info!("Command line: {}", cmdline);
-        }
-        
-        log::info!("Memory map entries: {}", boot_info.memory_map.len());
-        log::info!("Modules: {}", boot_info.modules.len());
-        
-        // Initialize kernel with detected architecture and boot method
-        let arch = ArchType::X86_64; // Assume x86_64 for now
-        let boot_method = bootstrap::BootMethod::Multiboot2;
-        
-        match kernel_main(arch, boot_info, boot_method) {
-            Ok(_) => log::info!("Kernel initialized successfully"),
-            Err(e) => {
-                log::error!("Kernel initialization failed: {:?}", e);
-                bootstrap::panic_handler::bootstrap_panic_handler(
-                    &core::panic::PanicInfo::new(
-                        Some(&format!("Kernel initialization failed: {:?}", e)),
-                        core::panic::Location::new(file!(), line!(), column!()),
-                    ),
-                    None,
-                );
-            }
+    // SAFETY: We've verified boot_info_ptr is not null
+    let boot_info = unsafe { &*boot_info_ptr };
+    log::info!("Boot time: {}", boot_info.boot_time);
+    
+    if let Some(cmdline) = boot_info.command_line {
+        log::info!("Command line: {}", cmdline);
+    }
+    
+    log::info!("Memory map entries: {}", boot_info.memory_map.len());
+    log::info!("Modules: {}", boot_info.modules.len());
+    
+    // Initialize kernel with detected architecture and boot method
+    let arch = ArchType::X86_64; // Assume x86_64 for now
+    let boot_method = bootstrap::BootMethod::Multiboot2;
+    
+    match kernel_main(arch, boot_info, boot_method) {
+        Ok(_) => log::info!("Kernel initialized successfully"),
+        Err(e) => {
+            let err_msg = alloc::format!("Kernel initialization failed: {:?}", e);
+            log::error!("{}", err_msg);
+            panic!("{}", err_msg);
         }
     }
     
@@ -360,24 +356,38 @@ fn kernel_main_loop() -> ! {
     info!("Entering main kernel loop...");
     
     // Initialize resource monitoring timer
-    let monitoring_interval_ns = 5_000_000_000; // 5 seconds
     let mut last_monitoring_time = 0u64;
     
     loop {
-        // Main kernel processing loop
-        // This would handle system calls, interrupts, etc.
-        
         // Update resource monitoring periodically
-        let current_time = crate::hal::timers::get_system_time_ms();
-        if current_time - last_monitoring_time >= 5000 { // Every 5 seconds
+        let current_time = get_system_time_ms();
+        if current_time.saturating_sub(last_monitoring_time) >= 5000 {
             let _ = admin::update_resource_monitoring();
             last_monitoring_time = current_time;
         }
         
-        // For now, just halt and wait for interrupts
+        // Halt and wait for interrupts
+        #[cfg(target_arch = "x86_64")]
         unsafe {
-            core::arch::asm!("hlt");
+            core::arch::asm!("hlt", options(nomem, nostack));
         }
+        #[cfg(not(target_arch = "x86_64"))]
+        unsafe {
+            core::sync::atomic::spin_loop_hint();
+        }
+    }
+}
+
+/// Get monotonic system time in milliseconds
+fn get_system_time_ms() -> u64 {
+    #[cfg(feature = "hal_timers")]
+    {
+        crate::hal::timers::get_system_time_ms()
+    }
+    #[cfg(not(feature = "hal_timers"))]
+    {
+        // Fallback for when HAL timers aren't available
+        0
     }
 }
 
@@ -394,35 +404,30 @@ pub fn get_kernel_state() -> KernelResult<KernelState> {
 /// Check if kernel is initialized
 pub fn is_initialized() -> bool {
     let kernel_guard = KERNEL_STATE.lock();
-    kernel_guard.is_some() && kernel_guard.as_ref().unwrap().initialized
+    kernel_guard.is_some() && kernel_guard.as_ref().is_some_and(|s| s.initialized)
 }
 
 /// Start the main scheduler loop
 fn start_main_scheduler() -> KernelResult<()> {
     info!("Starting main scheduler loop...");
     
-    loop {
-        // This would normally be implemented by architecture-specific code
-        // that switches between threads based on the scheduling algorithm
-        
-        // For now, we'll just yield the CPU
-        scheduler::yield_current_thread();
-        
-        // In a real implementation, this would:
-        // 1. Save current thread state
-        // 2. Select next thread to run
-        // 3. Restore next thread state
-        // 4. Switch to next thread
-        // 
-        // For now, we just break to avoid infinite loop in single-threaded tests
-        break;
-    }
+    // This would normally be implemented by architecture-specific code
+    // that switches between threads based on the scheduling algorithm
+    
+    // For now, we'll just yield the CPU
+    scheduler::yield_current_thread();
+    
+    // In a real implementation, this would:
+    // 1. Save current thread state
+    // 2. Select next thread to run
+    // 3. Restore next thread state
+    // 4. Switch to next thread
     
     Ok(())
 }
 
 /// Boot information passed from bootloader
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct BootInfo {
     pub boot_time: u64,
     pub memory_map: Vec<MemoryMapEntry>,
@@ -475,7 +480,7 @@ pub fn get_system_info() -> KernelResult<SystemInfo> {
     let kernel_state = get_kernel_state()?;
     
     Ok(SystemInfo {
-        kernel_name: KERNEL_NAME.to_string(),
+        kernel_name: KERNEL_NAME.into(),
         kernel_version: kernel_state.version,
         architecture: kernel_state.architecture,
         boot_time: kernel_state.boot_time,
@@ -498,24 +503,34 @@ pub struct SystemInfo {
 }
 
 /// Panic handler
+#[cfg(not(test))]
 #[panic_handler]
 fn panic_handler(info: &core::panic::PanicInfo) -> ! {
-    bootstrap::panic_handler::bootstrap_panic_handler(info, None);
+    // Use a simple panic message without unstable APIs
+    if let Some(msg) = info.message() {
+        log::error!("Kernel panic: {}", msg);
+    } else {
+        log::error!("Kernel panic: (no message)");
+    }
+    
+    // Halt the CPU
+    loop {
+        #[cfg(target_arch = "x86_64")]
+        unsafe {
+            core::arch::asm!("hlt", options(nomem, nostack));
+        }
+        #[cfg(not(target_arch = "x86_64"))]
+        unsafe {
+            core::sync::atomic::spin_loop_hint();
+        }
+    }
 }
 
-/// Exception handler
+/// Exception handler stub
 #[no_mangle]
-pub extern "C" fn exception_handler() {
+pub extern "C" fn exception_handler() -> ! {
     error!("Unhandled exception occurred!");
-    
-    // Use bootstrap panic handler for exceptions during early boot
-    bootstrap::panic_handler::bootstrap_panic_handler(
-        &core::panic::PanicInfo::new(
-            Some("Unhandled exception occurred"),
-            core::panic::Location::new(file!(), line!(), column!()),
-        ),
-        None,
-    );
+    panic!("Unhandled exception occurred");
 }
 
 #[cfg(test)]
@@ -528,7 +543,7 @@ mod tests {
             initialized: false,
             boot_time: 1000,
             architecture: ArchType::X86_64,
-            version: "1.0.0".to_string(),
+            version: "1.0.0".into(),
             memory_stats: memory::MemoryStats {
                 total_pages: 1024,
                 used_pages: 256,

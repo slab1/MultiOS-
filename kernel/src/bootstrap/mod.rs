@@ -132,7 +132,7 @@ impl BootstrapContext {
     pub fn record_error(&mut self, error: KernelError) {
         self.error_count = self.error_count.checked_add(1).unwrap_or(u32::MAX);
         
-        crate::log::error!("Bootstrap Error at stage {:?}: {:?}", stage, error);
+        crate::log::error!("Bootstrap Error at stage {:?}: {:?}", self.current_stage, error);
         
         if self.config.recovery_mode && self.error_count < 3 {
             // Try to recover from the error
