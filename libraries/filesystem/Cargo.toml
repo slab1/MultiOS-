@@ -9,7 +9,7 @@ authors = ["MultiOS Team"]
 [dependencies]
 # Core filesystem
 spin = "0.9"
-bitflags = "2.4"
+bitflags = "2.6"
 log = "0.4"
 
 # Hash for integrity

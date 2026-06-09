@@ -69,15 +69,16 @@ pub fn get_cpu_features() -> crate::arch::CpuFeatures {
 
 /// Check if running in 64-bit mode
 pub fn is_long_mode() -> bool {
-    let mut cr0: u64;
-    let mut cr4: u64;
+    let cr0: u64;
+    let cr4: u64;
     
     unsafe {
         core::arch::asm!(
-            "mov %cr0, {}",
-            "mov %cr4, {}",
+            "mov {}, cr0",
+            "mov {}, cr4",
             out(reg) cr0,
-            out(reg) cr4
+            out(reg) cr4,
+            options(nomem, nostack)
         );
     }
     
@@ -96,8 +97,9 @@ pub fn get_current_privilege_level() -> u8 {
     let cs: u64;
     unsafe {
         core::arch::asm!(
-            "mov %cs, {}",
-            out(reg) cs
+            "mov {}, cs",
+            out(reg) cs,
+            options(nomem, nostack)
         );
     }
     
@@ -111,7 +113,8 @@ pub fn are_interrupts_enabled() -> bool {
         core::arch::asm!(
             "pushfq",
             "pop {}",
-            out(reg) rflags
+            out(reg) rflags,
+            options(nomem)
         );
     }
     
@@ -121,14 +124,14 @@ pub fn are_interrupts_enabled() -> bool {
 /// Enable hardware interrupts
 pub fn enable_interrupts() {
     unsafe {
-        core::arch::asm!("sti");
+        core::arch::asm!("sti", options(nomem, nostack));
     }
 }
 
 /// Disable hardware interrupts
 pub fn disable_interrupts() {
     unsafe {
-        core::arch::asm!("cli");
+        core::arch::asm!("cli", options(nomem, nostack));
     }
 }
 
@@ -137,8 +140,9 @@ pub fn get_page_table_root() -> usize {
     let cr3: u64;
     unsafe {
         core::arch::asm!(
-            "mov %cr3, {}",
-            out(reg) cr3
+            "mov {}, cr3",
+            out(reg) cr3,
+            options(nomem, nostack)
         );
     }
     
@@ -149,21 +153,22 @@ pub fn get_page_table_root() -> usize {
 pub fn set_page_table_root(root: usize) {
     unsafe {
         core::arch::asm!(
-            "mov {}, %cr3",
-            in(reg) root as u64
+            "mov cr3, {}",
+            in(reg) root as u64,
+            options(nomem, nostack)
         );
     }
 }
 
 /// Read control register
 fn read_cr(reg: u8) -> u64 {
-    let mut value: u64;
+    let value: u64;
     unsafe {
         match reg {
-            0 => core::arch::asm!("mov %cr0, {}", out(reg) value),
-            3 => core::arch::asm!("mov %cr3, {}", out(reg) value),
-            4 => core::arch::asm!("mov %cr4, {}", out(reg) value),
-            8 => core::arch::asm!("mov %cr8, {}", out(reg) value),
+            0 => core::arch::asm!("mov {}, cr0", out(reg) value, options(nomem, nostack)),
+            3 => core::arch::asm!("mov {}, cr3", out(reg) value, options(nomem, nostack)),
+            4 => core::arch::asm!("mov {}, cr4", out(reg) value, options(nomem, nostack)),
+            8 => core::arch::asm!("mov {}, cr8", out(reg) value, options(nomem, nostack)),
             _ => return 0,
         }
     }
@@ -174,10 +179,10 @@ fn read_cr(reg: u8) -> u64 {
 fn write_cr(reg: u8, value: u64) {
     unsafe {
         match reg {
-            0 => core::arch::asm!("mov {}, %cr0", in(reg) value),
-            3 => core::arch::asm!("mov {}, %cr3", in(reg) value),
-            4 => core::arch::asm!("mov {}, %cr4", in(reg) value),
-            8 => core::arch::asm!("mov {}, %cr8", in(reg) value),
+            0 => core::arch::asm!("mov cr0, {}", in(reg) value, options(nomem, nostack)),
+            3 => core::arch::asm!("mov cr3, {}", in(reg) value, options(nomem, nostack)),
+            4 => core::arch::asm!("mov cr4, {}", in(reg) value, options(nomem, nostack)),
+            8 => core::arch::asm!("mov cr8, {}", in(reg) value, options(nomem, nostack)),
             _ => return,
         }
     }
@@ -186,7 +191,7 @@ fn write_cr(reg: u8, value: u64) {
 /// Halt the CPU until next interrupt
 pub fn halt() {
     unsafe {
-        core::arch::asm!("hlt");
+        core::arch::asm!("hlt", options(nomem, nostack));
     }
 }
 
@@ -194,8 +199,9 @@ pub fn halt() {
 pub fn flush_tlb() {
     unsafe {
         core::arch::asm!(
-            "mov %cr3, %rax",
-            "mov %rax, %cr3"
+            "mov rax, cr3",
+            "mov cr3, rax",
+            options(nomem, nostack)
         );
     }
 }
@@ -206,7 +212,8 @@ pub fn flush_tlb_page(address: usize) {
     unsafe {
         core::arch::asm!(
             "invlpg [{}]",
-            in(reg) address
+            in(reg) address,
+            options(nomem, nostack)
         );
     }
 }
@@ -219,10 +226,9 @@ pub fn get_tsc() -> u64 {
     unsafe {
         core::arch::asm!(
             "rdtsc",
-            "mov %edx, {}",
-            "mov %eax, {}",
-            out(reg) tsc_high,
-            out(reg) tsc_low
+            out("eax") tsc_low,
+            out("edx") tsc_high,
+            options(nomem, nostack)
         );
     }
     
@@ -234,7 +240,8 @@ pub fn fnsave(address: usize) {
     unsafe {
         core::arch::asm!(
             "fnsave [{}]",
-            in(reg) address
+            in(reg) address,
+            options(nomem, nostack)
         );
     }
 }
@@ -244,7 +251,8 @@ pub fn frstor(address: usize) {
     unsafe {
         core::arch::asm!(
             "frstor [{}]",
-            in(reg) address
+            in(reg) address,
+            options(nomem, nostack)
         );
     }
 }

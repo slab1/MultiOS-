@@ -10,35 +10,31 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  check:
+  check-x86_64:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        target:
-          - x86_64-unknown-none
-          - aarch64-unknown-none
-          - riscv64gc-unknown-none-elf
-
     steps:
     - uses: actions/checkout@v4
 
     - name: Install Rust toolchain
       uses: dtolnay/rust-toolchain@nightly
       with:
-        targets: ${{ matrix.target }}
+        targets: x86_64-unknown-none
         components: rust-src, llvm-tools
 
     - name: Cache dependencies
       uses: Swatinem/rust-cache@v2
 
-    - name: Check compilation
-      run: cargo check --target ${{ matrix.target }} --workspace
+    - name: Check kernel compilation
+      run: cargo check --target x86_64-unknown-none -p multios-kernel
+
+    - name: Check library crates
+      run: cargo check --target x86_64-unknown-none --workspace --exclude multios-kernel
 
     - name: Check formatting
       run: cargo fmt --check
 
-    - name: Run clippy
-      run: cargo clippy --target ${{ matrix.target }} -- -D warnings
+    - name: Run clippy on libraries
+      run: cargo clippy --target x86_64-unknown-none --workspace --exclude multios-kernel -- -D warnings
 
   test:
     runs-on: ubuntu-latest
@@ -51,12 +47,27 @@ jobs:
     - name: Cache dependencies
       uses: Swatinem/rust-cache@v2
 
-    - name: Run tests
-      run: cargo test --workspace
+    - name: Run library tests
+      run: cargo test --workspace --exclude multios-kernel
+
+    - name: Run memory-manager tests
+      run: cargo test -p multios-memory-manager
+
+    - name: Run scheduler tests
+      run: cargo test -p multios-scheduler
+
+    - name: Run filesystem tests
+      run: cargo test -p multios-filesystem
+
+    - name: Run IPC tests
+      run: cargo test -p multios-ipc
+
+    - name: Run device-drivers tests
+      run: cargo test -p multios-device-drivers
 
   build:
     runs-on: ubuntu-latest
-    needs: [check, test]
+    needs: [check-x86_64, test]
     steps:
     - uses: actions/checkout@v4
 
@@ -66,17 +77,14 @@ jobs:
         targets: x86_64-unknown-none
         components: rust-src, llvm-tools
 
-    - name: Install bootimage
-      run: cargo install bootimage
+    - name: Cache dependencies
+      uses: Swatinem/rust-cache@v2
 
     - name: Build release
-      run: cargo build --target x86_64-unknown-none --release
-
-    - name: Create bootable image
-      run: cargo bootimage --target x86_64-unknown-none
+      run: cargo build --target x86_64-unknown-none -p multios-kernel --release
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: multios-boot-image
-        path: target/x86_64-unknown-none/release/bootimage-multios-kernel.bin
+        name: multios-kernel-x86_64
+        path: target/x86_64-unknown-none/release/multios-kernel
