@@ -13,10 +13,12 @@
 
 use alloc::vec;
 use alloc::vec::Vec;
+use alloc::boxed::Box;
 use spin::Mutex;
 use bitflags::bitflags;
 use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
 use core::ops::Range;
+use core::ptr::NonNull;
 
 use crate::{PhysAddr, VirtAddr, PageSize, MemoryFlags, MemoryError, MemoryResult};
 
@@ -28,6 +30,7 @@ const MAX_PT_LEVELS: usize = 6;
 
 /// Page table entry flags
 bitflags! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
     pub struct PageTableFlags: u64 {
         const PRESENT = 0x00000001;
         const WRITABLE = 0x00000002;

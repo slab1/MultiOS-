@@ -203,7 +203,15 @@ impl PhysicalMemoryManager {
             total_pages: 0,
             free_pages: PageFrameAllocator::new(),
             reserved_regions: Vec::new(),
-            stats: MemoryStats::default(),
+            stats: MemoryStats {
+                total_memory: 0,
+                used_memory: 0,
+                available_memory: 0,
+                total_pages: 0,
+                used_pages: 0,
+                free_pages: 0,
+                reserved_pages: 0,
+            },
         }
     }
 
@@ -216,13 +224,13 @@ impl PhysicalMemoryManager {
         
         for entry in memory_map_entries {
             let region_type = match entry.entry_type {
-                super::super::kernel::MemoryType::Usable => MemoryRegion::Usable,
-                super::super::kernel::MemoryType::Reserved => MemoryRegion::Reserved,
-                super::super::kernel::MemoryType::AcpiReclaimable => MemoryRegion::AcpiReclaimable,
-                super::super::kernel::MemoryType::AcpiNvs => MemoryRegion::AcpiNvs,
-                super::super::kernel::MemoryType::BadMemory => MemoryRegion::BadMemory,
-                super::super::kernel::MemoryType::BootloaderReclaimable => MemoryRegion::BootloaderReclaimable,
-                super::super::kernel::MemoryType::KernelAndModules => MemoryRegion::KernelAndModules,
+                MemoryType::Usable => MemoryRegion::Usable,
+                MemoryType::Reserved => MemoryRegion::Reserved,
+                MemoryType::AcpiReclaimable => MemoryRegion::AcpiReclaimable,
+                MemoryType::AcpiNvs => MemoryRegion::AcpiNvs,
+                MemoryType::BadMemory => MemoryRegion::BadMemory,
+                MemoryType::BootloaderReclaimable => MemoryRegion::BootloaderReclaimable,
+                MemoryType::KernelAndModules => MemoryRegion::KernelAndModules,
                 _ => MemoryRegion::Reserved,
             };
             
@@ -505,15 +513,15 @@ mod tests {
         let mut manager = PhysicalMemoryManager::new();
         
         let memory_map = vec![
-            super::super::kernel::MemoryMapEntry {
+            MemoryMapEntry {
                 base: 0,
                 size: 0x1000,
-                entry_type: super::super::kernel::MemoryType::Usable,
+                entry_type: MemoryType::Usable,
             },
-            super::super::kernel::MemoryMapEntry {
+            MemoryMapEntry {
                 base: 0x1000,
                 size: 0x1000,
-                entry_type: super::super::kernel::MemoryType::Reserved,
+                entry_type: MemoryType::Reserved,
             },
         ];
         

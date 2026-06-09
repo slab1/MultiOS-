@@ -13,10 +13,10 @@ mod comprehensive_tests {
     fn test_memory_manager_creation() {
         let context = MemoryInitContext {
             memory_map: vec![
-                super::super::kernel::MemoryMapEntry {
+                MemoryMapEntry {
                     base: 0x1000,
                     size: 0x1000,
-                    entry_type: super::super::kernel::MemoryType::Usable,
+                    entry_type: MemoryType::Usable,
                 },
             ],
             kernel_start: PhysAddr::new(0x100000),
@@ -35,10 +35,10 @@ mod comprehensive_tests {
         let mut physical_manager = PhysicalMemoryManager::new();
         
         let memory_map = vec![
-            super::super::kernel::MemoryMapEntry {
+            MemoryMapEntry {
                 base: 0,
                 size: 0x4000, // 16KB
-                entry_type: super::super::kernel::MemoryType::Usable,
+                entry_type: MemoryType::Usable,
             },
         ];
         
@@ -69,10 +69,10 @@ mod comprehensive_tests {
         let mut physical_manager = PhysicalMemoryManager::new();
         
         let memory_map = vec![
-            super::super::kernel::MemoryMapEntry {
+            MemoryMapEntry {
                 base: 0,
                 size: 0x8000, // 32KB = 8 pages
-                entry_type: super::super::kernel::MemoryType::Usable,
+                entry_type: MemoryType::Usable,
             },
         ];
         
@@ -99,10 +99,10 @@ mod comprehensive_tests {
         let mut physical_manager = PhysicalMemoryManager::new();
         
         let memory_map = vec![
-            super::super::kernel::MemoryMapEntry {
+            MemoryMapEntry {
                 base: 0x1000,
                 size: 0x1000,
-                entry_type: super::super::kernel::MemoryType::Reserved,
+                entry_type: MemoryType::Reserved,
             },
         ];
         
@@ -381,10 +381,10 @@ mod comprehensive_tests {
         // 1. Create memory manager
         let context = MemoryInitContext {
             memory_map: vec![
-                super::super::kernel::MemoryMapEntry {
+                MemoryMapEntry {
                     base: 0,
                     size: 0x8000, // 32KB
-                    entry_type: super::super::kernel::MemoryType::Usable,
+                    entry_type: MemoryType::Usable,
                 },
             ],
             kernel_start: PhysAddr::new(0x100000),
@@ -449,10 +449,10 @@ mod comprehensive_tests {
         // Out of memory
         let mut manager = PhysicalMemoryManager::new();
         let memory_map = vec![
-            super::super::kernel::MemoryMapEntry {
+            MemoryMapEntry {
                 base: 0,
                 size: 0x1000, // Only 4KB
-                entry_type: super::super::kernel::MemoryType::Usable,
+                entry_type: MemoryType::Usable,
             },
         ];
         manager.init(&memory_map);

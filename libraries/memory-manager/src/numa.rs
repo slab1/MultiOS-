@@ -29,7 +29,7 @@ const MAX_NUMA_NODES: usize = 128;
 const MAX_NODE_MEMORY: usize = 16 * 1024 * 1024 * 1024 * 1024;
 
 /// NUMA topology information
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct NumaTopology {
     /// Total number of NUMA nodes
     pub node_count: usize,

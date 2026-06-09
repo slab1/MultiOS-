@@ -398,7 +398,8 @@ impl VirtualMemoryManager {
         {
             unsafe {
                 // Invalidate all TLB entries
-                core::arch::asm!("invlpg (%rax)", in(reg) 0);
+                let addr: u64 = 0;
+                core::arch::asm!("invlpg ({0})", in(reg) addr);
             }
         }
     }

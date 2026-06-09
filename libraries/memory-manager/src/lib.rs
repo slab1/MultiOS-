@@ -46,6 +46,7 @@
 #![feature(const_option_ext)]
 #![feature(core_intrinsics)]
 #![feature(ptr_as_ref)]
+#![feature(generic_const_exprs)]
 #![allow(clippy::missing_safety_doc)]
 
 extern crate alloc;
@@ -80,6 +81,10 @@ pub use cache_coherency::*;
 pub use large_scale_vm::*;
 
 use log::{info, debug, warn, error};
+use alloc::vec::Vec;
+use alloc::boxed::Box;
+use spin::Mutex;
+use core::ptr::NonNull;
 
 /// Result type for all memory operations
 pub type MemoryResult<T> = Result<T, MemoryError>;

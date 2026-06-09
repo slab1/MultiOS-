@@ -265,6 +265,36 @@ impl MemoryFlags {
     }
 }
 
+/// Memory map entry from bootloader
+#[derive(Debug, Clone, Copy)]
+pub struct MemoryMapEntry {
+    /// Base physical address
+    pub base: u64,
+    /// Region size in bytes
+    pub size: u64,
+    /// Memory region type
+    pub entry_type: MemoryType,
+}
+
+/// Memory type classification (matches bootloader memory map)
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MemoryType {
+    /// Available for allocation
+    Usable,
+    /// Reserved by firmware/bootloader
+    Reserved,
+    /// ACPI reclaimable memory
+    AcpiReclaimable,
+    /// ACPI NVS memory
+    AcpiNvs,
+    /// Bad memory regions
+    BadMemory,
+    /// Bootloader reclaimable
+    BootloaderReclaimable,
+    /// Kernel and module memory
+    KernelAndModules,
+}
+
 /// Memory region types
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MemoryRegion {
