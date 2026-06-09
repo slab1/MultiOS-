@@ -173,7 +173,7 @@ extern "C" fn exception_handler_wrapper() {
     unsafe {
         // Get interrupt vector number from CPU
         let vector: u8;
-        core::arch::asm!("pushal", "mov $0xFF, {}", out(reg) vector);
+        core::arch::asm!("pushal", "mov {}, 0xFF", out(reg) vector, options(nomem, nostack));
         
         // Call the appropriate handler based on vector
         handle_exception(vector as usize);
@@ -191,33 +191,34 @@ extern "C" fn syscall_handler_wrapper() {
         let arg4: usize;
         let arg5: usize;
         
-        // Read system call number and arguments from registers
-        core::arch::asm!(
-            "mov %rdi, {}",    // First argument
-            "mov %rsi, {}",    // Second argument
-            "mov %rdx, {}",    // Third argument
-            "mov %r10, {}",    // Fourth argument
-            "mov %r8, {}",     // Fifth argument
-            "mov %r9, {}",     // Sixth argument
-            out(reg) syscall_number,
-            out(reg) arg0,
-            out(reg) arg1,
-            out(reg) arg2,
-            out(reg) arg3,
-            out(reg) arg4,
-            out(reg) arg5,
-        );
+         // Read system call number and arguments from registers
+         core::arch::asm!(
+             "mov rdi, {}",    // First argument
+             "mov rsi, {}",    // Second argument
+             "mov rdx, {}",    // Third argument
+             "mov r10, {}",    // Fourth argument
+             "mov r8, {}",     // Fifth argument
+             "mov r9, {}",     // Sixth argument
+             out(reg) syscall_number,
+             out(reg) arg0,
+             out(reg) arg1,
+             out(reg) arg2,
+             out(reg) arg3,
+             out(reg) arg4,
+             out(reg) arg5,
+             options(nomem, nostack)
+         );
         
         // Handle system call
         let result = handle_system_call(syscall_number, arg0, arg1, arg2, arg3, arg4, arg5);
-        
-        // Set return value in RAX
-        core::arch::asm!(
-            "mov {}, %rax",
-            in(reg) result.return_value,
-            options(nostack)
-        );
-    }
+         
+         // Set return value in RAX
+         core::arch::asm!(
+             "mov rax, {}",
+             in(reg) result.return_value,
+             options(nostack)
+         );
+     }
 }
 
 /// Handle exception based on vector number
@@ -232,13 +233,13 @@ fn handle_exception(vector: usize) {
             let error_code: usize;
             let instruction_ptr: usize;
             
-            unsafe {
-                core::arch::asm!(
-                    "push %cr2",
-                    "pop {}",
-                    out(reg) fault_addr,
-                    options(nostack)
-                );
+             unsafe {
+                 core::arch::asm!(
+                     "push cr2",
+                     "pop {}",
+                     out(reg) fault_addr,
+                     options(nostack)
+                 );
                 
                 // Get error code from stack
                 core::arch::asm!(
@@ -247,12 +248,12 @@ fn handle_exception(vector: usize) {
                     options(nostack)
                 );
                 
-                // Get instruction pointer
-                core::arch::asm!(
-                    "mov (%rsp), {}",
-                    out(reg) instruction_ptr,
-                    options(nostack)
-                );
+                 // Get instruction pointer
+                 core::arch::asm!(
+                     "mov {}, [rsp]",
+                     out(reg) instruction_ptr,
+                     options(nostack)
+                 );
             }
             
             error!("Page fault at address {:#x}, error code {:#x}", fault_addr, error_code);

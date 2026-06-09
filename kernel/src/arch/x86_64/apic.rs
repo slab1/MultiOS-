@@ -129,10 +129,11 @@ fn get_apic_base_msr() -> u64 {
     let mut apic_base: u64;
     unsafe {
         core::arch::asm!(
-            "mov $0x1B, %ecx",      // MSR_APIC_BASE
+            "mov ecx, 0x1B",      // MSR_APIC_BASE
             "rdmsr",
-            "mov %rax, {}",
-            out(reg) apic_base
+            "mov {}, rax",
+            out(reg) apic_base,
+            options(nomem, nostack)
         );
     }
     
@@ -145,10 +146,11 @@ fn is_apic_enabled() -> bool {
     let mut apic_base: u64;
     unsafe {
         core::arch::asm!(
-            "mov $0x1B, %ecx",      // MSR_APIC_BASE
+            "mov ecx, 0x1B",      // MSR_APIC_BASE
             "rdmsr",
-            "mov %rax, {}",
-            out(reg) apic_base
+            "mov {}, rax",
+            out(reg) apic_base,
+            options(nomem, nostack)
         );
     }
     
@@ -205,20 +207,21 @@ fn configure_timer() -> InterruptResult<()> {
 /// Read Local APIC register
 fn read_apic_register(offset: u32) -> u32 {
     let addr = APIC_BASE + offset;
-    
-    unsafe {
-        core::arch::asm!(
-            "mov {}, %eax",
-            in(reg) addr as usize,
-            options(nostack, readonly)
-        );
-        let result: u32;
-        core::arch::asm!(
-            "mov %eax, {}",
-            out(reg) result
-        );
-        result
-    }
+     
+     unsafe {
+         core::arch::asm!(
+             "mov eax, {}",
+             in(reg) addr as usize,
+             options(nostack, readonly)
+         );
+         let result: u32;
+         core::arch::asm!(
+             "mov {}, eax",
+             out(reg) result,
+             options(nomem, nostack)
+         );
+         result
+     }
 }
 
 /// Write Local APIC register
@@ -227,20 +230,22 @@ fn write_apic_register(offset: u32, value: u32) {
     
     unsafe {
         core::arch::asm!(
-            "mov {}, %eax",
-            in(reg) value
+            "mov eax, {}",
+            in(reg) value,
+            options(nostack)
         );
         core::arch::asm!(
-            "mov {}, %edx",      // High 32 bits are zero
-            in(reg) 0u32
+            "mov edx, {}",      // High 32 bits are zero
+            in(reg) 0u32,
+            options(nostack)
         );
         core::arch::asm!(
-            "mov {}, %ebx",
+            "mov ebx, {}",
             in(reg) addr as usize,
             options(nostack)
         );
         core::arch::asm!(
-            "mov %ebx, %ecx",
+            "mov ecx, ebx",
             "wrmsr",
             options(nostack)
         );

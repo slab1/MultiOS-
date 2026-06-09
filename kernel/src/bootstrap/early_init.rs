@@ -288,23 +288,23 @@ fn init_serial_console() -> BootstrapResult<()> {
         let com1 = 0x3f8;
         
         // Disable interrupts
-        core::arch::asm!("out dx, al", in("dx") com1 + 1, in("al") 0x00);
+        core::arch::asm!("out dx, al", in("dx") com1 + 1, in("al") 0x00, options(nomem, nostack));
         
         // Set divisor latch
-        core::arch::asm!("out dx, al", in("dx") com1 + 3, in("al") 0x80);
+        core::arch::asm!("out dx, al", in("dx") com1 + 3, in("al") 0x80, options(nomem, nostack));
         
         // Set baud rate (115200 / 9600 = 12)
-        core::arch::asm!("out dx, al", in("dx") com1 + 0, in("al") 12);
-        core::arch::asm!("out dx, al", in("dx") com1 + 1, in("al") 0x00);
+        core::arch::asm!("out dx, al", in("dx") com1 + 0, in("al") 12, options(nomem, nostack));
+        core::arch::asm!("out dx, al", in("dx") com1 + 1, in("al") 0x00, options(nomem, nostack));
         
         // 8N1 mode
-        core::arch::asm!("out dx, al", in("dx") com1 + 3, in("al") 0x03);
+        core::arch::asm!("out dx, al", in("dx") com1 + 3, in("al") 0x03, options(nomem, nostack));
         
         // Enable FIFO
-        core::arch::asm!("out dx, al", in("dx") com1 + 2, in("al") 0xC7);
+        core::arch::asm!("out dx, al", in("dx") com1 + 2, in("al") 0xC7, options(nomem, nostack));
         
         // Enable interrupts
-        core::arch::asm!("out dx, al", in("dx") com1 + 1, in("al") 0x01);
+        core::arch::asm!("out dx, al", in("dx") com1 + 1, in("al") 0x01, options(nomem, nostack));
     }
     
     Ok(())
@@ -365,7 +365,7 @@ fn setup_x86_64_idt() -> BootstrapResult<()> {
     // This would setup a minimal IDT with exception handlers
     // For now, just enable interrupts globally
     unsafe {
-        core::arch::asm!("sti");
+        core::arch::asm!("sti", options(nomem, nostack));
     }
     Ok(())
 }

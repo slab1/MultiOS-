@@ -404,7 +404,7 @@ impl MultiCoreManager {
         {
             let mut mpidr: u64;
             unsafe {
-                core::arch::asm!("mrs {}, mpidr_el1", out(reg) mpidr);
+                core::arch::asm!("mrs {}, mpidr_el1", out(reg) mpidr, options(nomem, nostack));
             }
             mpidr
         }
@@ -562,26 +562,27 @@ impl MultiCoreManager {
         #[cfg(target_arch = "x86_64")]
         {
             info!("Initializing x86_64 APIC...");
-            
-            // Enable APIC if not already enabled
-            let mut ia32_apic_base: u64;
-            unsafe {
-                core::arch::asm!(
-                    "mov {}, %rax",
-                    "rdmsr",
-                    in("rcx") 0x1Bu64, // IA32_APIC_BASE MSR
-                    out(reg) ia32_apic_base,
-                );
-            }
-            
-            if (ia32_apic_base & (1 << 11)) == 0 {
-                // APIC is disabled, enable it
-                ia32_apic_base |= 1 << 11; // APIC Global Enable bit
-                
-                unsafe {
-                    core::arch::asm!(
-                        "mov {}, %rax",
-                        "wrmsr",
+             
+             // Enable APIC if not already enabled
+             let mut ia32_apic_base: u64;
+             unsafe {
+                 core::arch::asm!(
+                     "mov rax, {}",
+                     "rdmsr",
+                     in("rcx") 0x1Bu64, // IA32_APIC_BASE MSR
+                     out(reg) ia32_apic_base,
+                     options(nomem, nostack)
+                 );
+             }
+             
+             if (ia32_apic_base & (1 << 11)) == 0 {
+                 // APIC is disabled, enable it
+                 ia32_apic_base |= 1 << 11; // APIC Global Enable bit
+                 
+                 unsafe {
+                     core::arch::asm!(
+                         "mov rax, {}",
+                         "wrmsr",
                         in(reg) ia32_apic_base,
                         in("rcx") 0x1Bu64,
                     );
@@ -769,15 +770,16 @@ impl MultiCoreManager {
                           (ipi_info.data as u32 & 0xFF) |
                           0x00004000; // Send IPI
             
-            unsafe {
-                core::arch::asm!(
-                    "mov {}, %eax",
-                    "mov {}, %ecx", 
-                    "out %dx, %al",
-                    in(reg) icr_low,
-                    in("edx") 0xFEE00300u32,
-                );
-            }
+             unsafe {
+                 core::arch::asm!(
+                     "mov eax, {}",
+                     "mov ecx, {}", 
+                     "out al, dx",
+                     in(reg) icr_low,
+                     in("edx") 0xFEE00300u32,
+                     options(nomem, nostack)
+                 );
+             }
         }
         
         Ok(())
@@ -810,7 +812,7 @@ impl MultiCoreManager {
         // In a real implementation, this would poll status flags or use synchronization
         // For now, just wait a bit
         for _ in 0..1000 {
-            core::arch::asm!("pause");
+            core::arch::asm!("pause", options(nomem, nostack));
         }
         
         Ok(())

@@ -42,7 +42,7 @@ fn init_x86_64_interrupts(context: &BootstrapContext) -> BootstrapResult<()> {
     
     // Enable interrupts
     unsafe {
-        core::arch::asm!("sti");
+        core::arch::asm!("sti", options(nomem, nostack));
     }
     
     info!("x86_64 interrupt handling initialized");
@@ -115,24 +115,24 @@ fn setup_x86_64_pic() -> BootstrapResult<()> {
         let slave_data = 0xA1;
         
         // ICW1 - Initialize
-        core::arch::asm!("out dx, al", in("dx") master_cmd, in("al") 0x11);
-        core::arch::asm!("out dx, al", in("dx") slave_cmd, in("al") 0x11);
+        core::arch::asm!("out dx, al", in("dx") master_cmd, in("al") 0x11, options(nomem, nostack));
+        core::arch::asm!("out dx, al", in("dx") slave_cmd, in("al") 0x11, options(nomem, nostack));
         
         // ICW2 - IRQ base (0x20 for master, 0x28 for slave)
-        core::arch::asm!("out dx, al", in("dx") master_data, in("al") 0x20);
-        core::arch::asm!("out dx, al", in("dx") slave_data, in("al") 0x28);
+        core::arch::asm!("out dx, al", in("dx") master_data, in("al") 0x20, options(nomem, nostack));
+        core::arch::asm!("out dx, al", in("dx") slave_data, in("al") 0x28, options(nomem, nostack));
         
         // ICW3 - IRQ cascade
-        core::arch::asm!("out dx, al", in("dx") master_data, in("al") 0x04);
-        core::arch::asm!("out dx, al", in("dx") slave_data, in("al") 0x02);
+        core::arch::asm!("out dx, al", in("dx") master_data, in("al") 0x04, options(nomem, nostack));
+        core::arch::asm!("out dx, al", in("dx") slave_data, in("al") 0x02, options(nomem, nostack));
         
         // ICW4 - 8086/88 mode
-        core::arch::asm!("out dx, al", in("dx") master_data, in("al") 0x01);
-        core::arch::asm!("out dx, al", in("dx") slave_data, in("al") 0x01);
+        core::arch::asm!("out dx, al", in("dx") master_data, in("al") 0x01, options(nomem, nostack));
+        core::arch::asm!("out dx, al", in("dx") slave_data, in("al") 0x01, options(nomem, nostack));
         
         // Disable all interrupts except IRQ0 (timer)
-        core::arch::asm!("out dx, al", in("dx") master_data, in("al") 0xFE);
-        core::arch::asm!("out dx, al", in("dx") slave_data, in("al") 0xFF);
+        core::arch::asm!("out dx, al", in("dx") master_data, in("al") 0xFE, options(nomem, nostack));
+        core::arch::asm!("out dx, al", in("dx") slave_data, in("al") 0xFF, options(nomem, nostack));
     }
     
     Ok(())
@@ -151,9 +151,9 @@ fn setup_x86_64_timer() -> BootstrapResult<()> {
         let divisor = 1193182 / 100;
         
         // Channel 0, LSB/MSB mode
-        core::arch::asm!("out dx, al", in("dx") pit_cmd, in("al") 0x36);
-        core::arch::asm!("out dx, al", in("dx") pit_data, in("al") (divisor & 0xFF) as u8);
-        core::arch::asm!("out dx, al", in("dx") pit_data, in("al") ((divisor >> 8) & 0xFF) as u8);
+        core::arch::asm!("out dx, al", in("dx") pit_cmd, in("al") 0x36, options(nomem, nostack));
+        core::arch::asm!("out dx, al", in("dx") pit_data, in("al") (divisor & 0xFF) as u8, options(nomem, nostack));
+        core::arch::asm!("out dx, al", in("dx") pit_data, in("al") ((divisor >> 8) & 0xFF) as u8, options(nomem, nostack));
     }
     
     Ok(())
@@ -219,7 +219,7 @@ fn setup_aarch64_timer() -> BootstrapResult<()> {
 fn enable_aarch64_interrupts() {
     unsafe {
         // Enable interrupts in PSTATE
-        core::arch::asm!("msr daifclr, #2");
+        core::arch::asm!("msr daifclr, #2", options(nomem, nostack));
     }
 }
 
@@ -277,9 +277,9 @@ fn enable_riscv64_interrupts() {
     unsafe {
         // Enable machine interrupts in mstatus
         let mut mstatus: usize;
-        core::arch::asm!("csrr {}, mstatus", out(reg) mstatus);
+        core::arch::asm!("csrr {}, mstatus", out(reg) mstatus, options(nomem, nostack));
         mstatus |= 1 << 3; // MIE bit
-        core::arch::asm!("csrw mstatus, {}", in(reg) mstatus);
+        core::arch::asm!("csrw mstatus, {}", in(reg) mstatus, options(nomem, nostack));
     }
 }
 
@@ -309,9 +309,9 @@ fn enable_x86_64_pae() -> BootstrapResult<()> {
     unsafe {
         // Set PAE bit in CR4
         let mut cr4: usize;
-        core::arch::asm!("mov {}, cr4", out(reg) cr4);
+        core::arch::asm!("mov {}, cr4", out(reg) cr4, options(nomem, nostack));
         cr4 |= 1 << 5; // PAE bit
-        core::arch::asm!("mov cr4, {}", in(reg) cr4);
+        core::arch::asm!("mov cr4, {}", in(reg) cr4, options(nomem, nostack));
     }
     
     Ok(())

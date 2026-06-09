@@ -335,16 +335,17 @@ pub fn get_current_cpu_id() -> usize {
         // Read APIC ID
         let apic_id: u32;
         unsafe {
-            core::arch::asm!(
-                "pushfq",
-                "cli",
-                "mov $1, %eax",
-                "cpuid",
-                "mov ${2}, edx",
-                "popfq",
-                out(reg) _,
-                out(reg) apic_id
-            );
+             core::arch::asm!(
+                 "pushfq",
+                 "cli",
+                 "mov eax, 1",
+                 "cpuid",
+                 "mov edx, 2",
+                 "popfq",
+                 out(reg) _,
+                 out(reg) apic_id,
+                 options(nomem, nostack)
+             );
         }
         (apic_id >> 24) as usize
     }
@@ -354,7 +355,7 @@ pub fn get_current_cpu_id() -> usize {
         // Read MPIDR_EL1
         let mpidr: u64;
         unsafe {
-            core::arch::asm!("mrs {}, mpidr_el1", out(reg) mpidr);
+            core::arch::asm!("mrs {}, mpidr_el1", out(reg) mpidr, options(nomem, nostack));
         }
         (mpidr & 0xFF) as usize
     }
@@ -415,14 +416,14 @@ pub fn halt_cpu() {
     #[cfg(target_arch = "aarch64")]
     {
         unsafe {
-            core::arch::asm!("wfi");
+            core::arch::asm!("wfi", options(nomem, nostack));
         }
     }
     
     #[cfg(target_arch = "riscv64")]
     {
         unsafe {
-            core::arch::asm!("wfi");
+            core::arch::asm!("wfi", options(nomem, nostack));
         }
     }
 }
@@ -454,7 +455,7 @@ pub fn get_cycles() -> u64 {
         // ARM64 cycle counter
         let cycles: u64;
         unsafe {
-            core::arch::asm!("mrs {}, pmccntr_el0", out(reg) cycles);
+            core::arch::asm!("mrs {}, pmccntr_el0", out(reg) cycles, options(nomem, nostack));
         }
         cycles
     }

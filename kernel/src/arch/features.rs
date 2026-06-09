@@ -67,14 +67,14 @@ pub mod x86_features {
             {
                 let mut cr4: u64;
                 unsafe {
-                    core::arch::asm!("mov %cr4, {}", out(reg) cr4);
+                    core::arch::asm!("mov {}, cr4", out(reg) cr4, options(nomem, nostack));
                 }
                 
                 // Enable OSFXSR bit (bit 9) for FXSAVE/FXRSTOR
                 cr4 |= 1 << 9;
                 
                 unsafe {
-                    core::arch::asm!("mov {}, %cr4", in(reg) cr4);
+                    core::arch::asm!("mov {}, cr4", in(reg) cr4, options(nomem, nostack));
                 }
             }
             
@@ -86,7 +86,7 @@ pub mod x86_features {
             #[cfg(target_arch = "x86_64")]
             {
                 unsafe {
-                    core::arch::asm!("ldmxcsr [{}+0]", in(reg) &self.mxcsr_value);
+                    core::arch::asm!("ldmxcsr [{}+0]", in(reg) &self.mxcsr_value, options(nomem, nostack));
                 }
             }
             
@@ -112,18 +112,19 @@ pub mod x86_features {
                 let a: [f32; 4] = [1.0, 2.0, 3.0, 4.0];
                 let b: [f32; 4] = [5.0, 6.0, 7.0, 8.0];
                 let mut result: [f32; 4] = [0.0; 4];
-                
-                unsafe {
-                    core::arch::asm!(
-                        "movups {}, %xmm0",
-                        "movups {}, %xmm1",
-                        "addps %xmm1, %xmm0",
-                        "movups %xmm0, {}",
-                        in(reg) a.as_ptr(),
-                        in(reg) b.as_ptr(),
-                        out(reg) result.as_mut_ptr(),
-                    );
-                }
+                 
+                 unsafe {
+                     core::arch::asm!(
+                         "movups xmm0, {}",
+                         "movups xmm1, {}",
+                         "addps xmm0, xmm1",
+                         "movups {}, xmm0",
+                         in(reg) a.as_ptr(),
+                         in(reg) b.as_ptr(),
+                         out(reg) result.as_mut_ptr(),
+                         options(nomem, nostack)
+                     );
+                 }
                 
                 Ok(result[0] + result[1] + result[2] + result[3])
             }
@@ -188,7 +189,7 @@ pub mod x86_features {
             {
                 let mut cr4: u64;
                 unsafe {
-                    core::arch::asm!("mov %cr4, {}", out(reg) cr4);
+                    core::arch::asm!("mov {}, cr4", out(reg) cr4, options(nomem, nostack));
                 }
                 
                 // Enable OSXMMEINTRPT (if needed for AVX)
@@ -208,13 +209,13 @@ pub mod x86_features {
                 // Enable XSAVE/XRSTOR instructions for AVX state management
                 let mut cr4: u64;
                 unsafe {
-                    core::arch::asm!("mov %cr4, {}", out(reg) cr4);
+                    core::arch::asm!("mov {}, cr4", out(reg) cr4, options(nomem, nostack));
                 }
                 
                 cr4 |= 1 << 18; // Enable XSAVE/XRSTOR
                 
                 unsafe {
-                    core::arch::asm!("mov {}, %cr4", in(reg) cr4);
+                    core::arch::asm!("mov {}, cr4", in(reg) cr4, options(nomem, nostack));
                 }
             }
             
@@ -245,17 +246,18 @@ pub mod x86_features {
                 let b: [f32; 4] = [5.0, 6.0, 7.0, 8.0];
                 let mut result: [f32; 4] = [0.0; 4];
                 
-                unsafe {
-                    core::arch::asm!(
-                        "vmovups {}, %ymm0",
-                        "vmovups {}, %ymm1", 
-                        "vaddps %ymm1, %ymm0, %ymm0",
-                        "vmovups %ymm0, {}",
-                        in(reg) a.as_ptr(),
-                        in(reg) b.as_ptr(),
-                        out(reg) result.as_mut_ptr(),
-                    );
-                }
+                 unsafe {
+                     core::arch::asm!(
+                         "vmovups ymm0, {}",
+                         "vmovups ymm1, {}", 
+                         "vaddps ymm0, ymm1, ymm0",
+                         "vmovups {}, ymm0",
+                         in(reg) a.as_ptr(),
+                         in(reg) b.as_ptr(),
+                         out(reg) result.as_mut_ptr(),
+                         options(nomem, nostack)
+                     );
+                 }
             }
             
             Ok(())
@@ -269,17 +271,18 @@ pub mod x86_features {
                 let b: [i32; 8] = [10, 20, 30, 40, 50, 60, 70, 80];
                 let mut result: [i32; 8] = [0; 8];
                 
-                unsafe {
-                    core::arch::asm!(
-                        "vmovdqu {}, %ymm0",
-                        "vmovdqu {}, %ymm1",
-                        "vpaddd %ymm1, %ymm0, %ymm0",
-                        "vmovdqu %ymm0, {}",
-                        in(reg) a.as_ptr(),
-                        in(reg) b.as_ptr(),
-                        out(reg) result.as_mut_ptr(),
-                    );
-                }
+                 unsafe {
+                     core::arch::asm!(
+                         "vmovdqu ymm0, {}",
+                         "vmovdqu ymm1, {}",
+                         "vpaddd ymm0, ymm1, ymm0",
+                         "vmovdqu {}, ymm0",
+                         in(reg) a.as_ptr(),
+                         in(reg) b.as_ptr(),
+                         out(reg) result.as_mut_ptr(),
+                         options(nomem, nostack)
+                     );
+                 }
             }
             
             Ok(())
@@ -474,14 +477,14 @@ pub mod aarch64_features {
                 // Configure CPACR_EL1 to enable access to SIMD/NEON registers
                 let mut cpacr: u64;
                 unsafe {
-                    core::arch::asm!("mrs {}, cpacr_el1", out(reg) cpacr);
+                    core::arch::asm!("mrs {}, cpacr_el1", out(reg) cpacr, options(nomem, nostack));
                 }
                 
                 // Enable access to Advanced SIMD and floating point registers
                 cpacr |= 0x3 << 20; // CPACR_EL1.FPEN = 0b11 (enable)
                 
                 unsafe {
-                    core::arch::asm!("msr cpacr_el1, {}", in(reg) cpacr);
+                    core::arch::asm!("msr cpacr_el1, {}", in(reg) cpacr, options(nomem, nostack));
                 }
             }
             
@@ -608,8 +611,8 @@ pub mod aarch64_features {
                 let mut id_aa64pfr0_el1: u64;
                 
                 unsafe {
-                    core::arch::asm!("mrs {}, midr_el1", out(reg) midr_el1);
-                    core::arch::asm!("mrs {}, id_aa64pfr0_el1", out(reg) id_aa64pfr0_el1);
+                    core::arch::asm!("mrs {}, midr_el1", out(reg) midr_el1, options(nomem, nostack));
+                    core::arch::asm!("mrs {}, id_aa64pfr0_el1", out(reg) id_aa64pfr0_el1, options(nomem, nostack));
                 }
                 
                 // Check for TrustZone support in ID_AA64PFR0_EL1
@@ -627,7 +630,7 @@ pub mod aarch64_features {
                 // Configure SCR_EL3 (Secure Configuration Register)
                 let mut scr_el3: u64;
                 unsafe {
-                    core::arch::asm!("mrs {}, scr_el3", out(reg) scr_el3);
+                    core::arch::asm!("mrs {}, scr_el3", out(reg) scr_el3, options(nomem, nostack));
                 }
                 
                 // Enable access to Secure state
@@ -638,7 +641,7 @@ pub mod aarch64_features {
                 // scr_el3 |= 1 << 4; // SCR_EL3.FIQ
                 
                 unsafe {
-                    core::arch::asm!("msr scr_el3, {}", in(reg) scr_el3);
+                    core::arch::asm!("msr scr_el3, {}", in(reg) scr_el3, options(nomem, nostack));
                 }
             }
             
@@ -819,18 +822,18 @@ pub mod aarch64_features {
                 // Enable ICC_PMR_EL1 (Priority Mask Register)
                 let pmr_value = 0x80; // Allow interrupts with priority 0x80-0xFF
                 unsafe {
-                    core::arch::asm!("msr icc_pmr_el1, {}", in(reg) pmr_value);
+                    core::arch::asm!("msr icc_pmr_el1, {}", in(reg) pmr_value, options(nomem, nostack));
                 }
                 
                 // Enable ICC_CTLR_EL1 (Control Register)
                 let mut ctlr: u64;
                 unsafe {
-                    core::arch::asm!("mrs {}, icc_ctlr_el1", out(reg) ctlr);
+                    core::arch::asm!("mrs {}, icc_ctlr_el1", out(reg) ctlr, options(nomem, nostack));
                 }
                 ctlr |= 0x01; // Enable priority grouping
                 
                 unsafe {
-                    core::arch::asm!("msr icc_ctlr_el1, {}", in(reg) ctlr);
+                    core::arch::asm!("msr icc_ctlr_el1, {}", in(reg) ctlr, options(nomem, nostack));
                 }
             }
             
@@ -1024,7 +1027,7 @@ pub mod riscv_features {
                 // Read PMP configuration register
                 let mut pmpcfg0: u64;
                 unsafe {
-                    core::arch::asm!("csrr {}, 0x3A0", out(reg) pmpcfg0);
+                    core::arch::asm!("csrr {}, 0x3A0", out(reg) pmpcfg0, options(nomem, nostack));
                 }
                 
                 // Extract number of PMP entries
@@ -1087,7 +1090,7 @@ pub mod riscv_features {
                             out(reg) mut pmpcfg0,
                         );
                         pmpcfg0 = (pmpcfg0 & !(0xFF << cfg_shift)) | ((cfg as u64) << cfg_shift);
-                        core::arch::asm!("csrw 0x3A0, {}", in(reg) pmpcfg0);
+                        core::arch::asm!("csrw 0x3A0, {}", in(reg) pmpcfg0, options(nomem, nostack));
                     }
                 } else {
                     let cfg_shift = ((entry - 4) % 4) * 8;
@@ -1097,7 +1100,7 @@ pub mod riscv_features {
                             out(reg) mut pmpcfg1,
                         );
                         pmpcfg1 = (pmpcfg1 & !(0xFF << cfg_shift)) | ((cfg as u64) << cfg_shift);
-                        core::arch::asm!("csrw 0x3A1, {}", in(reg) pmpcfg1);
+                        core::arch::asm!("csrw 0x3A1, {}", in(reg) pmpcfg1, options(nomem, nostack));
                     }
                 }
             }
@@ -1164,7 +1167,7 @@ pub mod riscv_features {
                 // Read SATP register to determine paging mode
                 let mut satp: u64;
                 unsafe {
-                    core::arch::asm!("csrr {}, 0x180", out(reg) satp);
+                    core::arch::asm!("csrr {}, 0x180", out(reg) satp, options(nomem, nostack));
                 }
                 
                 self.satp_mode = ((satp >> 60) & 0xF) as u8;
@@ -1184,14 +1187,14 @@ pub mod riscv_features {
                     // Enable paging with Svpbmt support
                     let mut satp: u64;
                     unsafe {
-                        core::arch::asm!("csrr {}, 0x180", out(reg) satp);
+                        core::arch::asm!("csrr {}, 0x180", out(reg) satp, options(nomem, nostack));
                     }
                     
                     // Set SATP mode to Svpbmt (mode = 2)
                     satp = (satp & !((0xF) << 60)) | ((2u64) << 60);
                     
                     unsafe {
-                        core::arch::asm!("csrw 0x180, {}", in(reg) satp);
+                        core::arch::asm!("csrw 0x180, {}", in(reg) satp, options(nomem, nostack));
                     }
                 }
             }

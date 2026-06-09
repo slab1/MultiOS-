@@ -160,16 +160,16 @@ fn disable_interrupts() {
     unsafe {
         match get_current_architecture() {
             crate::ArchType::X86_64 => {
-                core::arch::asm!("cli");
+                core::arch::asm!("cli", options(nomem, nostack));
             },
             crate::ArchType::AArch64 => {
-                core::arch::asm!("msr daifset, #2");
+                core::arch::asm!("msr daifset, #2", options(nomem, nostack));
             },
             crate::ArchType::Riscv64 => {
                 let mut mstatus: usize;
-                core::arch::asm!("csrr {}, mstatus", out(reg) mstatus);
+                core::arch::asm!("csrr {}, mstatus", out(reg) mstatus, options(nomem, nostack));
                 mstatus &= !(1 << 3); // Clear MIE
-                core::arch::asm!("csrw mstatus, {}", in(reg) mstatus);
+                core::arch::asm!("csrw mstatus, {}", in(reg) mstatus, options(nomem, nostack));
             },
             _ => {},
         }
@@ -343,7 +343,7 @@ fn capture_stack_trace() -> Vec<u64> {
         let mut return_addr: u64;
         
         // Get frame pointer
-        core::arch::asm!("mov {}, rbp", out(reg) frame_ptr);
+        core::arch::asm!("mov {}, rbp", out(reg) frame_ptr, options(nomem, nostack));
         
         // Walk stack frames
         for _ in 0..10 { // Limit depth
@@ -474,7 +474,7 @@ fn halt_system() -> ! {
     loop {
         unsafe {
             // Halt CPU and wait for interrupts
-            core::arch::asm!("hlt");
+            core::arch::asm!("hlt", options(nomem, nostack));
         }
     }
 }

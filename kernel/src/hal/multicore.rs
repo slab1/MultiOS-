@@ -430,16 +430,17 @@ pub fn get_current_cpu_id() -> usize {
         // Read APIC ID
         let apic_id: u32;
         unsafe {
-            core::arch::asm!(
-                "pushfq",
-                "cli",
-                "mov $1, %eax",
-                "cpuid",
-                "mov ${2}, edx",
-                "popfq",
-                out(reg) _,
-                out(reg) apic_id
-            );
+             core::arch::asm!(
+                 "pushfq",
+                 "cli",
+                 "mov eax, 1",
+                 "cpuid",
+                 "mov edx, 2",
+                 "popfq",
+                 out(reg) _,
+                 out(reg) apic_id,
+                 options(nomem, nostack)
+             );
         }
         (apic_id >> 24) as usize
     }
@@ -449,7 +450,7 @@ pub fn get_current_cpu_id() -> usize {
         // Read MPIDR_EL1
         let mpidr: u64;
         unsafe {
-            core::arch::asm!("mrs {}, mpidr_el1", out(reg) mpidr);
+            core::arch::asm!("mrs {}, mpidr_el1", out(reg) mpidr, options(nomem, nostack));
         }
         (mpidr & 0xFF) as usize
     }

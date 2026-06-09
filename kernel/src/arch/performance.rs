@@ -367,26 +367,27 @@ impl PerformanceMonitor {
     fn enable_x86_64_pmu(&self) -> Result<(), KernelError> {
         #[cfg(target_arch = "x86_64")]
         {
-            // Enable global PMU control (IA32_PERF_GLOBAL_CTL MSR 0x38F)
-            let global_ctrl = 0x7FFFFFFFFFFu64; // Enable all available counters
-            
-            unsafe {
-                core::arch::asm!(
-                    "mov {}, %rax",
-                    "wrmsr",
-                    in(reg) global_ctrl,
-                    in("rcx") 0x38Fu64,
-                );
-            }
-            
-            // Enable fixed-function counters
-            if let Some(ref config) = self.config {
-                if config.fixed_counters > 0 {
-                    let fixed_ctrl = 0x7u64; // Enable all fixed counters
-                    unsafe {
-                        core::arch::asm!(
-                            "mov {}, %rax",
-                            "wrmsr",
+             // Enable global PMU control (IA32_PERF_GLOBAL_CTL MSR 0x38F)
+             let global_ctrl = 0x7FFFFFFFFFFu64; // Enable all available counters
+             
+             unsafe {
+                 core::arch::asm!(
+                     "mov rax, {}",
+                     "wrmsr",
+                     in(reg) global_ctrl,
+                     in("rcx") 0x38Fu64,
+                     options(nomem, nostack)
+                 );
+             }
+             
+             // Enable fixed-function counters
+             if let Some(ref config) = self.config {
+                 if config.fixed_counters > 0 {
+                     let fixed_ctrl = 0x7u64; // Enable all fixed counters
+                     unsafe {
+                         core::arch::asm!(
+                             "mov rax, {}",
+                             "wrmsr",
                             in(reg) fixed_ctrl,
                             in("rcx") 0x39Du64,
                         );
@@ -816,18 +817,19 @@ impl PerformanceMonitor {
     
     /// Reset x86_64 counters
     fn reset_x86_64_counters(&self) -> Result<(), KernelError> {
-        #[cfg(target_arch = "x86_64")]
-        {
-            // Reset PMU by writing to PMU control register
-            unsafe {
-                core::arch::asm!(
-                    "mov {}, %rax",
-                    "wrmsr",
-                    in(reg) 0x1u64, // PMCR.P bit (reset)
-                    in("rcx") 0x39Cu64, // IA32_PERF_GLOBAL_CTRL
-                );
-            }
-        }
+         #[cfg(target_arch = "x86_64")]
+         {
+             // Reset PMU by writing to PMU control register
+             unsafe {
+                 core::arch::asm!(
+                     "mov rax, {}",
+                     "wrmsr",
+                     in(reg) 0x1u64, // PMCR.P bit (reset)
+                     in("rcx") 0x39Cu64, // IA32_PERF_GLOBAL_CTRL
+                     options(nomem, nostack)
+                 );
+             }
+         }
         
         Ok(())
     }
