@@ -6,7 +6,7 @@
 
 use alloc::vec;
 use crate::syscall::*;
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 use alloc::string::ToString;
@@ -126,7 +126,7 @@ pub fn error_handling_example() {
         // println!("    Recovery strategy: {:?}", recovery_strategy);
         
         // Execute recovery
-        let mut recovery_params = HashMap::new();
+        let mut recovery_params = BTreeMap::new();
         recovery_params.insert("retry_count".to_string(), 3);
         recovery_params.insert("timeout_ms".to_string(), 5000);
         
@@ -409,7 +409,7 @@ pub fn integrated_system_example() {
             let recovery_result = error_handler.lock().unwrap().execute_recovery(
                 err,
                 4000 + i as u64,
-                &HashMap::new()
+                &BTreeMap::new()
             );
             
             match recovery_result {

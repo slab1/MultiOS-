@@ -17,7 +17,7 @@ use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::String;
 use alloc::string::ToString;
-use alloc::collections::HashMap;
+use alloc::collections::BTreeMap;
 use alloc::vec;
 use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
@@ -88,7 +88,7 @@ pub enum ConfigValue {
     Boolean(bool),
     Float(f64),
     Array(Vec<ConfigValue>),
-    Object(HashMap<String, ConfigValue>),
+    Object(BTreeMap<String, ConfigValue>),
     None,
 }
 
@@ -181,7 +181,7 @@ pub struct ConfigStats {
 
 /// Main configuration manager
 pub struct ConfigManager {
-    config_data: RwLock<HashMap<ConfigKey, ConfigEntry>>,
+    config_data: RwLock<BTreeMap<ConfigKey, ConfigEntry>>,
     pub schema_manager: ConfigSchema,
     pub policy_manager: PolicyManager,
     pub storage: ConfigStorage,
@@ -198,7 +198,7 @@ impl ConfigManager {
     /// Create a new configuration manager
     pub fn new() -> Self {
         ConfigManager {
-            config_data: RwLock::new(HashMap::new()),
+            config_data: RwLock::new(BTreeMap::new()),
             schema_manager: (),
             policy_manager: (),
             storage: (),

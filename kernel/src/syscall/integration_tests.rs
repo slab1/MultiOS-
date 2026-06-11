@@ -18,7 +18,7 @@ use alloc::format;
 mod integration_tests {
     use super::*;
     use std::sync::{Arc, Mutex};
-    use std::collections::HashMap;
+    use std::collections::BTreeMap;
     use std::time::{Duration, Instant};
 
     // Test constants
@@ -378,7 +378,7 @@ mod integration_tests {
         let recovery_result = error_handler.execute_recovery(
             SyscallError::InvalidArgument,
             300,
-            &HashMap::new()
+            &BTreeMap::new()
         );
         
         assert!(recovery_result.is_ok());

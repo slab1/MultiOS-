@@ -7,7 +7,7 @@ use super::block::{BlockDeviceId, BlockIoRequest, BlockIoResult, BlockOperation,
 use crate::drivers::block::{BlockDeviceError as SuperBlockDeviceError};
 
 use spin::{Mutex, RwLock};
-use alloc::{vec::Vec, collections::VecDeque, collections::BTreeMap, collections::HashMap};
+use alloc::{vec::Vec, collections::VecDeque, collections::BTreeMap};
 use alloc::sync::Arc;
 use core::time::Duration;
 
@@ -59,7 +59,7 @@ struct DeviceQueue {
     elevator_direction: ElevatorDirection,
     cfq_time_slice: Duration,
     cfq_current_time: u64,
-    cfq_group_queues: HashMap<u64, CfqGroup>, // Process group ID -> CFQ group
+    cfq_group_queues: BTreeMap<u64, CfqGroup>, // Process group ID -> CFQ group
 }
 
 /// CFQ group for fair queuing
@@ -82,7 +82,7 @@ enum ElevatorDirection {
 /// Block I/O Scheduler
 pub struct BlockIoScheduler {
     scheduler_type: SchedulerType,
-    devices: RwLock<HashMap<BlockDeviceId, DeviceQueue>>,
+    devices: RwLock<BTreeMap<BlockDeviceId, DeviceQueue>>,
     global_queue: VecDeque<SchedulerRequest>,
     time_slice_ns: u64,
     fifo_expire_read: Duration,
@@ -99,7 +99,7 @@ impl BlockIoScheduler {
         
         Self {
             scheduler_type,
-            devices: RwLock::new(HashMap::new()),
+            devices: RwLock::new(BTreeMap::new()),
             global_queue: VecDeque::new(),
             time_slice_ns: 100_000_000, // 100ms default time slice
             fifo_expire_read: Duration::from_millis(500),
@@ -152,7 +152,7 @@ impl BlockIoScheduler {
             elevator_direction: ElevatorDirection::Up,
             cfq_time_slice: Duration::from_millis(100),
             cfq_current_time: crate::arch::get_time_ns(),
-            cfq_group_queues: HashMap::new(),
+            cfq_group_queues: BTreeMap::new(),
         };
         
         devices.insert(device_id, device_queue);
@@ -322,7 +322,7 @@ impl BlockIoScheduler {
     }
 
     /// Try to dispatch requests from queues
-    fn try_dispatch_requests(&mut self, device_id: BlockDeviceId, devices: &mut HashMap<BlockDeviceId, DeviceQueue>) -> Result<(), BlockDeviceError> {
+    fn try_dispatch_requests(&mut self, device_id: BlockDeviceId, devices: &mut BTreeMap<BlockDeviceId, DeviceQueue>) -> Result<(), BlockDeviceError> {
         let device_queue = match devices.get_mut(&device_id) {
             Some(queue) => queue,
             None => return Err(BlockDeviceError::DeviceNotFound),
@@ -347,7 +347,7 @@ impl BlockIoScheduler {
     }
 
     /// Dispatch request using elevator algorithm
-    fn dispatch_elevator_request(&mut self, device_id: BlockDeviceId, devices: &mut HashMap<BlockDeviceId, DeviceQueue>) -> Result<(), BlockDeviceError> {
+    fn dispatch_elevator_request(&mut self, device_id: BlockDeviceId, devices: &mut BTreeMap<BlockDeviceId, DeviceQueue>) -> Result<(), BlockDeviceError> {
         let device_queue = match devices.get_mut(&device_id) {
             Some(queue) => queue,
             None => return Err(BlockDeviceError::DeviceNotFound),
@@ -403,7 +403,7 @@ impl BlockIoScheduler {
     }
 
     /// Dispatch request using deadline algorithm
-    fn dispatch_deadline_request(&mut self, device_id: BlockDeviceId, devices: &mut HashMap<BlockDeviceId, DeviceQueue>) -> Result<(), BlockDeviceError> {
+    fn dispatch_deadline_request(&mut self, device_id: BlockDeviceId, devices: &mut BTreeMap<BlockDeviceId, DeviceQueue>) -> Result<(), BlockDeviceError> {
         let device_queue = match devices.get_mut(&device_id) {
             Some(queue) => queue,
             None => return Err(BlockDeviceError::DeviceNotFound),
@@ -464,7 +464,7 @@ impl BlockIoScheduler {
     }
 
     /// Dispatch request using CFQ algorithm
-    fn dispatch_cfq_request(&mut self, device_id: BlockDeviceId, devices: &mut HashMap<BlockDeviceId, DeviceQueue>) -> Result<(), BlockDeviceError> {
+    fn dispatch_cfq_request(&mut self, device_id: BlockDeviceId, devices: &mut BTreeMap<BlockDeviceId, DeviceQueue>) -> Result<(), BlockDeviceError> {
         let device_queue = match devices.get_mut(&device_id) {
             Some(queue) => queue,
             None => return Err(BlockDeviceError::DeviceNotFound),
@@ -525,7 +525,7 @@ impl BlockIoScheduler {
     }
 
     /// Dispatch request using no-op algorithm
-    fn dispatch_noop_request(&mut self, device_id: BlockDeviceId, devices: &mut HashMap<BlockDeviceId, DeviceQueue>) -> Result<(), BlockDeviceError> {
+    fn dispatch_noop_request(&mut self, device_id: BlockDeviceId, devices: &mut BTreeMap<BlockDeviceId, DeviceQueue>) -> Result<(), BlockDeviceError> {
         let device_queue = match devices.get_mut(&device_id) {
             Some(queue) => queue,
             None => return Err(BlockDeviceError::DeviceNotFound),
@@ -552,13 +552,13 @@ impl BlockIoScheduler {
     }
 
     /// Dispatch request using multi-queue deadline algorithm
-    fn dispatch_mq_deadline_request(&mut self, device_id: BlockDeviceId, devices: &mut HashMap<BlockDeviceId, DeviceQueue>) -> Result<(), BlockDeviceError> {
+    fn dispatch_mq_deadline_request(&mut self, device_id: BlockDeviceId, devices: &mut BTreeMap<BlockDeviceId, DeviceQueue>) -> Result<(), BlockDeviceError> {
         // MQ Deadline is similar to regular deadline but optimized for multi-queue devices
         self.dispatch_deadline_request(device_id, devices)
     }
 
     /// Dispatch request with no scheduling
-    fn dispatch_none_request(&mut self, _device_id: BlockDeviceId, _devices: &mut HashMap<BlockDeviceId, DeviceQueue>) -> Result<(), BlockDeviceError> {
+    fn dispatch_none_request(&mut self, _device_id: BlockDeviceId, _devices: &mut BTreeMap<BlockDeviceId, DeviceQueue>) -> Result<(), BlockDeviceError> {
         // No scheduling - requests are executed immediately upon submission
         Ok(())
     }

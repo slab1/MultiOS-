@@ -6,7 +6,6 @@
 
 use spin::{Mutex, RwLock};
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
 use alloc::vec::Vec;
 use alloc::boxed::Box;
 use alloc::vec;

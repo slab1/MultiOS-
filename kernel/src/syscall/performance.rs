@@ -792,7 +792,6 @@ pub enum PerformanceError {
 pub type AlertCallback = fn(PerformanceState, &SyscallPerformanceStats);
 
 // Global performance manager
-use spin::Mutex;
 use alloc::format;
 static PERFORMANCE_MANAGER: Mutex<Option<SyscallPerformanceManager>> = Mutex::new(None);
 

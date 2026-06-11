@@ -157,7 +157,7 @@ pub struct SystemUpdater {
     config: UpdateConfig,
     update_queue: Arc<Mutex<Vec<UpdateTarget>>>,
     update_status: Arc<Mutex<alloc::collections::BTreeMap<String, UpdateStatus>>>,
-    current_updates: Arc<Mutex<alloc::collections::HashMap<String, UpdateResult>>>,
+    current_updates: Arc<Mutex<alloc::collections::BTreeMap<String, UpdateResult>>>,
     update_history: Arc<Mutex<Vec<UpdateResult>>>,
 }
 
@@ -171,7 +171,7 @@ impl SystemUpdater {
             config,
             update_queue: Arc::new(Mutex::new(Vec::new())),
             update_status: Arc::new(Mutex::new(alloc::collections::BTreeMap::new())),
-            current_updates: Arc::new(Mutex::new(alloc::collections::HashMap::new())),
+            current_updates: Arc::new(Mutex::new(alloc::collections::BTreeMap::new())),
             update_history: Arc::new(Mutex::new(Vec::new())),
         }
     }

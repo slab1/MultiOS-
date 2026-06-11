@@ -7,7 +7,7 @@
 
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::collections::HashMap;
+use alloc::collections::BTreeMap;
 use alloc::format;
 use spin::{Mutex, RwLock};
 

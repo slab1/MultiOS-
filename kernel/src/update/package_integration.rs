@@ -436,9 +436,6 @@ pub struct RegisteredService {
 /// Provides integration with package managers, dependency resolution,
 /// update source management, and package update handling.
 
-use alloc::vec::Vec;
-use alloc::string::String;
-use alloc::string::ToString;
 use alloc::collections::BTreeMap;
 use alloc::vec;
 use alloc::format;

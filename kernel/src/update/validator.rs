@@ -15,7 +15,6 @@
 
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
 use alloc::vec;
 use alloc::format;
 use spin::{Mutex, RwLock};
@@ -653,7 +652,7 @@ impl UpdateValidator {
             certificate_chain.push(cert.clone());
             
             // Check minimum trust level
-            if trust_level as u8 < self.config.minimum_trust_level as u8 {
+            if (trust_level as u8) < self.config.minimum_trust_level as u8 {
                 return Err(ValidationError::UntrustedCertificate);
             }
         }

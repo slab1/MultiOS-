@@ -186,13 +186,14 @@ fn detect_x86_64_hardware(context: &BootstrapContext) -> BootstrapResult<()> {
     
     // Read CPUID for processor information
     unsafe {
+        let (_eax, _ebx, _ecx, _edx);
         core::arch::asm!(
             "mov eax, 1",
             "cpuid",
-            out(reg) _eax,
-            out(reg) _ebx,
-            out(reg) _ecx,
-            out(reg) _edx
+            out("eax") _eax,
+            out("ebx") _ebx,
+            out("ecx") _ecx,
+            out("edx") _edx
         );
     }
     

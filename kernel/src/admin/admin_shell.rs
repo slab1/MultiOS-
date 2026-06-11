@@ -19,8 +19,7 @@ use crate::services::{cli_service, time_service};
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
-use alloc::collections::{BTreeMap, HashMap, VecDeque, BTreeSet};
+use alloc::collections::{BTreeMap, VecDeque, BTreeSet};
 use alloc::sync::Arc;
 use alloc::vec;
 use alloc::format;
@@ -89,7 +88,7 @@ pub struct AdminContext {
     pub is_root: bool,
     pub session_id: String,
     pub working_directory: String,
-    pub environment: HashMap<String, String>,
+    pub environment: BTreeMap<String, String>,
     pub permissions: AdminPermissions,
 }
 
@@ -221,11 +220,11 @@ pub struct PackageInfo {
 /// Administrative shell main structure
 pub struct AdminShell {
     commands: BTreeMap<String, AdminCommand>,
-    user_database: HashMap<String, UserInfo>,
+    user_database: BTreeMap<String, UserInfo>,
     system_info: SystemInfo,
     network_interfaces: Vec<NetworkInterface>,
     storage_devices: Vec<StorageDevice>,
-    packages: HashMap<String, PackageInfo>,
+    packages: BTreeMap<String, PackageInfo>,
     active_processes: Vec<ProcessInfo>,
     command_history: VecDeque<AdminHistoryEntry>,
     max_history_size: usize,
@@ -263,9 +262,9 @@ pub struct AuditLogger {
 #[derive(Debug, Clone)]
 pub struct ConfigManager {
     pub config_file: String,
-    pub system_config: HashMap<String, String>,
-    pub network_config: HashMap<String, String>,
-    pub security_config: HashMap<String, String>,
+    pub system_config: BTreeMap<String, String>,
+    pub network_config: BTreeMap<String, String>,
+    pub security_config: BTreeMap<String, String>,
 }
 
 /// Completion engine
@@ -307,7 +306,7 @@ impl AdminShell {
             is_root: true,
             session_id: format!("admin_{}", time_service::get_current_time_ms()),
             working_directory: "/root".to_string(),
-            environment: HashMap::new(),
+            environment: BTreeMap::new(),
             permissions: AdminPermissions {
                 can_manage_users: true,
                 can_modify_system: true,
@@ -335,11 +334,11 @@ impl AdminShell {
 
         AdminShell {
             commands: BTreeMap::new(),
-            user_database: HashMap::new(),
+            user_database: BTreeMap::new(),
             system_info,
             network_interfaces: Vec::new(),
             storage_devices: Vec::new(),
-            packages: HashMap::new(),
+            packages: BTreeMap::new(),
             active_processes: Vec::new(),
             command_history: VecDeque::new(),
             max_history_size: 2000,
@@ -352,9 +351,9 @@ impl AdminShell {
             },
             config_manager: ConfigManager {
                 config_file: "/etc/multios/admin.conf".to_string(),
-                system_config: HashMap::new(),
-                network_config: HashMap::new(),
-                security_config: HashMap::new(),
+                system_config: BTreeMap::new(),
+                network_config: BTreeMap::new(),
+                security_config: BTreeMap::new(),
             },
             completion_engine: AdminCompletionEngine {
                 command_completions: Vec::new(),
@@ -1204,7 +1203,7 @@ impl AdminShell {
     }
 
     /// Get all packages
-    pub fn get_packages(&self) -> HashMap<String, PackageInfo> {
+    pub fn get_packages(&self) -> BTreeMap<String, PackageInfo> {
         self.packages.clone()
     }
 

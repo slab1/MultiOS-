@@ -9,7 +9,7 @@
 use alloc::vec::Vec;
 use alloc::string::String;
 use alloc::string::ToString;
-use alloc::collections::HashMap;
+use alloc::collections::BTreeMap;
 use alloc::vec;
 use spin::{Mutex, RwLock};
 use core::sync::atomic::{AtomicU64, Ordering};
@@ -146,9 +146,9 @@ pub struct PropagationStats {
 
 /// Configuration propagator
 pub struct ConfigPropagator {
-    targets: RwLock<HashMap<u64, PropagationTarget>>,
+    targets: RwLock<BTreeMap<u64, PropagationTarget>>,
     request_queue: Mutex<Vec<PropagationRequest>>,
-    pending_requests: RwLock<HashMap<u64, PropagationRequest>>,
+    pending_requests: RwLock<BTreeMap<u64, PropagationRequest>>,
     completed_results: RwLock<Vec<PropagationResult>>,
     next_target_id: AtomicU64,
     next_request_id: AtomicU64,
@@ -172,9 +172,9 @@ impl ConfigPropagator {
     /// Create a new configuration propagator
     pub fn new() -> Self {
         ConfigPropagator {
-            targets: RwLock::new(HashMap::new()),
+            targets: RwLock::new(BTreeMap::new()),
             request_queue: Mutex::new(Vec::new()),
-            pending_requests: RwLock::new(HashMap::new()),
+            pending_requests: RwLock::new(BTreeMap::new()),
             completed_results: RwLock::new(Vec::new()),
             next_target_id: AtomicU64::new(1),
             next_request_id: AtomicU64::new(1),
@@ -240,7 +240,7 @@ impl ConfigPropagator {
     }
 
     /// Propagate configuration to all matching targets
-    pub fn propagate_all_configs(&self, config_data: &HashMap<ConfigKey, super::ConfigEntry>) -> ConfigResult<()> {
+    pub fn propagate_all_configs(&self, config_data: &BTreeMap<ConfigKey, super::ConfigEntry>) -> ConfigResult<()> {
         let targets = self.targets.read();
         let mut propagated_keys = Vec::new();
         
@@ -441,7 +441,7 @@ impl ConfigPropagator {
 
     /// Find keys that match a target's filters
     fn find_matching_keys(&self, target: &PropagationTarget, 
-                         config_data: &HashMap<ConfigKey, super::ConfigEntry>) -> Vec<ConfigKey> {
+                         config_data: &BTreeMap<ConfigKey, super::ConfigEntry>) -> Vec<ConfigKey> {
         let mut matching_keys = Vec::new();
         
         for key in config_data.keys() {

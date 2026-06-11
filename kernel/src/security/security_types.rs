@@ -7,7 +7,7 @@
 
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::collections::HashMap;
+use alloc::collections::BTreeMap;
 
 /// Security policy management result
 pub type PolicyResult<T> = Result<T, PolicyError>;
@@ -96,7 +96,7 @@ pub struct RuleMatch {
     pub rule_id: String,
     pub category: RuleCategory,
     pub matched: bool,
-    pub parameters: HashMap<String, String>,
+    pub parameters: BTreeMap<String, String>,
 }
 
 /// Policy conflict information
@@ -188,7 +188,7 @@ pub enum PolicyScope {
     Namespace(String),
     Resource(String),
     TimeWindow { start: u64, end: u64 },
-    Contextual { conditions: HashMap<String, String> },
+    Contextual { conditions: BTreeMap<String, String> },
 }
 
 /// Policy condition for evaluation
@@ -249,7 +249,7 @@ pub struct SecurityPolicy {
     pub updated_at: u64,
     pub expires_at: Option<u64>,
     pub tags: Vec<String>,
-    pub metadata: HashMap<String, String>,
+    pub metadata: BTreeMap<String, String>,
 }
 
 /// Policy version information
@@ -281,7 +281,7 @@ pub struct SecurityRule {
 #[derive(Debug, Clone)]
 pub struct RuleAction {
     pub action_type: ActionType,
-    pub parameters: HashMap<String, String>,
+    pub parameters: BTreeMap<String, String>,
     pub target: ActionTarget,
     pub delay: u64,
     pub retry_count: u32,
@@ -441,7 +441,7 @@ pub struct EvaluationContext {
     pub timestamp: u64,
     pub namespace: String,
     pub roles: Vec<String>,
-    pub metadata: HashMap<String, String>,
+    pub metadata: BTreeMap<String, String>,
 }
 
 /// Security framework configuration

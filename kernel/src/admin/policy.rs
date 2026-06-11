@@ -8,7 +8,7 @@
 use alloc::vec::Vec;
 use alloc::string::String;
 use alloc::string::ToString;
-use alloc::collections::HashMap;
+use alloc::collections::BTreeMap;
 use alloc::vec;
 use alloc::format;
 use spin::{Mutex, RwLock};
@@ -91,7 +91,7 @@ pub enum ConditionOperator {
 #[derive(Debug, Clone)]
 pub struct PolicyAction {
     pub action_type: ActionType,
-    pub parameters: HashMap<String, ConfigValue>,
+    pub parameters: BTreeMap<String, ConfigValue>,
     pub description: String,
 }
 
@@ -131,8 +131,8 @@ pub enum EnforcementLevel {
 
 /// Policy manager
 pub struct PolicyManager {
-    policies: RwLock<HashMap<String, Policy>>,
-    evaluation_cache: Mutex<HashMap<String, PolicyResult>>,
+    policies: RwLock<BTreeMap<String, Policy>>,
+    evaluation_cache: Mutex<BTreeMap<String, PolicyResult>>,
     violation_log: RwLock<Vec<PolicyViolation>>,
     next_policy_id: AtomicU64,
     policy_stats: PolicyStats,
@@ -176,8 +176,8 @@ impl PolicyManager {
     /// Create a new policy manager
     pub fn new() -> Self {
         PolicyManager {
-            policies: RwLock::new(HashMap::new()),
-            evaluation_cache: Mutex::new(HashMap::new()),
+            policies: RwLock::new(BTreeMap::new()),
+            evaluation_cache: Mutex::new(BTreeMap::new()),
             violation_log: RwLock::new(Vec::new()),
             next_policy_id: AtomicU64::new(1),
             policy_stats: PolicyStats {
@@ -286,7 +286,7 @@ impl PolicyManager {
     }
 
     /// Apply policies to configuration data
-    pub fn apply_policies(&self, config_data: &HashMap<ConfigKey, super::ConfigEntry>) -> ConfigResult<()> {
+    pub fn apply_policies(&self, config_data: &BTreeMap<ConfigKey, super::ConfigEntry>) -> ConfigResult<()> {
         let mut violations = Vec::new();
         
         for (key, entry) in config_data {
@@ -339,12 +339,12 @@ impl PolicyManager {
             actions: vec![
                 PolicyAction {
                     action_type: ActionType::Deny,
-                    parameters: HashMap::new(),
+                    parameters: BTreeMap::new(),
                     description: "Deny non-root access to system configuration".to_string(),
                 },
                 PolicyAction {
                     action_type: ActionType::Log,
-                    parameters: HashMap::new(),
+                    parameters: BTreeMap::new(),
                     description: "Log unauthorized access attempt".to_string(),
                 }
             ],
@@ -371,7 +371,7 @@ impl PolicyManager {
             actions: vec![
                 PolicyAction {
                     action_type: ActionType::Throttle,
-                    parameters: HashMap::new(),
+                    parameters: BTreeMap::new(),
                     description: "Throttle large memory allocations".to_string(),
                 }
             ],

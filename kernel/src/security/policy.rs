@@ -7,7 +7,7 @@
 
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::collections::{HashMap, BTreeMap};
+use alloc::collections::{BTreeMap};
 use alloc::vec;
 use alloc::format;
 use spin::{Mutex, RwLock};
@@ -110,7 +110,7 @@ mod security_types {
         pub rule_id: String,
         pub category: RuleCategory,
         pub matched: bool,
-        pub parameters: HashMap<String, String>,
+        pub parameters: BTreeMap<String, String>,
     }
 
     /// Policy conflict information
@@ -202,7 +202,7 @@ mod security_types {
         Namespace(String),
         Resource(String),
         TimeWindow { start: u64, end: u64 },
-        Contextual { conditions: HashMap<String, String> },
+        Contextual { conditions: BTreeMap<String, String> },
     }
 
     /// Policy condition for evaluation
@@ -264,7 +264,7 @@ pub struct SecurityPolicy {
     pub updated_at: u64,
     pub expires_at: Option<u64>,
     pub tags: Vec<String>,
-    pub metadata: HashMap<String, String>,
+    pub metadata: BTreeMap<String, String>,
 }
 
 /// Policy version information
@@ -296,7 +296,7 @@ pub struct SecurityRule {
 #[derive(Debug, Clone)]
 pub struct RuleAction {
     pub action_type: ActionType,
-    pub parameters: HashMap<String, String>,
+    pub parameters: BTreeMap<String, String>,
     pub target: ActionTarget,
     pub delay: u64,
     pub retry_count: u32,
@@ -426,11 +426,11 @@ static POLICY_MANAGER: Mutex<Option<SecurityPolicyManager>> = Mutex::new(None);
 
 /// Security Policy Manager - Main orchestrator for system-wide security policies
 pub struct SecurityPolicyManager {
-    policies: RwLock<HashMap<String, SecurityPolicy>>,
+    policies: RwLock<BTreeMap<String, SecurityPolicy>>,
     policy_history: RwLock<BTreeMap<String, PolicyVersionHistory>>,
-    evaluation_cache: Mutex<HashMap<String, EvaluationResult>>,
+    evaluation_cache: Mutex<BTreeMap<String, EvaluationResult>>,
     violation_log: RwLock<Vec<PolicyViolation>>,
-    service_propagation: RwLock<HashMap<String, ServicePolicyBinding>>,
+    service_propagation: RwLock<BTreeMap<String, ServicePolicyBinding>>,
     conflict_resolution: ConflictResolver,
     evaluator: PolicyEvaluator,
     propagator: PolicyPropagator,
@@ -465,11 +465,11 @@ impl SecurityPolicyManager {
     /// Create a new security policy manager
     pub fn new() -> Self {
         SecurityPolicyManager {
-            policies: RwLock::new(HashMap::new()),
+            policies: RwLock::new(BTreeMap::new()),
             policy_history: RwLock::new(BTreeMap::new()),
-            evaluation_cache: Mutex::new(HashMap::new()),
+            evaluation_cache: Mutex::new(BTreeMap::new()),
             violation_log: RwLock::new(Vec::new()),
-            service_propagation: RwLock::new(HashMap::new()),
+            service_propagation: RwLock::new(BTreeMap::new()),
             conflict_resolution: ConflictResolver::new(),
             evaluator: PolicyEvaluator::new(),
             propagator: PolicyPropagator::new(),
@@ -897,7 +897,7 @@ impl SecurityPolicyManager {
             updated_at: self.get_current_time(),
             expires_at: None,
             tags: vec!["system".to_string(), "security".to_string()],
-            metadata: HashMap::new(),
+            metadata: BTreeMap::new(),
         };
 
         // Access Control Policy
@@ -917,7 +917,7 @@ impl SecurityPolicyManager {
             updated_at: self.get_current_time(),
             expires_at: None,
             tags: vec!["access".to_string(), "security".to_string()],
-            metadata: HashMap::new(),
+            metadata: BTreeMap::new(),
         };
 
         self.create_policy(system_policy)?;
@@ -947,7 +947,7 @@ impl SecurityPolicyManager {
                 actions: vec![
                     RuleAction {
                         action_type: ActionType::Deny,
-                        parameters: HashMap::new(),
+                        parameters: BTreeMap::new(),
                         target: ActionTarget::Source,
                         delay: 0,
                         retry_count: 0,
@@ -990,7 +990,7 @@ impl SecurityPolicyManager {
                 actions: vec![
                     RuleAction {
                         action_type: ActionType::Audit,
-                        parameters: HashMap::new(),
+                        parameters: BTreeMap::new(),
                         target: ActionTarget::SelfTarget,
                         delay: 0,
                         retry_count: 0,
@@ -1104,7 +1104,7 @@ impl SecurityPolicyManager {
                 rule_id: rule.rule_id.clone(),
                 category: rule.category,
                 matched: rule_applies,
-                parameters: HashMap::new(),
+                parameters: BTreeMap::new(),
             });
         }
 
@@ -1309,7 +1309,7 @@ pub struct EvaluationContext {
     pub timestamp: u64,
     pub namespace: String,
     pub roles: Vec<String>,
-    pub metadata: HashMap<String, String>,
+    pub metadata: BTreeMap<String, String>,
 }
 
 /// Policy match result
@@ -1460,7 +1460,7 @@ mod tests {
             updated_at: 1000000,
             expires_at: None,
             tags: Vec::new(),
-            metadata: HashMap::new(),
+            metadata: BTreeMap::new(),
         };
 
         assert_eq!(policy.name, "Test Policy");
@@ -1480,7 +1480,7 @@ mod tests {
             timestamp: 1000000,
             namespace: "test".to_string(),
             roles: vec!["user".to_string()],
-            metadata: HashMap::new(),
+            metadata: BTreeMap::new(),
         };
 
         assert_eq!(context.user_id, 1);

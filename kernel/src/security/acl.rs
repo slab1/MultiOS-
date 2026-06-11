@@ -8,8 +8,7 @@
 
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
-use alloc::collections::{BTreeSet, HashMap};
+use alloc::collections::{BTreeSet, BTreeMap};
 use alloc::vec;
 use crate::admin::user_manager::{UserId, GroupId};
 use crate::security::rbac::{RbacPermission, SecurityLevel};
@@ -206,7 +205,7 @@ impl AccessControlList {
     /// Validate ACL integrity
     pub fn validate(&self) -> Result<(), RbacError> {
         // Check for duplicate entry IDs
-        let mut seen_ids = HashMap::new();
+        let mut seen_ids = BTreeMap::new();
         for entry in &self.entries {
             if let Some(&count) = seen_ids.get(&entry.entry_id) {
                 if count > 0 {

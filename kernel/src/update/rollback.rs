@@ -6,7 +6,6 @@
 
 use alloc::collections::BTreeMap;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
 use alloc::sync::{Arc, Weak};
 use alloc::vec::Vec;
 use core::fmt::{self, Display, Formatter};
@@ -1975,13 +1974,8 @@ mod tests {
 /// Provides comprehensive system state preservation, rollback capabilities,
 /// and recovery mechanisms for safe system updates.
 
-use alloc::vec::Vec;
-use alloc::string::String;
-use alloc::string::ToString;
-use alloc::sync::Arc;
 use alloc::vec;
 use alloc::format;
-use spin::Mutex;
 use core::time::Duration;
 use crate::{KernelResult, KernelError, log::{info, warn, error}};
 

@@ -11,7 +11,7 @@ use crate::drivers::error_recovery::{ErrorRecoveryManager, RecoveryStrategy};
 use crate::drivers::block_device_interface::{BlockDeviceInterface, BlockDeviceManager, BlockDeviceWrapper};
 
 use spin::{Mutex, RwLock};
-use alloc::{vec::Vec, collections::BTreeMap, collections::HashMap};
+use alloc::{vec::Vec, collections::BTreeMap};
 use alloc::sync::Arc;
 use core::time::Duration;
 

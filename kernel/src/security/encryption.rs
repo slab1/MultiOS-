@@ -14,7 +14,6 @@
 
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
 use alloc::vec;
 use alloc::format;
 use spin::{Mutex, RwLock};

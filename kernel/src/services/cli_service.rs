@@ -14,8 +14,7 @@ use crate::{KernelError, Result};
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
-use alloc::collections::{BTreeMap, HashMap, VecDeque};
+use alloc::collections::{BTreeMap, VecDeque};
 use alloc::sync::Arc;
 use alloc::vec;
 use alloc::format;
@@ -79,10 +78,10 @@ pub struct CliContext {
 }
 
 /// Environment variables
-pub type EnvironmentVariables = HashMap<String, String>;
+pub type EnvironmentVariables = BTreeMap<String, String>;
 
 /// Command aliases
-pub type CommandAliases = HashMap<String, String>;
+pub type CommandAliases = BTreeMap<String, String>;
 
 /// Command history entry
 #[derive(Debug, Clone)]
@@ -96,7 +95,7 @@ pub struct HistoryEntry {
 /// Script execution context
 #[derive(Debug, Clone)]
 pub struct ScriptContext {
-    pub variables: HashMap<String, String>,
+    pub variables: BTreeMap<String, String>,
     pub conditional_stack: Vec<bool>,
     pub loop_stack: Vec<(usize, usize)>, // (start_line, end_line)
     pub current_line: usize,
@@ -159,8 +158,8 @@ impl CliService {
     pub fn new() -> Self {
         let mut service = CliService {
             commands: BTreeMap::new(),
-            aliases: HashMap::new(),
-            environment: HashMap::new(),
+            aliases: BTreeMap::new(),
+            environment: BTreeMap::new(),
             history: VecDeque::new(),
             max_history_size: 1000,
             current_context: CliContext {

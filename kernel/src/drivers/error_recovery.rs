@@ -6,7 +6,7 @@
 use super::block::{BlockDeviceId, BlockDeviceError, BlockOperation};
 
 use spin::{Mutex, RwLock};
-use alloc::{vec::Vec, collections::BTreeMap, collections::HashMap};
+use alloc::{vec::Vec, collections::BTreeMap};
 use core::time::{Duration, Instant};
 
 /// Error types classification
@@ -119,8 +119,8 @@ struct RecoveryConfig {
 
 /// Global error recovery manager
 pub struct ErrorRecoveryManager {
-    device_health: RwLock<HashMap<BlockDeviceId, DeviceHealth>>,
-    error_history: RwLock<HashMap<BlockDeviceId, Vec<ErrorInfo>>>,
+    device_health: RwLock<BTreeMap<BlockDeviceId, DeviceHealth>>,
+    error_history: RwLock<BTreeMap<BlockDeviceId, Vec<ErrorInfo>>>,
     recovery_config: RecoveryConfig,
     global_stats: Arc<RwLock<RecoveryStats>>,
     backup_devices: RwLock<Vec<BlockDeviceId>>, // Backup device IDs
@@ -133,8 +133,8 @@ impl ErrorRecoveryManager {
         info!("Initializing Error Recovery Manager");
         
         Self {
-            device_health: RwLock::new(HashMap::new()),
-            error_history: RwLock::new(HashMap::new()),
+            device_health: RwLock::new(BTreeMap::new()),
+            error_history: RwLock::new(BTreeMap::new()),
             recovery_config: RecoveryConfig {
                 max_retries: 5,
                 retry_delay_ms: 100,

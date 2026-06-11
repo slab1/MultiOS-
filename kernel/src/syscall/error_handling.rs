@@ -1322,7 +1322,6 @@ pub enum ReportResult {
 }
 
 // Global error manager
-use spin::Mutex;
 static ERROR_MANAGER: Mutex<Option<SyscallErrorManager>> = Mutex::new(None);
 
 /// Initialize error manager

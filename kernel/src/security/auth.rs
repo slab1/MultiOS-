@@ -18,8 +18,7 @@
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
-use alloc::collections::{HashMap, VecDeque};
+use alloc::collections::{BTreeMap, VecDeque};
 use core::sync::atomic::{AtomicU32, AtomicU64, Ordering};
 use core::hash::{Hasher, Hash};
 use alloc::boxed::Box;
@@ -252,14 +251,14 @@ static AUTH_MANAGER: Mutex<Option<AuthManager>> = Mutex::new(None);
 
 /// Authentication Manager - Main orchestrator for all authentication operations
 pub struct AuthManager {
-    sessions: RwLock<HashMap<String, SessionToken>>,
-    biometric_templates: RwLock<HashMap<(crate::admin::user_manager::UserId, AuthMethod), BiometricData>>,
-    hardware_tokens: RwLock<HashMap<String, HardwareToken>>,
-    totp_configs: RwLock<HashMap<crate::admin::user_manager::UserId, TOTPConfig>>,
-    sms_configs: RwLock<HashMap<crate::admin::user_manager::UserId, SMSConfig>>,
-    password_policies: RwLock<HashMap<String, PasswordPolicy>>,
-    lockout_info: RwLock<HashMap<crate::admin::user_manager::UserId, LockoutInfo>>,
-    rate_limits: RwLock<HashMap<String, RateLimitInfo>>,
+    sessions: RwLock<BTreeMap<String, SessionToken>>,
+    biometric_templates: RwLock<BTreeMap<(crate::admin::user_manager::UserId, AuthMethod), BiometricData>>,
+    hardware_tokens: RwLock<BTreeMap<String, HardwareToken>>,
+    totp_configs: RwLock<BTreeMap<crate::admin::user_manager::UserId, TOTPConfig>>,
+    sms_configs: RwLock<BTreeMap<crate::admin::user_manager::UserId, SMSConfig>>,
+    password_policies: RwLock<BTreeMap<String, PasswordPolicy>>,
+    lockout_info: RwLock<BTreeMap<crate::admin::user_manager::UserId, LockoutInfo>>,
+    rate_limits: RwLock<BTreeMap<String, RateLimitInfo>>,
     config: AuthConfig,
     initialized: bool,
     stats: Mutex<AuthStats>,
@@ -272,14 +271,14 @@ impl AuthManager {
     /// Create a new Authentication Manager instance
     pub fn new(config: AuthConfig) -> Self {
         Self {
-            sessions: RwLock::new(HashMap::new()),
-            biometric_templates: RwLock::new(HashMap::new()),
-            hardware_tokens: RwLock::new(HashMap::new()),
-            totp_configs: RwLock::new(HashMap::new()),
-            sms_configs: RwLock::new(HashMap::new()),
-            password_policies: RwLock::new(HashMap::new()),
-            lockout_info: RwLock::new(HashMap::new()),
-            rate_limits: RwLock::new(HashMap::new()),
+            sessions: RwLock::new(BTreeMap::new()),
+            biometric_templates: RwLock::new(BTreeMap::new()),
+            hardware_tokens: RwLock::new(BTreeMap::new()),
+            totp_configs: RwLock::new(BTreeMap::new()),
+            sms_configs: RwLock::new(BTreeMap::new()),
+            password_policies: RwLock::new(BTreeMap::new()),
+            lockout_info: RwLock::new(BTreeMap::new()),
+            rate_limits: RwLock::new(BTreeMap::new()),
             config,
             initialized: false,
             stats: Mutex::new(AuthStats {

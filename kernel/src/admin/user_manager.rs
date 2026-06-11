@@ -14,8 +14,7 @@
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
-use alloc::collections::HashMap;
+use alloc::collections::BTreeMap;
 use alloc::vec;
 use alloc::format;
 use core::sync::atomic::{AtomicU32, AtomicUsize, Ordering};
@@ -83,7 +82,7 @@ pub struct User {
     pub last_failed_login: Option<u64>,
     pub session_count: u32,
     pub privileges: Vec<String>,
-    pub attributes: HashMap<String, String>,
+    pub attributes: BTreeMap<String, String>,
 }
 
 /// Group structure representing a user group
@@ -98,7 +97,7 @@ pub struct Group {
     pub created_time: u64,
     pub is_system_group: bool,
     pub privileges: Vec<String>,
-    pub attributes: HashMap<String, String>,
+    pub attributes: BTreeMap<String, String>,
 }
 
 /// User session information
@@ -114,7 +113,7 @@ pub struct UserSession {
     pub is_active: bool,
     pub multi_factor_verified: bool,
     pub privileges: Vec<String>,
-    pub session_data: HashMap<String, String>,
+    pub session_data: BTreeMap<String, String>,
 }
 
 /// Authentication result
@@ -182,11 +181,11 @@ static USER_MANAGER: Mutex<Option<UserManager>> = Mutex::new(None);
 
 /// User Manager - Main orchestrator for user and group operations
 pub struct UserManager {
-    users: RwLock<HashMap<UserId, User>>,
-    groups: RwLock<HashMap<GroupId, Group>>,
-    username_map: RwLock<HashMap<String, UserId>>,
-    groupname_map: RwLock<HashMap<String, GroupId>>,
-    sessions: RwLock<HashMap<u64, UserSession>>,
+    users: RwLock<BTreeMap<UserId, User>>,
+    groups: RwLock<BTreeMap<GroupId, Group>>,
+    username_map: RwLock<BTreeMap<String, UserId>>,
+    groupname_map: RwLock<BTreeMap<String, GroupId>>,
+    sessions: RwLock<BTreeMap<u64, UserSession>>,
     password_policy: Mutex<PasswordPolicy>,
     mfa_config: Mutex<MfaConfig>,
     next_user_id: AtomicU32,
@@ -200,11 +199,11 @@ impl UserManager {
     /// Create a new User Manager instance
     pub fn new() -> Self {
         Self {
-            users: RwLock::new(HashMap::new()),
-            groups: RwLock::new(HashMap::new()),
-            username_map: RwLock::new(HashMap::new()),
-            groupname_map: RwLock::new(HashMap::new()),
-            sessions: RwLock::new(HashMap::new()),
+            users: RwLock::new(BTreeMap::new()),
+            groups: RwLock::new(BTreeMap::new()),
+            username_map: RwLock::new(BTreeMap::new()),
+            groupname_map: RwLock::new(BTreeMap::new()),
+            sessions: RwLock::new(BTreeMap::new()),
             password_policy: Mutex::new(PasswordPolicy {
                 min_length: 8,
                 require_uppercase: true,
@@ -314,7 +313,7 @@ impl UserManager {
             last_failed_login: None,
             session_count: 0,
             privileges: vec!["user".to_string()],
-            attributes: HashMap::new(),
+            attributes: BTreeMap::new(),
         };
 
         // Store user
@@ -472,7 +471,7 @@ impl UserManager {
             created_time: self.get_current_time(),
             is_system_group: group_id < 1000,
             privileges: Vec::new(),
-            attributes: HashMap::new(),
+            attributes: BTreeMap::new(),
         };
 
         // Store group
@@ -619,7 +618,7 @@ impl UserManager {
             is_active: true,
             multi_factor_verified: false,
             privileges: user.privileges.clone(),
-            session_data: HashMap::new(),
+            session_data: BTreeMap::new(),
         };
 
         {
@@ -847,7 +846,7 @@ impl UserManager {
             last_failed_login: None,
             session_count: 0,
             privileges: if is_system { vec!["system".to_string()] } else { vec!["user".to_string()] },
-            attributes: HashMap::new(),
+            attributes: BTreeMap::new(),
         };
 
         // Store user
@@ -901,7 +900,7 @@ impl UserManager {
             created_time: self.get_current_time(),
             is_system_group: is_system,
             privileges: if is_system { vec!["system".to_string()] } else { Vec::new() },
-            attributes: HashMap::new(),
+            attributes: BTreeMap::new(),
         };
 
         // Store group

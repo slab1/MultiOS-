@@ -339,7 +339,6 @@ pub mod clint {
 /// RISC-V Platform Level Interrupt Controller (PLIC)
 pub mod plic {
     use super::*;
-    use crate::arch::interrupts::InterruptResult;
     
     /// Initialize PLIC
     pub fn init_plic() -> InterruptResult<()> {

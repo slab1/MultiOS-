@@ -10,7 +10,7 @@ use crate::security::security_types::*;
 use crate::security::integration::*;
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::collections::HashMap;
+use alloc::collections::BTreeMap;
 
 /// Test policy creation
 #[cfg(test)]
@@ -35,7 +35,7 @@ mod tests {
             updated_at: 1000000,
             expires_at: None,
             tags: vec!["test".to_string()],
-            metadata: HashMap::new(),
+            metadata: BTreeMap::new(),
         };
 
         assert_eq!(policy.name, "Test Policy");
@@ -62,7 +62,7 @@ mod tests {
             actions: vec![
                 RuleAction {
                     action_type: ActionType::Allow,
-                    parameters: HashMap::new(),
+                    parameters: BTreeMap::new(),
                     target: ActionTarget::SelfTarget,
                     delay: 0,
                     retry_count: 0,
@@ -94,7 +94,7 @@ mod tests {
             timestamp: 1000000,
             namespace: "test".to_string(),
             roles: vec!["user".to_string()],
-            metadata: HashMap::new(),
+            metadata: BTreeMap::new(),
         };
 
         assert_eq!(context.user_id, 1001);
@@ -407,7 +407,7 @@ use alloc::vec;
 
     #[test]
     fn test_evaluation_context_with_metadata() {
-        let mut metadata = HashMap::new();
+        let mut metadata = BTreeMap::new();
         metadata.insert("source_ip".to_string(), "192.168.1.100".to_string());
         metadata.insert("user_agent".to_string(), "test_client".to_string());
         
@@ -469,7 +469,7 @@ use alloc::vec;
                     actions: vec![
                         RuleAction {
                             action_type: ActionType::Allow,
-                            parameters: HashMap::new(),
+                            parameters: BTreeMap::new(),
                             target: ActionTarget::SelfTarget,
                             delay: 0,
                             retry_count: 0,
@@ -509,7 +509,7 @@ use alloc::vec;
             updated_at: 1000000,
             expires_at: None,
             tags: vec!["access".to_string(), "filesystem".to_string()],
-            metadata: HashMap::new(),
+            metadata: BTreeMap::new(),
         };
 
         assert_eq!(file_access_policy.rules.len(), 1);

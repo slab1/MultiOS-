@@ -14,7 +14,7 @@ use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::String;
 use alloc::string::ToString;
-use alloc::collections::{BTreeMap, HashMap, HashSet};
+use alloc::collections::{BTreeMap, HashSet};
 use alloc::vec;
 use core::sync::atomic::{AtomicU64, AtomicU32, AtomicUsize, AtomicBool, Ordering};
 use bitflags::bitflags;
@@ -152,11 +152,11 @@ pub struct ProcessControlBlock {
     pub effective_group_id: u32,
     pub current_working_directory: String,
     pub root_directory: String,
-    pub environment_variables: HashMap<String, String>,
+    pub environment_variables: BTreeMap<String, String>,
     pub command_line: Vec<String>,
     pub resource_usage: ProcessResourceUsage,
     pub service_id: Option<ServiceId>,
-    pub signal_handlers: HashMap<Signal, SignalHandler>,
+    pub signal_handlers: BTreeMap<Signal, SignalHandler>,
     pub children: HashSet<ProcessId>,
     pub threads: HashSet<ThreadId>,
 }
@@ -260,9 +260,9 @@ pub struct ProcessManager {
     next_process_id: AtomicU32,
     next_thread_id: AtomicU32,
     processes: RwLock<BTreeMap<ProcessId, ProcessControlBlock>>,
-    service_processes: RwLock<HashMap<ServiceId, ServiceProcess>>,
-    signal_handlers: RwLock<HashMap<Signal, HashMap<ProcessId, SignalHandler>>>,
-    process_tree: RwLock<HashMap<ProcessId, HashSet<ProcessId>>>,
+    service_processes: RwLock<BTreeMap<ServiceId, ServiceProcess>>,
+    signal_handlers: RwLock<BTreeMap<Signal, BTreeMap<ProcessId, SignalHandler>>>,
+    process_tree: RwLock<BTreeMap<ProcessId, HashSet<ProcessId>>>,
     config: ProcessManagerConfig,
     stats: RwLock<ProcessManagerStats>,
     initialized: AtomicBool,
@@ -303,9 +303,9 @@ impl ProcessManager {
             next_process_id: AtomicU32::new(1),
             next_thread_id: AtomicU32::new(1),
             processes: RwLock::new(BTreeMap::new()),
-            service_processes: RwLock::new(HashMap::new()),
-            signal_handlers: RwLock::new(HashMap::new()),
-            process_tree: RwLock::new(HashMap::new()),
+            service_processes: RwLock::new(BTreeMap::new()),
+            signal_handlers: RwLock::new(BTreeMap::new()),
+            process_tree: RwLock::new(BTreeMap::new()),
             config: ProcessManagerConfig::default(),
             stats: RwLock::new(ProcessManagerStats::default()),
             initialized: AtomicBool::new(false),
@@ -341,7 +341,7 @@ impl ProcessManager {
         flags: ProcessFlags,
         command: Vec<String>,
         working_directory: String,
-        environment: HashMap<String, String>,
+        environment: BTreeMap<String, String>,
     ) -> ProcessResult<ProcessId> {
         // Check resource limits
         let current_stats = self.stats.read();
@@ -556,7 +556,7 @@ impl ProcessManager {
             ProcessFlags::DAEMON,
             command,
             "/".to_string(),
-            HashMap::new(),
+            BTreeMap::new(),
         )?;
 
         // Create service process record
@@ -706,8 +706,8 @@ impl ProcessManager {
         }
     }
 
-    fn create_default_signal_handlers(&self) -> HashMap<Signal, SignalHandler> {
-        let mut handlers = HashMap::new();
+    fn create_default_signal_handlers(&self) -> BTreeMap<Signal, SignalHandler> {
+        let mut handlers = BTreeMap::new();
         
         // Set default handlers for common signals
         handlers.insert(Signal::SIGTERM, SignalHandler {
@@ -996,7 +996,7 @@ pub mod syscall {
             ProcessFlags::empty(),
             command,
             "/".to_string(),
-            HashMap::new(),
+            BTreeMap::new(),
         )
     }
 
@@ -1036,7 +1036,7 @@ mod tests {
             ProcessFlags::empty(),
             vec!["test".to_string()],
             "/".to_string(),
-            HashMap::new(),
+            BTreeMap::new(),
         ).unwrap();
         
         assert!(process_id > 0);
@@ -1057,7 +1057,7 @@ mod tests {
             ProcessFlags::empty(),
             vec!["test".to_string()],
             "/".to_string(),
-            HashMap::new(),
+            BTreeMap::new(),
         ).unwrap();
         
         manager.terminate_process(process_id, true).unwrap();
@@ -1076,7 +1076,7 @@ mod tests {
             ProcessFlags::empty(),
             vec!["test".to_string()],
             "/".to_string(),
-            HashMap::new(),
+            BTreeMap::new(),
         ).unwrap();
         
         manager.send_signal(process_id, Signal::SIGTERM).unwrap();
@@ -1116,7 +1116,7 @@ mod tests {
             ProcessFlags::empty(),
             vec!["test".to_string()],
             "/".to_string(),
-            HashMap::new(),
+            BTreeMap::new(),
         ).unwrap();
         
         // Simulate running process
@@ -1143,7 +1143,7 @@ mod tests {
             ProcessFlags::empty(),
             vec!["test".to_string()],
             "/".to_string(),
-            HashMap::new(),
+            BTreeMap::new(),
         ).unwrap();
         
         manager.set_process_priority(process_id, ProcessPriority::High).unwrap();
@@ -1162,7 +1162,7 @@ mod tests {
             ProcessFlags::empty(),
             vec!["test".to_string()],
             "/".to_string(),
-            HashMap::new(),
+            BTreeMap::new(),
         ).unwrap();
         
         let stats = manager.get_stats();
@@ -1180,7 +1180,7 @@ mod tests {
             ProcessFlags::empty(),
             vec!["test1".to_string()],
             "/".to_string(),
-            HashMap::new(),
+            BTreeMap::new(),
         ).unwrap();
         
         let process2 = manager.create_process(
@@ -1190,7 +1190,7 @@ mod tests {
             ProcessFlags::empty(),
             vec!["test2".to_string()],
             "/".to_string(),
-            HashMap::new(),
+            BTreeMap::new(),
         ).unwrap();
         
         let processes = manager.list_processes().unwrap();

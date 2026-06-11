@@ -676,7 +676,7 @@ pub struct FileSystemManager {
     pub process_tables: Vec<ProcessFileTable>,
     pub next_inode: AtomicU32,
     pub inode_map: spin::Mutex<alloc::collections::BTreeMap<u32, Arc<RwLock<FileInode>>>>,
-    pub directory_entries: spin::Mutex<alloc::collections::HashMap<String, u32>>,
+    pub directory_entries: spin::Mutex<alloc::collections::BTreeMap<String, u32>>,
     pub stats_tracker: RwLock<FileSystemStatsTracker>,
     pub root_inode: Arc<RwLock<FileInode>>,
 }
@@ -689,7 +689,7 @@ impl FileSystemManager {
             process_tables: Vec::new(),
             next_inode: AtomicU32::new(2),
             inode_map: spin::Mutex::new(alloc::collections::BTreeMap::new()),
-            directory_entries: spin::Mutex::new(alloc::collections::HashMap::new()),
+            directory_entries: spin::Mutex::new(alloc::collections::BTreeMap::new()),
             stats_tracker: RwLock::new(FileSystemStatsTracker::new()),
             root_inode,
         }

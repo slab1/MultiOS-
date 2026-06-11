@@ -8,8 +8,7 @@
 
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
-use alloc::collections::{HashMap, BTreeSet, BTreeMap};
+use alloc::collections::{BTreeMap, BTreeSet};
 use alloc::vec;
 use alloc::format;
 use crate::admin::user_manager::UserId;
@@ -121,8 +120,8 @@ pub enum DelegationResolution {
 
 /// Delegation manager for handling permission delegation operations
 pub struct DelegationManager {
-    delegations: HashMap<String, PermissionDelegation>,
-    delegation_chains: HashMap<(UserId, String), DelegationChain>,
+    delegations: BTreeMap<String, PermissionDelegation>,
+    delegation_chains: BTreeMap<(UserId, String), DelegationChain>,
     delegation_audit: Vec<DelegationAuditEntry>,
     max_delegation_depth: u32,
     default_constraints: DelegationConstraints,
@@ -132,8 +131,8 @@ impl DelegationManager {
     /// Create a new delegation manager
     pub fn new() -> Self {
         Self {
-            delegations: HashMap::new(),
-            delegation_chains: HashMap::new(),
+            delegations: BTreeMap::new(),
+            delegation_chains: BTreeMap::new(),
             delegation_audit: Vec::new(),
             max_delegation_depth: 5, // Limit delegation depth to prevent abuse
             default_constraints: DelegationConstraints {

@@ -8,7 +8,7 @@
 use alloc::vec::Vec;
 use alloc::string::String;
 use alloc::string::ToString;
-use alloc::collections::HashMap;
+use alloc::collections::BTreeMap;
 use alloc::vec;
 use alloc::format;
 use spin::RwLock;
@@ -66,9 +66,9 @@ pub enum DependencyCondition {
 
 /// Schema registry
 pub struct ConfigSchema {
-    schemas: RwLock<HashMap<String, SchemaDefinition>>,
+    schemas: RwLock<BTreeMap<String, SchemaDefinition>>,
     next_schema_id: AtomicU64,
-    validation_cache: RwLock<HashMap<String, ValidationResult>>,
+    validation_cache: RwLock<BTreeMap<String, ValidationResult>>,
 }
 
 /// Validation result
@@ -84,9 +84,9 @@ impl ConfigSchema {
     /// Create a new schema manager
     pub fn new() -> Self {
         ConfigSchema {
-            schemas: RwLock::new(HashMap::new()),
+            schemas: RwLock::new(BTreeMap::new()),
             next_schema_id: AtomicU64::new(1),
-            validation_cache: RwLock::new(HashMap::new()),
+            validation_cache: RwLock::new(BTreeMap::new()),
         }
     }
 
@@ -167,7 +167,7 @@ impl ConfigSchema {
                 range_validation: false,
                 type_enforcement: true,
             },
-            default_value: Some(ConfigValue::Object(HashMap::new())),
+            default_value: Some(ConfigValue::Object(BTreeMap::new())),
             description: Some("System boot configuration".to_string()),
             min_value: None,
             max_value: None,
@@ -191,7 +191,7 @@ impl ConfigSchema {
                 range_validation: false,
                 type_enforcement: true,
             },
-            default_value: Some(ConfigValue::Object(HashMap::new())),
+            default_value: Some(ConfigValue::Object(BTreeMap::new())),
             description: Some("Network configuration".to_string()),
             min_value: None,
             max_value: None,
@@ -215,7 +215,7 @@ impl ConfigSchema {
                 range_validation: true,
                 type_enforcement: true,
             },
-            default_value: Some(ConfigValue::Object(HashMap::new())),
+            default_value: Some(ConfigValue::Object(BTreeMap::new())),
             description: Some("Security policy configuration".to_string()),
             min_value: Some(ConfigValue::Integer(1)),
             max_value: Some(ConfigValue::Integer(5)),

@@ -18,9 +18,8 @@ use crate::update::*;
 use crate::service_manager::*;
 use crate::memory;
 use crate::arch::performance::*;
-use alloc::collections::HashMap;
+use alloc::collections::BTreeMap;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
 use alloc::vec;
 use alloc::format;
 use spin::Mutex;
@@ -165,7 +164,7 @@ pub struct MemoryOptimizationTester {
 #[derive(Debug)]
 pub struct RegressionTester {
     /// Baseline performance metrics
-    baseline_metrics: Mutex<HashMap<String, PerformanceTestResult>>,
+    baseline_metrics: Mutex<BTreeMap<String, PerformanceTestResult>>,
     /// Performance regression detection threshold
     regression_threshold_percent: f64,
     /// Test history
@@ -1991,7 +1990,7 @@ impl RegressionTester {
     /// Create new regression tester
     pub fn new() -> Self {
         Self {
-            baseline_metrics: Mutex::new(HashMap::new()),
+            baseline_metrics: Mutex::new(BTreeMap::new()),
             regression_threshold_percent: 10.0, // 10% threshold for regression detection
             test_history: Mutex::new(Vec::new()),
         }

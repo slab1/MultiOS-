@@ -614,7 +614,7 @@ impl RecoveryManager {
             start_time,
             end_time: Some(get_current_time()),
             success,
-            error_message: if success { None } else Some("Recovery action failed".to_string()),
+            error_message: (if success { None } else { Some("Recovery action failed".to_string()) }),
         };
 
         let mut history = self.recovery_history.write();

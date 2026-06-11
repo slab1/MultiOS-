@@ -7,7 +7,7 @@ use super::block::{BlockDeviceId, BlockOperation, BlockDeviceError};
 use super::block_device_interface::BlockDeviceInterface;
 
 use spin::{Mutex, RwLock};
-use alloc::{vec::Vec, collections::BTreeMap, collections::HashMap};
+use alloc::{vec::Vec, collections::BTreeMap};
 use alloc::sync::Arc;
 use alloc::vec;
 use core::time::{Duration, Instant};
@@ -65,11 +65,11 @@ struct DeviceCache {
 
 /// Write Cache Manager
 pub struct WriteCache {
-    device_caches: RwLock<HashMap<BlockDeviceId, DeviceCache>>,
+    device_caches: RwLock<BTreeMap<BlockDeviceId, DeviceCache>>,
     global_max_size: usize,
     default_policy: CachePolicy,
     flush_interval: Duration,
-    stats: Arc<RwLock<HashMap<BlockDeviceId, CacheStats>>>,
+    stats: Arc<RwLock<BTreeMap<BlockDeviceId, CacheStats>>>,
     total_cache_size: usize,
 }
 
@@ -79,11 +79,11 @@ impl WriteCache {
         info!("Initializing Write Cache with policy: {:?}", default_policy);
         
         Self {
-            device_caches: RwLock::new(HashMap::new()),
+            device_caches: RwLock::new(BTreeMap::new()),
             global_max_size: 256 * 1024 * 1024, // 256MB default
             default_policy,
             flush_interval: Duration::from_secs(30),
-            stats: Arc::new(RwLock::new(HashMap::new())),
+            stats: Arc::new(RwLock::new(BTreeMap::new())),
             total_cache_size: 0,
         }
     }
@@ -441,7 +441,7 @@ impl WriteCache {
     }
 
     /// Get all cache statistics
-    pub fn get_all_cache_stats(&self) -> HashMap<BlockDeviceId, CacheStats> {
+    pub fn get_all_cache_stats(&self) -> BTreeMap<BlockDeviceId, CacheStats> {
         self.stats.read().clone()
     }
 

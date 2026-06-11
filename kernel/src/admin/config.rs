@@ -13,8 +13,7 @@
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
-use alloc::collections::HashMap;
+use alloc::collections::BTreeMap;
 use alloc::vec;
 use alloc::format;
 
@@ -46,7 +45,7 @@ pub enum ConfigValue {
     Boolean(bool),
     Float(f64),
     Array(Vec<ConfigValue>),
-    Object(HashMap<String, ConfigValue>),
+    Object(BTreeMap<String, ConfigValue>),
 }
 
 /// Configuration entry
@@ -67,7 +66,7 @@ pub struct ConfigEntry {
 #[derive(Debug, Clone)]
 pub struct ConfigValidationRule {
     pub rule_type: ValidationRuleType,
-    pub parameters: HashMap<String, String>,
+    pub parameters: BTreeMap<String, String>,
     pub error_message: String,
 }
 
@@ -92,7 +91,7 @@ pub struct ConfigBackup {
     pub timestamp: u64,
     pub description: String,
     pub version: String,
-    pub entries: HashMap<String, ConfigEntry>,
+    pub entries: BTreeMap<String, ConfigEntry>,
     pub checksum: u64,
 }
 
@@ -146,8 +145,8 @@ static CONFIG_MANAGER: Mutex<Option<ConfigManager>> = Mutex::new(None);
 
 /// Configuration Manager - Main orchestrator for configuration operations
 pub struct ConfigManager {
-    entries: RwLock<HashMap<String, ConfigEntry>>,
-    validation_rules: RwLock<HashMap<String, Vec<ConfigValidationRule>>>,
+    entries: RwLock<BTreeMap<String, ConfigEntry>>,
+    validation_rules: RwLock<BTreeMap<String, Vec<ConfigValidationRule>>>,
     backups: RwLock<Vec<ConfigBackup>>,
     versions: RwLock<Vec<ConfigVersion>>,
     changes: RwLock<Vec<ConfigChange>>,
@@ -162,8 +161,8 @@ impl ConfigManager {
     /// Create a new Configuration Manager instance
     pub fn new() -> Self {
         Self {
-            entries: RwLock::new(HashMap::new()),
-            validation_rules: RwLock::new(HashMap::new()),
+            entries: RwLock::new(BTreeMap::new()),
+            validation_rules: RwLock::new(BTreeMap::new()),
             backups: RwLock::new(Vec::new()),
             versions: RwLock::new(Vec::new()),
             changes: RwLock::new(Vec::new()),
@@ -384,7 +383,7 @@ impl ConfigManager {
         let timestamp = self.get_current_time();
         
         let entries = self.entries.read();
-        let mut backup_entries = HashMap::new();
+        let mut backup_entries = BTreeMap::new();
         
         for (key, entry) in entries.iter() {
             backup_entries.insert(key.clone(), entry.clone());
@@ -681,7 +680,7 @@ impl ConfigManager {
         // System configuration validation
         self.add_validation_rule("system.hostname", ConfigValidationRule {
             rule_type: ValidationRuleType::Required,
-            parameters: HashMap::new(),
+            parameters: BTreeMap::new(),
             error_message: "Hostname is required".to_string(),
         })?;
 
@@ -747,7 +746,7 @@ impl ConfigManager {
     }
 
     /// Calculate checksum for backup integrity
-    fn calculate_checksum(&self, entries: &HashMap<String, ConfigEntry>) -> u64 {
+    fn calculate_checksum(&self, entries: &BTreeMap<String, ConfigEntry>) -> u64 {
         let mut checksum = 0u64;
         for entry in entries.values() {
             // Simplified checksum calculation

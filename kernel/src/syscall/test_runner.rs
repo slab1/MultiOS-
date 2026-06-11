@@ -299,7 +299,7 @@ impl SyscallTestRunner {
                 let result = handler.execute_recovery(
                     error_type,
                     600,
-                    &HashMap::new()
+                    &BTreeMap::new()
                 );
                 assert!(result.is_ok());
             }
@@ -331,7 +331,7 @@ impl SyscallTestRunner {
                     let recovery_result = handler.execute_recovery(
                         error_type,
                         700 + i as u64,
-                        &HashMap::new()
+                        &BTreeMap::new()
                     );
                     
                     if recovery_result.is_ok() {

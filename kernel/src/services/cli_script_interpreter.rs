@@ -13,8 +13,7 @@ use crate::{KernelError, Result};
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
-use alloc::collections::{HashMap, VecDeque, BTreeSet};
+use alloc::collections::{BTreeMap, VecDeque, BTreeSet};
 use alloc::sync::Arc;
 use alloc::vec;
 use alloc::format;
@@ -101,8 +100,8 @@ pub enum ScriptNode {
 /// Script variable scope
 #[derive(Debug, Clone)]
 pub struct ScriptScope {
-    variables: HashMap<String, ScriptValue>,
-    functions: HashMap<String, ScriptFunction>,
+    variables: BTreeMap<String, ScriptValue>,
+    functions: BTreeMap<String, ScriptFunction>,
     readonly_vars: BTreeSet<String>,
 }
 
@@ -135,7 +134,7 @@ pub struct ScriptContext {
     pub current_scope: ScriptScope,
     pub global_scope: Arc<Mutex<ScriptScope>>,
     pub working_directory: String,
-    pub environment: HashMap<String, String>,
+    pub environment: BTreeMap<String, String>,
     pub exit_code: i32,
     pub line_number: usize,
     pub source_file: Option<String>,
@@ -151,7 +150,7 @@ pub struct ScriptContext {
 pub struct StackFrame {
     pub function_name: String,
     pub line_number: usize,
-    pub variables: HashMap<String, ScriptValue>,
+    pub variables: BTreeMap<String, ScriptValue>,
 }
 
 /// Loop context for break/continue
@@ -163,8 +162,8 @@ pub struct LoopContext {
 
 /// Enhanced Script Interpreter
 pub struct ScriptInterpreter {
-    builtin_functions: HashMap<String, ScriptFunction>,
-    script_cache: HashMap<String, ParsedScript>,
+    builtin_functions: BTreeMap<String, ScriptFunction>,
+    script_cache: BTreeMap<String, ParsedScript>,
     max_execution_time: u64,
     max_recursion_depth: usize,
     current_recursion_depth: AtomicUsize,
@@ -174,8 +173,8 @@ pub struct ScriptInterpreter {
 #[derive(Debug, Clone)]
 pub struct ParsedScript {
     pub ast: Vec<ScriptNode>,
-    pub functions: HashMap<String, ScriptFunction>,
-    pub variables: HashMap<String, ScriptValue>,
+    pub functions: BTreeMap<String, ScriptFunction>,
+    pub variables: BTreeMap<String, ScriptValue>,
     pub dependencies: Vec<String>,
     pub metadata: ScriptMetadata,
 }
@@ -213,8 +212,8 @@ impl ScriptInterpreter {
     /// Create a new script interpreter
     pub fn new() -> Self {
         let mut interpreter = ScriptInterpreter {
-            builtin_functions: HashMap::new(),
-            script_cache: HashMap::new(),
+            builtin_functions: BTreeMap::new(),
+            script_cache: BTreeMap::new(),
             max_execution_time: 30000, // 30 seconds
             max_recursion_depth: 100,
             current_recursion_depth: AtomicUsize::new(0),
@@ -711,7 +710,7 @@ impl ScriptInterpreter {
         
         // Create new scope for function execution
         let mut func_scope = ScriptScope {
-            variables: HashMap::new(),
+            variables: BTreeMap::new(),
             functions: func.body.iter().filter_map(|node| {
                 if let ScriptNode::FunctionDefinition { name, parameters, body } = node {
                     Some((

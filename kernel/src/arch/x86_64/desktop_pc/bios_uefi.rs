@@ -284,16 +284,11 @@ fn convert_uefi_memory_type(uefi_type: UefiMemoryType) -> MemoryRegionType {
 pub fn bios_print(text: &str) {
     unsafe {
         for byte in text.bytes() {
-            let mut al = byte;
-            let mut ah = 0x0E;
-            
+            // AH = 0x0E (teletype output function), AL = character
+            let ax: u16 = (0x0Eu16 << 8) | byte as u16;
             core::arch::asm!(
-                "mov {0:al}, {1:al}",
-                "mov {0:ah}, {2:ah}",
                 "int 0x10",
-                inout(reg) al => al,
-                in(reg) byte,
-                in(reg) ah
+                inout("ax") ax => _
             );
         }
     }
@@ -302,15 +297,16 @@ pub fn bios_print(text: &str) {
 /// BIOS keyboard read
 pub fn bios_read_key() -> Option<u16> {
     unsafe {
-        let mut ah = 0x00;
-        let mut al: u8 = 0;
-        
+        // AH = 0x00 (read key), returns AL = ASCII, AH = scancode
+        let ax: u16;
         core::arch::asm!(
-            "mov {0:ah}, {1:ah}",
             "int 0x16",
-            inout(reg) ah => ah,
-            inout(reg) al => al
+            in("ah") 0x00u8,
+            out("ax") ax
         );
+        
+        let al = (ax & 0xFF) as u8;
+        let ah = ((ax >> 8) & 0xFF) as u8;
         
         if al != 0 {
             Some(((ah as u16) << 8) | (al as u16))

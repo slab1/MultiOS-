@@ -8,7 +8,7 @@
 use alloc::vec::Vec;
 use alloc::string::String;
 use alloc::string::ToString;
-use alloc::collections::HashMap;
+use alloc::collections::BTreeMap;
 use alloc::format;
 use spin::{Mutex, RwLock};
 use core::sync::atomic::{AtomicU64, Ordering};
@@ -94,7 +94,7 @@ pub struct BackupManager {
     retention_days: u32,
     compression_enabled: bool,
     encryption_enabled: bool,
-    backup_registry: RwLock<HashMap<String, BackupInfo>>,
+    backup_registry: RwLock<BTreeMap<String, BackupInfo>>,
     next_backup_id: AtomicU64,
     backup_stats: RwLock<BackupStats>,
     scheduled_backups: Mutex<Vec<ScheduledBackup>>,
@@ -120,7 +120,7 @@ impl BackupManager {
             retention_days: 30,
             compression_enabled: true,
             encryption_enabled: false,
-            backup_registry: RwLock::new(HashMap::new()),
+            backup_registry: RwLock::new(BTreeMap::new()),
             next_backup_id: AtomicU64::new(1),
             backup_stats: RwLock::new(BackupStats {
                 total_backups: 0,
@@ -153,7 +153,7 @@ impl BackupManager {
     }
 
     /// Create a backup of configuration
-    pub fn create_backup(&self, config_data: &HashMap<ConfigKey, ConfigEntry>, 
+    pub fn create_backup(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>, 
                         change_history: &[ConfigChange]) -> ConfigResult<String> {
         let start_time = super::get_current_time();
         
@@ -224,7 +224,7 @@ impl BackupManager {
     }
 
     /// Restore configuration from backup
-    pub fn restore_backup(&self, backup_id: &str) -> ConfigResult<(HashMap<ConfigKey, ConfigEntry>, Vec<ConfigChange>)> {
+    pub fn restore_backup(&self, backup_id: &str) -> ConfigResult<(BTreeMap<ConfigKey, ConfigEntry>, Vec<ConfigChange>)> {
         info!("Restoring backup: {}", backup_id);
 
         // Load backup file
@@ -312,7 +312,7 @@ impl BackupManager {
 
     /// Create incremental backup
     pub fn create_incremental_backup(&self, previous_backup_id: &str,
-                                   config_data: &HashMap<ConfigKey, ConfigEntry>,
+                                   config_data: &BTreeMap<ConfigKey, ConfigEntry>,
                                    change_history: &[ConfigChange]) -> ConfigResult<String> {
         // Load previous backup
         let previous_data = self.restore_backup(previous_backup_id)?.0;
@@ -439,7 +439,7 @@ impl BackupManager {
     }
 
     /// Prepare backup data
-    fn prepare_backup_data(&self, config_data: &HashMap<ConfigKey, ConfigEntry>, 
+    fn prepare_backup_data(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>, 
                           change_history: &[ConfigChange]) -> ConfigResult<Vec<u8>> {
         // Serialize configuration and change history
         let mut backup_data = Vec::new();
@@ -474,8 +474,8 @@ impl BackupManager {
     }
 
     /// Parse backup data
-    fn parse_backup_data(&self, data: &[u8]) -> ConfigResult<(HashMap<ConfigKey, ConfigEntry>, Vec<ConfigChange>)> {
-        let mut config_data = HashMap::new();
+    fn parse_backup_data(&self, data: &[u8]) -> ConfigResult<(BTreeMap<ConfigKey, ConfigEntry>, Vec<ConfigChange>)> {
+        let mut config_data = BTreeMap::new();
         let mut change_history = Vec::new();
         
         let content = String::from_utf8_lossy(data);
@@ -531,8 +531,8 @@ impl BackupManager {
     }
 
     /// Calculate differences between configurations
-    fn calculate_differences(&self, old_config: &HashMap<ConfigKey, ConfigEntry>, 
-                           new_config: &HashMap<ConfigKey, ConfigEntry>) -> Vec<ConfigChange> {
+    fn calculate_differences(&self, old_config: &BTreeMap<ConfigKey, ConfigEntry>, 
+                           new_config: &BTreeMap<ConfigKey, ConfigEntry>) -> Vec<ConfigChange> {
         let mut changes = Vec::new();
         
         // Find added/updated keys
@@ -732,7 +732,7 @@ mod tests {
     #[test]
     fn test_backup_creation() {
         let manager = BackupManager::new();
-        let config_data = HashMap::new();
+        let config_data = BTreeMap::new();
         let change_history = Vec::new();
         
         // This would be tested with actual backup creation
@@ -769,8 +769,8 @@ mod tests {
     #[test]
     fn test_differences_calculation() {
         let manager = BackupManager::new();
-        let old_config = HashMap::new();
-        let new_config = HashMap::new();
+        let old_config = BTreeMap::new();
+        let new_config = BTreeMap::new();
         
         let changes = manager.calculate_differences(&old_config, &new_config);
         assert!(changes.is_empty());

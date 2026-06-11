@@ -13,9 +13,7 @@
 use spin::{Mutex, RwLock, Once};
 use alloc::{vec, vec::Vec};
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
-use alloc::collections::{HashMap, BTreeMap, BTreeSet};
-use alloc::vec;
+use alloc::collections::{BTreeMap, BTreeSet};
 use core::sync::atomic::{AtomicU32, Ordering};
 
 pub use crate::security::acl::{AccessControlList, AclEntry, AclPermission};
@@ -165,13 +163,13 @@ pub struct RbacStats {
 
 /// Main RBAC Manager - Central orchestrator for role-based access control
 pub struct RbacManager {
-    roles: RwLock<HashMap<u32, Role>>,
-    role_names: RwLock<HashMap<String, u32>>,
+    roles: RwLock<BTreeMap<u32, Role>>,
+    role_names: RwLock<BTreeMap<String, u32>>,
     assignments: RwLock<Vec<UserGroupRoleAssignment>>,
-    user_roles: RwLock<HashMap<UserId, BTreeSet<u32>>>,
-    group_roles: RwLock<HashMap<GroupId, BTreeSet<u32>>>,
-    resource_acls: RwLock<HashMap<String, AccessControlList>>,
-    effective_permissions: RwLock<HashMap<(UserId, String), EffectivePermissions>>,
+    user_roles: RwLock<BTreeMap<UserId, BTreeSet<u32>>>,
+    group_roles: RwLock<BTreeMap<GroupId, BTreeSet<u32>>>,
+    resource_acls: RwLock<BTreeMap<String, AccessControlList>>,
+    effective_permissions: RwLock<BTreeMap<(UserId, String), EffectivePermissions>>,
     stats: Mutex<RbacStats>,
     next_role_id: AtomicU32,
     initialized: bool,
@@ -181,13 +179,13 @@ impl RbacManager {
     /// Create a new RBAC Manager instance
     pub fn new() -> Self {
         Self {
-            roles: RwLock::new(HashMap::new()),
-            role_names: RwLock::new(HashMap::new()),
+            roles: RwLock::new(BTreeMap::new()),
+            role_names: RwLock::new(BTreeMap::new()),
             assignments: RwLock::new(Vec::new()),
-            user_roles: RwLock::new(HashMap::new()),
-            group_roles: RwLock::new(HashMap::new()),
-            resource_acls: RwLock::new(HashMap::new()),
-            effective_permissions: RwLock::new(HashMap::new()),
+            user_roles: RwLock::new(BTreeMap::new()),
+            group_roles: RwLock::new(BTreeMap::new()),
+            resource_acls: RwLock::new(BTreeMap::new()),
+            effective_permissions: RwLock::new(BTreeMap::new()),
             stats: Mutex::new(RbacStats {
                 total_roles: 0,
                 total_assignments: 0,

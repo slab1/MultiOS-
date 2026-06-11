@@ -13,8 +13,7 @@
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
-use alloc::collections::HashMap;
+use alloc::collections::BTreeMap;
 use alloc::vec;
 use alloc::format;
 
@@ -148,10 +147,10 @@ static SECURITY_MANAGER: Mutex<Option<SecurityManager>> = Mutex::new(None);
 
 /// Security Manager - Main orchestrator for security operations
 pub struct SecurityManager {
-    policies: RwLock<HashMap<String, SecurityPolicy>>,
-    roles: RwLock<HashMap<String, Role>>,
-    capabilities: RwLock<HashMap<String, Capability>>,
-    security_contexts: RwLock<HashMap<u64, SecurityContext>>,
+    policies: RwLock<BTreeMap<String, SecurityPolicy>>,
+    roles: RwLock<BTreeMap<String, Role>>,
+    capabilities: RwLock<BTreeMap<String, Capability>>,
+    security_contexts: RwLock<BTreeMap<u64, SecurityContext>>,
     active_contexts: RwLock<Vec<u64>>,
     initialized: bool,
     stats: Mutex<SecurityStats>,
@@ -161,10 +160,10 @@ impl SecurityManager {
     /// Create a new Security Manager instance
     pub fn new() -> Self {
         Self {
-            policies: RwLock::new(HashMap::new()),
-            roles: RwLock::new(HashMap::new()),
-            capabilities: RwLock::new(HashMap::new()),
-            security_contexts: RwLock::new(HashMap::new()),
+            policies: RwLock::new(BTreeMap::new()),
+            roles: RwLock::new(BTreeMap::new()),
+            capabilities: RwLock::new(BTreeMap::new()),
+            security_contexts: RwLock::new(BTreeMap::new()),
             active_contexts: RwLock::new(Vec::new()),
             initialized: false,
             stats: Mutex::new(SecurityStats {

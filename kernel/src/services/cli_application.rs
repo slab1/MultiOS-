@@ -7,7 +7,6 @@ use crate::{KernelError, Result};
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
 use alloc::collections::VecDeque;
 use alloc::sync::Arc;
 use alloc::vec;
@@ -366,21 +365,21 @@ impl CliApplication {
     fn create_script_context(&self) -> ApplicationResult<crate::services::cli_script_interpreter::ScriptContext> {
         let global_scope = Arc::new(Mutex::new(
             crate::services::cli_script_interpreter::ScriptScope {
-                variables: HashMap::new(),
-                functions: HashMap::new(),
+                variables: BTreeMap::new(),
+                functions: BTreeMap::new(),
                 readonly_vars: alloc::collections::BTreeSet::new(),
             }
         ));
         
         Ok(crate::services::cli_script_interpreter::ScriptContext {
             current_scope: crate::services::cli_script_interpreter::ScriptScope {
-                variables: HashMap::new(),
-                functions: HashMap::new(),
+                variables: BTreeMap::new(),
+                functions: BTreeMap::new(),
                 readonly_vars: alloc::collections::BTreeSet::new(),
             },
             global_scope,
             working_directory: "/".to_string(),
-            environment: HashMap::new(),
+            environment: BTreeMap::new(),
             exit_code: 0,
             line_number: 0,
             source_file: None,

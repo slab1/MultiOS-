@@ -8,7 +8,7 @@
 use alloc::vec::Vec;
 use alloc::string::String;
 use alloc::string::ToString;
-use alloc::collections::HashMap;
+use alloc::collections::BTreeMap;
 use alloc::vec;
 use alloc::format;
 use spin::RwLock;
@@ -22,7 +22,7 @@ pub struct ValidationRule {
     pub description: String,
     pub rule_type: ValidationRuleType,
     pub target_keys: Vec<String>,
-    pub parameters: HashMap<String, ConfigValue>,
+    pub parameters: BTreeMap<String, ConfigValue>,
     pub severity: ValidationSeverity,
     pub enabled: bool,
 }
@@ -91,7 +91,7 @@ pub struct ValidationInfo {
 /// Configuration validator
 pub struct ConfigValidator {
     validation_rules: RwLock<Vec<ValidationRule>>,
-    validation_cache: RwLock<HashMap<String, ValidationResult>>,
+    validation_cache: RwLock<BTreeMap<String, ValidationResult>>,
     stats: RwLock<ValidationStats>,
 }
 
@@ -112,7 +112,7 @@ impl ConfigValidator {
     pub fn new() -> Self {
         ConfigValidator {
             validation_rules: RwLock::new(Vec::new()),
-            validation_cache: RwLock::new(HashMap::new()),
+            validation_cache: RwLock::new(BTreeMap::new()),
             stats: RwLock::new(ValidationStats {
                 total_validations: 0,
                 successful_validations: 0,
@@ -144,7 +144,7 @@ impl ConfigValidator {
     }
 
     /// Validate all configurations
-    pub fn validate_all_configurations(&self, config_data: &HashMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
+    pub fn validate_all_configurations(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
         let start_time = super::get_current_time();
         self.update_stats(0);
 
@@ -226,7 +226,7 @@ impl ConfigValidator {
     }
 
     /// Validate configuration consistency
-    pub fn validate_consistency(&self, config_data: &HashMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
+    pub fn validate_consistency(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
         // Check for contradictory values
         self.check_contradictions(config_data)?;
         
@@ -241,7 +241,7 @@ impl ConfigValidator {
     }
 
     /// Validate security constraints
-    pub fn validate_security(&self, config_data: &HashMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
+    pub fn validate_security(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
         // Check for insecure values
         self.check_security_constraints(config_data)?;
         
@@ -271,7 +271,7 @@ impl ConfigValidator {
             description: "Validate configuration value types".to_string(),
             rule_type: ValidationRuleType::TypeCheck,
             target_keys: vec!["*".to_string()], // All keys
-            parameters: HashMap::new(),
+            parameters: BTreeMap::new(),
             severity: ValidationSeverity::Error,
             enabled: true,
         };
@@ -282,7 +282,7 @@ impl ConfigValidator {
             description: "Validate numeric value ranges".to_string(),
             rule_type: ValidationRuleType::RangeCheck,
             target_keys: vec!["system.*".to_string()],
-            parameters: HashMap::new(),
+            parameters: BTreeMap::new(),
             severity: ValidationSeverity::Warning,
             enabled: true,
         };
@@ -293,7 +293,7 @@ impl ConfigValidator {
             description: "Validate configuration dependencies".to_string(),
             rule_type: ValidationRuleType::DependencyCheck,
             target_keys: vec!["system.*".to_string()],
-            parameters: HashMap::new(),
+            parameters: BTreeMap::new(),
             severity: ValidationSeverity::Error,
             enabled: true,
         };
@@ -307,7 +307,7 @@ impl ConfigValidator {
     }
 
     /// Apply a single validation rule
-    fn apply_rule(&self, rule: &ValidationRule, config_data: &HashMap<ConfigKey, ConfigEntry>) -> ValidationResult {
+    fn apply_rule(&self, rule: &ValidationRule, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> ValidationResult {
         let mut result = ValidationResult {
             valid: true,
             errors: Vec::new(),
@@ -440,7 +440,7 @@ impl ConfigValidator {
     }
 
     /// Validate dependencies
-    fn validate_dependencies(&self, key: &ConfigKey, config_data: &HashMap<ConfigKey, ConfigEntry>) -> bool {
+    fn validate_dependencies(&self, key: &ConfigKey, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> bool {
         // Check for common dependencies
         match key.key.as_str() {
             "network" => {
@@ -466,7 +466,7 @@ impl ConfigValidator {
     }
 
     /// Check for contradictory configuration values
-    fn check_contradictions(&self, config_data: &HashMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
+    fn check_contradictions(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
         // Check if debug and security are both enabled at high levels
         let debug_key = ConfigKey {
             namespace: "system".to_string(),
@@ -492,19 +492,19 @@ impl ConfigValidator {
     }
 
     /// Check for missing dependencies
-    fn check_dependencies(&self, config_data: &HashMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
+    fn check_dependencies(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
         // Would check all configuration dependencies
         Ok(())
     }
 
     /// Check for circular references
-    fn check_circular_references(&self, config_data: &HashMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
+    fn check_circular_references(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
         // Would check for circular dependencies
         Ok(())
     }
 
     /// Check security constraints
-    fn check_security_constraints(&self, config_data: &HashMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
+    fn check_security_constraints(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
         // Check for insecure values like hardcoded passwords, keys, etc.
         for (key, entry) in config_data {
             if let ConfigValue::String(s) = &entry.value {
@@ -518,13 +518,13 @@ impl ConfigValidator {
     }
 
     /// Check for privilege escalation risks
-    fn check_privilege_escalation(&self, config_data: &HashMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
+    fn check_privilege_escalation(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> ConfigResult<()> {
         // Would check for configurations that could lead to privilege escalation
         Ok(())
     }
 
     /// Generate cache key for validation result
-    fn generate_cache_key(&self, config_data: &HashMap<ConfigKey, ConfigEntry>) -> String {
+    fn generate_cache_key(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> String {
         // Simple hash of configuration data
         let mut hash = 0u32;
         for (key, entry) in config_data {
@@ -604,7 +604,7 @@ mod tests {
             description: "A test rule".to_string(),
             rule_type: ValidationRuleType::TypeCheck,
             target_keys: vec!["test.*".to_string()],
-            parameters: HashMap::new(),
+            parameters: BTreeMap::new(),
             severity: ValidationSeverity::Warning,
             enabled: true,
         };

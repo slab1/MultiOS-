@@ -7,7 +7,7 @@
 mod tests {
     use super::*;
     use crate::admin::admin_shell::{AdminShell, AdminContext, CommandCategory};
-    use alloc::collections::HashMap;
+    use alloc::collections::BTreeMap;
     use spin::Mutex;
 
     /// Test administrative shell creation and initialization
@@ -52,7 +52,7 @@ mod tests {
             is_root: true,
             session_id: "test_session".to_string(),
             working_directory: "/".to_string(),
-            environment: HashMap::new(),
+            environment: BTreeMap::new(),
             permissions: crate::admin::admin_shell::AdminPermissions {
                 can_manage_users: true,
                 can_modify_system: true,
@@ -78,7 +78,7 @@ mod tests {
             is_root: false,
             session_id: "test_session".to_string(),
             working_directory: "/".to_string(),
-            environment: HashMap::new(),
+            environment: BTreeMap::new(),
             permissions: crate::admin::admin_shell::AdminPermissions {
                 can_manage_users: false,
                 can_modify_system: false,
@@ -407,7 +407,7 @@ mod tests {
             is_root: true,
             session_id: "test".to_string(),
             working_directory: "/".to_string(),
-            environment: HashMap::new(),
+            environment: BTreeMap::new(),
             permissions: AdminPermissions {
                 can_manage_users: true,
                 can_modify_system: true,
@@ -427,7 +427,7 @@ mod tests {
             is_root: false,
             session_id: "test".to_string(),
             working_directory: "/".to_string(),
-            environment: HashMap::new(),
+            environment: BTreeMap::new(),
             permissions: AdminPermissions {
                 can_manage_users: false,
                 can_modify_system: false,

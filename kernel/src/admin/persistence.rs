@@ -8,7 +8,7 @@
 use alloc::vec::Vec;
 use alloc::string::String;
 use alloc::string::ToString;
-use alloc::collections::HashMap;
+use alloc::collections::BTreeMap;
 use alloc::format;
 use spin::RwLock;
 
@@ -96,7 +96,7 @@ impl ConfigStorage {
     }
 
     /// Serialize configuration data
-    pub fn serialize_config(&self, config_data: &HashMap<ConfigKey, ConfigEntry>) -> ConfigResult<Vec<u8>> {
+    pub fn serialize_config(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> ConfigResult<Vec<u8>> {
         let start_time = super::get_current_time();
 
         let serialized = match self.get_storage_format() {
@@ -131,7 +131,7 @@ impl ConfigStorage {
     }
 
     /// Deserialize configuration data
-    pub fn deserialize_config(&self, data: &[u8]) -> ConfigResult<HashMap<ConfigKey, ConfigEntry>> {
+    pub fn deserialize_config(&self, data: &[u8]) -> ConfigResult<BTreeMap<ConfigKey, ConfigEntry>> {
         let start_time = super::get_current_time();
 
         // Decrypt if necessary
@@ -302,7 +302,7 @@ impl ConfigStorage {
     }
 
     /// JSON serialization
-    fn serialize_json(&self, config_data: &HashMap<ConfigKey, ConfigEntry>) -> ConfigResult<Vec<u8>> {
+    fn serialize_json(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> ConfigResult<Vec<u8>> {
         // Simplified JSON serialization
         // In a real implementation, would use proper JSON library
         let mut result = Vec::new();
@@ -318,9 +318,9 @@ impl ConfigStorage {
     }
 
     /// JSON deserialization
-    fn deserialize_json(&self, data: &[u8]) -> ConfigResult<HashMap<ConfigKey, ConfigEntry>> {
+    fn deserialize_json(&self, data: &[u8]) -> ConfigResult<BTreeMap<ConfigKey, ConfigEntry>> {
         // Simplified JSON deserialization
-        let mut result = HashMap::new();
+        let mut result = BTreeMap::new();
         let content = String::from_utf8_lossy(data);
         
         for line in content.lines() {
@@ -359,27 +359,27 @@ impl ConfigStorage {
     }
 
     /// Binary serialization
-    fn serialize_binary(&self, config_data: &HashMap<ConfigKey, ConfigEntry>) -> ConfigResult<Vec<u8>> {
+    fn serialize_binary(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> ConfigResult<Vec<u8>> {
         // Would implement binary serialization
         // For now, use JSON
         self.serialize_json(config_data)
     }
 
     /// Binary deserialization
-    fn deserialize_binary(&self, data: &[u8]) -> ConfigResult<HashMap<ConfigKey, ConfigEntry>> {
+    fn deserialize_binary(&self, data: &[u8]) -> ConfigResult<BTreeMap<ConfigKey, ConfigEntry>> {
         // Would implement binary deserialization
         // For now, use JSON
         self.deserialize_json(data)
     }
 
     /// Custom serialization
-    fn serialize_custom(&self, config_data: &HashMap<ConfigKey, ConfigEntry>) -> ConfigResult<Vec<u8>> {
+    fn serialize_custom(&self, config_data: &BTreeMap<ConfigKey, ConfigEntry>) -> ConfigResult<Vec<u8>> {
         // Would implement custom serialization format
         self.serialize_json(config_data)
     }
 
     /// Custom deserialization
-    fn deserialize_custom(&self, data: &[u8]) -> ConfigResult<HashMap<ConfigKey, ConfigEntry>> {
+    fn deserialize_custom(&self, data: &[u8]) -> ConfigResult<BTreeMap<ConfigKey, ConfigEntry>> {
         // Would implement custom deserialization
         self.deserialize_json(data)
     }

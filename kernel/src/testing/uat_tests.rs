@@ -26,9 +26,8 @@ use crate::KernelError;
 
 use spin::{Mutex, RwLock};
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
 use alloc::vec::Vec;
-use alloc::collections::{BTreeMap, HashMap};
+use alloc::collections::{BTreeMap};
 use alloc::sync::Arc;
 use alloc::vec;
 use alloc::format;

@@ -97,7 +97,7 @@ pub fn example_process_monitoring() -> Result<ProcessId> {
         ProcessFlags::BACKGROUND,
         vec!["monitored-process".to_string()],
         "/tmp".to_string(),
-        HashMap::new(),
+        BTreeMap::new(),
     )?;
     
     info!("Created monitored process {}", process_id);
@@ -296,7 +296,7 @@ pub fn example_resource_constrained_processes() -> Result<ProcessId> {
         ProcessFlags::BACKGROUND,
         vec!["constrained-process".to_string()],
         "/tmp".to_string(),
-        HashMap::new(),
+        BTreeMap::new(),
     )?;
     
     info!("Created resource-constrained process {}", process_id);
@@ -352,7 +352,7 @@ pub fn example_emergency_management() -> Result<()> {
             ProcessFlags::empty(),
             vec![format!("test-process-{}", i)],
             "/tmp".to_string(),
-            HashMap::new(),
+            BTreeMap::new(),
         )?;
         test_processes.push(process_id);
     }

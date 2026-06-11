@@ -8,8 +8,7 @@
 
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
-use alloc::string::ToString;
-use alloc::collections::{HashMap, BTreeSet, BTreeMap};
+use alloc::collections::{BTreeMap, BTreeSet};
 use alloc::vec;
 use alloc::format;
 use crate::security::rbac::{RbacPermission, SecurityLevel};
@@ -96,26 +95,26 @@ pub struct InheritancePolicy {
     pub conflict_resolution: ConflictResolution,
     pub enabled: bool,
     pub resource_types: Vec<String>,
-    pub permission_mappings: HashMap<RbacPermission, Vec<RbacPermission>>,
+    pub permission_mappings: BTreeMap<RbacPermission, Vec<RbacPermission>>,
 }
 
 /// Permission inheritance calculator
 #[derive(Debug, Clone)]
 pub struct PermissionInheritance {
-    pub inheritance_rules: HashMap<String, Vec<InheritanceRule>>,
-    pub inheritance_policies: HashMap<String, InheritancePolicy>,
-    pub inheritance_chains: HashMap<String, InheritanceChain>,
-    pub inheritance_cache: HashMap<(String, String, UserId), BTreeSet<RbacPermission>>,
+    pub inheritance_rules: BTreeMap<String, Vec<InheritanceRule>>,
+    pub inheritance_policies: BTreeMap<String, InheritancePolicy>,
+    pub inheritance_chains: BTreeMap<String, InheritanceChain>,
+    pub inheritance_cache: BTreeMap<(String, String, UserId), BTreeSet<RbacPermission>>,
 }
 
 impl PermissionInheritance {
     /// Create a new permission inheritance instance
     pub fn new() -> Self {
         Self {
-            inheritance_rules: HashMap::new(),
-            inheritance_policies: HashMap::new(),
-            inheritance_chains: HashMap::new(),
-            inheritance_cache: HashMap::new(),
+            inheritance_rules: BTreeMap::new(),
+            inheritance_policies: BTreeMap::new(),
+            inheritance_chains: BTreeMap::new(),
+            inheritance_cache: BTreeMap::new(),
         }
     }
 
