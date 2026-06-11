@@ -4,7 +4,9 @@
 //! including service lifecycle management, dependency resolution, and monitoring.
 
 use alloc::vec::Vec;
-use alloc::string::String;
+use alloc::string::{String, ToString};
+use alloc::vec;
+use alloc::format;
 use spin::RwLock;
 
 use super::*;

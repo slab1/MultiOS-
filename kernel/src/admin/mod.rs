@@ -19,7 +19,8 @@ pub mod security;
 pub mod audit;
 pub mod config;
 pub mod policy;
-pub mod monitoring;
+// TODO: Create monitoring submodule
+// pub mod monitoring;
 pub mod admin_shell;
 pub mod resource_monitor;
 
@@ -36,11 +37,11 @@ pub mod admin_shell_tests;
 #[cfg(test)]
 pub mod config_tests;
 
-//! Administrative API System
-//! 
-//! This sub-module provides REST-like administrative APIs for system management,
-//! including authentication, authorization, request validation, rate limiting,
-//! and integration with the existing syscall interface.
+/// Administrative API System
+/// 
+/// This sub-module provides REST-like administrative APIs for system management,
+/// including authentication, authorization, request validation, rate limiting,
+/// and integration with the existing syscall interface.
 
 pub mod admin_api;
 
@@ -53,7 +54,6 @@ pub use admin_api::{
     init_admin_api, shutdown_admin_api, make_api_request,
 };
 
-use crate::log::{info, warn, error};
 use crate::Result;
 use crate::KernelError;
 

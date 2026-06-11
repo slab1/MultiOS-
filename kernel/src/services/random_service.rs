@@ -3,11 +3,12 @@
 //! Provides comprehensive random number generation including hardware RNG,
 //! software RNG (cryptographically secure), and entropy collection.
 
-use crate::log::{info, warn, error};
+use alloc::vec;
 use crate::{KernelError, Result};
 use spin::{RwLock, Mutex};
 use core::sync::atomic::{AtomicU64, AtomicUsize, AtomicBool, Ordering};
 use core::ops::Deref;
+use alloc::format;
 
 /// Random service initialization
 pub fn init() -> Result<()> {
@@ -718,6 +719,7 @@ pub fn benchmark_rng() -> Result<(u64, u64, u64)> {
 /// Random utility functions
 pub mod utils {
     use super::*;
+use alloc::string::ToString;
     
     /// Generate random boolean
     pub fn random_bool() -> bool {

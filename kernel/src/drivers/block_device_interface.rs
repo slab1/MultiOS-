@@ -3,11 +3,11 @@
 //! Common interface trait for all block devices in MultiOS, providing
 //! unified access to storage devices regardless of underlying hardware.
 
-use crate::log::{info, warn, error};
 use super::block::{BlockDeviceId, BlockIoResult, BlockOperation, BlockDeviceError, BlockDeviceInfo};
 
 use alloc::sync::Arc;
 use alloc::vec::Vec;
+use alloc::vec;
 
 /// Common block device interface that all storage devices must implement
 pub trait BlockDeviceInterface: Send + Sync {

@@ -3,7 +3,6 @@
 //! Comprehensive error detection, classification, and recovery mechanisms
 //! for block devices with retry logic, fail-over, and graceful degradation.
 
-use crate::log::{info, warn, error};
 use super::block::{BlockDeviceId, BlockDeviceError, BlockOperation};
 
 use spin::{Mutex, RwLock};

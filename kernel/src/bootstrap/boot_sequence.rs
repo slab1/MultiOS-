@@ -4,7 +4,6 @@
 //! the transition from early initialization to full kernel operation.
 
 use crate::bootstrap::{BootstrapContext, BootstrapResult};
-use crate::log::{info, warn, error};
 
 /// Initialize core device drivers
 pub fn init_core_drivers(context: &BootstrapContext) -> BootstrapResult<()> {

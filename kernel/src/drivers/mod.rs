@@ -2,7 +2,6 @@
 //! 
 //! This module provides device driver management and initialization.
 
-use crate::log::{info, warn, error};
 
 /// Driver initialization
 pub fn init() -> Result<(), crate::KernelError> {
@@ -81,7 +80,6 @@ pub struct DriverInfo {
 
 /// Keyboard driver
 pub mod keyboard {
-    use crate::log::{info, warn, error};
     
     /// Initialize keyboard driver
     pub fn init_keyboard() {

@@ -3,7 +3,8 @@
 //! Provides comprehensive power management including ACPI integration,
 //! power states, thermal management, and energy monitoring.
 
-use crate::log::{info, warn, error};
+use alloc::vec;
+use alloc::format;
 use crate::{KernelError, Result};
 use spin::{RwLock, Mutex};
 use core::sync::atomic::{AtomicU64, AtomicUsize, AtomicBool, AtomicU8, Ordering};
@@ -1000,6 +1001,7 @@ pub fn benchmark_power_management() -> Result<(u64, u64, u64)> {
 /// Power management utility functions
 pub mod utils {
     use super::*;
+use alloc::string::ToString;
     
     /// Convert temperature to string
     pub fn format_temperature(temp_millic: i32) -> String {

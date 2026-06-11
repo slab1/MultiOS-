@@ -13,7 +13,10 @@
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
+use alloc::string::ToString;
 use alloc::collections::HashMap;
+use alloc::vec;
+use alloc::format;
 
 /// Configuration management result
 pub type ConfigResult<T> = Result<T, ConfigError>;

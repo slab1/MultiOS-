@@ -4,6 +4,8 @@
 //! It executes all integration tests and provides detailed reporting on performance,
 //! error handling, and system stability.
 
+use alloc::vec;
+use alloc::format;
 use crate::syscall::*;
 use std::time::{Duration, Instant};
 
@@ -78,8 +80,8 @@ impl SyscallTestRunner {
 
     /// Run all integration tests
     pub fn run_all_tests(&mut self, config: TestConfig) -> TestResults {
-        println!("🚀 Starting MultiOS System Call Integration Test Suite");
-        println!("=====================================================");
+        // println!("🚀 Starting MultiOS System Call Integration Test Suite");
+        // println!("=====================================================");
         
         let start_time = Instant::now();
         
@@ -108,8 +110,8 @@ impl SyscallTestRunner {
 
     /// Test module integration and coordination
     fn test_module_integration(&mut self) {
-        println!("\n📋 Module Integration Tests");
-        println!("----------------------------");
+        // println!("\n📋 Module Integration Tests");
+        // println!("----------------------------");
         
         // Test 1: Module initialization
         self.run_test("Module Initialization", || {
@@ -157,11 +159,11 @@ impl SyscallTestRunner {
 
     /// Test performance monitoring
     fn test_performance_monitoring(&mut self, config: &TestConfig) {
-        println!("\n⚡ Performance Monitoring Tests");
-        println!("--------------------------------");
+        // println!("\n⚡ Performance Monitoring Tests");
+        // println!("--------------------------------");
         
         if !config.enable_performance_monitoring {
-            println!("⚠️  Performance monitoring disabled, skipping tests");
+            // println!("⚠️  Performance monitoring disabled, skipping tests");
             return;
         }
         
@@ -245,8 +247,8 @@ impl SyscallTestRunner {
 
     /// Test error handling
     fn test_error_handling(&mut self, config: &TestConfig) {
-        println!("\n🚨 Error Handling Tests");
-        println!("------------------------");
+        // println!("\n🚨 Error Handling Tests");
+        // println!("------------------------");
         
         // Test 1: Error types and contexts
         self.run_test("Error Types and Contexts", || {
@@ -349,8 +351,8 @@ impl SyscallTestRunner {
 
     /// Test assembly interface
     fn test_assembly_interface(&mut self) {
-        println!("\n🔧 Assembly Interface Tests");
-        println!("----------------------------");
+        // println!("\n🔧 Assembly Interface Tests");
+        // println!("----------------------------");
         
         // Test 1: x86_64 entry points
         self.run_test("x86_64 Entry Points", || {
@@ -398,8 +400,8 @@ impl SyscallTestRunner {
 
     /// Test system stability under stress
     fn test_system_stability(&mut self, config: &TestConfig) {
-        println!("\n💪 System Stability Tests");
-        println!("--------------------------");
+        // println!("\n💪 System Stability Tests");
+        // println!("--------------------------");
         
         // Test 1: High frequency syscall processing
         self.run_test("High Frequency Processing", || {
@@ -552,7 +554,7 @@ impl SyscallTestRunner {
     {
         self.test_results.total_tests += 1;
         
-        print!("  Testing {} ... ", name);
+        // print!("  Testing {} ... ", name);
         
         let start = Instant::now();
         
@@ -561,17 +563,17 @@ impl SyscallTestRunner {
                 match result {
                     Ok(_) => {
                         let duration = start.elapsed();
-                        println!("✅ PASSED ({:?})", duration);
+                        // println!("✅ PASSED ({:?})", duration);
                         self.test_results.passed_tests += 1;
                     }
                     Err(_) => {
-                        println!("❌ FAILED");
+                        // println!("❌ FAILED");
                         self.test_results.failed_tests += 1;
                     }
                 }
             }
             Err(_) => {
-                println!("❌ PANICKED");
+                // println!("❌ PANICKED");
                 self.test_results.failed_tests += 1;
             }
         }
@@ -596,44 +598,44 @@ impl SyscallTestRunner {
 
     /// Generate comprehensive final report
     fn generate_final_report(&mut self) {
-        println!("\n" + "=".repeat(60));
-        println!("🎯 FINAL TEST REPORT");
-        println!("{}", "=".repeat(60));
+        // println!("\n" + "=".repeat(60));
+        // println!("🎯 FINAL TEST REPORT");
+        // println!("{}", "=".repeat(60));
         
-        println!("📊 Test Summary:");
-        println!("  Total Tests: {}", self.test_results.total_tests);
-        println!("  ✅ Passed: {}", self.test_results.passed_tests);
-        println!("  ❌ Failed: {}", self.test_results.failed_tests);
-        println!("  ⏭️  Skipped: {}", self.test_results.skipped_tests);
-        println!("  ⏱️  Total Time: {:?}", self.test_results.total_execution_time);
+        // println!("📊 Test Summary:");
+        // println!("  Total Tests: {}", self.test_results.total_tests);
+        // println!("  ✅ Passed: {}", self.test_results.passed_tests);
+        // println!("  ❌ Failed: {}", self.test_results.failed_tests);
+        // println!("  ⏭️  Skipped: {}", self.test_results.skipped_tests);
+        // println!("  ⏱️  Total Time: {:?}", self.test_results.total_execution_time);
         
         let pass_rate = if self.test_results.total_tests > 0 {
             (self.test_results.passed_tests as f64 / self.test_results.total_tests as f64) * 100.0
         } else {
             0.0
         };
-        println!("  📈 Pass Rate: {:.1}%", pass_rate);
+        // println!("  📈 Pass Rate: {:.1}%", pass_rate);
         
-        println!("\n⚡ Performance Analysis:");
-        println!("  Performance Overhead: {:.2}%", self.test_results.performance_overhead_percent);
-        println!("  Throughput: {:.2} syscalls/second", self.test_results.throughput_syscalls_per_second);
-        println!("  Memory Usage Peak: {} KB", self.test_results.memory_usage_peak / 1024);
+        // println!("\n⚡ Performance Analysis:");
+        // println!("  Performance Overhead: {:.2}%", self.test_results.performance_overhead_percent);
+        // println!("  Throughput: {:.2} syscalls/second", self.test_results.throughput_syscalls_per_second);
+        // println!("  Memory Usage Peak: {} KB", self.test_results.memory_usage_peak / 1024);
         
-        println!("\n🚨 Error Handling Analysis:");
-        println!("  Error Recovery Rate: {:.1}%", self.test_results.error_recovery_success_rate * 100.0);
+        // println!("\n🚨 Error Handling Analysis:");
+        // println!("  Error Recovery Rate: {:.1}%", self.test_results.error_recovery_success_rate * 100.0);
         
         // Get detailed statistics
         if let Ok(monitor) = self.performance_monitor.lock() {
             let stats = monitor.get_performance_statistics();
-            println!("  Performance Stats: {:?}", stats);
+            // println!("  Performance Stats: {:?}", stats);
         }
         
         if let Ok(handler) = self.error_handler.lock() {
             let error_stats = handler.get_error_statistics();
-            println!("  Error Statistics: {:?}", error_stats);
+            // println!("  Error Statistics: {:?}", error_stats);
         }
         
-        println!("\n💪 System Stability Score:");
+        // println!("\n💪 System Stability Score:");
         let stability_factors = vec![
             pass_rate >= 90.0, // High pass rate
             self.test_results.performance_overhead_percent <= 5.0, // Low overhead
@@ -644,40 +646,40 @@ impl SyscallTestRunner {
         let stability_score = (stability_factors.iter().filter(|&&x| x).count() as f64 / stability_factors.len() as f64) * 100.0;
         self.test_results.system_stability_score = stability_score;
         
-        println!("  Overall Stability: {:.1}%", stability_score);
+        // println!("  Overall Stability: {:.1}%", stability_score);
         
         // System health assessment
-        println!("\n🏥 System Health Assessment:");
+        // println!("\n🏥 System Health Assessment:");
         if stability_score >= 90.0 {
-            println!("  🟢 EXCELLENT - System is highly stable and performant");
+            // println!("  🟢 EXCELLENT - System is highly stable and performant");
         } else if stability_score >= 75.0 {
-            println!("  🟡 GOOD - System is stable with minor issues");
+            // println!("  🟡 GOOD - System is stable with minor issues");
         } else if stability_score >= 60.0 {
-            println!("  🟠 FAIR - System is functional but needs attention");
+            // println!("  🟠 FAIR - System is functional but needs attention");
         } else {
-            println!("  🔴 POOR - System has significant stability issues");
+            // println!("  🔴 POOR - System has significant stability issues");
         }
         
         // Performance assessment
         if self.test_results.performance_overhead_percent <= 2.0 {
-            println!("  🟢 Performance impact is MINIMAL (< 2%)");
+            // println!("  🟢 Performance impact is MINIMAL (< 2%)");
         } else if self.test_results.performance_overhead_percent <= 5.0 {
-            println!("  🟡 Performance impact is ACCEPTABLE (< 5%)");
+            // println!("  🟡 Performance impact is ACCEPTABLE (< 5%)");
         } else {
-            println!("  🔴 Performance impact is HIGH (> 5%)");
+            // println!("  🔴 Performance impact is HIGH (> 5%)");
         }
         
         // Final verdict
-        println!("\n🎯 FINAL VERDICT:");
+        // println!("\n🎯 FINAL VERDICT:");
         if self.test_results.passed_tests == self.test_results.total_tests 
             && stability_score >= 80.0 
             && self.test_results.performance_overhead_percent <= 5.0 {
-            println!("  🏆 ALL TESTS PASSED - System is production ready!");
+            // println!("  🏆 ALL TESTS PASSED - System is production ready!");
         } else {
-            println!("  ⚠️  SOME TESTS FAILED - Review issues before production deployment");
+            // println!("  ⚠️  SOME TESTS FAILED - Review issues before production deployment");
         }
         
-        println!("{}", "=".repeat(60));
+        // println!("{}", "=".repeat(60));
     }
 }
 

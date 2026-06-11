@@ -4,17 +4,19 @@
 //! including command execution, script interpretation, and interactive shell features.
 
 use crate::{KernelError, Result};
-use crate::log::{info, warn, error};
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
+use alloc::string::ToString;
 use alloc::collections::VecDeque;
 use alloc::sync::Arc;
+use alloc::vec;
 
-pub mod application;
-pub mod terminal;
-pub mod interactive;
-pub mod batch;
+// TODO: Create these submodules
+// pub mod application;
+// pub mod terminal;
+// pub mod interactive;
+// pub mod batch;
 
 /// CLI Application Result
 pub type ApplicationResult<T> = Result<T>;
@@ -312,7 +314,7 @@ impl CliApplication {
             match cli_service.execute_command(command_line) {
                 Ok(result) => {
                     if !result.output.is_empty() {
-                        println!("{}", result.output);
+                        // println!("{}", result.output);
                     }
                 }
                 Err(e) => {
@@ -348,7 +350,7 @@ impl CliApplication {
             match cli_service.execute_command(command_line) {
                 Ok(result) => {
                     if !result.output.is_empty() && self.config.enable_debug_mode {
-                        println!("{}", result.output);
+                        // println!("{}", result.output);
                     }
                 }
                 Err(e) => {
@@ -466,8 +468,9 @@ impl TerminalInterface {
 
     fn display_prompt(&self) {
         // Simplified prompt display
-        print!("MultiOS> ");
+        // print!("MultiOS> ");
         use core::io::Write;
+use alloc::format;
         let _ = core::io::stdout().flush();
     }
 }

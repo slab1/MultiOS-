@@ -11,12 +11,14 @@
 //! - Comprehensive error handling and logging
 
 use crate::{KernelError, Result};
-use crate::log::{info, warn, error};
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
+use alloc::string::ToString;
 use alloc::collections::{BTreeMap, HashMap, VecDeque};
 use alloc::sync::Arc;
+use alloc::vec;
+use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
 
 /// CLI Service Result

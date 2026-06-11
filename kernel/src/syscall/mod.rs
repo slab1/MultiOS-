@@ -25,7 +25,6 @@ pub mod test_runner;
 #[cfg(test)]
 pub mod example_usage;
 
-use crate::log::{info, warn, error, debug};
 use crate::arch::interrupts::*;
 use crate::arch::{ArchType, PrivilegeLevel};
 use crate::memory;

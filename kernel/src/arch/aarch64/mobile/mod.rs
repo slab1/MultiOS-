@@ -14,7 +14,6 @@ pub mod sensors;
 pub mod ui_adaptations;
 pub mod mobile_drivers;
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 
 /// Mobile device types

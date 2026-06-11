@@ -4,7 +4,6 @@
 //! ARM64, and RISC-V architectures, including SIMD extensions, security
 //! features, and performance monitoring capabilities.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 
 /// CPU features structure
@@ -50,7 +49,7 @@ pub struct CpuFeatures {
     pub invpcid: bool,
     pub tsx: bool,
     pub intel_pt: bool,
-    pub intel CET: bool,
+    pub intel_cet: bool,
     pub amd_sev: bool,
     pub amd_sme: bool,
     
@@ -305,7 +304,7 @@ impl CpuFeatureDetector {
             invpcid: self.cpuid_feature_bit(7, 1 << 10), // EBX bit 10 (INVPCID)
             tsx: self.cpuid_feature_bit(7, 1 << 11), // EBX bit 11 (TSX)
             intel_pt: self.cpuid_feature_bit(7, 1 << 25), // EBX bit 25 (Intel PT)
-            intel CET: false, // Will be set when CET extension is detected
+            intel_cet: false, // Will be set when CET extension is detected
             amd_sev: self.cpuid_extended_feature_bit(0, 1 << 1), // SEV support
             amd_sme: self.cpuid_extended_feature_bit(0, 1 << 0), // SME support
             
@@ -432,7 +431,7 @@ impl CpuFeatureDetector {
             invpcid: false,
             tsx: false,
             intel_pt: false,
-            intel CET: false,
+            intel_cet: false,
             amd_sev: false,
             amd_sme: false,
             
@@ -567,7 +566,7 @@ impl CpuFeatureDetector {
             invpcid: false,
             tsx: false,
             intel_pt: false,
-            intel CET: false,
+            intel_cet: false,
             amd_sev: false,
             amd_sme: false,
             

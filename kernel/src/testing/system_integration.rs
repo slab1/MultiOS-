@@ -7,9 +7,11 @@
 //! - Cross-component workflows
 
 use super::*;
+use alloc::vec;
+use alloc::format;
 use crate::*;
 use crate::Result;
-use log::{info, warn, error};
+use alloc::string::ToString;
 
 /// Run all system-wide integration tests
 pub fn run_system_integration_tests(coordinator: &mut IntegrationTestCoordinator) -> Result<Vec<IntegrationTestResult>> {
@@ -112,7 +114,7 @@ fn test_hal_service_manager_integration(coordinator: &mut IntegrationTestCoordin
         let interrupt_integration_result = crate::service_manager::register_interrupt_handler(
             "timer_interrupt".to_string(),
             crate::service_manager::InterruptHandler {
-                handler_function: || println!("Timer interrupt handled"),
+                // handler_function: || println!("Timer interrupt handled"),
                 priority: 1,
                 enabled: true,
             }

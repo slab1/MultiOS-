@@ -4,6 +4,7 @@
 //! including security auditing and encryption utilities for various security
 //! operations in the MultiOS kernel.
 
+use alloc::vec;
 use crate::security::encryption::{
     EncryptionManager, EncryptionAlgorithm, SymmetricKey, AsymmetricKey,
     SecureContainer, SecureChannel, EncryptionResult,
@@ -21,15 +22,15 @@ use crate::security::audit::{
 
 /// Example demonstrating symmetric encryption operations
 pub fn demonstrate_symmetric_encryption() -> EncryptionResult<()> {
-    println!("=== Symmetric Encryption Demonstration ===");
+    // println!("=== Symmetric Encryption Demonstration ===");
     
     // Generate AES-256 key
     let aes_key = generate_symmetric_key(EncryptionAlgorithm::AES256)?;
-    println!("Generated AES-256 key: {}", aes_key.key_id);
+    // println!("Generated AES-256 key: {}", aes_key.key_id);
     
     // Generate ChaCha20 key
     let chacha_key = generate_symmetric_key(EncryptionAlgorithm::ChaCha20)?;
-    println!("Generated ChaCha20 key: {}", chacha_key.key_id);
+    // println!("Generated ChaCha20 key: {}", chacha_key.key_id);
     
     // Test data to encrypt
     let plaintext = b"This is sensitive data that needs to be encrypted!";
@@ -42,18 +43,18 @@ pub fn demonstrate_symmetric_encryption() -> EncryptionResult<()> {
     let encrypted_aes = manager.encrypt_aes256(plaintext, &aes_key)?;
     let decrypted_aes = manager.decrypt_aes256(&encrypted_aes, &aes_key)?;
     
-    println!("AES-256 encryption successful: {} bytes -> {} bytes", 
+    // println!("AES-256 encryption successful: {} bytes -> {} bytes", 
              plaintext.len(), encrypted_aes.len());
-    println!("AES-256 decryption successful: {}", 
+    // println!("AES-256 decryption successful: {}", 
              plaintext == &decrypted_aes[..]);
     
     // Encrypt with ChaCha20
     let encrypted_chacha = manager.encrypt_chacha20(plaintext, &chacha_key)?;
     let decrypted_chacha = manager.decrypt_chacha20(&encrypted_chacha, &chacha_key)?;
     
-    println!("ChaCha20 encryption successful: {} bytes -> {} bytes", 
+    // println!("ChaCha20 encryption successful: {} bytes -> {} bytes", 
              plaintext.len(), encrypted_chacha.len());
-    println!("ChaCha20 decryption successful: {}", 
+    // println!("ChaCha20 decryption successful: {}", 
              plaintext == &decrypted_chacha[..]);
     
     Ok(())
@@ -61,15 +62,15 @@ pub fn demonstrate_symmetric_encryption() -> EncryptionResult<()> {
 
 /// Example demonstrating asymmetric encryption operations
 pub fn demonstrate_asymmetric_encryption() -> EncryptionResult<()> {
-    println!("=== Asymmetric Encryption Demonstration ===");
+    // println!("=== Asymmetric Encryption Demonstration ===");
     
     // Generate RSA key pair
     let rsa_key = generate_asymmetric_key(EncryptionAlgorithm::RSA2048)?;
-    println!("Generated RSA-2048 key pair: {}", rsa_key.key_id);
+    // println!("Generated RSA-2048 key pair: {}", rsa_key.key_id);
     
     // Generate ECC key pair
     let ecc_key = generate_asymmetric_key(EncryptionAlgorithm::ECCP256)?;
-    println!("Generated ECC P-256 key pair: {}", ecc_key.key_id);
+    // println!("Generated ECC P-256 key pair: {}", ecc_key.key_id);
     
     // Test data to encrypt
     let plaintext = b"Asymmetric encryption test data";
@@ -82,24 +83,24 @@ pub fn demonstrate_asymmetric_encryption() -> EncryptionResult<()> {
     let encrypted_rsa = manager.encrypt_rsa(plaintext, &rsa_key.public_key)?;
     let decrypted_rsa = manager.decrypt_rsa(&encrypted_rsa, &rsa_key.private_key)?;
     
-    println!("RSA-2048 encryption successful: {} bytes -> {} bytes", 
+    // println!("RSA-2048 encryption successful: {} bytes -> {} bytes", 
              plaintext.len(), encrypted_rsa.len());
-    println!("RSA-2048 decryption successful: {}", 
+    // println!("RSA-2048 decryption successful: {}", 
              plaintext == &decrypted_rsa[..]);
     
     // Test ECC operations (placeholder for now)
-    println!("ECC P-256 key pair ready for cryptographic operations");
+    // println!("ECC P-256 key pair ready for cryptographic operations");
     
     Ok(())
 }
 
 /// Example demonstrating secure container operations
 pub fn demonstrate_secure_containers() -> EncryptionResult<()> {
-    println!("=== Secure Containers Demonstration ===");
+    // println!("=== Secure Containers Demonstration ===");
     
     // Generate a key for container encryption
     let key = generate_symmetric_key(EncryptionAlgorithm::AES256)?;
-    println!("Generated key for container: {}", key.key_id);
+    // println!("Generated key for container: {}", key.key_id);
     
     // Create sensitive file data
     let file_data = b"Secret file contents that need to be protected.";
@@ -111,27 +112,27 @@ pub fn demonstrate_secure_containers() -> EncryptionResult<()> {
     
     // Create secure container
     let container = manager.create_secure_container(file_data, &key, metadata)?;
-    println!("Created secure container: {}", container.container_id);
-    println!("Container size: {} bytes, Algorithm: {:?}", 
+    // println!("Created secure container: {}", container.container_id);
+    // println!("Container size: {} bytes, Algorithm: {:?}", 
              container.size, container.algorithm);
     
     // Extract data from container
     let extracted_data = manager.extract_secure_container(&container, &key)?;
     let extracted_metadata = String::from_utf8_lossy(&container.metadata);
     
-    println!("Extracted data successful: {}", 
+    // println!("Extracted data successful: {}", 
              file_data == &extracted_data[..]);
-    println!("Metadata: {}", extracted_metadata);
+    // println!("Metadata: {}", extracted_metadata);
     
     // Verify integrity
-    println!("Container integrity: PASSED");
+    // println!("Container integrity: PASSED");
     
     Ok(())
 }
 
 /// Example demonstrating secure communication channels
 pub fn demonstrate_secure_channels() -> EncryptionResult<()> {
-    println!("=== Secure Communication Channels Demonstration ===");
+    // println!("=== Secure Communication Channels Demonstration ===");
     
     // Generate keys for peers
     let alice_key = generate_asymmetric_key(EncryptionAlgorithm::RSA2048)?;
@@ -144,8 +145,8 @@ pub fn demonstrate_secure_channels() -> EncryptionResult<()> {
     // Establish secure channel between Alice and Bob
     let channel = manager.establish_secure_channel(&bob_key.key_id, 
                                                    EncryptionAlgorithm::AES256)?;
-    println!("Established secure channel: {}", channel.channel_id);
-    println!("Channel peer: {}, Algorithm: {:?}", 
+    // println!("Established secure channel: {}", channel.channel_id);
+    // println!("Channel peer: {}, Algorithm: {:?}", 
              channel.peer_key, channel.algorithm);
     
     // Send encrypted messages
@@ -153,26 +154,26 @@ pub fn demonstrate_secure_channels() -> EncryptionResult<()> {
     let encrypted_msg1 = manager.encrypt_channel_message(&channel.channel_id, message1)?;
     let decrypted_msg1 = manager.decrypt_channel_message(&channel.channel_id, &encrypted_msg1)?;
     
-    println!("Message 1 encryption successful");
-    println!("Message 1: {}", String::from_utf8_lossy(&decrypted_msg1));
-    println!("Message 1 verified: {}", message1 == &decrypted_msg1[..]);
+    // println!("Message 1 encryption successful");
+    // println!("Message 1: {}", String::from_utf8_lossy(&decrypted_msg1));
+    // println!("Message 1 verified: {}", message1 == &decrypted_msg1[..]);
     
     let message2 = b"Symmetric key exchange complete";
     let encrypted_msg2 = manager.encrypt_channel_message(&channel.channel_id, message2)?;
     let decrypted_msg2 = manager.decrypt_channel_message(&channel.channel_id, &encrypted_msg2)?;
     
-    println!("Message 2 encryption successful");
-    println!("Message 2: {}", String::from_utf8_lossy(&decrypted_msg2));
-    println!("Message 2 verified: {}", message2 == &decrypted_msg2[..]);
+    // println!("Message 2 encryption successful");
+    // println!("Message 2: {}", String::from_utf8_lossy(&decrypted_msg2));
+    // println!("Message 2 verified: {}", message2 == &decrypted_msg2[..]);
     
-    println!("Channel statistics: {} messages transmitted", channel.message_count);
+    // println!("Channel statistics: {} messages transmitted", channel.message_count);
     
     Ok(())
 }
 
 /// Example demonstrating file encryption integration
 pub fn demonstrate_file_encryption() -> EncryptionResult<()> {
-    println!("=== File Encryption Integration Demonstration ===");
+    // println!("=== File Encryption Integration Demonstration ===");
     
     // Simulate file data
     let file_content = b"This is a file containing sensitive information that needs encryption.";
@@ -180,7 +181,7 @@ pub fn demonstrate_file_encryption() -> EncryptionResult<()> {
     
     // Generate key for file encryption
     let file_key = generate_symmetric_key(EncryptionAlgorithm::ChaCha20)?;
-    println!("Generated file encryption key: {}", file_key.key_id);
+    // println!("Generated file encryption key: {}", file_key.key_id);
     
     let manager = get_encryption_manager()
         .and_then(|mgr| mgr.lock().as_ref().cloned())
@@ -188,35 +189,35 @@ pub fn demonstrate_file_encryption() -> EncryptionResult<()> {
     
     // Encrypt file
     let encrypted_file = manager.encrypt_file(file_content, &file_key)?;
-    println!("File encrypted: {} -> {} bytes ({}% size increase)", 
+    // println!("File encrypted: {} -> {} bytes ({}% size increase)", 
              file_content.len(), encrypted_file.len(),
              ((encrypted_file.len() as f64 / file_content.len() as f64) - 1.0) * 100.0);
     
     // Decrypt file
     let decrypted_file = manager.decrypt_file(&encrypted_file, &file_key)?;
-    println!("File decrypted successfully: {}", 
+    // println!("File decrypted successfully: {}", 
              file_content == &decrypted_file[..]);
     
     // Simulate secure storage metadata
-    println!("Secure file metadata:");
-    println!("  Path: {}", file_path);
-    println!("  Algorithm: {:?}", file_key.algorithm);
-    println!("  Size: {} bytes", file_content.len());
-    println!("  Encrypted size: {} bytes", encrypted_file.len());
+    // println!("Secure file metadata:");
+    // println!("  Path: {}", file_path);
+    // println!("  Algorithm: {:?}", file_key.algorithm);
+    // println!("  Size: {} bytes", file_content.len());
+    // println!("  Encrypted size: {} bytes", encrypted_file.len());
     
     Ok(())
 }
 
 /// Example demonstrating key management operations
 pub fn demonstrate_key_management() -> EncryptionResult<()> {
-    println!("=== Key Management Demonstration ===");
+    // println!("=== Key Management Demonstration ===");
     
     let manager = get_encryption_manager()
         .and_then(|mgr| mgr.lock().as_ref().cloned())
         .ok_or(crate::security::encryption::EncryptionError::NotInitialized)?;
     
     // Generate multiple keys of different types
-    println!("Generating multiple cryptographic keys...");
+    // println!("Generating multiple cryptographic keys...");
     
     let aes_keys = vec![
         generate_symmetric_key(EncryptionAlgorithm::AES256)?,
@@ -238,26 +239,26 @@ pub fn demonstrate_key_management() -> EncryptionResult<()> {
         generate_asymmetric_key(EncryptionAlgorithm::ECCP384)?,
     ];
     
-    println!("Generated keys:");
-    println!("  AES-256 keys: {}", aes_keys.len());
-    println!("  ChaCha20 keys: {}", chacha_keys.len());
-    println!("  RSA keys: {}", rsa_keys.len());
-    println!("  ECC keys: {}", ecc_keys.len());
+    // println!("Generated keys:");
+    // println!("  AES-256 keys: {}", aes_keys.len());
+    // println!("  ChaCha20 keys: {}", chacha_keys.len());
+    // println!("  RSA keys: {}", rsa_keys.len());
+    // println!("  ECC keys: {}", ecc_keys.len());
     
     // List all active keys
     let active_keys = manager.list_keys()?;
-    println!("\nActive keys summary:");
+    // println!("\nActive keys summary:");
     for key in &active_keys {
-        println!("  Key ID: {}, Type: {:?}", key.id, key.key_type);
-        println!("    Created: {}, Active: {}", key.created_at, key.is_active);
+        // println!("  Key ID: {}, Type: {:?}", key.id, key.key_type);
+        // println!("    Created: {}, Active: {}", key.created_at, key.is_active);
     }
     
     // Demonstrate key rotation
     if !active_keys.is_empty() {
         let first_key_id = &active_keys[0].id;
-        println!("\nRotating key: {}", first_key_id);
+        // println!("\nRotating key: {}", first_key_id);
         let rotated_key = manager.rotate_key(first_key_id)?;
-        println!("New key created: {}", rotated_key.id);
+        // println!("New key created: {}", rotated_key.id);
     }
     
     Ok(())
@@ -265,27 +266,27 @@ pub fn demonstrate_key_management() -> EncryptionResult<()> {
 
 /// Example demonstrating random number generation
 pub fn demonstrate_random_generation() -> EncryptionResult<()> {
-    println!("=== Random Number Generation Demonstration ===");
+    // println!("=== Random Number Generation Demonstration ===");
     
     // Generate random bytes
     let random_bytes_16 = generate_random_bytes(16)?;
     let random_bytes_32 = generate_random_bytes(32)?;
     let random_bytes_64 = generate_random_bytes(64)?;
     
-    println!("Generated random bytes:");
-    println!("  16 bytes: {:?}", &random_bytes_16[..]);
-    println!("  32 bytes: {:?}", &random_bytes_32[..]);
-    println!("  64 bytes: {:?}", &random_bytes_64[..]);
+    // println!("Generated random bytes:");
+    // println!("  16 bytes: {:?}", &random_bytes_16[..]);
+    // println!("  32 bytes: {:?}", &random_bytes_32[..]);
+    // println!("  64 bytes: {:?}", &random_bytes_64[..]);
     
     // Verify randomness (check for patterns)
     let has_patterns_16 = detect_patterns(&random_bytes_16);
     let has_patterns_32 = detect_patterns(&random_bytes_32);
     let has_patterns_64 = detect_patterns(&random_bytes_64);
     
-    println!("Pattern analysis:");
-    println!("  16 bytes - Patterns detected: {}", has_patterns_16);
-    println!("  32 bytes - Patterns detected: {}", has_patterns_32);
-    println!("  64 bytes - Patterns detected: {}", has_patterns_64);
+    // println!("Pattern analysis:");
+    // println!("  16 bytes - Patterns detected: {}", has_patterns_16);
+    // println!("  32 bytes - Patterns detected: {}", has_patterns_32);
+    // println!("  64 bytes - Patterns detected: {}", has_patterns_64);
     
     // Generate unique random values
     let manager = get_encryption_manager()
@@ -296,9 +297,9 @@ pub fn demonstrate_random_generation() -> EncryptionResult<()> {
         let random_u32 = rng.generate_u32()?;
         let random_u64 = rng.generate_u64()?;
         
-        println!("Generated random integers:");
-        println!("  u32: {}", random_u32);
-        println!("  u64: {}", random_u64);
+        // println!("Generated random integers:");
+        // println!("  u32: {}", random_u32);
+        // println!("  u64: {}", random_u64);
     }
     
     Ok(())
@@ -325,7 +326,7 @@ fn detect_patterns(data: &[u8]) -> bool {
 
 /// Example demonstrating security statistics
 pub fn demonstrate_security_statistics() -> EncryptionResult<()> {
-    println!("=== Security Statistics Demonstration ===");
+    // println!("=== Security Statistics Demonstration ===");
     
     let manager = get_encryption_manager()
         .and_then(|mgr| mgr.lock().as_ref().cloned())
@@ -333,27 +334,27 @@ pub fn demonstrate_security_statistics() -> EncryptionResult<()> {
     
     let stats = manager.get_statistics();
     
-    println!("Security subsystem statistics:");
-    println!("  Total operations: {}", stats.total_operations);
-    println!("  Encryption operations: {}", stats.encryption_operations);
-    println!("  Decryption operations: {}", stats.decryption_operations);
-    println!("  Key generations: {}", stats.key_generations);
-    println!("  Key rotations: {}", stats.key_rotations);
-    println!("  Random numbers generated: {}", stats.random_numbers_generated);
-    println!("  Secure channels established: {}", stats.secure_channels_established);
-    println!("  Secure containers created: {}", stats.containers_created);
-    println!("  Integrity checks: {}", stats.integrity_checks);
-    println!("  Failed operations: {}", stats.failed_operations);
+    // println!("Security subsystem statistics:");
+    // println!("  Total operations: {}", stats.total_operations);
+    // println!("  Encryption operations: {}", stats.encryption_operations);
+    // println!("  Decryption operations: {}", stats.decryption_operations);
+    // println!("  Key generations: {}", stats.key_generations);
+    // println!("  Key rotations: {}", stats.key_rotations);
+    // println!("  Random numbers generated: {}", stats.random_numbers_generated);
+    // println!("  Secure channels established: {}", stats.secure_channels_established);
+    // println!("  Secure containers created: {}", stats.containers_created);
+    // println!("  Integrity checks: {}", stats.integrity_checks);
+    // println!("  Failed operations: {}", stats.failed_operations);
     
     Ok(())
 }
 
 /// Example demonstrating integration scenarios
 pub fn demonstrate_integration_scenarios() -> EncryptionResult<()> {
-    println!("=== Integration Scenarios Demonstration ===");
+    // println!("=== Integration Scenarios Demonstration ===");
     
     // Scenario 1: End-to-end secure file transfer
-    println!("\n--- Scenario 1: Secure File Transfer ---");
+    // println!("\n--- Scenario 1: Secure File Transfer ---");
     let file_data = b"Confidential document for secure transmission.";
     let transfer_key = generate_symmetric_key(EncryptionAlgorithm::AES256)?;
     
@@ -366,11 +367,11 @@ pub fn demonstrate_integration_scenarios() -> EncryptionResult<()> {
     let secure_container = manager.create_secure_container(file_data, &transfer_key, transfer_metadata)?;
     
     // Simulate transmission
-    println!("Secure container created: {}", secure_container.container_id);
-    println!("Ready for secure transmission");
+    // println!("Secure container created: {}", secure_container.container_id);
+    // println!("Ready for secure transmission");
     
     // Scenario 2: Multi-party secure communication
-    println!("\n--- Scenario 2: Multi-party Communication ---");
+    // println!("\n--- Scenario 2: Multi-party Communication ---");
     let alice_key = generate_asymmetric_key(EncryptionAlgorithm::RSA2048)?;
     let bob_key = generate_asymmetric_key(EncryptionAlgorithm::RSA2048)?;
     let charlie_key = generate_asymmetric_key(EncryptionAlgorithm::RSA2048)?;
@@ -378,40 +379,40 @@ pub fn demonstrate_integration_scenarios() -> EncryptionResult<()> {
     let alice_channel = manager.establish_secure_channel(&bob_key.key_id, EncryptionAlgorithm::AES256)?;
     let bob_channel = manager.establish_secure_channel(&alice_key.key_id, EncryptionAlgorithm::AES256)?;
     
-    println!("Alice-Bob channel established: {}", alice_channel.channel_id);
-    println!("Bob-Alice channel established: {}", bob_channel.channel_id);
+    // println!("Alice-Bob channel established: {}", alice_channel.channel_id);
+    // println!("Bob-Alice channel established: {}", bob_channel.channel_id);
     
     // Scenario 3: Key escrow and recovery
-    println!("\n--- Scenario 3: Key Management ---");
+    // println!("\n--- Scenario 3: Key Management ---");
     let escrow_keys = vec![
         generate_symmetric_key(EncryptionAlgorithm::AES256)?,
         generate_symmetric_key(EncryptionAlgorithm::ChaCha20)?,
     ];
     
-    println!("Escrow keys created: {}", escrow_keys.len());
+    // println!("Escrow keys created: {}", escrow_keys.len());
     for (i, key) in escrow_keys.iter().enumerate() {
-        println!("  Escrow key {}: {}", i + 1, key.key_id);
+        // println!("  Escrow key {}: {}", i + 1, key.key_id);
     }
     
     // Scenario 4: Audit and compliance
-    println!("\n--- Scenario 4: Audit Trail ---");
+    // println!("\n--- Scenario 4: Audit Trail ---");
     let active_keys = manager.list_keys()?;
     let active_channels = manager.list_secure_channels()?;
     
-    println!("Audit summary:");
-    println!("  Active keys: {}", active_keys.len());
-    println!("  Active channels: {}", active_channels.len());
-    println!("  Operations performed: {}", manager.get_statistics().total_operations);
+    // println!("Audit summary:");
+    // println!("  Active keys: {}", active_keys.len());
+    // println!("  Active channels: {}", active_channels.len());
+    // println!("  Operations performed: {}", manager.get_statistics().total_operations);
     
     Ok(())
 }
 
 /// Run all encryption utility demonstrations
 pub fn run_all_demonstrations() -> EncryptionResult<()> {
-    println!("\n");
-    println!("╔══════════════════════════════════════════════════════════════╗");
-    println!("║     MultiOS Kernel Encryption Utilities Demonstration       ║");
-    println!("╚══════════════════════════════════════════════════════════════╝");
+    // println!("\n");
+    // println!("╔══════════════════════════════════════════════════════════════╗");
+    // println!("║     MultiOS Kernel Encryption Utilities Demonstration       ║");
+    // println!("╚══════════════════════════════════════════════════════════════╝");
     
     let results = vec![
         demonstrate_symmetric_encryption(),
@@ -427,14 +428,14 @@ pub fn run_all_demonstrations() -> EncryptionResult<()> {
     
     for (i, result) in results.iter().enumerate() {
         match result {
-            Ok(_) => println!("✓ Demonstration {} completed successfully", i + 1),
-            Err(e) => println!("✗ Demonstration {} failed: {:?}", i + 1, e),
+            // Ok(_) => println!("✓ Demonstration {} completed successfully", i + 1),
+            // Err(e) => println!("✗ Demonstration {} failed: {:?}", i + 1, e),
         }
     }
     
-    println!("\n╔══════════════════════════════════════════════════════════════╗");
-    println!("║          Encryption Utilities Demonstration Complete         ║");
-    println!("╚══════════════════════════════════════════════════════════════╝");
+    // println!("\n╔══════════════════════════════════════════════════════════════╗");
+    // println!("║          Encryption Utilities Demonstration Complete         ║");
+    // println!("╚══════════════════════════════════════════════════════════════╝");
     
     Ok(())
 }
@@ -443,7 +444,7 @@ pub fn run_all_demonstrations() -> EncryptionResult<()> {
 
 /// Example: Basic security event logging
 pub fn demonstrate_basic_security_logging() -> AuditResult<()> {
-    println!("=== Basic Security Event Logging ===");
+    // println!("=== Basic Security Event Logging ===");
     
     // Log a simple authentication event
     log_authentication_event(Some(1001), Some(12345), "alice", true, Some("192.168.1.100"))?;
@@ -479,13 +480,13 @@ pub fn demonstrate_basic_security_logging() -> AuditResult<()> {
     
     log_security_event(violation_event)?;
     
-    println!("Basic security events logged successfully");
+    // println!("Basic security events logged successfully");
     Ok(())
 }
 
 /// Example: Comprehensive security audit reporting
 pub fn demonstrate_security_reporting() -> AuditResult<()> {
-    println!("=== Security Audit Reporting ===");
+    // println!("=== Security Audit Reporting ===");
     
     // Create a comprehensive query for security events
     let query = SecurityAuditQuery {
@@ -516,17 +517,17 @@ pub fn demonstrate_security_reporting() -> AuditResult<()> {
     // Generate security report
     let report = generate_security_report(&query)?;
     
-    println!("Generated security report with {} events", report.events.len());
-    println!("Summary: {} security incidents, {} critical events", 
+    // println!("Generated security report with {} events", report.events.len());
+    // println!("Summary: {} security incidents, {} critical events", 
              report.summary.security_incidents, report.summary.critical_events);
-    println!("Compliance status: {}%", report.compliance_status.overall_compliance_score);
+    // println!("Compliance status: {}%", report.compliance_status.overall_compliance_score);
     
     Ok(())
 }
 
 /// Example: Real-time security monitoring
 pub fn demonstrate_realtime_monitoring() -> AuditResult<()> {
-    println!("=== Real-time Security Monitoring ===");
+    // println!("=== Real-time Security Monitoring ===");
     
     // Generate multiple security events to trigger monitoring
     for i in 0..5 {
@@ -542,10 +543,10 @@ pub fn demonstrate_realtime_monitoring() -> AuditResult<()> {
     // Get active alerts
     if let Some(audit_manager) = crate::security::audit::get_security_audit_manager() {
         let alerts = audit_manager.lock().get_active_security_alerts();
-        println!("Active security alerts: {}", alerts.len());
+        // println!("Active security alerts: {}", alerts.len());
         
         for alert in &alerts {
-            println!("  Alert: {} - {}", alert.title, alert.message);
+            // println!("  Alert: {} - {}", alert.title, alert.message);
         }
     }
     
@@ -554,7 +555,7 @@ pub fn demonstrate_realtime_monitoring() -> AuditResult<()> {
 
 /// Example: File system security integration
 pub fn demonstrate_file_security_integration() -> AuditResult<()> {
-    println!("=== File System Security Integration ===");
+    // println!("=== File System Security Integration ===");
     
     // Log file access events
     let sensitive_file_event = SecurityEvent {
@@ -620,13 +621,13 @@ pub fn demonstrate_file_security_integration() -> AuditResult<()> {
     
     log_security_event(unauthorized_modify)?;
     
-    println!("File system security events logged");
+    // println!("File system security events logged");
     Ok(())
 }
 
 /// Example: Network security event logging
 pub fn demonstrate_network_security() -> AuditResult<()> {
-    println!("=== Network Security Event Logging ===");
+    // println!("=== Network Security Event Logging ===");
     
     // Simulate port scan detection
     if let Some(audit_manager) = crate::security::audit::get_security_audit_manager() {
@@ -642,13 +643,13 @@ pub fn demonstrate_network_security() -> AuditResult<()> {
         )?;
     }
     
-    println!("Network security events logged");
+    // println!("Network security events logged");
     Ok(())
 }
 
 /// Example: Process security monitoring
 pub fn demonstrate_process_security() -> AuditResult<()> {
-    println!("=== Process Security Monitoring ===");
+    // println!("=== Process Security Monitoring ===");
     
     // Log process creation events
     if let Some(audit_manager) = crate::security::audit::get_security_audit_manager() {
@@ -663,13 +664,13 @@ pub fn demonstrate_process_security() -> AuditResult<()> {
         )?;
     }
     
-    println!("Process security events logged");
+    // println!("Process security events logged");
     Ok(())
 }
 
 /// Example: Compliance audit and reporting
 pub fn demonstrate_compliance_auditing() -> AuditResult<()> {
-    println!("=== Compliance Audit and Reporting ===");
+    // println!("=== Compliance Audit and Reporting ===");
     
     let current_time = crate::hal::get_current_time();
     let one_week_ago = current_time - (7 * 24 * 3600);
@@ -699,16 +700,16 @@ pub fn demonstrate_compliance_auditing() -> AuditResult<()> {
     
     let report = generate_security_report(&iso27001_query)?;
     
-    println!("ISO 27001 Compliance Report:");
-    println!("  Compliance Score: {:.1}%", report.compliance_status.overall_compliance_score);
-    println!("  Events Analyzed: {}", report.summary.total_events);
-    println!("  Security Incidents: {}", report.summary.security_incidents);
+    // println!("ISO 27001 Compliance Report:");
+    // println!("  Compliance Score: {:.1}%", report.compliance_status.overall_compliance_score);
+    // println!("  Events Analyzed: {}", report.summary.total_events);
+    // println!("  Security Incidents: {}", report.summary.security_incidents);
     
     // Show recommendations
     if !report.recommendations.is_empty() {
-        println!("  Recommendations:");
+        // println!("  Recommendations:");
         for rec in &report.recommendations {
-            println!("    - {} (Priority: {:?})", rec.title, rec.priority);
+            // println!("    - {} (Priority: {:?})", rec.title, rec.priority);
         }
     }
     
@@ -717,25 +718,25 @@ pub fn demonstrate_compliance_auditing() -> AuditResult<()> {
 
 /// Example: Audit trail integrity verification
 pub fn demonstrate_integrity_verification() -> AuditResult<()> {
-    println!("=== Audit Trail Integrity Verification ===");
+    // println!("=== Audit Trail Integrity Verification ===");
     
     // Perform integrity check
     if let Some(audit_manager) = crate::security::audit::get_security_audit_manager() {
         let integrity_result = audit_manager.lock().verify_integrity()?;
         
-        println!("Integrity Check Results:");
-        println!("  Verification Passed: {}", integrity_result.verification_passed);
-        println!("  Hash Matches: {}", integrity_result.hash_matches);
-        println!("  Signature Valid: {}", integrity_result.signature_valid);
-        println!("  Tampering Detected: {}", integrity_result.tampering_detected);
+        // println!("Integrity Check Results:");
+        // println!("  Verification Passed: {}", integrity_result.verification_passed);
+        // println!("  Hash Matches: {}", integrity_result.hash_matches);
+        // println!("  Signature Valid: {}", integrity_result.signature_valid);
+        // println!("  Tampering Detected: {}", integrity_result.tampering_detected);
         
         if !integrity_result.discrepancies.is_empty() {
-            println!("  Discrepancies found:");
+            // println!("  Discrepancies found:");
             for disc in &integrity_result.discrepancies {
-                println!("    - {}", disc);
+                // println!("    - {}", disc);
             }
         } else {
-            println!("  No discrepancies found - audit trail is verified");
+            // println!("  No discrepancies found - audit trail is verified");
         }
     }
     
@@ -744,7 +745,7 @@ pub fn demonstrate_integrity_verification() -> AuditResult<()> {
 
 /// Example: Security event correlation
 pub fn demonstrate_event_correlation() -> AuditResult<()> {
-    println!("=== Security Event Correlation ===");
+    // println!("=== Security Event Correlation ===");
     
     // Simulate a coordinated attack scenario
     let attack_events = vec![
@@ -768,11 +769,11 @@ pub fn demonstrate_event_correlation() -> AuditResult<()> {
         audit_manager.lock().monitor_real_time()?;
         
         let alerts = audit_manager.lock().get_active_security_alerts();
-        println!("Generated {} correlation alerts", alerts.len());
+        // println!("Generated {} correlation alerts", alerts.len());
         
         for alert in &alerts {
-            println!("  Correlation Alert: {} - {}", alert.title, alert.message);
-            println!("    Risk Score: {}", alert.risk_assessment.overall_risk_score);
+            // println!("  Correlation Alert: {} - {}", alert.title, alert.message);
+            // println!("    Risk Score: {}", alert.risk_assessment.overall_risk_score);
         }
     }
     
@@ -781,7 +782,7 @@ pub fn demonstrate_event_correlation() -> AuditResult<()> {
 
 /// Example: Export security audit data
 pub fn demonstrate_data_export() -> AuditResult<()> {
-    println!("=== Security Audit Data Export ===");
+    // println!("=== Security Audit Data Export ===");
     
     let current_time = crate::hal::get_current_time();
     let one_hour_ago = current_time - 3600;
@@ -809,10 +810,10 @@ pub fn demonstrate_data_export() -> AuditResult<()> {
         let csv_export = audit_manager.lock().export_security_data("csv", &query)?;
         let syslog_export = audit_manager.lock().export_security_data("syslog", &query)?;
         
-        println!("Data export completed:");
-        println!("  JSON export: {} bytes", json_export.len());
-        println!("  CSV export: {} bytes", csv_export.len());
-        println!("  Syslog export: {} bytes", syslog_export.len());
+        // println!("Data export completed:");
+        // println!("  JSON export: {} bytes", json_export.len());
+        // println!("  CSV export: {} bytes", csv_export.len());
+        // println!("  Syslog export: {} bytes", syslog_export.len());
     }
     
     Ok(())
@@ -820,10 +821,10 @@ pub fn demonstrate_data_export() -> AuditResult<()> {
 
 /// Run all security audit demonstrations
 pub fn run_all_security_audit_demonstrations() -> AuditResult<()> {
-    println!("\n");
-    println!("╔══════════════════════════════════════════════════════════════╗");
-    println!("║        MultiOS Security Audit System Demonstration          ║");
-    println!("╚══════════════════════════════════════════════════════════════╝");
+    // println!("\n");
+    // println!("╔══════════════════════════════════════════════════════════════╗");
+    // println!("║        MultiOS Security Audit System Demonstration          ║");
+    // println!("╚══════════════════════════════════════════════════════════════╝");
     
     let demonstrations = vec![
         demonstrate_basic_security_logging(),
@@ -840,40 +841,40 @@ pub fn run_all_security_audit_demonstrations() -> AuditResult<()> {
     
     for (i, result) in demonstrations.iter().enumerate() {
         match result {
-            Ok(_) => println!("✓ Security Audit Demonstration {} completed successfully", i + 1),
-            Err(e) => println!("✗ Security Audit Demonstration {} failed: {:?}", i + 1, e),
+            // Ok(_) => println!("✓ Security Audit Demonstration {} completed successfully", i + 1),
+            // Err(e) => println!("✗ Security Audit Demonstration {} failed: {:?}", i + 1, e),
         }
     }
     
-    println!("\n╔══════════════════════════════════════════════════════════════╗");
-    println!("║          Security Audit Demonstration Complete              ║");
-    println!("╚══════════════════════════════════════════════════════════════╝");
+    // println!("\n╔══════════════════════════════════════════════════════════════╗");
+    // println!("║          Security Audit Demonstration Complete              ║");
+    // println!("╚══════════════════════════════════════════════════════════════╝");
     
     Ok(())
 }
 
 /// Run all security examples (both encryption and audit)
 pub fn run_all_security_examples() -> Result<(), Box<dyn core::fmt::Display>> {
-    println!("\n");
-    println!("╔══════════════════════════════════════════════════════════════╗");
-    println!("║          MultiOS Security System Complete Examples           ║");
-    println!("╚══════════════════════════════════════════════════════════════╝");
+    // println!("\n");
+    // println!("╔══════════════════════════════════════════════════════════════╗");
+    // println!("║          MultiOS Security System Complete Examples           ║");
+    // println!("╚══════════════════════════════════════════════════════════════╝");
     
     // Run encryption demonstrations
     if let Err(e) = run_all_demonstrations() {
-        println!("Encryption demonstrations error: {:?}", e);
+        // println!("Encryption demonstrations error: {:?}", e);
     }
     
-    println!("\n");
+    // println!("\n");
     
     // Run security audit demonstrations
     if let Err(e) = run_all_security_audit_demonstrations() {
-        println!("Security audit demonstrations error: {:?}", e);
+        // println!("Security audit demonstrations error: {:?}", e);
     }
     
-    println!("\n╔══════════════════════════════════════════════════════════════╗");
-    println!("║            All Security Examples Complete                    ║");
-    println!("╚══════════════════════════════════════════════════════════════╝");
+    // println!("\n╔══════════════════════════════════════════════════════════════╗");
+    // println!("║            All Security Examples Complete                    ║");
+    // println!("╚══════════════════════════════════════════════════════════════╝");
     
     Ok(())
 }
@@ -881,6 +882,7 @@ pub fn run_all_security_examples() -> Result<(), Box<dyn core::fmt::Display>> {
 #[cfg(test)]
 mod security_tests {
     use super::*;
+use alloc::string::ToString;
 
     #[test]
     fn test_security_examples() {

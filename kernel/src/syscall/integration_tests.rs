@@ -12,6 +12,8 @@
 //! - Stress testing under high syscall loads
 //! - System stability under pressure
 
+use alloc::vec;
+use alloc::format;
 #[cfg(test)]
 mod integration_tests {
     use super::*;
@@ -43,7 +45,7 @@ mod integration_tests {
     /// Test suite for syscall module integration
     #[test]
     fn test_syscall_module_integration() {
-        println!("Running syscall module integration tests...");
+        // println!("Running syscall module integration tests...");
         
         test_module_initialization();
         test_module_coordination();
@@ -66,7 +68,7 @@ mod integration_tests {
         let assembly_interface = Arc::new(Mutex::new(AssemblySyscallInterface::new()));
         assert!(assembly_interface.lock().unwrap().is_initialized());
         
-        println!("✓ All modules initialized successfully");
+        // println!("✓ All modules initialized successfully");
     }
 
     /// Test coordination between modules
@@ -106,7 +108,7 @@ mod integration_tests {
             .unwrap_or(0);
         assert!(error_count > 0);
         
-        println!("✓ Module coordination working correctly");
+        // println!("✓ Module coordination working correctly");
     }
 
     /// Test syscall number registry functionality
@@ -129,7 +131,7 @@ mod integration_tests {
         assert!(!file_syscalls.is_empty());
         assert!(file_syscalls.iter().any(|s| s.name.contains("file")));
         
-        println!("✓ Syscall registry functioning correctly");
+        // println!("✓ Syscall registry functioning correctly");
     }
 
     /// Test performance monitoring with error handling coordination
@@ -197,13 +199,13 @@ mod integration_tests {
         let error_stats = error_handler.lock().unwrap().get_error_statistics();
         assert!(error_stats.total_errors > 0);
         
-        println!("✓ Performance monitoring and error handling coordination working");
+        // println!("✓ Performance monitoring and error handling coordination working");
     }
 
     /// Performance monitoring overhead validation tests
     #[test]
     fn test_performance_monitoring_overhead() {
-        println!("Running performance monitoring overhead tests...");
+        // println!("Running performance monitoring overhead tests...");
         
         test_baseline_performance();
         test_monitoring_overhead();
@@ -221,7 +223,7 @@ mod integration_tests {
         }
         
         let baseline_time = start.elapsed();
-        println!("Baseline performance: {:?}", baseline_time);
+        // println!("Baseline performance: {:?}", baseline_time);
         
         assert!(baseline_time > Duration::from_millis(10)); // Should take some time
     }
@@ -259,18 +261,18 @@ mod integration_tests {
         }
         
         let monitored_time = start.elapsed();
-        println!("Monitored performance: {:?}", monitored_time);
+        // println!("Monitored performance: {:?}", monitored_time);
         
         // Get performance statistics
         let perf_stats = performance_monitor.lock().unwrap().get_performance_statistics();
-        println!("Performance statistics: {:?}", perf_stats);
+        // println!("Performance statistics: {:?}", perf_stats);
         
         // Verify overhead is acceptable (less than 5%)
         // Note: In a real implementation, we would compare with actual baseline
         // For this test, we verify the monitoring doesn't cause excessive overhead
         assert!(monitored_time < Duration::from_millis(1000)); // Reasonable upper bound
         
-        println!("✓ Performance monitoring overhead within acceptable limits");
+        // println!("✓ Performance monitoring overhead within acceptable limits");
     }
 
     /// Test performance optimization recommendations
@@ -293,7 +295,7 @@ mod integration_tests {
         // Get optimization recommendations
         let recommendations = performance_monitor.get_optimization_recommendations();
         
-        println!("Optimization recommendations: {:?}", recommendations);
+        // println!("Optimization recommendations: {:?}", recommendations);
         
         // Should have some recommendations
         assert!(!recommendations.is_empty());
@@ -302,13 +304,13 @@ mod integration_tests {
         let rec_string = format!("{:?}", recommendations);
         assert!(rec_string.contains("syscall") || rec_string.contains("performance"));
         
-        println!("✓ Performance optimization recommendations working");
+        // println!("✓ Performance optimization recommendations working");
     }
 
     /// Error handling and recovery strategy tests
     #[test]
     fn test_error_handling_and_recovery() {
-        println!("Running error handling and recovery tests...");
+        // println!("Running error handling and recovery tests...");
         
         test_error_types_and_contexts();
         test_error_recovery_strategies();
@@ -349,7 +351,7 @@ mod integration_tests {
         assert!(error_stats.total_errors > 0);
         assert!(error_stats.error_counts.len() > 0);
         
-        println!("✓ Error types and contexts working correctly");
+        // println!("✓ Error types and contexts working correctly");
     }
 
     /// Test error recovery strategies
@@ -381,7 +383,7 @@ mod integration_tests {
         
         assert!(recovery_result.is_ok());
         
-        println!("✓ Error recovery strategies functioning correctly");
+        // println!("✓ Error recovery strategies functioning correctly");
     }
 
     /// Test error statistics and reporting
@@ -416,7 +418,7 @@ mod integration_tests {
         let total_errors: usize = error_freq.values().sum();
         assert_eq!(total_errors, 20);
         
-        println!("✓ Error statistics and reporting working correctly");
+        // println!("✓ Error statistics and reporting working correctly");
     }
 
     /// Test user-friendly error messages
@@ -441,13 +443,13 @@ mod integration_tests {
             assert!(!message.contains("kernel"));
         }
         
-        println!("✓ User-friendly error messages working correctly");
+        // println!("✓ User-friendly error messages working correctly");
     }
 
     /// Assembly interface functionality tests for x86_64
     #[test]
     fn test_assembly_interface_x86_64() {
-        println!("Running assembly interface tests for x86_64...");
+        // println!("Running assembly interface tests for x86_64...");
         
         test_x86_64_syscall_entry_points();
         test_x86_64_fast_path_optimizations();
@@ -473,7 +475,7 @@ mod integration_tests {
         );
         assert!(!syscall_instruction.is_empty());
         
-        println!("✓ x86_64 syscall entry points working correctly");
+        // println!("✓ x86_64 syscall entry points working correctly");
     }
 
     /// Test x86_64 fast path optimizations
@@ -494,7 +496,7 @@ mod integration_tests {
         // Should identify frequently called syscalls as hot paths
         assert!(!hot_paths.is_empty());
         
-        println!("✓ x86_64 fast path optimizations working correctly");
+        // println!("✓ x86_64 fast path optimizations working correctly");
     }
 
     /// Test x86_64 register management
@@ -515,7 +517,7 @@ mod integration_tests {
         let saved_regs = assembly_interface.get_callee_saved_registers();
         assert!(saved_regs.len() > 0);
         
-        println!("✓ x86_64 register management working correctly");
+        // println!("✓ x86_64 register management working correctly");
     }
 
     /// Test x86_64 context switching
@@ -537,13 +539,13 @@ mod integration_tests {
         );
         assert!(privilege_transition); // Should require transition
         
-        println!("✓ x86_64 context switching working correctly");
+        // println!("✓ x86_64 context switching working correctly");
     }
 
     /// Stress testing under high syscall loads
     #[test]
     fn test_stress_testing() {
-        println!("Running stress tests...");
+        // println!("Running stress tests...");
         
         test_high_frequency_syscalls();
         test_memory_pressure_conditions();
@@ -617,13 +619,13 @@ mod integration_tests {
         let total_time = start.elapsed();
         let throughput = STRESS_TEST_SYSCALL_COUNT as f64 / total_time.as_secs_f64();
         
-        println!("Stress test results:");
-        println!("  Total syscalls: {}", STRESS_TEST_SYSCALL_COUNT);
-        println!("  Success: {}", success_count);
-        println!("  Errors: {}", error_count);
-        println!("  Success rate: {:.2}%", (success_count as f64 / STRESS_TEST_SYSCALL_COUNT as f64) * 100.0);
-        println!("  Throughput: {:.2} syscalls/second", throughput);
-        println!("  Total time: {:?}", total_time);
+        // println!("Stress test results:");
+        // println!("  Total syscalls: {}", STRESS_TEST_SYSCALL_COUNT);
+        // println!("  Success: {}", success_count);
+        // println!("  Errors: {}", error_count);
+        // println!("  Success rate: {:.2}%", (success_count as f64 / STRESS_TEST_SYSCALL_COUNT as f64) * 100.0);
+        // println!("  Throughput: {:.2} syscalls/second", throughput);
+        // println!("  Total time: {:?}", total_time);
         
         // Verify system remained stable
         assert!(success_count > STRESS_TEST_SYSCALL_COUNT * 0.8); // At least 80% success rate
@@ -633,7 +635,7 @@ mod integration_tests {
         let error_stats = error_handler.lock().unwrap().get_error_statistics();
         assert!(error_stats.total_errors > 0);
         
-        println!("✓ High frequency syscall processing stable");
+        // println!("✓ High frequency syscall processing stable");
     }
 
     /// Test system behavior under memory pressure
@@ -689,7 +691,7 @@ mod integration_tests {
         assert!(error_stats.total_errors > 0);
         
         // System should handle memory pressure gracefully
-        println!("✓ System stable under memory pressure conditions");
+        // println!("✓ System stable under memory pressure conditions");
     }
 
     /// Test concurrent syscall processing
@@ -759,10 +761,10 @@ mod integration_tests {
             }
         }
         
-        println!("Concurrent test results:");
-        println!("  Total success: {}", total_success);
-        println!("  Total errors: {}", total_errors);
-        println!("  Success rate: {:.2}%", (total_success as f64 / (total_success + total_errors) as f64) * 100.0);
+        // println!("Concurrent test results:");
+        // println!("  Total success: {}", total_success);
+        // println!("  Total errors: {}", total_errors);
+        // println!("  Success rate: {:.2}%", (total_success as f64 / (total_success + total_errors) as f64) * 100.0);
         
         // Verify concurrent processing worked correctly
         assert!(total_success > 0);
@@ -772,7 +774,7 @@ mod integration_tests {
         let error_stats = error_handler.lock().unwrap().get_error_statistics();
         assert!(error_stats.total_errors >= total_errors);
         
-        println!("✓ Concurrent syscall processing stable");
+        // println!("✓ Concurrent syscall processing stable");
     }
 
     /// Test overall system stability under sustained load
@@ -846,20 +848,20 @@ mod integration_tests {
         let perf_stats = performance_monitor.lock().unwrap().get_performance_statistics();
         let error_stats = error_handler.lock().unwrap().get_error_statistics();
         
-        println!("Sustained load test results:");
-        println!("  Duration: {:?}", test_duration);
-        println!("  Total syscalls: {}", syscall_count);
-        println!("  Syscalls/second: {:.2}", syscall_count as f64 / test_duration.as_secs_f64());
-        println!("  Peak memory usage: {}", peak_memory_usage);
-        println!("  Performance stats: {:?}", perf_stats);
-        println!("  Error stats: {:?}", error_stats);
+        // println!("Sustained load test results:");
+        // println!("  Duration: {:?}", test_duration);
+        // println!("  Total syscalls: {}", syscall_count);
+        // println!("  Syscalls/second: {:.2}", syscall_count as f64 / test_duration.as_secs_f64());
+        // println!("  Peak memory usage: {}", peak_memory_usage);
+        // println!("  Performance stats: {:?}", perf_stats);
+        // println!("  Error stats: {:?}", error_stats);
         
         // Verify system remained stable throughout the test
         assert!(syscall_count > 100); // Should process significant load
         assert!(perf_stats.total_syscalls > 0);
         assert!(error_stats.total_errors > 0);
         
-        println!("✓ System stable under sustained load");
+        // println!("✓ System stable under sustained load");
     }
 
     /// Helper function to simulate syscall processing
@@ -895,7 +897,7 @@ mod integration_tests {
     /// Integration test summary and validation
     #[test]
     fn test_integration_summary() {
-        println!("\n=== SYSCALL INTEGRATION TEST SUMMARY ===");
+        // println!("\n=== SYSCALL INTEGRATION TEST SUMMARY ===");
         
         // Validate overall system health
         let performance_monitor = Arc::new(Mutex::new(SyscallPerformanceMonitor::new()));
@@ -922,11 +924,11 @@ mod integration_tests {
         // Stress testing
         test_high_frequency_syscalls();
         
-        println!("\n✓ ALL SYSCALL INTEGRATION TESTS PASSED");
-        println!("✓ Performance monitoring overhead < 5%");
-        println!("✓ Error handling and recovery working");
-        println!("✓ Assembly interface functional on x86_64");
-        println!("✓ System stable under high load");
-        println!("✓ All modules working together correctly");
+        // println!("\n✓ ALL SYSCALL INTEGRATION TESTS PASSED");
+        // println!("✓ Performance monitoring overhead < 5%");
+        // println!("✓ Error handling and recovery working");
+        // println!("✓ Assembly interface functional on x86_64");
+        // println!("✓ System stable under high load");
+        // println!("✓ All modules working together correctly");
     }
 }

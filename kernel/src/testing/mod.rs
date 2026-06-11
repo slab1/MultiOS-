@@ -34,6 +34,7 @@
 //! let result = coordinator.run_automated_tests(build_info)?;
 //! ```
 
+use alloc::vec;
 pub mod integration_tests;
 pub mod admin_integration;
 pub mod security_integration;
@@ -409,6 +410,7 @@ pub enum TestSuiteStatus {
 #[cfg(test)]
 mod tests {
     use super::*;
+use alloc::string::ToString;
 
     #[test]
     fn test_framework_initialization() {

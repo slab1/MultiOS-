@@ -11,13 +11,14 @@
 //! - System performance metrics and trends
 //! - Resource alerts with configurable thresholds
 
-use crate::log::{info, warn, error, debug};
 use crate::{KernelError, Result};
 use spin::{RwLock, Mutex, Once};
 use core::sync::atomic::{AtomicU64, AtomicU32, AtomicUsize, AtomicBool, Ordering};
 use alloc::vec::Vec;
 use alloc::string::String;
+use alloc::string::ToString;
 use alloc::collections::VecDeque;
+use alloc::format;
 use core::time::Duration;
 use bitflags::bitflags;
 
@@ -2739,6 +2740,7 @@ mod tests {
     use crate::admin::resource_monitor::network::{get_interface_info, get_io_stats};
     use crate::admin::resource_monitor::performance::get_performance_metrics;
     use crate::admin::resource_monitor::alerts::{get_active_alerts, get_alert_statistics};
+use alloc::vec;
 
     #[test]
     fn test_resource_monitor_initialization() -> Result<()> {

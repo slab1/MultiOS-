@@ -14,7 +14,10 @@
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
+use alloc::string::ToString;
 use alloc::collections::HashMap;
+use alloc::vec;
+use alloc::format;
 use core::sync::atomic::{AtomicU32, AtomicUsize, Ordering};
 
 #[cfg(test)]

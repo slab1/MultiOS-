@@ -10,8 +10,9 @@
 use spin::Mutex;
 use alloc::vec::Vec;
 use alloc::string::String;
+use alloc::string::ToString;
+use alloc::vec;
 use core::fmt;
-use log::{info, warn, error};
 
 /// Boot verification result type
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

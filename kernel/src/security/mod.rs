@@ -38,8 +38,8 @@ pub mod integration_tests;
 
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
+use alloc::vec;
 use spin::{Mutex, RwLock};
-use log::{info, warn, error};
 
 // Re-export main components from both modules
 pub use encryption::{

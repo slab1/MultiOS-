@@ -3,7 +3,7 @@
 //! This module provides unified I/O interfaces across architectures for
 //! port-mapped I/O, memory-mapped I/O, and device operations.
 
-use crate::log::{info, warn, error};
+use alloc::vec;
 use crate::{KernelError, Result};
 use spin::RwLock;
 use core::sync::atomic::{AtomicU64, Ordering};

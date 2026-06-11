@@ -12,8 +12,9 @@
 //! - Multi-core support
 //! - NUMA configurations
 
-use crate::log::{info, warn, error};
+use alloc::format;
 use crate::{KernelError, Result};
+use alloc::vec;
 
 pub mod cpu;
 pub mod memory;
@@ -324,6 +325,7 @@ pub mod aarch64 {
 #[cfg(target_arch = "riscv64")]
 pub mod riscv64 {
     use super::*;
+use alloc::string::ToString;
     
     /// Enable/disable global interrupts
     pub fn set_global_interrupts(enabled: bool) {

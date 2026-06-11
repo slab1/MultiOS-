@@ -3,7 +3,6 @@
 //! Comprehensive block device management with I/O scheduling, caching,
 //! wear leveling, and error recovery.
 
-use crate::log::{info, warn, error};
 use crate::drivers::block_io_scheduler::{BlockIoScheduler, SchedulerType};
 use crate::drivers::write_cache::{WriteCache, CachePolicy};
 use crate::drivers::wear_leveling::{WearLevelingManager, WearLevelingStrategy};

@@ -3,12 +3,12 @@
 //! This module provides comprehensive testing for the bootstrap system
 //! to ensure reliable kernel initialization across different architectures.
 
+use alloc::format;
 use crate::bootstrap::{
     BootstrapConfig, BootstrapContext, BootstrapStage, 
     BootMethod, BootstrapResult
 };
 use crate::{ArchType, KernelError};
-use crate::log::{info, warn, error};
 
 /// Bootstrap test results
 #[derive(Debug, Clone)]

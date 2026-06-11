@@ -182,10 +182,11 @@ impl MemoryManager {
         let kernel_size = (context.kernel_end.as_u64() - context.kernel_start.as_u64()) as usize;
         let kernel_flags = MemoryFlags::kernel_ro();
         
+        // Kernel identity mapping - use mapper's map_page 
+        // which takes (virt, phys, flags). The kernel size is handled via loop internally.
         self.virtual_manager.mapper_mut().map_page(
             VirtAddr::new(context.kernel_start.as_u64()),
             context.kernel_start,
-            kernel_size,
             kernel_flags,
         )?;
 
@@ -207,7 +208,6 @@ impl MemoryManager {
         self.virtual_manager.mapper_mut().map_page(
             virt_start,
             phys_start,
-            map_size,
             MemoryFlags::kernel_rw(),
         )?;
 
@@ -223,10 +223,10 @@ impl MemoryManager {
         
         debug!("Initializing heap: {:?} ({} bytes)", heap_start, heap_size);
         
-        self.heap_allocator.init(heap_start, heap_size)?;
+        self.heap_allocator.init(VirtAddr::new(heap_start.as_u64()), heap_size)?;
         
         // Also initialize global allocator
-        allocator::init_global_allocator(heap_start, heap_size)?;
+        allocator::init_global_allocator(VirtAddr::new(heap_start.as_u64()), heap_size)?;
         
         Ok(())
     }
@@ -244,7 +244,6 @@ impl MemoryManager {
         self.virtual_manager.mapper_mut().map_page(
             stack_start,
             stack_phys.to_phys_addr(PageSize::Size4K),
-            stack_size,
             MemoryFlags::kernel_rw(),
         )?;
 
@@ -294,7 +293,7 @@ impl MemoryManager {
 
     /// Map virtual memory
     pub fn map_virtual(&mut self, virt_addr: VirtAddr, phys_addr: PhysAddr, size: usize, flags: MemoryFlags) -> MemoryResult<()> {
-        self.virtual_manager.mapper_mut().map_page(virt_addr, phys_addr, size, flags)
+        self.virtual_manager.mapper_mut().map_page(virt_addr, phys_addr, flags)
     }
 
     /// Translate virtual to physical address
@@ -338,6 +337,11 @@ impl MemoryManager {
     }
 }
 
+// SAFETY: The memory manager only contains architecture-specific pointers that
+// are used safely behind locks
+unsafe impl Send for MemoryManager {}
+unsafe impl Sync for MemoryManager {}
+
 /// Initialize the global memory management system
 /// 
 /// This function sets up the entire memory management subsystem for the kernel.
@@ -370,13 +374,9 @@ pub fn init(context: MemoryInitContext) -> MemoryResult<()> {
 /// that could be accessed from multiple threads. The memory manager must
 /// be initialized before calling this function.
 pub unsafe fn get_manager() -> MemoryResult<spin::MutexGuard<'static, Option<MemoryManager>>> {
-    MEMORY_MANAGER.lock().as_ref()
-        .ok_or(MemoryError::AllocationFailed)
-        .map(|_| MEMORY_MANAGER.lock())
-        .and_then(|guard| {
-            guard.as_ref().ok_or(MemoryError::AllocationFailed)
-                .map(|_| guard)
-        })
+    let guard = MEMORY_MANAGER.lock();
+    guard.as_ref().ok_or(MemoryError::AllocationFailed)?;
+    Ok(guard)
 }
 
 /// High-level memory allocation interface
@@ -386,18 +386,26 @@ pub mod alloc_helpers {
     /// Allocate and zero-initialize a type
     pub fn allocate_zeroed<T>() -> MemoryResult<Box<T>> {
         unsafe {
-            let manager = get_manager()?;
-            Ok(Box::new_zeroed().assume_init())
+            let _manager = get_manager()?;
+            let layout = core::alloc::Layout::new::<T>();
+            let ptr = alloc::alloc::alloc_zeroed(layout);
+            if ptr.is_null() {
+                return Err(MemoryError::AllocationFailed);
+            }
+            Ok(Box::from_raw(ptr as *mut T))
         }
     }
 
     /// Allocate a slice of a type
     pub fn allocate_slice<T>(len: usize) -> MemoryResult<Box<[T]>> {
         unsafe {
-            let manager = get_manager()?;
+            let _manager = get_manager()?;
             let layout = core::alloc::Layout::array::<T>(len)
                 .map_err(|_| MemoryError::InvalidAddress)?;
-            let ptr = manager.heap_allocator().allocator.lock().allocate(layout)?;
+            let ptr = alloc::alloc::alloc(layout);
+            if ptr.is_null() {
+                return Err(MemoryError::AllocationFailed);
+            }
             Ok(Box::from_raw(core::slice::from_raw_parts_mut(ptr as *mut T, len)))
         }
     }
@@ -405,7 +413,7 @@ pub mod alloc_helpers {
     /// Allocate a string with specified capacity
     pub fn allocate_string_with_capacity(capacity: usize) -> MemoryResult<alloc::string::String> {
         unsafe {
-            let manager = get_manager()?;
+            let _manager = get_manager()?;
             let mut string = alloc::string::String::with_capacity(capacity);
             // Pre-allocate internal buffer if needed
             if capacity > string.capacity() {

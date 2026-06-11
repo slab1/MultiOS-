@@ -6,6 +6,7 @@
 
 use alloc::sync::Arc;
 use alloc::vec::Vec;
+use alloc::format;
 use core::sync::atomic::{AtomicBool, AtomicU64, AtomicUsize, Ordering};
 use spin::Mutex;
 
@@ -678,7 +679,7 @@ impl UpdateScheduler {
         crate::hal::timers::sleep_ms(5000);
 
         if requires_reboot {
-            KernelLogger::log(LogLevel::Warning, "Kernel update requires system reboot");
+            KernelLogger::log(LogLevel::Warn, "Kernel update requires system reboot");
         }
 
         ExecutionResult::Success
@@ -723,7 +724,7 @@ impl UpdateScheduler {
         crate::hal::timers::sleep_ms(3000);
 
         if critical {
-            KernelLogger::log(LogLevel::Warning, "Critical firmware update - device may be temporarily unavailable");
+            KernelLogger::log(LogLevel::Warn, "Critical firmware update - device may be temporarily unavailable");
         }
 
         ExecutionResult::Success
@@ -756,7 +757,7 @@ impl UpdateScheduler {
                 self.handle_update_failure(update_id, &error);
             },
             ExecutionResult::RetryNeeded(error) => {
-                KernelLogger::log(LogLevel::Warning, &format!("Update {} needs retry: {}", update_id, error));
+                KernelLogger::log(LogLevel::Warn, &format!("Update {} needs retry: {}", update_id, error));
                 self.schedule_retry(update_id, &error);
             },
             ExecutionResult::Cancelled => {
@@ -1130,7 +1131,7 @@ impl UpdateScheduler {
             self.start_update_execution(task);
         }
 
-        KernelLogger::log(LogLevel::Warning, "Emergency maintenance mode activated");
+        KernelLogger::log(LogLevel::Warn, "Emergency maintenance mode activated");
         Ok(())
     }
 }
@@ -1270,6 +1271,7 @@ unsafe impl Sync for UpdateScheduler {}
 #[cfg(test)]
 mod tests {
     use super::*;
+use alloc::string::ToString;
 
     #[test]
     fn test_update_priority_ordering() {

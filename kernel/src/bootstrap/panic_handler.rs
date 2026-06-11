@@ -7,6 +7,7 @@ use crate::bootstrap::{BootstrapContext, BootstrapStage};
 use crate::KernelError;
 use crate::log::error;
 use core::fmt::Write;
+use alloc::string::ToString;
 
 /// Panic information structure
 #[derive(Debug, Clone)]

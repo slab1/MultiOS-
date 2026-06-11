@@ -3,7 +3,7 @@
 //! Provides optimized implementations using SSE, AVX, AVX2, AVX512,
 //! and other x86_64 instruction set extensions
 
-use crate::log::{info, warn, error};
+use alloc::vec;
 use crate::KernelError;
 use crate::arch::cpu_features::CpuFeatures;
 

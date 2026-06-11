@@ -4,7 +4,6 @@
 //! for mobile devices, including system timer, ARM Generic Timer, PIT (Programmable
 //! Interrupt Timer), and mobile-specific interrupt sources.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 
 /// ARM64 Generic Timer types

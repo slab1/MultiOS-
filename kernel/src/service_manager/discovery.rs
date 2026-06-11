@@ -5,8 +5,10 @@
 
 use spin::{Mutex, RwLock};
 use alloc::string::String;
+use alloc::string::ToString;
 use alloc::vec::Vec;
 use alloc::collections::{BTreeMap, HashSet};
+use alloc::format;
 use core::sync::atomic::{AtomicU64, Ordering};
 
 use super::{ServiceId, ServiceResult, ServiceError, service::{ServiceInstance, ServiceRegistryEntry, ServiceDiscoveryQuery}};

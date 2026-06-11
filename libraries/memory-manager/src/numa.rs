@@ -62,7 +62,7 @@ pub enum NumaPolicy {
 }
 
 /// NUMA memory statistics
-#[derive(Debug, Default, Clone)]
+#[derive(Debug)]
 pub struct NumaMemoryStats {
     /// Total memory per node
     pub total_memory: [usize; MAX_NUMA_NODES],
@@ -76,8 +76,20 @@ pub struct NumaMemoryStats {
     pub remote_accesses: [u64; MAX_NUMA_NODES],
 }
 
+impl Default for NumaMemoryStats {
+    fn default() -> Self {
+        Self {
+            total_memory: [0; MAX_NUMA_NODES],
+            used_memory: [0; MAX_NUMA_NODES],
+            free_memory: [0; MAX_NUMA_NODES],
+            migrations: [0; MAX_NUMA_NODES],
+            remote_accesses: [0; MAX_NUMA_NODES],
+        }
+    }
+}
+
 /// NUMA page information
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct NumaPage {
     /// Physical address of the page
     pub physical_addr: PhysAddr,
@@ -101,7 +113,7 @@ pub struct NumaMemoryPolicy {
 }
 
 /// NUMA balancing statistics
-#[derive(Debug, Default, Clone)]
+#[derive(Debug)]
 pub struct NumaBalanceStats {
     /// Number of balancing operations
     pub balance_operations: AtomicU64,
@@ -111,6 +123,28 @@ pub struct NumaBalanceStats {
     pub access_improvements: AtomicU64,
     /// Average migration latency (nanoseconds)
     pub avg_migration_latency: AtomicU64,
+}
+
+impl Default for NumaBalanceStats {
+    fn default() -> Self {
+        Self {
+            balance_operations: AtomicU64::new(0),
+            pages_migrated: AtomicU64::new(0),
+            access_improvements: AtomicU64::new(0),
+            avg_migration_latency: AtomicU64::new(0),
+        }
+    }
+}
+
+impl Clone for NumaBalanceStats {
+    fn clone(&self) -> Self {
+        Self {
+            balance_operations: AtomicU64::new(self.balance_operations.load(Ordering::Relaxed)),
+            pages_migrated: AtomicU64::new(self.pages_migrated.load(Ordering::Relaxed)),
+            access_improvements: AtomicU64::new(self.access_improvements.load(Ordering::Relaxed)),
+            avg_migration_latency: AtomicU64::new(self.avg_migration_latency.load(Ordering::Relaxed)),
+        }
+    }
 }
 
 /// NUMA manager state
@@ -143,6 +177,19 @@ struct NumaPageAllocator {
     allocation_counts: [AtomicUsize; MAX_NUMA_NODES],
     /// Page size information
     page_size: PageSize,
+}
+
+impl NumaPageAllocator {
+    fn new() -> Self {
+        // Initialize arrays element by element
+        let free_lists = core::array::from_fn(|_| Vec::new());
+        let allocation_counts = core::array::from_fn(|_| AtomicUsize::new(0));
+        Self {
+            free_lists,
+            allocation_counts,
+            page_size: PageSize::Size4K,
+        }
+    }
 }
 
 /// NUMA configuration
@@ -199,9 +246,12 @@ impl NumaManager {
         let mut manager = Self {
             topology: NumaTopology {
                 node_count: 1,
-                distance_matrix: [[10; MAX_NUMA_NODES]; MAX_NUMA_NODES],
+                distance_matrix: [[10u8; MAX_NUMA_NODES]; MAX_NUMA_NODES],
                 cpu_to_node: [0; MAX_CPUS],
-                node_memory_ranges: [None; MAX_NUMA_NODES],
+                node_memory_ranges: {
+                const NONE: Option<core::ops::Range<PhysAddr>> = None;
+                [NONE; MAX_NUMA_NODES]
+            },
             },
             stats: NumaMemoryStats::default(),
             balance_stats: NumaBalanceStats::default(),
@@ -210,11 +260,7 @@ impl NumaManager {
                 process_policies: Vec::new(),
                 thread_policies: Vec::new(),
             },
-            numa_allocator: NumaPageAllocator {
-                free_lists: [Vec::new(); MAX_NUMA_NODES],
-                allocation_counts: [AtomicUsize::new(0); MAX_NUMA_NODES],
-                page_size: PageSize::Size4K,
-            },
+            numa_allocator: NumaPageAllocator::new(),
             migration_thread_id: None,
             balancing_enabled: config.enable_balancing,
             initialized: false,
@@ -575,8 +621,8 @@ impl NumaManager {
     }
 
     /// Get NUMA statistics
-    pub fn get_stats(&self) -> NumaMemoryStats {
-        self.stats
+    pub fn get_stats(&self) -> &NumaMemoryStats {
+        &self.stats
     }
 
     /// Get NUMA balancing statistics
@@ -585,8 +631,8 @@ impl NumaManager {
     }
 
     /// Get NUMA topology
-    pub fn get_topology(&self) -> NumaTopology {
-        self.topology
+    pub fn get_topology(&self) -> &NumaTopology {
+        &self.topology
     }
 
     /// Check if NUMA is initialized

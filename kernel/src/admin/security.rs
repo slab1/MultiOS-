@@ -13,7 +13,10 @@
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
+use alloc::string::ToString;
 use alloc::collections::HashMap;
+use alloc::vec;
+use alloc::format;
 
 /// Security management result
 pub type SecurityResult<T> = Result<T, SecurityError>;
@@ -437,7 +440,7 @@ impl SecurityManager {
         
         if let Some(manager) = user_manager {
             let _ = manager.get_user(user_id).map(|mut user| {
-                user.privileges.retain(|priv| priv != role_name);
+                user.privileges.retain(|p| p != role_name);
                 user
             });
         }

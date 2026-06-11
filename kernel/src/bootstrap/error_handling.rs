@@ -5,7 +5,7 @@
 
 use crate::bootstrap::{BootstrapContext, BootstrapResult, BootstrapStage};
 use crate::KernelError;
-use crate::log::{error, warn, info, debug};
+use crate::{error, warn, info, debug};
 use core::fmt::Write;
 
 /// Error information for debugging

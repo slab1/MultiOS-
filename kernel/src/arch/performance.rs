@@ -4,7 +4,6 @@
 //! ARM64, and RISC-V architectures, including hardware performance counters,
 //! power management metrics, and thermal monitoring.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 use super::{ArchType, CpuFeatures};
 

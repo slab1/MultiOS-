@@ -10,6 +10,7 @@ use super::package_manager::{
 
 use alloc::vec::Vec;
 use alloc::string::String;
+use alloc::string::ToString;
 
 /// Integration layer between package manager and MultiOS systems
 pub struct PackageManagerIntegration {
@@ -429,14 +430,18 @@ pub struct RegisteredService {
     pub package: String,
     pub enabled: bool,
     pub auto_start: bool,
-}//! Package Manager Integration Module
-//! 
-//! Provides integration with package managers, dependency resolution,
-//! update source management, and package update handling.
+}
+/// Package Manager Integration Module
+/// 
+/// Provides integration with package managers, dependency resolution,
+/// update source management, and package update handling.
 
 use alloc::vec::Vec;
 use alloc::string::String;
+use alloc::string::ToString;
 use alloc::collections::BTreeMap;
+use alloc::vec;
+use alloc::format;
 use crate::{KernelResult, KernelError, log::{info, warn, error}};
 
 /// Package information structure

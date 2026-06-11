@@ -3,11 +3,13 @@
 //! Provides support for Ethernet, wireless, and other network interfaces
 //! including TCP/IP offload capabilities
 
-use crate::log::{info, warn, error};
+use alloc::vec;
+use alloc::format;
 const PCI_VENDOR_INTEL: u16 = 0x8086;
 use crate::KernelError;
 
 use super::{PciManager, NetworkInterfaceInfo, NetworkInterfaceType, NetworkDuplex};
+use alloc::string::ToString;
 
 /// Ethernet frame types
 const ETHERTYPE_IPV4: u16 = 0x0800;

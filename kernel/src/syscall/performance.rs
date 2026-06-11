@@ -4,7 +4,7 @@
 //! for the system call interface, including latency measurement, throughput analysis,
 //! bottleneck identification, and adaptive optimization strategies.
 
-use crate::log::{info, warn, error, debug};
+use alloc::vec;
 use crate::arch::interrupts::*;
 use crate::memory;
 use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
@@ -793,6 +793,7 @@ pub type AlertCallback = fn(PerformanceState, &SyscallPerformanceStats);
 
 // Global performance manager
 use spin::Mutex;
+use alloc::format;
 static PERFORMANCE_MANAGER: Mutex<Option<SyscallPerformanceManager>> = Mutex::new(None);
 
 /// Initialize performance manager
@@ -860,6 +861,7 @@ pub fn analyze_and_optimize_performance() -> Vec<OptimizationAction> {
 #[cfg(test)]
 mod tests {
     use super::*;
+use alloc::string::ToString;
 
     #[test]
     fn test_performance_counters() {

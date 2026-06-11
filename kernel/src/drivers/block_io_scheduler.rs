@@ -3,7 +3,6 @@
 //! Advanced I/O scheduling algorithms for block devices including
 //! elevator (deadline), CFQ (Complete Fair Queuing), and deadline scheduling.
 
-use crate::log::{info, warn, error};
 use super::block::{BlockDeviceId, BlockIoRequest, BlockIoResult, BlockOperation, RequestPriority, RequestFlags, BlockDeviceError, BlockDeviceInfo};
 use crate::drivers::block::{BlockDeviceError as SuperBlockDeviceError};
 

@@ -8,8 +8,8 @@
 //! - Multiple display support
 //! - Safe graphics operations with proper error handling
 
-use crate::log::{info, warn, error, debug};
 use alloc::{vec::Vec, collections::BTreeMap, string::String};
+use alloc::vec;
 use spin::{Mutex, RwLock, Once};
 use core::ptr::{self, read, write};
 use core::ops::{Deref, DerefMut};

@@ -3,8 +3,8 @@
 //! This module provides safe framebuffer operations with proper memory management,
 //! hardware acceleration detection, and support for multiple displays.
 
-use crate::log::{info, warn, error, debug};
 use alloc::{vec::Vec, collections::BTreeMap};
+use alloc::vec;
 use spin::{Mutex, RwLock, Once};
 use core::ptr::{self, read, write};
 use core::ops::{Deref, DerefMut};

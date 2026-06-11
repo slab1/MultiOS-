@@ -3,12 +3,14 @@
 //! Provides comprehensive I/O services including stdio, networking,
 //! and device I/O abstraction.
 
-use crate::log::{info, warn, error};
 use crate::{KernelError, Result};
 use spin::{RwLock, Mutex};
 use core::sync::atomic::{AtomicU64, AtomicUsize, AtomicBool, Ordering};
 use alloc::vec::Vec;
 use alloc::string::String;
+use alloc::string::ToString;
+use alloc::vec;
+use alloc::format;
 
 /// I/O service initialization
 pub fn init() -> Result<()> {

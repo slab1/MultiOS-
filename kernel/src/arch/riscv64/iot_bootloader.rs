@@ -3,7 +3,6 @@
 //! Minimal bootloader for RISC-V IoT devices optimized for low memory footprint,
 //! fast boot times, and support for various IoT hardware configurations.
 
-use crate::log::{info, warn, error, debug};
 use crate::KernelError;
 
 /// IoT device boot configuration

@@ -16,6 +16,8 @@ extern crate alloc;
 // const_fn was stabilized in Rust 1.54
 
 // Core kernel modules
+#[macro_use] pub mod log; // MUST be first - provides info!, warn!, error!, debug! macros
+
 pub mod bootstrap;
 pub mod memory;
 pub mod scheduler;
@@ -46,16 +48,16 @@ pub mod service_manager;
 // Update Management System
 pub mod update;
 
-pub mod log; // Simple bootstrap logger
-
 // Fonts and text rendering
 pub mod fonts;
 
 use alloc::vec::Vec;
 use alloc::string::String;
+use alloc::string::ToString;
 use alloc::format;
+use alloc::vec;
 use spin::Mutex;
-use log::{info, warn, error}; // Requires the `log` crate
+// Log macros are #[macro_export] from the local log module - no import needed
 
 // Version information
 const KERNEL_VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -120,6 +122,26 @@ pub enum KernelError {
     NotFound,
     // Testing-specific errors
     TestFailed,
+    // Additional error variants used by kernel modules
+    BootFailed,
+    CorruptedData,
+    HardwareNotAvailable,
+    InvalidArgument,
+    InvalidData,
+    InvalidOperation,
+    InvalidSyscall,
+    MemoryTestFailed,
+    NoDevices,
+    NotBound,
+    NotConnected,
+    NotReady,
+    OperationNotSupported,
+    PermissionDenied,
+    ResourceExhausted,
+    ServiceUnavailable,
+    SystemError,
+    Timeout,
+    Unsupported,
 }
 
 /// Re-export key types for external modules

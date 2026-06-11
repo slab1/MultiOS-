@@ -4,12 +4,14 @@
 //! testing integration with user management, security contexts, and syscall interfaces.
 
 use super::*;
+use alloc::vec;
 use crate::admin::user_manager::{init_user_manager, UserId, GroupId};
 use crate::admin::security::{init_security_manager, SecurityLevel};
 
 #[cfg(test)]
 mod tests {
     use super::*;
+use alloc::string::ToString;
 
     #[test]
     fn test_rbac_integration_with_user_manager() {

@@ -14,9 +14,10 @@ use alloc::vec::Vec;
 use core::alloc::{GlobalAlloc, Layout};
 use log::{info, debug, error};
 
-/// Global kernel heap allocator
+/// Global kernel heap allocator (placeholder - real allocator uses KernelAllocator)
+/// This static is only used for the global allocator trait.
 #[global_allocator]
-static HEAP_ALLOCATOR: LockedHeap = LockedHeap::new();
+static HEAP_ALLOCATOR: LockedHeap = LockedHeap::empty();
 
 /// Kernel allocator with memory tracking
 pub struct KernelAllocator {
@@ -353,18 +354,19 @@ impl<T> PoolObject<'_, T> {
 
     /// Take ownership of the object (removes it from pool)
     pub fn into_inner(self) -> Box<T> {
-        if let Some(inner) = self.inner {
-            // Note: This breaks the lifetime constraint but is safe in this context
+        // PoolObject implements Drop, so we can't move out of self.inner
+        // Instead, take ownership using unsafe
+        unsafe {
+            let raw = core::ptr::read(&self.inner);
             let index = self.index;
-            drop(self);
+            // Prevent drop from running on self by forgetting it
+            core::mem::forget(self);
             
-            // Manually remove from pool
-            self.pool.pool[index] = None;
-            self.pool.free_indices.push(index);
-            
-            inner
-        } else {
-            panic!("PoolObject is not initialized");
+            if let Some(inner) = raw {
+                inner
+            } else {
+                panic!("PoolObject is not initialized");
+            }
         }
     }
 }
@@ -378,7 +380,7 @@ impl<T> core::ops::Deref for PoolObject<'_, T> {
 }
 
 impl<T> core::ops::DerefMut for PoolObject<'_, T> {
-    fn deref_mut(&mut self) -> &mut Self::T {
+    fn deref_mut(&mut self) -> &mut Self::Target {
         self.as_mut()
     }
 }

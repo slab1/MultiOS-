@@ -3,7 +3,7 @@
 //! Provides comprehensive time management including system time, time zones,
 //! timers, and time synchronization across the system.
 
-use crate::log::{info, warn, error};
+use alloc::format;
 use crate::{KernelError, Result};
 use spin::{RwLock, Mutex};
 use core::sync::atomic::{AtomicU64, AtomicUsize, AtomicBool, Ordering};
@@ -596,6 +596,7 @@ pub fn benchmark_time_service() -> Result<(u64, u64)> {
 /// Time utility functions
 pub mod utils {
     use super::*;
+use alloc::string::ToString;
     
     /// Convert timestamp to ISO 8601 string
     pub fn timestamp_to_iso8601(time: SystemTime) -> String {

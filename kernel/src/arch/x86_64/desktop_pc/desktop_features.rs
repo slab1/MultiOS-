@@ -3,11 +3,12 @@
 //! Provides support for USB, graphics, multiple monitors, and other
 //! desktop-specific features
 
-use crate::log::{info, warn, error};
+use alloc::vec;
+use alloc::string::ToString;
 use crate::KernelError;
 
 use super::{PciManager, UsbControllerInfo, UsbControllerType, UsbVersion, 
-           DisplayDeviceInfo, DisplayType, ConnectionType};
+            DisplayDeviceInfo, DisplayType, ConnectionType};
 
 /// USB endpoint types
 const USB_ENDPOINT_TYPE_CONTROL: u8 = 0;

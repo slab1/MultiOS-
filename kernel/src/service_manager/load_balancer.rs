@@ -5,6 +5,7 @@
 
 use spin::{Mutex, RwLock};
 use alloc::string::String;
+use alloc::string::ToString;
 use alloc::vec::Vec;
 use alloc::collections::{BTreeMap, VecDeque};
 use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
@@ -530,14 +531,6 @@ impl LoadBalancer {
         
         // Use least connections among healthy instances
         self.least_connections_select(&healthy_instances)
-    }
-                    min_connections = stats.current_connections;
-                    selected = instance;
-                }
-            }
-        }
-
-        Ok(selected)
     }
 
     fn weighted_round_robin_select(&self, instances: &[&ServiceInstance]) -> ServiceResult<&ServiceInstance> {

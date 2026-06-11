@@ -3,7 +3,6 @@
 //! This module provides unified interrupt management interfaces across architectures
 //! for interrupt controllers, handling, routing, and masking.
 
-use crate::log::{info, warn, error};
 use crate::{KernelError, Result};
 use spin::RwLock;
 use spin::Mutex;
@@ -374,6 +373,7 @@ fn setup_interrupt_handlers() -> Result<()> {
     #[cfg(target_arch = "riscv64")]
     {
         use crate::arch::riscv64::interrupt;
+use alloc::format;
         interrupt::init_exception_handlers()?;
     }
     

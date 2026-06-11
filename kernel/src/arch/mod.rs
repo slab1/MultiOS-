@@ -4,7 +4,6 @@
 //! CPU feature detection, performance monitoring, multi-core support, and
 //! architecture-specific features for x86_64, ARM64, and RISC-V.
 
-use crate::log::{info, warn, error};
 
 pub mod interrupts;
 
@@ -282,7 +281,7 @@ mod aarch64_features {
                     invpcid: false,
                     tsx: false,
                     intel_pt: false,
-                    intel CET: false,
+                    intel_cet: false,
                     amd_sev: false,
                     amd_sme: false,
                     rv64i: false,
@@ -392,7 +391,7 @@ mod aarch64_features {
                     invpcid: false,
                     tsx: false,
                     intel_pt: false,
-                    intel CET: false,
+                    intel_cet: false,
                     amd_sev: false,
                     amd_sme: false,
                     rv64i: false,

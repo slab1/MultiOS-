@@ -14,8 +14,10 @@
 
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
+use alloc::string::ToString;
+use alloc::vec;
+use alloc::format;
 use spin::{Mutex, RwLock};
-use log::{info, warn, error};
 
 /// Encryption operation result
 pub type EncryptionResult<T> = Result<T, EncryptionError>;

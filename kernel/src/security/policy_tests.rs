@@ -9,7 +9,7 @@ use crate::security::policy::*;
 use crate::security::security_types::*;
 use crate::security::integration::*;
 use alloc::vec::Vec;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use alloc::collections::HashMap;
 
 /// Test policy creation
@@ -396,6 +396,7 @@ mod tests {
 mod integration_tests {
     use super::*;
     use alloc::sync::Arc;
+use alloc::vec;
 
     #[test]
     fn test_integration_manager_creation() {

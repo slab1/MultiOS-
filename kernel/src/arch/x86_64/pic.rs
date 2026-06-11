@@ -3,7 +3,6 @@
 //! This module provides support for the legacy 8259A Programmable Interrupt Controller
 //! for hardware interrupt handling.
 
-use crate::log::{info, warn, error};
 use crate::arch::interrupts::InterruptResult;
 
 /// PIC I/O port addresses

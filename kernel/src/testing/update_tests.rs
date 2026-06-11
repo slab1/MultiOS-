@@ -30,6 +30,9 @@ use crate::hal::timers::get_system_time_ms;
 use alloc::sync::Arc;
 use alloc::vec::Vec;
 use alloc::string::String;
+use alloc::string::ToString;
+use alloc::vec;
+use alloc::format;
 use core::time::Duration;
 use spin::Mutex;
 
@@ -1699,7 +1702,7 @@ impl UpdateSystemTestSuite {
 
     /// Run all update system tests
     pub fn run_all_tests(&mut self) -> &UpdateTestResults {
-        println!("\n=== Starting Comprehensive Update System Test Suite ===\n");
+        // println!("\n=== Starting Comprehensive Update System Test Suite ===\n");
 
         // Initialize systems
         self.run_test("System Initialization", || {
@@ -1784,7 +1787,7 @@ impl UpdateSystemTestSuite {
     where
         F: FnOnce() -> Result<(), String>,
     {
-        print!("Running {}: ", test_name);
+        // print!("Running {}: ", test_name);
         
         let start_time = get_system_time_ms();
         let result = test_fn();
@@ -1792,11 +1795,11 @@ impl UpdateSystemTestSuite {
 
         match result {
             Ok(_) => {
-                println!("✓ PASSED ({}ms)", duration);
+                // println!("✓ PASSED ({}ms)", duration);
                 self.results.add_result(test_name.to_string(), true, duration, None);
             }
             Err(error) => {
-                println!("✗ FAILED ({}ms) - {}", duration, error);
+                // println!("✗ FAILED ({}ms) - {}", duration, error);
                 self.results.add_result(test_name.to_string(), false, duration, Some(error));
             }
         }
@@ -1804,23 +1807,23 @@ impl UpdateSystemTestSuite {
 
     /// Print test summary
     fn print_summary(&self) {
-        println!("\n=== Update System Test Suite Summary ===");
-        println!("Total Tests: {}", self.results.total_tests);
-        println!("Passed: {}", self.results.passed_tests);
-        println!("Failed: {}", self.results.failed_tests);
-        println!("Success Rate: {:.1}%", self.results.success_rate());
+        // println!("\n=== Update System Test Suite Summary ===");
+        // println!("Total Tests: {}", self.results.total_tests);
+        // println!("Passed: {}", self.results.passed_tests);
+        // println!("Failed: {}", self.results.failed_tests);
+        // println!("Success Rate: {:.1}%", self.results.success_rate());
         
         if self.results.failed_tests > 0 {
-            println!("\nFailed Tests:");
+            // println!("\nFailed Tests:");
             for result in &self.results.test_results {
                 if !result.passed {
-                    println!("  - {}: {}", result.test_name, 
+                    // println!("  - {}: {}", result.test_name, 
                         result.error_message.as_ref().unwrap_or(&"Unknown error".to_string()));
                 }
             }
         }
         
-        println!("\n=== Test Suite Completed ===\n");
+        // println!("\n=== Test Suite Completed ===\n");
     }
 }
 
@@ -1844,7 +1847,7 @@ mod integration_tests {
         assert!(results.total_tests > 0, "Tests should have been run");
         
         // Print results for visibility
-        println!("Test Results: {}/{} passed", results.passed_tests, results.total_tests);
+        // println!("Test Results: {}/{} passed", results.passed_tests, results.total_tests);
     }
 
     #[test]
@@ -1875,7 +1878,7 @@ mod integration_tests {
         // Run basic stress test
         let result = stress_testing_scenarios::test_concurrent_package_installations();
         // This might fail in test environment, which is acceptable
-        println!("Stress test result: {:?}", result);
+        // println!("Stress test result: {:?}", result);
     }
 
     #[test]
@@ -1892,7 +1895,7 @@ mod integration_tests {
     #[test]
     fn test_comprehensive_update_workflow() {
         // Test a complete update workflow
-        println!("Testing comprehensive update workflow...");
+        // println!("Testing comprehensive update workflow...");
         
         // 1. Initialize systems
         let init_result = init_update_system();
@@ -1937,6 +1940,6 @@ mod integration_tests {
 
         let _repository_manager = RepositoryManager::new(repo_config);
         
-        println!("Comprehensive update workflow completed successfully");
+        // println!("Comprehensive update workflow completed successfully");
     }
 }

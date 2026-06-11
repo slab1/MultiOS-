@@ -2,10 +2,11 @@
 //! 
 //! Provides unified interface for both legacy BIOS and UEFI firmware
 
-use crate::log::{info, warn, error};
+use alloc::vec;
 use crate::KernelError;
 
 use super::{FirmwareType, FirmwareInfo, MemoryRegion, MemoryRegionType};
+use alloc::string::ToString;
 
 /// BIOS interrupt functions
 const BIOS_VIDEO_Teletype: u16 = 0x0E00;
@@ -308,7 +309,7 @@ pub fn bios_read_key() -> Option<u16> {
             "mov {0:ah}, {1:ah}",
             "int 0x16",
             inout(reg) ah => ah,
-            inout(reg) al) => al
+            inout(reg) al => al
         );
         
         if al != 0 {

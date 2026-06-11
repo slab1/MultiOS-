@@ -567,6 +567,7 @@ mod tests_aarch64 {
 mod tests_riscv64 {
     use super::*;
     use crate::hal::riscv64;
+use alloc::string::ToString;
     
     #[test]
     fn test_riscv64_specific_functions() -> Result<()> {

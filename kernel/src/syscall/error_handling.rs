@@ -4,7 +4,8 @@
 //! fault tolerance for the system call interface. It includes error classification,
 //! recovery strategies, graceful degradation, and comprehensive error reporting.
 
-use crate::log::{info, warn, error, debug};
+use alloc::vec;
+use alloc::format;
 use crate::arch::interrupts::*;
 use crate::syscall_numbers;
 use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
@@ -1424,6 +1425,7 @@ impl Default for ErrorHandlingResult {
 #[cfg(test)]
 mod tests {
     use super::*;
+use alloc::string::ToString;
 
     #[test]
     fn test_error_classification() {

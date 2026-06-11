@@ -5,6 +5,7 @@
 
 #![allow(dead_code)]
 
+use alloc::vec;
 use crate::security::{
     AuthManager, AuthConfig, AuthMethod, AuthError, AuthResult,
     SessionToken, PasswordPolicy, BiometricData, TOTPConfig, 
@@ -88,7 +89,7 @@ pub fn create_admin_auth_config() -> AuthConfig {
 pub fn example_init_authentication() -> AuthResult<()> {
     let config = create_standard_auth_config();
     init_auth_manager(config)?;
-    println!("Authentication system initialized successfully");
+    // println!("Authentication system initialized successfully");
     Ok(())
 }
 
@@ -100,7 +101,7 @@ pub fn example_password_auth() -> AuthResult<SessionToken> {
 
     // Authenticate user with password
     let session = auth_manager.authenticate_password("john_doe", "SecurePass123!", Some("192.168.1.100"))?;
-    println!("User authenticated successfully: {}", session.token_id);
+    // println!("User authenticated successfully: {}", session.token_id);
     Ok(session)
 }
 
@@ -123,7 +124,7 @@ pub fn example_biometric_auth() -> AuthResult<SessionToken> {
         &fingerprint_template, 
         Some("192.168.1.100")
     )?;
-    println!("Biometric authentication successful: {}", session.token_id);
+    // println!("Biometric authentication successful: {}", session.token_id);
     Ok(session)
 }
 
@@ -142,7 +143,7 @@ pub fn example_totp_auth() -> AuthResult<SessionToken> {
     // Authenticate with TOTP code
     let totp_code = "123456"; // This would come from user's authenticator app
     let session = auth_manager.authenticate_totp(user_id, totp_code, Some("192.168.1.100"))?;
-    println!("TOTP authentication successful: {}", session.token_id);
+    // println!("TOTP authentication successful: {}", session.token_id);
     Ok(session)
 }
 
@@ -156,7 +157,7 @@ pub fn example_multi_factor_auth() -> AuthResult<SessionToken> {
     
     // Start multi-factor authentication process
     let challenge_id = auth_manager.start_multi_factor_auth(username, AuthMethod::Password, Some("192.168.1.100"))?;
-    println!("MFA challenge started: {}", challenge_id);
+    // println!("MFA challenge started: {}", challenge_id);
     
     // Complete multi-factor authentication with multiple factors
     let verification_data = vec![
@@ -175,7 +176,7 @@ pub fn example_multi_factor_auth() -> AuthResult<SessionToken> {
         verification_data,
         Some("192.168.1.100")
     )?;
-    println!("Multi-factor authentication successful: {}", session.token_id);
+    // println!("Multi-factor authentication successful: {}", session.token_id);
     Ok(session)
 }
 
@@ -194,19 +195,19 @@ pub fn example_session_management() -> AuthResult<()> {
         Some("192.168.1.100"),
         Some("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
     )?;
-    println!("Session created: {}", session.token_id);
+    // println!("Session created: {}", session.token_id);
     
     // Validate the session
     let validated_session = auth_manager.validate_session(&session.token_id)?;
-    println!("Session validated, expires at: {}", validated_session.expires_at);
+    // println!("Session validated, expires at: {}", validated_session.expires_at);
     
     // Get active session count
     let session_count = auth_manager.get_active_session_count();
-    println!("Active sessions: {}", session_count);
+    // println!("Active sessions: {}", session_count);
     
     // Expire the session
     auth_manager.expire_session(&session.token_id)?;
-    println!("Session expired: {}", session.token_id);
+    // println!("Session expired: {}", session.token_id);
     
     Ok(())
 }
@@ -221,11 +222,11 @@ pub fn example_password_management() -> AuthResult<()> {
     
     // Hash a password
     let (password_hash, salt) = auth_manager.hash_password("NewSecurePass123!", None)?;
-    println!("Password hashed successfully");
+    // println!("Password hashed successfully");
     
     // Verify the password
     let is_valid = auth_manager.verify_password("NewSecurePass123!", &password_hash, &salt)?;
-    println!("Password verification result: {}", is_valid);
+    // println!("Password verification result: {}", is_valid);
     
     // Change password (this would integrate with user management system)
     // auth_manager.change_password(user_id, "old_password", "new_password")?;
@@ -245,23 +246,23 @@ pub fn example_security_features() -> AuthResult<()> {
     for i in 0..6 {
         let result = auth_manager.authenticate_password("user", "wrong_password", Some("192.168.1.100"));
         match result {
-            Ok(_) => println!("Unexpected success on attempt {}", i + 1),
-            Err(AuthError::InvalidCredentials) => println!("Failed attempt {}", i + 1),
+            // Ok(_) => println!("Unexpected success on attempt {}", i + 1),
+            // Err(AuthError::InvalidCredentials) => println!("Failed attempt {}", i + 1),
             Err(AuthError::AccountLocked) => {
-                println!("Account locked after {} attempts", i + 1);
+                // println!("Account locked after {} attempts", i + 1);
                 break;
             }
-            Err(e) => println!("Other error: {:?}", e),
+            // Err(e) => println!("Other error: {:?}", e),
         }
     }
     
     // Unlock account (this would typically require admin privileges)
     auth_manager.unlock_account(user_id)?;
-    println!("Account unlocked for user {}", user_id);
+    // println!("Account unlocked for user {}", user_id);
     
     // Cleanup expired sessions
     let cleaned_count = auth_manager.cleanup_expired_sessions()?;
-    println!("Cleaned up {} expired sessions", cleaned_count);
+    // println!("Cleaned up {} expired sessions", cleaned_count);
     
     Ok(())
 }
@@ -283,12 +284,12 @@ pub fn example_auth_middleware() -> AuthResult<()> {
     
     // Check if authentication is required
     if middleware.requires_authentication() {
-        println!("Authentication is required for this operation");
+        // println!("Authentication is required for this operation");
     }
     
     // Check if specific auth method is allowed
     if middleware.is_auth_method_allowed(AuthMethod::Password) {
-        println!("Password authentication is allowed");
+        // println!("Password authentication is allowed");
     }
     
     // Validate session through middleware
@@ -310,7 +311,7 @@ pub fn example_hardware_token_auth() -> AuthResult<SessionToken> {
     let challenge = Some(b"challenge_data");
     
     let session = auth_manager.authenticate_hardware_token(token_id, challenge, Some("192.168.1.100"))?;
-    println!("Hardware token authentication successful: {}", session.token_id);
+    // println!("Hardware token authentication successful: {}", session.token_id);
     Ok(session)
 }
 
@@ -324,11 +325,11 @@ pub fn example_sms_auth_setup() -> AuthResult<()> {
     
     // Setup SMS authentication
     auth_manager.setup_sms(user_id, "+1234567890")?;
-    println!("SMS authentication setup for user {}", user_id);
+    // println!("SMS authentication setup for user {}", user_id);
     
     // Send SMS verification code
     let code = auth_manager.send_sms_code(user_id)?;
-    println!("SMS code sent: {} (in real implementation, this would be sent via SMS)", code);
+    // println!("SMS code sent: {} (in real implementation, this would be sent via SMS)", code);
     
     Ok(())
 }
@@ -341,24 +342,24 @@ pub fn example_auth_statistics() -> AuthResult<()> {
 
     let stats = auth_manager.get_stats();
     
-    println!("Authentication Statistics:");
-    println!("  Total login attempts: {}", stats.total_login_attempts);
-    println!("  Successful logins: {}", stats.successful_logins);
-    println!("  Failed logins: {}", stats.failed_logins);
-    println!("  Locked accounts: {}", stats.locked_accounts);
-    println!("  Active sessions: {}", stats.active_sessions);
-    println!("  Multi-factor successes: {}", stats.multi_factor_successes);
-    println!("  Multi-factor failures: {}", stats.multi_factor_failures);
-    println!("  Biometric attempts: {}", stats.biometric_attempts);
-    println!("  Biometric successes: {}", stats.biometric_successes);
-    println!("  Rate limit triggers: {}", stats.rate_limit_triggers);
+    // println!("Authentication Statistics:");
+    // println!("  Total login attempts: {}", stats.total_login_attempts);
+    // println!("  Successful logins: {}", stats.successful_logins);
+    // println!("  Failed logins: {}", stats.failed_logins);
+    // println!("  Locked accounts: {}", stats.locked_accounts);
+    // println!("  Active sessions: {}", stats.active_sessions);
+    // println!("  Multi-factor successes: {}", stats.multi_factor_successes);
+    // println!("  Multi-factor failures: {}", stats.multi_factor_failures);
+    // println!("  Biometric attempts: {}", stats.biometric_attempts);
+    // println!("  Biometric successes: {}", stats.biometric_successes);
+    // println!("  Rate limit triggers: {}", stats.rate_limit_triggers);
     
     Ok(())
 }
 
 /// Complete authentication flow example
 pub fn example_complete_auth_flow() -> AuthResult<()> {
-    println!("=== Complete Authentication Flow Example ===");
+    // println!("=== Complete Authentication Flow Example ===");
     
     // Initialize authentication system
     example_init_authentication()?;
@@ -390,7 +391,7 @@ pub fn example_complete_auth_flow() -> AuthResult<()> {
     // Show statistics
     example_auth_statistics()?;
     
-    println!("=== Authentication Flow Complete ===");
+    // println!("=== Authentication Flow Complete ===");
     Ok(())
 }
 
@@ -400,7 +401,7 @@ pub fn example_auth_performance_benchmark() -> AuthResult<()> {
         .and_then(|mgr| mgr.lock().as_ref().ok().and_then(|a| Some(a.0.as_ref()?)))
         .ok_or(AuthError::NotInitialized)?;
 
-    println!("=== Authentication Performance Benchmark ===");
+    // println!("=== Authentication Performance Benchmark ===");
     
     // Benchmark password hashing
     let start_time = crate::hal::timers::get_system_time_ms();
@@ -408,7 +409,7 @@ pub fn example_auth_performance_benchmark() -> AuthResult<()> {
         let _ = auth_manager.hash_password("test_password_123", None);
     }
     let hash_time = crate::hal::timers::get_system_time_ms() - start_time;
-    println!("Password hashing (1000 iterations): {}ms", hash_time);
+    // println!("Password hashing (1000 iterations): {}ms", hash_time);
     
     // Benchmark password verification
     let (hash, salt) = auth_manager.hash_password("test_password_123", None)?;
@@ -417,7 +418,7 @@ pub fn example_auth_performance_benchmark() -> AuthResult<()> {
         let _ = auth_manager.verify_password("test_password_123", &hash, &salt);
     }
     let verify_time = crate::hal::timers::get_system_time_ms() - start_time;
-    println!("Password verification (1000 iterations): {}ms", verify_time);
+    // println!("Password verification (1000 iterations): {}ms", verify_time);
     
     // Benchmark session creation
     let start_time = crate::hal::timers::get_system_time_ms();
@@ -425,8 +426,8 @@ pub fn example_auth_performance_benchmark() -> AuthResult<()> {
         let _ = auth_manager.create_session(i as u32, vec![AuthMethod::Password], None, None);
     }
     let session_time = crate::hal::timers::get_system_time_ms() - start_time;
-    println!("Session creation (100 iterations): {}ms", session_time);
+    // println!("Session creation (100 iterations): {}ms", session_time);
     
-    println!("=== Benchmark Complete ===");
+    // println!("=== Benchmark Complete ===");
     Ok(())
 }

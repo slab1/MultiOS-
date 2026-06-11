@@ -3,10 +3,12 @@
 //! Provides comprehensive PCI and PCIe device detection, enumeration,
 //! and configuration space access
 
-use crate::log::{info, warn, error};
+use alloc::vec;
+use alloc::format;
 use crate::KernelError;
 
 use super::{PciDeviceInfo, FirmwareType};
+use alloc::string::ToString;
 
 /// PCI Configuration Space Access Methods
 const PCI_CONFIG_ACCESS_MECHANISM1: u8 = 1;

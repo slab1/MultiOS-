@@ -6,6 +6,7 @@
 use crate::filesystem::*;
 use crate::arch::interrupts::{InterruptError, PrivilegeLevel};
 use alloc::vec::Vec;
+use alloc::format;
 
 /// Test utilities for file system testing
 pub struct FileSystemTestUtils {

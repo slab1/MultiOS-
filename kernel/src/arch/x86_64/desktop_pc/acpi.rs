@@ -3,7 +3,7 @@
 //! Provides ACPI (Advanced Configuration and Power Interface) support
 //! for power states, thermal management, and hardware configuration
 
-use crate::log::{info, warn, error};
+use alloc::vec;
 use crate::KernelError;
 
 use super::{FirmwareInfo, FirmwareType};
@@ -917,5 +917,5 @@ struct McfgDeviceEntry {
 }
 
 // Type aliases for compatibility
-type FACPTable = FACPTable;
-type ACPI_TABLE_HEADER = AcpiTableHeader;
+// FACPTable is the struct defined above - no alias needed
+// type ACPI_TABLE_HEADER = AcpiTableHeader;

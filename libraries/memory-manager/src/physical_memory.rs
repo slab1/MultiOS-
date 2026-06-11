@@ -70,7 +70,7 @@ impl PageFrameAllocator {
         // Mark usable pages as free
         for (phys_addr, size, region_type) in memory_map {
             if *region_type == MemoryRegion::Usable {
-                let start_page = (*phys_addr / PageSize::Size4K.as_usize()) as usize;
+                let start_page = (phys_addr.as_u64() / PageSize::Size4K.as_usize() as u64) as usize;
                 let num_pages = size / PageSize::Size4K.as_usize();
                 
                 for i in 0..num_pages {
@@ -378,13 +378,9 @@ pub fn init() -> MemoryResult<()> {
 
 /// Get the global physical memory manager
 fn get_manager() -> MemoryResult<spin::MutexGuard<'static, Option<PhysicalMemoryManager>>> {
-    PHYSICAL_MEMORY_MANAGER.lock().as_ref()
-        .ok_or(MemoryError::AllocationFailed)
-        .map(|_| PHYSICAL_MEMORY_MANAGER.lock())
-        .and_then(|guard| {
-            guard.as_ref().ok_or(MemoryError::AllocationFailed)
-                .map(|_| guard)
-        })
+    let guard = PHYSICAL_MEMORY_MANAGER.lock();
+    guard.as_ref().ok_or(MemoryError::AllocationFailed)?;
+    Ok(guard)
 }
 
 /// Allocate a single physical page

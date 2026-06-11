@@ -3,7 +3,6 @@
 //! This module provides ARM64 specific functionality including exception handling
 //! and system call support for ARMv8-A architecture.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 use crate::ArchType;
 

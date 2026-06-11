@@ -8,9 +8,11 @@
 //! - Performance regression detection
 
 use super::*;
+use alloc::vec;
+use alloc::format;
 use crate::*;
 use crate::Result;
-use log::{info, warn, error};
+use alloc::string::ToString;
 
 /// Run all performance integration tests
 pub fn run_performance_integration_tests(coordinator: &mut IntegrationTestCoordinator) -> Result<Vec<IntegrationTestResult>> {

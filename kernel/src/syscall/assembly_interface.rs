@@ -4,7 +4,6 @@
 //! optimized system call invocation sequences, and low-level register management.
 //! It includes implementations for x86_64, ARM64, and RISC-V architectures.
 
-use crate::log::{info, warn, error, debug};
 use crate::arch::{ArchType, PrivilegeLevel};
 use crate::arch::interrupts::*;
 use crate::syscall_numbers;

@@ -3,7 +3,6 @@
 //! This module provides unified timer interfaces across architectures for
 //! system time, scheduling, and time-based operations.
 
-use crate::log::{info, warn, error};
 use crate::{KernelError, Result};
 use spin::RwLock;
 use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};

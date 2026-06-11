@@ -4,7 +4,6 @@
 //! including Mali GPU support, OpenGL ES, Vulkan, and mobile-specific graphics
 //! optimizations for power efficiency and performance.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 
 /// GPU vendor types common in ARM64 mobile devices

@@ -3,7 +3,6 @@
 //! This module provides unified memory management interfaces across architectures
 //! for physical memory, virtual memory, cache management, and memory mapping.
 
-use crate::log::{info, warn, error};
 use crate::{KernelError, Result};
 use spin::RwLock;
 use core::sync::atomic::{AtomicU64, Ordering};

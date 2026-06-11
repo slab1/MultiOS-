@@ -3,12 +3,14 @@
 //! Provides a comprehensive framework for managing background services
 //! and daemons in the MultiOS kernel.
 
-use crate::log::{info, warn, error};
 use crate::{KernelError, Result};
 use spin::{RwLock, Mutex};
 use core::sync::atomic::{AtomicU64, AtomicUsize, AtomicBool, AtomicU8, Ordering};
 use alloc::vec::Vec;
 use alloc::string::String;
+use alloc::string::ToString;
+use alloc::vec;
+use alloc::format;
 use core::time::Duration;
 
 /// Daemon service initialization

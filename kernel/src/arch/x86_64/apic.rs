@@ -3,7 +3,6 @@
 //! This module provides support for the Advanced Programmable Interrupt Controller
 //! for modern x86_64 systems, including Local APIC and I/O APIC.
 
-use crate::log::{info, warn, error};
 use crate::arch::interrupts::InterruptResult;
 
 /// APIC base address (typically at 0xFEE00000)

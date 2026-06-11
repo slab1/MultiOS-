@@ -4,7 +4,6 @@
 //! TrustZone provides hardware-based security by separating secure and non-secure
 //! worlds, enabling secure boot, secure storage, and trusted execution environments.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 
 /// TrustZone versions

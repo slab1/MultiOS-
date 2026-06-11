@@ -6,9 +6,11 @@
 #![cfg(test)]
 
 use spin::Mutex;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use alloc::vec::Vec;
 use alloc::collections::BTreeMap;
+use alloc::vec;
+use alloc::format;
 
 use super::*;
 use super::service::{ServiceDescriptor, ServiceType, ServiceState, HealthStatus, ResourceLimits, IsolationLevel};
@@ -311,7 +313,7 @@ fn test_network_protocol_enum() {
 fn test_log_level_enum() {
     assert_eq!(LogLevel::Debug as u8, 0);
     assert_eq!(LogLevel::Info as u8, 1);
-    assert_eq!(LogLevel::Warning as u8, 2);
+    assert_eq!(LogLevel::Warn as u8, 2);
     assert_eq!(LogLevel::Error as u8, 3);
     assert_eq!(LogLevel::Critical as u8, 4);
 }

@@ -4,7 +4,6 @@
 //! including accelerometer, gyroscope, magnetometer, proximity sensor, ambient light
 //! sensor, fingerprint sensor, and camera sensor support.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 
 /// Sensor types for mobile devices

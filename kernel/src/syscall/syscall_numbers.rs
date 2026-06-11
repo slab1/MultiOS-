@@ -5,6 +5,7 @@
 //! management, inter-process communication, synchronization, device I/O, and
 //! security operations.
 
+use alloc::vec;
 use crate::arch::ArchType;
 
 /// Comprehensive system call number definitions for MultiOS

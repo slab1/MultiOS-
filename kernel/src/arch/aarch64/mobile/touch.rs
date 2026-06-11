@@ -4,7 +4,6 @@
 //! including multi-touch handling, gesture recognition, touch calibration, and
 //! various touch controller interfaces.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 
 /// Touch event types

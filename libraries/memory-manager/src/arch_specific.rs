@@ -17,7 +17,9 @@ use alloc::vec::Vec;
 #[cfg(feature = "x86_64")]
 use x86_64::structures::paging::{PageTable as X86PageTable, Page, FrameAllocator, Mapper, OffsetPageTable, Size4KiB};
 #[cfg(feature = "x86_64")]
-use x86_64::{VirtAddr, PhysAddr as X86PhysAddr};
+use x86_64::PhysAddr as X86PhysAddr;
+#[cfg(feature = "x86_64")]
+use x86_64::VirtAddr as X86VirtAddr;
 
 #[cfg(feature = "aarch64")]
 use aarch64_paging::{
@@ -50,10 +52,10 @@ pub enum Architecture {
 /// Generic page table entry interface
 pub trait PageTableEntry {
     /// Create empty entry
-    fn empty() -> Self;
+    fn empty() -> Self where Self: Sized;
     
     /// Create entry with frame and flags
-    fn with_frame(frame: PhysAddr, flags: MemoryFlags) -> Self;
+    fn with_frame(frame: PhysAddr, flags: MemoryFlags) -> Self where Self: Sized;
     
     /// Check if entry is present
     fn is_present(&self) -> bool;
@@ -69,6 +71,9 @@ pub trait PageTableEntry {
     
     /// Check if entry is executable
     fn is_executable(&self) -> bool;
+    
+    /// Convert to Any for downcasting
+    fn as_any(&self) -> &dyn core::any::Any;
 }
 
 /// Generic page table interface
@@ -177,6 +182,10 @@ mod x86_64_impl {
         fn is_executable(&self) -> bool {
             (self.value & Self::EXECUTE_DISABLE) == 0
         }
+        
+        fn as_any(&self) -> &dyn core::any::Any {
+            self
+        }
     }
 
     /// x86_64 page table
@@ -242,10 +251,10 @@ mod x86_64_impl {
             }
             
             // Extract page table indices (4-level paging)
-            let p4_index = (addr >> 39) & 0x1FF;
-            let p3_index = (addr >> 30) & 0x1FF;
-            let p2_index = (addr >> 21) & 0x1FF;
-            let p1_index = (addr >> 12) & 0x1FF;
+            let p4_index = ((addr >> 39) & 0x1FF) as usize;
+            let p3_index = ((addr >> 30) & 0x1FF) as usize;
+            let p2_index = ((addr >> 21) & 0x1FF) as usize;
+            let p1_index = ((addr >> 12) & 0x1FF) as usize;
             
             Some((p4_index, p3_index, p2_index, p1_index))
         }
@@ -307,12 +316,7 @@ mod x86_64_impl {
         }
     }
 
-    impl X86PageTableEntry {
-        /// Convert to Any trait for downcasting
-        pub fn as_any(&self) -> &dyn core::any::Any {
-            self
-        }
-    }
+
 }
 
 #[cfg(feature = "aarch64")]
@@ -704,8 +708,8 @@ impl ArchManager {
         match arch {
             Architecture::X86_64 => ArchIdInfo {
                 arch,
-                vendor: "x86_64".to_string(),
-                model: "Generic x86_64".to_string(),
+                vendor: String::from("x86_64"),
+                model: String::from("Generic x86_64"),
                 page_sizes: vec![PageSize::Size4K, PageSize::Size2M, PageSize::Size1G],
                 max_virt_addr_bits: 48,
                 max_phys_addr_bits: 52,
@@ -713,8 +717,8 @@ impl ArchManager {
             },
             Architecture::AArch64 => ArchIdInfo {
                 arch,
-                vendor: "ARM".to_string(),
-                model: "AArch64".to_string(),
+                vendor: String::from("ARM"),
+                model: String::from("AArch64"),
                 page_sizes: vec![PageSize::Size4K],
                 max_virt_addr_bits: 48,
                 max_phys_addr_bits: 48,
@@ -722,8 +726,8 @@ impl ArchManager {
             },
             Architecture::RiscV64 => ArchIdInfo {
                 arch,
-                vendor: "RISC-V".to_string(),
-                model: "RV64".to_string(),
+                vendor: String::from("RISC-V"),
+                model: String::from("RV64"),
                 page_sizes: vec![PageSize::Size4K],
                 max_virt_addr_bits: 48,
                 max_phys_addr_bits: 56,
@@ -758,6 +762,11 @@ impl ArchManager {
         self.fault_handler.get_fault_stats()
     }
 }
+
+// SAFETY: ArchManager is only accessed behind a lock and all
+// contained trait objects are used safely
+unsafe impl Send for ArchManager {}
+unsafe impl Sync for ArchManager {}
 
 /// Create architecture-specific manager
 pub fn create_arch_manager(arch: Architecture) -> MemoryResult<ArchManager> {

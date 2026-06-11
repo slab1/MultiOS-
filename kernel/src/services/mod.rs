@@ -18,8 +18,9 @@ pub mod cli_service;
 pub mod cli_script_interpreter;
 pub mod cli_application;
 
+use alloc::vec;
 use crate::{KernelError, Result};
-use crate::log::{info, warn, error};
+use alloc::string::ToString;
 
 /// System services initialization
 pub fn init() -> Result<()> {

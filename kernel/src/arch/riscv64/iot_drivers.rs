@@ -4,9 +4,10 @@
 //! for RISC-V IoT systems including temperature sensors, humidity sensors,
 //! accelerometers, LEDs, motors, and communication modules.
 
-use crate::log::{info, warn, error, debug};
+use alloc::format;
 use crate::KernelError;
 use crate::arch::riscv64::iot::{
+use alloc::string::ToString;
     SensorType, ActuatorType, IoTDeviceType, SensorReading, ActuatorCommand,
     drivers::{IoTDriver, SensorDriver, ActuatorDriver}
 };

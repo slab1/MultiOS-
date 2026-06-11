@@ -3,7 +3,7 @@
 //! This module provides unified NUMA (Non-Uniform Memory Access) interfaces
 //! across architectures for memory topology management and NUMA-aware operations.
 
-use crate::log::{info, warn, error};
+use alloc::vec;
 use crate::{KernelError, Result};
 use spin::RwLock;
 use spin::Mutex;

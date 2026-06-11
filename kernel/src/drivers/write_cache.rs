@@ -3,13 +3,13 @@
 //! Advanced write caching system with write-back, write-through,
 //! and write-around policies for block devices.
 
-use crate::log::{info, warn, error};
 use super::block::{BlockDeviceId, BlockOperation, BlockDeviceError};
 use super::block_device_interface::BlockDeviceInterface;
 
 use spin::{Mutex, RwLock};
 use alloc::{vec::Vec, collections::BTreeMap, collections::HashMap};
 use alloc::sync::Arc;
+use alloc::vec;
 use core::time::{Duration, Instant};
 
 /// Cache policies

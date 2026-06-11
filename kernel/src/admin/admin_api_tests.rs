@@ -3,8 +3,9 @@
 //! This module provides comprehensive testing for the administrative API system,
 //! including unit tests, integration tests, and validation examples.
 
+use alloc::vec;
+use alloc::format;
 use crate::admin::*;
-use crate::log::{info, warn, error};
 use crate::Result;
 
 /// Test Administrative API System
@@ -720,6 +721,7 @@ impl AdminApiSecurityTester {
 #[cfg(test)]
 mod tests {
     use super::*;
+use alloc::string::ToString;
 
     #[test]
     fn test_admin_api_tester_initialization() {

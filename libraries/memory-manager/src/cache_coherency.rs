@@ -85,7 +85,7 @@ pub struct CacheCoherencyMonitor {
 }
 
 /// Cache coherency protocol statistics
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default)]
 pub struct ProtocolStats {
     /// State transitions
     pub state_transitions: [AtomicU64; 6], // One per state
@@ -101,6 +101,27 @@ pub struct ProtocolStats {
     pub writebacks: AtomicU64,
     /// Protocol overhead
     pub protocol_overhead_ns: AtomicU64,
+}
+
+impl Clone for ProtocolStats {
+    fn clone(&self) -> Self {
+        Self {
+            state_transitions: [
+                AtomicU64::new(self.state_transitions[0].load(Ordering::Relaxed)),
+                AtomicU64::new(self.state_transitions[1].load(Ordering::Relaxed)),
+                AtomicU64::new(self.state_transitions[2].load(Ordering::Relaxed)),
+                AtomicU64::new(self.state_transitions[3].load(Ordering::Relaxed)),
+                AtomicU64::new(self.state_transitions[4].load(Ordering::Relaxed)),
+                AtomicU64::new(self.state_transitions[5].load(Ordering::Relaxed)),
+            ],
+            cache_misses: AtomicU64::new(self.cache_misses.load(Ordering::Relaxed)),
+            cache_hits: AtomicU64::new(self.cache_hits.load(Ordering::Relaxed)),
+            coherency_events: AtomicU64::new(self.coherency_events.load(Ordering::Relaxed)),
+            invalidations: AtomicU64::new(self.invalidations.load(Ordering::Relaxed)),
+            writebacks: AtomicU64::new(self.writebacks.load(Ordering::Relaxed)),
+            protocol_overhead_ns: AtomicU64::new(self.protocol_overhead_ns.load(Ordering::Relaxed)),
+        }
+    }
 }
 
 /// False sharing detection system
@@ -147,7 +168,7 @@ pub enum SharingType {
 }
 
 /// Cache coherency performance counters
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default)]
 pub struct CoherencyCounters {
     /// Total coherency protocol operations
     pub protocol_ops: AtomicU64,
@@ -161,6 +182,18 @@ pub struct CoherencyCounters {
     pub contention_events: AtomicU64,
 }
 
+impl Clone for CoherencyCounters {
+    fn clone(&self) -> Self {
+        Self {
+            protocol_ops: AtomicU64::new(self.protocol_ops.load(Ordering::Relaxed)),
+            avg_latency_ns: AtomicU64::new(self.avg_latency_ns.load(Ordering::Relaxed)),
+            efficiency: AtomicU32::new(self.efficiency.load(Ordering::Relaxed)),
+            migrations: AtomicU64::new(self.migrations.load(Ordering::Relaxed)),
+            contention_events: AtomicU64::new(self.contention_events.load(Ordering::Relaxed)),
+        }
+    }
+}
+
 /// Memory barriers and ordering guarantees
 #[derive(Debug)]
 pub struct MemoryBarriers {
@@ -171,7 +204,7 @@ pub struct MemoryBarriers {
 }
 
 /// Memory barrier statistics
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default)]
 pub struct BarrierStats {
     /// Total barrier operations
     pub total_barriers: AtomicU64,
@@ -183,6 +216,18 @@ pub struct BarrierStats {
     pub full_barriers: AtomicU64,
     /// Average barrier latency
     pub avg_latency_ns: AtomicU64,
+}
+
+impl Clone for BarrierStats {
+    fn clone(&self) -> Self {
+        Self {
+            total_barriers: AtomicU64::new(self.total_barriers.load(Ordering::Relaxed)),
+            acquires: AtomicU64::new(self.acquires.load(Ordering::Relaxed)),
+            releases: AtomicU64::new(self.releases.load(Ordering::Relaxed)),
+            full_barriers: AtomicU64::new(self.full_barriers.load(Ordering::Relaxed)),
+            avg_latency_ns: AtomicU64::new(self.avg_latency_ns.load(Ordering::Relaxed)),
+        }
+    }
 }
 
 /// Lock-free data structures
@@ -401,12 +446,10 @@ pub mod lockfree {
 }
 
 /// Atomic data structures with cache alignment
-#[repr(C)]
+#[repr(C, align(64))]
 pub struct CacheAligned<T> {
     /// Data with proper alignment
     pub data: core::mem::ManuallyDrop<T>,
-    /// Padding to fill cache line
-    _padding: [u8; DEFAULT_CACHE_LINE_SIZE - core::mem::size_of::<T>()],
 }
 
 impl<T> CacheAligned<T> {
@@ -414,7 +457,6 @@ impl<T> CacheAligned<T> {
     pub fn new(data: T) -> Self {
         Self {
             data: core::mem::ManuallyDrop::new(data),
-            _padding: [0; DEFAULT_CACHE_LINE_SIZE - core::mem::size_of::<T>()],
         }
     }
 
@@ -567,17 +609,21 @@ impl CacheCoherencyMonitor {
     /// Handle cache line request
     pub fn handle_cache_request(&mut self, cpu_id: usize, address: PhysAddr, request_type: CacheRequestType) -> CacheResponse {
         let line_index = self.get_cache_line_index(address);
-        let line = &mut self.cache_lines[line_index];
-
-        // Update access tracking
-        line.last_access = self.get_current_time();
-        line.access_count += 1;
         
-        let old_state = line.state;
-        let new_state = self.transition_state(line, request_type, cpu_id);
-        line.state = new_state;
+        // Extract values we need while we have mutable access
+        let old_state;
+        let new_state;
+        let current_time = self.get_current_time();
+        {
+            let line = &mut self.cache_lines[line_index];
+            line.last_access = current_time;
+            line.access_count += 1;
+            old_state = line.state;
+            new_state = Self::transition_state(self.protocol, line, request_type, cpu_id);
+            line.state = new_state;
+        }
 
-        // Record state transition
+        // Record state transition (after releasing mutable borrow on cache_lines)
         self.protocol_stats.state_transitions[new_state as usize].fetch_add(1, Ordering::SeqCst);
         self.protocol_stats.coherency_events.fetch_add(1, Ordering::SeqCst);
 
@@ -598,8 +644,8 @@ impl CacheCoherencyMonitor {
     }
 
     /// Transition cache line state based on protocol
-    fn transition_state(&self, line: &CacheLine, request_type: CacheRequestType, cpu_id: usize) -> CacheState {
-        match (self.protocol, line.state, request_type) {
+    fn transition_state(protocol: CacheProtocol, line: &CacheLine, request_type: CacheRequestType, _cpu_id: usize) -> CacheState {
+        match (protocol, line.state, request_type) {
             (CacheProtocol::MESI, CacheState::Invalid, CacheRequestType::Read) => CacheState::Shared,
             (CacheProtocol::MESI, CacheState::Invalid, CacheRequestType::ReadExclusive) => CacheState::Exclusive,
             (CacheProtocol::MESI, CacheState::Invalid, CacheRequestType::Write) => CacheState::Modified,
@@ -721,11 +767,15 @@ impl CacheCoherencyMonitor {
             return;
         }
 
-        for suspicious in &self.false_sharing_detector.suspicious_lines {
-            if suspicious.severity > 0.7 {
-                // Apply correction (pad data structures)
-                self.correct_false_sharing(suspicious.address);
-            }
+        // Collect addresses to correct while we hold the immutable borrow
+        let addresses_to_correct: Vec<_> = self.false_sharing_detector.suspicious_lines.iter()
+            .filter(|s| s.severity > 0.7)
+            .map(|s| s.address)
+            .collect();
+
+        // Apply corrections with mutable borrow
+        for address in addresses_to_correct {
+            self.correct_false_sharing(address);
         }
     }
 
@@ -819,7 +869,10 @@ impl MemoryBarriers {
     pub fn new() -> Self {
         Self {
             barrier_stats: BarrierStats::default(),
-            cpu_barriers: [AtomicU64::new(0); 1024],
+            cpu_barriers: {
+                const ZERO: core::sync::atomic::AtomicU64 = core::sync::atomic::AtomicU64::new(0);
+                [ZERO; 1024]
+            },
         }
     }
 
@@ -829,10 +882,10 @@ impl MemoryBarriers {
         self.cpu_barriers[cpu_id].fetch_add(1, Ordering::SeqCst);
 
         match barrier_type {
-            BarrierType::Acquire => self.barrier_stats.acquires.fetch_add(1, Ordering::SeqCst),
-            BarrierType::Release => self.barrier_stats.releases.fetch_add(1, Ordering::SeqCst),
-            BarrierType::Full => self.barrier_stats.full_barriers.fetch_add(1, Ordering::SeqCst),
-        }
+            BarrierType::Acquire => { self.barrier_stats.acquires.fetch_add(1, Ordering::SeqCst); }
+            BarrierType::Release => { self.barrier_stats.releases.fetch_add(1, Ordering::SeqCst); }
+            BarrierType::Full => { self.barrier_stats.full_barriers.fetch_add(1, Ordering::SeqCst); }
+        };
     }
 
     /// Get barrier statistics

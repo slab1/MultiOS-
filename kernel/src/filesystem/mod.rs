@@ -5,7 +5,6 @@
 
 pub mod test;
 
-use crate::log::{info, warn, error, debug};
 use crate::memory::VirtualAddress;
 use crate::arch::interrupts::{PrivilegeLevel, InterruptError};
 use alloc::vec::Vec;
@@ -13,6 +12,7 @@ use core::fmt;
 use spin::RwLock;
 use alloc::sync::Arc;
 use core::sync::atomic::{AtomicU32, AtomicUsize, Ordering};
+use alloc::string::ToString;
 
 /// File system initialization
 pub fn init() -> Result<(), crate::KernelError> {

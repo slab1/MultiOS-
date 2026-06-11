@@ -7,6 +7,8 @@
 #![cfg(test)]
 #![allow(dead_code)]
 
+use alloc::vec;
+use alloc::format;
 use crate::admin::config_manager::*;
 use crate::admin::schema::*;
 use crate::admin::policy::*;
@@ -1434,6 +1436,7 @@ mod integration_lifecycle_tests {
 #[cfg(test)]
 mod performance_tests {
     use super::*;
+use alloc::string::ToString;
 
     #[test]
     fn test_large_config_handling() {

@@ -6,11 +6,11 @@
 
 use alloc::collections::BTreeMap;
 use alloc::string::{String, ToString};
+use alloc::string::ToString;
 use alloc::sync::{Arc, Weak};
 use alloc::vec::Vec;
 use core::fmt::{self, Display, Formatter};
 use core::sync::atomic::{AtomicBool, AtomicU64, AtomicU8, Ordering};
-use log::{debug, error, info, warn};
 use spin::{Mutex, RwLock, RwLockReadGuard, RwLockWriteGuard};
 
 use crate::admin::config_manager::ConfigManager;
@@ -1969,14 +1969,18 @@ mod tests {
         // Should succeed in test environment
         assert!(result.is_ok());
     }
-}//! System Rollback and Recovery Module
-//! 
-//! Provides comprehensive system state preservation, rollback capabilities,
-//! and recovery mechanisms for safe system updates.
+}
+/// System Rollback and Recovery Module
+/// 
+/// Provides comprehensive system state preservation, rollback capabilities,
+/// and recovery mechanisms for safe system updates.
 
 use alloc::vec::Vec;
 use alloc::string::String;
+use alloc::string::ToString;
 use alloc::sync::Arc;
+use alloc::vec;
+use alloc::format;
 use spin::Mutex;
 use core::time::Duration;
 use crate::{KernelResult, KernelError, log::{info, warn, error}};
@@ -2080,7 +2084,7 @@ pub struct TaskSnapshot {
 
 /// Service status enumeration
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum ServiceStatus {
+pub enum ServiceStatus2 {
     Running,
     Stopped,
     Failed,
@@ -2282,7 +2286,7 @@ pub enum CustomizationType {
 
 /// Rollback error types
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum RollbackError {
+pub enum RollbackError2 {
     SnapshotNotFound,
     SnapshotCorrupted,
     InsufficientSpace,
@@ -2321,7 +2325,7 @@ pub struct RollbackManager {
 }
 
 /// Snapshot manager for creating and managing system state snapshots
-pub struct SnapshotManager {
+pub struct SnapshotManager2 {
     storage_path: String,
     compression_enabled: bool,
     verification_enabled: bool,
@@ -2587,7 +2591,7 @@ impl RollbackManager {
     }
 }
 
-impl SnapshotManager {
+impl SnapshotManager2 {
     /// Create a new snapshot manager
     pub fn new(storage_path: String) -> Self {
         Self {

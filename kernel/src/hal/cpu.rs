@@ -3,7 +3,7 @@
 //! This module provides unified CPU interfaces across architectures for
 //! feature detection, performance monitoring, and CPU management.
 
-use crate::log::{info, warn, error};
+use alloc::format;
 use crate::{KernelError, Result};
 use spin::RwLock;
 use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
@@ -180,6 +180,8 @@ fn detect_cpu_features() -> CpuFeatures {
 #[cfg(target_arch = "x86_64")]
 fn detect_x86_64_cpu_info() -> CpuInfo {
     use crate::arch::x86_64;
+use alloc::vec;
+use alloc::string::ToString;
     
     // Get basic info from existing x86_64 module
     let arch_info = x86_64::get_cpu_info();

@@ -44,7 +44,7 @@ bitflags! {
 }
 
 /// Extended page table entry
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug)]
 pub struct ExtendedPageTableEntry {
     pub address: PhysAddr,
     pub flags: PageTableFlags,
@@ -54,8 +54,21 @@ pub struct ExtendedPageTableEntry {
     pub ref_count: AtomicUsize,
 }
 
+impl Clone for ExtendedPageTableEntry {
+    fn clone(&self) -> Self {
+        Self {
+            address: self.address,
+            flags: self.flags,
+            level: self.level,
+            huge_page_size: self.huge_page_size,
+            access_time: self.access_time,
+            ref_count: AtomicUsize::new(self.ref_count.load(Ordering::Relaxed)),
+        }
+    }
+}
+
 /// Virtual memory area
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct VirtualMemoryArea {
     pub start: VirtAddr,
     pub end: VirtAddr,
@@ -69,6 +82,7 @@ pub struct VirtualMemoryArea {
 
 /// VMA flags
 bitflags! {
+    #[derive(Debug)]
     pub struct VmaFlags: u64 {
         const READABLE = 0x00000001;
         const WRITABLE = 0x00000002;
@@ -131,7 +145,7 @@ pub struct HugePagePool {
 }
 
 /// Huge page information
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct HugePageInfo {
     pub physical_address: PhysAddr,
     pub virtual_address: Option<VirtAddr>,
@@ -144,6 +158,7 @@ pub struct HugePageInfo {
 
 /// Huge page flags
 bitflags! {
+    #[derive(Debug)]
     pub struct HugePageFlags: u32 {
         const ALLOCATED = 0x00000001;
         const INUSE = 0x00000002;
@@ -193,7 +208,7 @@ pub struct PageHashBucket {
 }
 
 /// Page hash entry
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct PageHashEntry {
     pub hash_value: u64,
     pub physical_address: PhysAddr,
@@ -203,7 +218,7 @@ pub struct PageHashEntry {
 }
 
 /// Virtual memory statistics
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default)]
 pub struct VirtualMemoryStats {
     pub total_virtual_memory: usize,
     pub used_virtual_memory: usize,
@@ -220,6 +235,28 @@ pub struct VirtualMemoryStats {
     pub copy_on_write_faults: AtomicU64,
     pub total_vmas: AtomicUsize,
     pub active_vmas: AtomicUsize,
+}
+
+impl Clone for VirtualMemoryStats {
+    fn clone(&self) -> Self {
+        Self {
+            total_virtual_memory: self.total_virtual_memory,
+            used_virtual_memory: self.used_virtual_memory,
+            mapped_memory: self.mapped_memory,
+            shared_memory: self.shared_memory,
+            compressed_memory: self.compressed_memory,
+            deduplicated_memory: self.deduplicated_memory,
+            huge_pages_allocated: self.huge_pages_allocated,
+            page_faults: AtomicU64::new(self.page_faults.load(Ordering::Relaxed)),
+            major_page_faults: AtomicU64::new(self.major_page_faults.load(Ordering::Relaxed)),
+            minor_page_faults: AtomicU64::new(self.minor_page_faults.load(Ordering::Relaxed)),
+            huge_page_faults: AtomicU64::new(self.huge_page_faults.load(Ordering::Relaxed)),
+            swap_faults: AtomicU64::new(self.swap_faults.load(Ordering::Relaxed)),
+            copy_on_write_faults: AtomicU64::new(self.copy_on_write_faults.load(Ordering::Relaxed)),
+            total_vmas: AtomicUsize::new(self.total_vmas.load(Ordering::Relaxed)),
+            active_vmas: AtomicUsize::new(self.active_vmas.load(Ordering::Relaxed)),
+        }
+    }
 }
 
 /// Memory overcommitment manager
@@ -243,7 +280,7 @@ pub struct BalloonManager {
 }
 
 /// Balloon inflation target
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct BalloonTarget {
     pub target_size: usize,
     pub current_size: AtomicUsize,
@@ -351,7 +388,7 @@ pub enum HashFunction {
 }
 
 /// Defragmentation statistics
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default)]
 pub struct DefragmentationStats {
     pub defrag_attempts: AtomicU64,
     pub successful_defrags: AtomicU64,
@@ -359,6 +396,19 @@ pub struct DefragmentationStats {
     pub time_spent_defragging_ns: AtomicU64,
     pub fragmentation_score: AtomicU64,
 }
+
+impl Clone for DefragmentationStats {
+    fn clone(&self) -> Self {
+        Self {
+            defrag_attempts: AtomicU64::new(self.defrag_attempts.load(Ordering::Relaxed)),
+            successful_defrags: AtomicU64::new(self.successful_defrags.load(Ordering::Relaxed)),
+            pages_consolidated: AtomicU64::new(self.pages_consolidated.load(Ordering::Relaxed)),
+            time_spent_defragging_ns: AtomicU64::new(self.time_spent_defragging_ns.load(Ordering::Relaxed)),
+            fragmentation_score: AtomicU64::new(self.fragmentation_score.load(Ordering::Relaxed)),
+        }
+    }
+}
+
 
 /// Compressed page cache
 #[derive(Debug)]
@@ -370,7 +420,7 @@ pub struct CompressedCache {
 }
 
 /// Compressed page information
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct CompressedPageInfo {
     pub original_phys_addr: PhysAddr,
     pub compressed_data: Vec<u8>,
@@ -380,7 +430,7 @@ pub struct CompressedPageInfo {
 }
 
 /// Compression statistics
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default)]
 pub struct CompressionStats {
     pub pages_compressed: AtomicU64,
     pub pages_decompressed: AtomicU64,
@@ -391,7 +441,7 @@ pub struct CompressionStats {
 }
 
 /// Deduplication statistics
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default)]
 pub struct DeduplicationStats {
     pub duplicate_pages_detected: AtomicU64,
     pub pages_deduplicated: AtomicU64,
@@ -408,7 +458,7 @@ pub struct SwapManager {
 }
 
 /// Swap file information
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct SwapFile {
     pub file_path: Option<PhysAddr>, // Physical address of file path
     pub file_size: usize,
@@ -427,7 +477,7 @@ pub struct SwapCache {
 }
 
 /// Swap cache entry
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct SwapCacheEntry {
     pub virtual_address: VirtAddr,
     pub swap_offset: usize,
@@ -438,6 +488,7 @@ pub struct SwapCacheEntry {
 
 /// Swap flags
 bitflags! {
+    #[derive(Debug)]
     pub struct SwapFlags: u32 {
         const PRIO = 0x00000001;
         const DISCARD = 0x00000002;
@@ -447,7 +498,7 @@ bitflags! {
 }
 
 /// Committed memory statistics
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default)]
 pub struct CommittedStats {
     pub committed_memory: AtomicUsize,
     pub commit_limit: AtomicUsize,
@@ -592,15 +643,20 @@ impl LargeScaleVirtualMemory {
 
     /// Handle virtual memory access with compression support
     pub fn handle_virtual_access(&mut self, address: VirtAddr) -> MemoryResult<AccessResponse> {
-        // Find VMA containing the address
-        let vma = self.find_vma(address).ok_or(MemoryError::InvalidAddress)?;
+        // Find VMA containing the address - extract the VMA index first to avoid borrow issues
+        let vma_index = self.vma_list.iter().position(|v| address >= v.start && address < v.end)
+            .ok_or(MemoryError::InvalidAddress)?;
         
-        // Update access statistics
-        vma.access_count.fetch_add(1, Ordering::SeqCst);
-        vma.last_access.store(self.get_current_time(), Ordering::SeqCst);
+        // Update access statistics (mutable access via index)
+        let current_time = self.get_current_time();
+        {
+            let vma = &mut self.vma_list[vma_index];
+            vma.access_count.fetch_add(1, Ordering::SeqCst);
+            vma.last_access.store(current_time, Ordering::SeqCst);
+        }
         
-        // Handle page fault if necessary
-        let response = self.handle_page_fault(address, &vma)?;
+        // Handle page fault if necessary (separate scope for borrows)
+        let response = self.handle_page_fault_by_index(address, vma_index)?;
         
         Ok(response)
     }
@@ -662,6 +718,26 @@ impl LargeScaleVirtualMemory {
         })
     }
 
+    /// Handle major page fault by backing type (no VMA reference needed)
+    fn handle_major_fault_by_backing(&mut self, address: VirtAddr, backing: VmaBacking) -> MemoryResult<AccessResponse> {
+        let physical_page = match backing {
+            VmaBacking::File(file_addr) => {
+                self.load_from_file(address, file_addr)?
+            },
+            VmaBacking::Device(device_addr) => {
+                self.map_device_memory(address, device_addr)?
+            },
+            _ => self.allocate_physical_page()?,
+        };
+
+        Ok(AccessResponse {
+            physical_address: physical_page,
+            access_granted: true,
+            permissions_ok: true,
+            page_cached: true,
+        })
+    }
+
     /// Handle minor page fault
     fn handle_minor_fault(&mut self, address: VirtAddr, vma: &VirtualMemoryArea) -> MemoryResult<AccessResponse> {
         let physical_page = match vma.backing {
@@ -677,6 +753,46 @@ impl LargeScaleVirtualMemory {
             permissions_ok: true,
             page_cached: true,
         })
+    }
+
+    /// Handle minor page fault by backing type (no VMA reference needed)
+    fn handle_minor_fault_by_backing(&mut self, address: VirtAddr, backing: VmaBacking) -> MemoryResult<AccessResponse> {
+        let physical_page = match backing {
+            VmaBacking::Anonymous => self.allocate_physical_page()?,
+            VmaBacking::HugePage(huge_id) => self.get_huge_page(huge_id)?,
+            VmaBacking::Compressed => self.decompress_page(address)?,
+            _ => self.allocate_physical_page()?,
+        };
+
+        Ok(AccessResponse {
+            physical_address: physical_page,
+            access_granted: true,
+            permissions_ok: true,
+            page_cached: true,
+        })
+    }
+
+    /// Handle page fault by VMA index
+    fn handle_page_fault_by_index(&mut self, address: VirtAddr, vma_index: usize) -> MemoryResult<AccessResponse> {
+        self.stats.page_faults.fetch_add(1, Ordering::SeqCst);
+        
+        // Clone the vma backing and check if major fault before borrowing self
+        let vma_backing = self.vma_list[vma_index].backing;
+        let is_major = match vma_backing {
+            VmaBacking::File(_) | VmaBacking::Device(_) => true,
+            _ => false,
+        };
+        
+        if is_major {
+            self.stats.major_page_faults.fetch_add(1, Ordering::SeqCst);
+            // Copy vma data before mutable self calls
+            let vma_backing = self.vma_list[vma_index].backing;
+            self.handle_major_fault_by_backing(address, vma_backing)
+        } else {
+            self.stats.minor_page_faults.fetch_add(1, Ordering::SeqCst);
+            let vma_backing = self.vma_list[vma_index].backing;
+            self.handle_minor_fault_by_backing(address, vma_backing)
+        }
     }
 
     /// Load page from file backing
@@ -710,7 +826,9 @@ impl LargeScaleVirtualMemory {
         if let Some(compressor) = &mut self.compressor {
             if let Some(compressed_page) = compressor.decompress_page(address)? {
                 self.stats.compressed_memory -= compressed_page.compressed_data.len();
-                self.stats.compression_stats.pages_decompressed.fetch_add(1, Ordering::SeqCst);
+                if let Some(ref mut compressor) = self.compressor {
+                    compressor.compression_stats.pages_decompressed.fetch_add(1, Ordering::SeqCst);
+                }
                 return Ok(compressed_page.original_phys_addr);
             }
         }
@@ -747,10 +865,15 @@ impl LargeScaleVirtualMemory {
     pub fn handle_memory_pressure(&mut self) -> MemoryResult<()> {
         let current_usage = self.stats.used_virtual_memory as f32 / self.stats.total_virtual_memory as f32;
         
-        for response in &self.pressure_manager.response_actions {
-            if current_usage >= response.threshold {
-                self.execute_pressure_response(response)?;
-            }
+        // Collect responses that need to be triggered
+        let action_types: Vec<PressureAction> = self.pressure_manager.response_actions.iter()
+            .filter(|r| current_usage >= r.threshold)
+            .map(|r| r.action_type)
+            .collect();
+        
+        // Execute responses after releasing borrow on pressure_manager
+        for action_type in action_types {
+            self.execute_pressure_response_by_type(action_type)?;
         }
         
         Ok(())
@@ -777,6 +900,17 @@ impl LargeScaleVirtualMemory {
         }
         
         Ok(())
+    }
+
+    /// Execute pressure response by action type
+    fn execute_pressure_response_by_type(&mut self, action_type: PressureAction) -> MemoryResult<()> {
+        match action_type {
+            PressureAction::StartCompaction => self.compact_memory(),
+            PressureAction::IncreaseSwapping => self.increase_swapping(),
+            PressureAction::ReleaseBuffers => self.release_buffers(),
+            PressureAction::CompressMemory => self.compress_unused_pages().map(|_| ()),
+            PressureAction::OomKill => self.trigger_oom_kill(),
+        }
     }
 
     /// Compact memory
@@ -831,7 +965,7 @@ impl HugePageManager {
         Self {
             gb_pages: vec![HugePagePool::new(PageSize::Size1G)],
             mb_pages: vec![HugePagePool::new(PageSize::Size2M)],
-            tb_pages: vec![HugePagePool::new(PageSize::Size1G << 20)], // 512GB pages
+            tb_pages: vec![HugePagePool::new(PageSize::Size2M)], // 512GB pages
             defrag_stats: DefragmentationStats::default(),
             allocation_policy: HugePagePolicy::Prefer,
         }

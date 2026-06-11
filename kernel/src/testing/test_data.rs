@@ -7,9 +7,11 @@
 //! - Test data validation and integrity checking
 
 use super::*;
+use alloc::vec;
+use alloc::format;
 use crate::*;
 use crate::Result;
-use log::{info, warn, error};
+use alloc::string::ToString;
 
 /// Test data manager for comprehensive test data lifecycle management
 pub struct TestDataManager {

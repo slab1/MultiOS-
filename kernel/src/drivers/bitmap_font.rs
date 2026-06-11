@@ -3,8 +3,8 @@
 //! This module provides bitmap font support, text rendering primitives,
 //! and text formatting capabilities for the MultiOS graphics system.
 
-use crate::log::{info, warn, error, debug};
 use alloc::{vec::Vec, collections::BTreeMap, string::String};
+use alloc::vec;
 use spin::{Mutex, RwLock, Once};
 use core::ops::{Deref, DerefMut};
 use crate::drivers::graphics::{GraphicsBuffer, ColorDepth, GraphicsPrimitive, Point};
@@ -705,6 +705,7 @@ impl GraphicsBuffer {
 #[cfg(test)]
 mod tests {
     use super::*;
+use alloc::string::ToString;
 
     #[test]
     fn test_bitmap_font_creation() {

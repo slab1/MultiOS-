@@ -8,6 +8,8 @@ use crate::testing::{
     utest_utils::*,
 };
 use alloc::vec::Vec;
+use alloc::vec;
+use alloc::format;
 
 /// Example 1: Basic UAT test execution
 /// Demonstrates how to run a complete UAT test suite
@@ -449,6 +451,7 @@ pub fn run_all_examples() -> Result<(), UATError> {
 #[cfg(test)]
 mod tests {
     use super::*;
+use alloc::string::ToString;
 
     #[test]
     fn test_example_functions() {

@@ -548,11 +548,11 @@ mod tests {
 pub mod examples {
     use super::*;
     use alloc::vec;
-    use alloc::string::String;
+use alloc::string::{String, ToString};
 
     /// Example: Basic administrative shell usage
     pub fn example_basic_usage() {
-        println!("=== Basic Administrative Shell Usage ===");
+        // println!("=== Basic Administrative Shell Usage ===");
         
         // Initialize the admin shell
         let _ = crate::admin::admin_shell::init();
@@ -570,41 +570,41 @@ pub mod examples {
         ];
         
         for command in &commands {
-            println!("\nExecuting: {}", command);
+            // println!("\nExecuting: {}", command);
             let result = crate::admin::execute_admin_command(command);
             match result {
                 Ok(cmd_result) => {
                     if cmd_result.success {
-                        println!("Success: {}", cmd_result.output.trim());
+                        // println!("Success: {}", cmd_result.output.trim());
                     } else {
-                        println!("Failed: {}", cmd_result.output.trim());
+                        // println!("Failed: {}", cmd_result.output.trim());
                     }
                 }
-                Err(e) => println!("Error: {:?}", e),
+                // Err(e) => println!("Error: {:?}", e),
             }
         }
     }
 
     /// Example: User management workflow
     pub fn example_user_management() {
-        println!("=== User Management Workflow ===");
+        // println!("=== User Management Workflow ===");
         
         // Create a new user
         let result = crate::admin::execute_admin_command("useradd john --home /home/john");
-        println!("User creation: {:?}", result);
+        // println!("User creation: {:?}", result);
         
         // Modify user properties
         let result = crate::admin::execute_admin_command("usermod john --groups developers");
-        println!("User modification: {:?}", result);
+        // println!("User modification: {:?}", result);
         
         // List all users
         let result = crate::admin::execute_admin_command("users");
-        println!("User list: {:?}", result);
+        // println!("User list: {:?}", result);
     }
 
     /// Example: System monitoring workflow
     pub fn example_system_monitoring() {
-        println!("=== System Monitoring Workflow ===");
+        // println!("=== System Monitoring Workflow ===");
         
         let commands = vec![
             "uname -a",
@@ -615,67 +615,67 @@ pub mod examples {
         ];
         
         for command in &commands {
-            println!("\n--- Running: {} ---", command);
+            // println!("\n--- Running: {} ---", command);
             let result = crate::admin::execute_admin_command(command);
             match result {
                 Ok(cmd_result) => {
-                    println!("{}", cmd_result.output);
+                    // println!("{}", cmd_result.output);
                 }
-                Err(e) => println!("Error: {:?}", e),
+                // Err(e) => println!("Error: {:?}", e),
             }
         }
     }
 
     /// Example: Network configuration workflow
     pub fn example_network_config() {
-        println!("=== Network Configuration Workflow ===");
+        // println!("=== Network Configuration Workflow ===");
         
         // Check current network interfaces
         let result = crate::admin::execute_admin_command("ifconfig");
-        println!("Current interfaces:\n{}", result.as_ref().map_or_else(|_| "Error".to_string(), |r| r.output.clone()));
+        // println!("Current interfaces:\n{}", result.as_ref().map_or_else(|_| "Error".to_string(), |r| r.output.clone()));
         
         // Check routing table
         let result = crate::admin::execute_admin_command("route");
-        println!("Routing table:\n{}", result.as_ref().map_or_else(|_| "Error".to_string(), |r| r.output.clone()));
+        // println!("Routing table:\n{}", result.as_ref().map_or_else(|_| "Error".to_string(), |r| r.output.clone()));
         
         // Test connectivity
         let result = crate::admin::execute_admin_command("ping -c 3 localhost");
-        println!("Connectivity test:\n{}", result.as_ref().map_or_else(|_| "Error".to_string(), |r| r.output.clone()));
+        // println!("Connectivity test:\n{}", result.as_ref().map_or_else(|_| "Error".to_string(), |r| r.output.clone()));
     }
 
     /// Example: Package management workflow
     pub fn example_package_management() {
-        println!("=== Package Management Workflow ===");
+        // println!("=== Package Management Workflow ===");
         
         // List installed packages
         let result = crate::admin::execute_admin_command("pkg_list");
-        println!("Installed packages:\n{}", result.as_ref().map_or_else(|_| "Error".to_string(), |r| r.output.clone()));
+        // println!("Installed packages:\n{}", result.as_ref().map_or_else(|_| "Error".to_string(), |r| r.output.clone()));
         
         // Install a package
         let result = crate::admin::execute_admin_command("pkg_install vim");
-        println!("Package installation: {:?}", result);
+        // println!("Package installation: {:?}", result);
         
         // List packages again
         let result = crate::admin::execute_admin_command("pkg_list");
-        println!("Updated package list:\n{}", result.as_ref().map_or_else(|_| "Error".to_string(), |r| r.output.clone()));
+        // println!("Updated package list:\n{}", result.as_ref().map_or_else(|_| "Error".to_string(), |r| r.output.clone()));
     }
 
     /// Example: Security administration workflow
     pub fn example_security_admin() {
-        println!("=== Security Administration Workflow ===");
+        // println!("=== Security Administration Workflow ===");
         
         // View audit logs
         let result = crate::admin::execute_admin_command("audit");
-        println!("Audit log:\n{}", result.as_ref().map_or_else(|_| "Error".to_string(), |r| r.output.clone()));
+        // println!("Audit log:\n{}", result.as_ref().map_or_else(|_| "Error".to_string(), |r| r.output.clone()));
         
         // View system logs
         let result = crate::admin::execute_admin_command("logs");
-        println!("System logs:\n{}", result.as_ref().map_or_else(|_| "Error".to_string(), |r| r.output.clone()));
+        // println!("System logs:\n{}", result.as_ref().map_or_else(|_| "Error".to_string(), |r| r.output.clone()));
     }
 
     /// Example: Advanced administrative operations
     pub fn example_advanced_operations() {
-        println!("=== Advanced Administrative Operations ===");
+        // println!("=== Advanced Administrative Operations ===");
         
         // System control examples
         let system_commands = vec![
@@ -684,56 +684,56 @@ pub mod examples {
         ];
         
         for command in &system_commands {
-            println!("\n--- System Control: {} ---", command);
+            // println!("\n--- System Control: {} ---", command);
             let result = crate::admin::execute_admin_command(command);
             match result {
                 Ok(cmd_result) => {
-                    println!("{}", cmd_result.output);
+                    // println!("{}", cmd_result.output);
                     if !cmd_result.warnings.is_empty() {
-                        println!("Warnings: {:?}", cmd_result.warnings);
+                        // println!("Warnings: {:?}", cmd_result.warnings);
                     }
                 }
-                Err(e) => println!("Error: {:?}", e),
+                // Err(e) => println!("Error: {:?}", e),
             }
         }
         
         // Get system information
-        println!("\n--- System Information ---");
+        // println!("\n--- System Information ---");
         if let Some(system_info) = crate::admin::get_system_info() {
-            println!("Hostname: {}", system_info.hostname);
-            println!("Kernel: {}", system_info.kernel_version);
-            println!("OS: {}", system_info.os_version);
-            println!("Architecture: {}", system_info.architecture);
-            println!("Uptime: {} seconds", system_info.uptime_ns / 1_000_000_000);
+            // println!("Hostname: {}", system_info.hostname);
+            // println!("Kernel: {}", system_info.kernel_version);
+            // println!("OS: {}", system_info.os_version);
+            // println!("Architecture: {}", system_info.architecture);
+            // println!("Uptime: {} seconds", system_info.uptime_ns / 1_000_000_000);
         }
     }
 
     /// Example: Administrative statistics and diagnostics
     pub fn example_statistics_and_diagnostics() {
-        println!("=== Statistics and Diagnostics ===");
+        // println!("=== Statistics and Diagnostics ===");
         
         // Get module statistics
         let stats = crate::admin::get_module_stats();
-        println!("Module Statistics:");
-        println!("  Shell Commands Executed: {}", stats.shell_stats.total_commands_executed);
-        println!("  History Entries: {}", stats.shell_stats.history_entries);
-        println!("  Users Managed: {}", stats.shell_stats.users_managed);
-        println!("  Processes Controlled: {}", stats.shell_stats.processes_controlled);
-        println!("  Active Sessions: {}", stats.active_sessions);
+        // println!("Module Statistics:");
+        // println!("  Shell Commands Executed: {}", stats.shell_stats.total_commands_executed);
+        // println!("  History Entries: {}", stats.shell_stats.history_entries);
+        // println!("  Users Managed: {}", stats.shell_stats.users_managed);
+        // println!("  Processes Controlled: {}", stats.shell_stats.processes_controlled);
+        // println!("  Active Sessions: {}", stats.active_sessions);
         
         // Get module information
         let info = crate::admin::get_module_info();
-        println!("\nModule Information:");
-        println!("  Name: {}", info.module_name);
-        println!("  Version: {}", info.module_version);
-        println!("  Total Commands: {}", info.total_commands);
-        println!("  Categories: {}", info.available_categories.len());
+        // println!("\nModule Information:");
+        // println!("  Name: {}", info.module_name);
+        // println!("  Version: {}", info.module_version);
+        // println!("  Total Commands: {}", info.total_commands);
+        // println!("  Categories: {}", info.available_categories.len());
         
         // Run diagnostics
         let diagnostics = crate::admin::run_admin_diagnostics().unwrap();
-        println!("\nDiagnostics:");
+        // println!("\nDiagnostics:");
         for (key, value) in diagnostics {
-            println!("  {}: {}", key, value);
+            // println!("  {}: {}", key, value);
         }
     }
 }

@@ -4,7 +4,6 @@
 //! responsive layouts, touch-friendly interfaces, mobile-specific widgets,
 //! orientation handling, and adaptive UI components.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 
 /// Mobile UI device categories

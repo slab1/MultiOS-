@@ -3,11 +3,45 @@
 //! This module provides logging functionality for the bootstrap sequence.
 //! It uses a simple console output mechanism that works during early boot.
 
+use alloc::format;
 use core::fmt::{self, Write};
 use core::sync::atomic::{AtomicU16, Ordering};
 
 /// Log levels
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+// ============================================================
+// Logging macros - these delegate to the function implementations
+// ============================================================
+
+/// Log an info message
+macro_rules! info {
+    ($($arg:tt)*) => {
+        $crate::log::info(&::alloc::format!($($arg)*));
+    };
+}
+
+/// Log a warning message
+macro_rules! warn {
+    ($($arg:tt)*) => {
+        $crate::log::warn(&::alloc::format!($($arg)*));
+    };
+}
+
+/// Log an error message
+macro_rules! error {
+    ($($arg:tt)*) => {
+        $crate::log::error(&::alloc::format!($($arg)*));
+    };
+}
+
+/// Log a debug message
+macro_rules! debug {
+    ($($arg:tt)*) => {
+        $crate::log::debug(&::alloc::format!($($arg)*));
+    };
+}
+
+/// Log levels
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 #[repr(u8)]
 pub enum LogLevel {
     Error = 0,
@@ -57,7 +91,7 @@ pub fn debug(msg: &str) {
 }
 
 /// Internal log function
-fn log(level: LogLevel, msg: &str) {
+pub fn log(level: LogLevel, msg: &str) {
     unsafe {
         if level <= LOGGER.level {
             let level_str = match level {

@@ -3,7 +3,6 @@
 //! This module provides unified multi-core system interfaces across architectures
 //! for CPU management, inter-processor communication, and core coordination.
 
-use crate::log::{info, warn, error};
 use crate::{KernelError, Result};
 use spin::RwLock;
 use spin::Mutex;

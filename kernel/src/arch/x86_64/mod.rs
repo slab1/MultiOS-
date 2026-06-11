@@ -2,7 +2,6 @@
 //! 
 //! This module provides x86_64 specific functionality and initialization.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 use crate::ArchType;
 
@@ -300,19 +299,5 @@ pub mod subsystem {
     }
 }
 
-/// Desktop PC support module
-pub mod desktop_pc {
-    pub use super::desktop_pc::*;
-    
-    /// Initialize comprehensive desktop PC support
-    pub fn init_desktop_pc() -> Result<(), KernelError> {
-        use crate::log::info;
-        info!("Initializing x86_64 Desktop PC support...");
-        
-        // This would call the comprehensive desktop PC initialization
-        // For now, just log that it's available
-        
-        info!("x86_64 Desktop PC support initialized");
-        Ok(())
-    }
-}
+// Desktop PC support is in `desktop_pc` module - the `pub use super::desktop_pc::*` 
+// re-export module was removed to avoid duplicate module name.

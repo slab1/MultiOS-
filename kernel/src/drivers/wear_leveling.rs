@@ -3,7 +3,6 @@
 //! Advanced wear leveling algorithms to ensure even distribution
 //! of write operations across SSD blocks to maximize lifespan.
 
-use crate::log::{info, warn, error};
 use super::block::{BlockDeviceId, BlockOperation, BlockDeviceError};
 
 use spin::{Mutex, RwLock};

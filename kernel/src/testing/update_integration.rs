@@ -7,9 +7,10 @@
 //! - Compatibility checking and validation
 
 use super::*;
+use alloc::vec;
 use crate::update::*;
 use crate::Result;
-use log::{info, warn, error};
+use alloc::string::ToString;
 
 /// Run all update system integration tests
 pub fn run_update_integration_tests(coordinator: &mut IntegrationTestCoordinator) -> Result<Vec<IntegrationTestResult>> {

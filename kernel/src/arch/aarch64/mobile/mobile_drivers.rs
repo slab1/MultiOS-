@@ -4,7 +4,6 @@
 //! mobile devices, including cellular modems, WiFi/Bluetooth, camera drivers,
 //! audio drivers, and other mobile-specific hardware.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 
 /// Mobile device driver types

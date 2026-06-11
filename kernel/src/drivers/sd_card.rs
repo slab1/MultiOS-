@@ -3,7 +3,6 @@
 //! Support for SD and SDHC/SDXC cards with multiple interfaces:
 //! SPI mode and SD mode (4-bit and 8-bit).
 
-use crate::log::{info, warn, error};
 use super::block::{BlockDeviceId, BlockOperation, BlockDeviceError};
 
 use spin::{Mutex, RwLock};

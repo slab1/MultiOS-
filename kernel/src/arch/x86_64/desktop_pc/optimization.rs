@@ -3,10 +3,10 @@
 //! Provides x86_64-specific optimizations for desktop PC workloads
 //! including cache optimizations, memory prefetching, and performance tuning
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 
 use super::{DesktopPcSystem, CpuManager, SupportedFeatures};
+use alloc::string::ToString;
 
 /// Cache line size for x86_64
 const X86_64_CACHE_LINE_SIZE: usize = 64;

@@ -8,9 +8,11 @@
 //! - Audit and monitoring
 
 use super::*;
+use alloc::vec;
+use alloc::format;
 use crate::security::*;
 use crate::Result;
-use log::{info, warn, error};
+use alloc::string::ToString;
 
 /// Run all security integration tests
 pub fn run_security_integration_tests(coordinator: &mut IntegrationTestCoordinator) -> Result<Vec<IntegrationTestResult>> {

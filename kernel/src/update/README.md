@@ -379,7 +379,6 @@ mod tests {
 Enable detailed logging:
 
 ```rust
-use log::{info, warn, error};
 
 // Enable debug logging for validation
 info!("Starting update validation for: {}", update_package.id);

@@ -3,6 +3,8 @@
 //! This module contains integration tests for the rollback and recovery system
 //! to ensure proper functionality and integration with the kernel.
 
+use alloc::vec;
+use alloc::format;
 use crate::update::rollback::{
     RollbackSystem, ComponentCategory, RollbackScope, helpers::*,
     RecoveryPointId, RollbackOperationId, HealthLevel

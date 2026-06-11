@@ -9,12 +9,13 @@
 //! - Service dependency management
 //! - Integration with existing scheduler and service manager components
 
-use crate::log::{info, warn, error};
 use crate::{KernelError, Result};
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::String;
+use alloc::string::ToString;
 use alloc::collections::{BTreeMap, HashMap, HashSet};
+use alloc::vec;
 use core::sync::atomic::{AtomicU64, AtomicU32, AtomicUsize, AtomicBool, Ordering};
 use bitflags::bitflags;
 

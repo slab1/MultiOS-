@@ -92,17 +92,17 @@ impl PhysAddr {
 
     /// Align address to page boundary
     pub const fn align_up(&self, page_size: PageSize) -> Self {
-        PhysAddr((self.0 + page_size.as_usize() - 1) & !(page_size.as_usize() - 1))
+        PhysAddr((self.0 + page_size.as_usize() as u64 - 1) & !(page_size.as_usize() as u64 - 1))
     }
 
     /// Align address down to page boundary
     pub const fn align_down(&self, page_size: PageSize) -> Self {
-        PhysAddr(self.0 & !(page_size.as_usize() - 1))
+        PhysAddr(self.0 & !(page_size.as_usize() as u64 - 1))
     }
 
     /// Check if address is page-aligned
     pub const fn is_aligned(&self, page_size: PageSize) -> bool {
-        (self.0 & (page_size.as_usize() - 1)) == 0
+        (self.0 & (page_size.as_usize() as u64 - 1)) == 0
     }
 
     /// Add offset to address
@@ -140,27 +140,32 @@ impl VirtAddr {
 
     /// Align address to page boundary
     pub const fn align_up(&self, page_size: PageSize) -> Self {
-        VirtAddr((self.0 + page_size.as_usize() - 1) & !(page_size.as_usize() - 1))
+        VirtAddr((self.0 + page_size.as_usize() as u64 - 1) & !(page_size.as_usize() as u64 - 1))
     }
 
     /// Align address down to page boundary
     pub const fn align_down(&self, page_size: PageSize) -> Self {
-        VirtAddr(self.0 & !(page_size.as_usize() - 1))
+        VirtAddr(self.0 & !(page_size.as_usize() as u64 - 1))
     }
 
     /// Check if address is page-aligned
     pub const fn is_aligned(&self, page_size: PageSize) -> bool {
-        (self.0 & (page_size.as_usize() - 1)) == 0
+        (self.0 & (page_size.as_usize() as u64 - 1)) == 0
     }
 
     /// Get page number for a given page size
     pub const fn page_number(&self, page_size: PageSize) -> usize {
-        (self.0 / page_size.as_usize()) as usize
+        (self.0 / page_size.as_usize() as u64) as usize
     }
 
     /// Get offset within page
     pub const fn page_offset(&self, page_size: PageSize) -> u64 {
-        self.0 & (page_size.as_usize() - 1)
+        self.0 & (page_size.as_usize() as u64 - 1)
+    }
+
+    /// Add offset to address
+    pub const fn offset(&self, offset: u64) -> Self {
+        VirtAddr(self.0 + offset)
     }
 
     /// Check if this is a canonical address (x86_64)
@@ -188,12 +193,12 @@ impl PageFrame {
 
     /// Convert to physical address
     pub const fn to_phys_addr(&self, page_size: PageSize) -> PhysAddr {
-        PhysAddr::new((self.0 * page_size.as_usize()) as u64)
+        PhysAddr::new((self.0 as u64) * (page_size.as_usize() as u64))
     }
 
     /// Create from physical address
     pub const fn from_phys_addr(addr: PhysAddr, page_size: PageSize) -> Self {
-        PageFrame::new((addr.as_u64() / page_size.as_usize()) as usize)
+        PageFrame::new((addr.as_u64() / page_size.as_usize() as u64) as usize)
     }
 }
 

@@ -15,13 +15,15 @@
 //! - Integration with existing CLI services
 
 use crate::{KernelError, Result};
-use crate::log::{info, warn, error};
 use crate::services::{cli_service, time_service};
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
+use alloc::string::ToString;
 use alloc::collections::{BTreeMap, HashMap, VecDeque, BTreeSet};
 use alloc::sync::Arc;
+use alloc::vec;
+use alloc::format;
 use core::sync::atomic::{AtomicU64, Ordering};
 
 /// Administrative Shell Result

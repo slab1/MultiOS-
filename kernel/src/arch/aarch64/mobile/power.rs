@@ -4,7 +4,6 @@
 //! including CPU idle states, DVFS (Dynamic Voltage and Frequency Scaling), 
 //! thermal management, and device-specific power optimizations.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 
 /// CPU idle states (ARM Power States)

@@ -6,8 +6,8 @@
 //! - Animation and rendering utilities
 //! - Graphics helpers and utilities
 
-use crate::log::{info, warn, error, debug};
 use alloc::{vec::Vec, collections::BTreeMap};
+use alloc::vec;
 use spin::{Mutex, RwLock, Once};
 use core::ops::{Deref, DerefMut};
 

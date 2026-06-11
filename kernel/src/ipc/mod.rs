@@ -3,7 +3,6 @@
 //! This module provides IPC mechanisms for process communication.
 //! Integrates with the comprehensive IPC library system.
 
-use crate::log::{info, warn, error};
 use spin::Mutex;
 use alloc::collections::BTreeMap;
 

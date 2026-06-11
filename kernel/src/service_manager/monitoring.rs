@@ -5,8 +5,11 @@
 
 use spin::{Mutex, RwLock};
 use alloc::string::String;
+use alloc::string::ToString;
 use alloc::vec::Vec;
 use alloc::collections::{BTreeMap, VecDeque};
+use alloc::vec;
+use alloc::format;
 use core::sync::atomic::{AtomicU64, Ordering};
 
 use super::{ServiceId, ServiceResult, ServiceError, service::{HealthStatus, HealthCheckResult, ServiceMetrics}};
@@ -380,7 +383,7 @@ impl ServiceMonitor {
             service_id: checker.service_id,
             healthy,
             response_time,
-            error_message: if healthy { None } else Some("Health check failed".to_string()),
+            error_message: if healthy { None } else { Some("Health check failed".to_string()) },
             timestamp: get_current_time(),
         })
     }

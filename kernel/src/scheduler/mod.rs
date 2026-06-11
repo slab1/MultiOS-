@@ -2,18 +2,12 @@
 //! 
 //! This module provides process and thread scheduling functionality.
 
-use crate::log::{info, warn, error};
 use spin::Mutex;
 
 /// Scheduler initialization
 pub fn init() -> Result<(), crate::KernelError> {
     info!("Initializing scheduler...");
     Ok(())
-}
-
-/// Yield current thread
-pub fn yield_current_thread() {
-    // Placeholder for thread yielding
 }
 
 /// Scheduler statistics

@@ -4,7 +4,7 @@
 //! ARM64, and RISC-V architectures, including CPU discovery, inter-processor
 //! communication, and synchronization primitives.
 
-use crate::log::{info, warn, error};
+use alloc::vec;
 use crate::KernelError;
 use super::{ArchType, CpuFeatures};
 

@@ -4,7 +4,6 @@
 //! mobile devices, including battery state monitoring, charging control, fuel gauge
 //! support, and battery safety features.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 
 /// Battery chemistry types

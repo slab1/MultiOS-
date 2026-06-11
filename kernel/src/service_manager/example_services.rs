@@ -3,8 +3,9 @@
 //! This module provides example service implementations that demonstrate
 //! how to create services using the MultiOS service management framework.
 
+use alloc::vec;
+use alloc::format;
 use crate::service_manager::*;
-use crate::log::{info, warn, error};
 use crate::hal::{sleep_ms, get_current_time};
 
 /// Example HTTP Web Server Service
@@ -484,6 +485,7 @@ pub mod helpers {
 #[cfg(test)]
 mod tests {
     use super::*;
+use alloc::string::ToString;
 
     #[test]
     fn test_http_server_creation() {

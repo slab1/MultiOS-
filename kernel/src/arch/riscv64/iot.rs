@@ -4,7 +4,6 @@
 //! including low-power operation, sensor/actuator drivers, embedded networking,
 //! and real-time capabilities optimized for resource-constrained devices.
 
-use crate::log::{info, warn, error, debug};
 use crate::KernelError;
 
 /// Low-power operation modes for IoT devices

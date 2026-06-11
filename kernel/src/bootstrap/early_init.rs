@@ -5,7 +5,6 @@
 
 use crate::bootstrap::{BootstrapContext, BootstrapResult, BootstrapConfig};
 use crate::{ArchType, BootMethod};
-use crate::log::{info, warn, error};
 
 /// Early initialization data
 #[derive(Debug)]

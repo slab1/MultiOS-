@@ -3,7 +3,6 @@
 //! This module provides RISC-V64 specific functionality including exception handling,
 //! system call support, and comprehensive IoT device support for RV64GC architecture.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
 use crate::ArchType;
 

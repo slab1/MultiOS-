@@ -8,9 +8,11 @@
 //! - Test environment provisioning
 
 use super::*;
+use alloc::vec;
+use alloc::format;
 use crate::*;
 use crate::Result;
-use log::{info, warn, error};
+use alloc::string::ToString;
 
 /// Test automation configuration
 #[derive(Debug, Clone)]

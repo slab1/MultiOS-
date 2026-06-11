@@ -4,8 +4,8 @@
 //! BIOS/UEFI compatibility, multi-core CPU support, device enumeration, and
 //! desktop-specific features.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
+use alloc::string::ToString;
 
 pub mod bios_uefi;
 pub mod cpu_manager;

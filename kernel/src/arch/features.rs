@@ -4,8 +4,8 @@
 //! features including SSE/AVX/ACPI for x86_64, NEON/TrustZone/GIC for ARM64,
 //! and extensions/PMP/Svpbmt for RISC-V.
 
-use crate::log::{info, warn, error};
 use crate::KernelError;
+use alloc::vec;
 use super::{ArchType, CpuFeatures};
 
 /// x86_64 specific features implementation

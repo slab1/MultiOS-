@@ -4,12 +4,13 @@
 //! interface, including unit tests, integration tests, stress tests, and performance
 //! validation.
 
-use crate::log::{info, warn, error, debug, TestLogger};
+use alloc::format;
 use crate::arch::{ArchType, PrivilegeLevel};
 use crate::arch::interrupts::*;
 use crate::syscall::{self, dispatcher, validator, fast_interface};
 use crate::syscall_numbers;
 use crate::KernelError;
+use alloc::vec;
 
 type TestResult = Result<(), TestError>;
 
@@ -937,6 +938,7 @@ pub fn run_syscall_tests() -> TestResults {
 #[cfg(test)]
 mod tests {
     use super::*;
+use alloc::string::ToString;
 
     #[test]
     fn test_framework_creation() {

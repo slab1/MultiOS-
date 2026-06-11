@@ -5,6 +5,8 @@
 
 #![cfg(test)]
 
+use alloc::vec;
+use alloc::format;
 use crate::update::validator::*;
 use crate::update::*;
 
@@ -15,7 +17,7 @@ mod comprehensive_tests {
     /// Test 1: Basic Update Validator Initialization
     #[test]
     fn test_update_validator_initialization() {
-        println!("=== Test 1: Update Validator Initialization ===");
+        // println!("=== Test 1: Update Validator Initialization ===");
         
         let config = ValidationConfig {
             enable_signature_verification: true,
@@ -45,13 +47,13 @@ mod comprehensive_tests {
         assert!(validator_instance.config.enable_checksum_validation);
         assert!(validator_instance.config.enable_safety_analysis);
         
-        println!("✓ Update validator initialized successfully");
+        // println!("✓ Update validator initialized successfully");
     }
 
     /// Test 2: Default Configuration Initialization
     #[test]
     fn test_default_initialization() {
-        println!("\n=== Test 2: Default Configuration ===");
+        // println!("\n=== Test 2: Default Configuration ===");
         
         let validator = UpdateValidator::init_with_defaults();
         assert!(validator.is_ok(), "Default initialization should succeed");
@@ -60,24 +62,24 @@ mod comprehensive_tests {
         assert!(validator_instance.config.enable_signature_verification);
         assert_eq!(validator_instance.config.max_acceptable_risk_score, 70);
         
-        println!("✓ Default validator configuration created successfully");
+        // println!("✓ Default validator configuration created successfully");
     }
 
     /// Test 3: Update Package Creation and Validation
     #[test]
     fn test_update_package_creation_and_validation() {
-        println!("\n=== Test 3: Update Package Creation and Validation ===");
+        // println!("\n=== Test 3: Update Package Creation and Validation ===");
         
         let validator = UpdateValidator::init_with_defaults().unwrap();
         
         // Create a test update package
         let update_package = create_test_update_package();
         
-        println!("Created update package:");
-        println!("  ID: {}", update_package.id);
-        println!("  Version: {}", update_package.version);
-        println!("  Size: {} bytes", update_package.size);
-        println!("  Description: {}", update_package.description);
+        // println!("Created update package:");
+        // println!("  ID: {}", update_package.id);
+        // println!("  Version: {}", update_package.version);
+        // println!("  Size: {} bytes", update_package.size);
+        // println!("  Description: {}", update_package.description);
         
         // Validate the update package
         let validation_result = validator.validate_update(&update_package);
@@ -85,23 +87,23 @@ mod comprehensive_tests {
         
         let result = validation_result.unwrap();
         
-        println!("\nValidation Results:");
-        println!("  Overall Valid: {}", result.is_valid);
-        println!("  Signature Valid: {}", result.signature_verification.is_valid);
-        println!("  Checksum Valid: {}", result.checksum_validation.is_valid);
-        println!("  Compatibility Level: {:?}", result.compatibility_info.compatibility_level);
-        println!("  Safety Score: {}", result.total_risk_score);
-        println!("  Risk Score (0-100): {}", result.total_risk_score);
-        println!("  Recommendations: {:?}", result.safety_analysis.recommended_action);
+        // println!("\nValidation Results:");
+        // println!("  Overall Valid: {}", result.is_valid);
+        // println!("  Signature Valid: {}", result.signature_verification.is_valid);
+        // println!("  Checksum Valid: {}", result.checksum_validation.is_valid);
+        // println!("  Compatibility Level: {:?}", result.compatibility_info.compatibility_level);
+        // println!("  Safety Score: {}", result.total_risk_score);
+        // println!("  Risk Score (0-100): {}", result.total_risk_score);
+        // println!("  Recommendations: {:?}", result.safety_analysis.recommended_action);
         
         assert!(result.is_valid, "Test update should be valid");
-        println!("✓ Update package validation completed successfully");
+        // println!("✓ Update package validation completed successfully");
     }
 
     /// Test 4: Signature Verification
     #[test]
     fn test_signature_verification() {
-        println!("\n=== Test 4: Signature Verification ===");
+        // println!("\n=== Test 4: Signature Verification ===");
         
         let validator = UpdateValidator::init_with_defaults().unwrap();
         
@@ -112,20 +114,20 @@ mod comprehensive_tests {
         
         let sig_result = signature_result.unwrap();
         
-        println!("Signature Verification Results:");
-        println!("  Valid: {}", sig_result.is_valid);
-        println!("  Algorithm: {:?}", sig_result.signature_algorithm);
-        println!("  Signer ID: {}", sig_result.signer_id);
-        println!("  Trust Level: {:?}", sig_result.trust_level);
-        println!("  Certificate Chain Length: {}", sig_result.certificate_chain.len());
+        // println!("Signature Verification Results:");
+        // println!("  Valid: {}", sig_result.is_valid);
+        // println!("  Algorithm: {:?}", sig_result.signature_algorithm);
+        // println!("  Signer ID: {}", sig_result.signer_id);
+        // println!("  Trust Level: {:?}", sig_result.trust_level);
+        // println!("  Certificate Chain Length: {}", sig_result.certificate_chain.len());
         
-        println!("✓ Signature verification test completed");
+        // println!("✓ Signature verification test completed");
     }
 
     /// Test 5: Checksum Validation
     #[test]
     fn test_checksum_validation() {
-        println!("\n=== Test 5: Checksum Validation ===");
+        // println!("\n=== Test 5: Checksum Validation ===");
         
         let validator = UpdateValidator::init_with_defaults().unwrap();
         
@@ -136,19 +138,19 @@ mod comprehensive_tests {
         
         let checksum_validation = checksum_result.unwrap();
         
-        println!("Checksum Validation Results:");
-        println!("  Valid: {}", checksum_validation.is_valid);
-        println!("  Algorithm: {:?}", checksum_validation.algorithm);
-        println!("  Expected Hash Length: {} bytes", checksum_validation.expected_hash.len());
-        println!("  Actual Hash Length: {} bytes", checksum_validation.actual_hash.len());
+        // println!("Checksum Validation Results:");
+        // println!("  Valid: {}", checksum_validation.is_valid);
+        // println!("  Algorithm: {:?}", checksum_validation.algorithm);
+        // println!("  Expected Hash Length: {} bytes", checksum_validation.expected_hash.len());
+        // println!("  Actual Hash Length: {} bytes", checksum_validation.actual_hash.len());
         
-        println!("✓ Checksum validation test completed");
+        // println!("✓ Checksum validation test completed");
     }
 
     /// Test 6: Compatibility Analysis
     #[test]
     fn test_compatibility_analysis() {
-        println!("\n=== Test 6: Compatibility Analysis ===");
+        // println!("\n=== Test 6: Compatibility Analysis ===");
         
         let validator = UpdateValidator::init_with_defaults().unwrap();
         
@@ -159,22 +161,22 @@ mod comprehensive_tests {
         
         let compatibility_info = compatibility_result.unwrap();
         
-        println!("Compatibility Analysis Results:");
-        println!("  Current Version: {}", compatibility_info.current_version);
-        println!("  Target Version: {}", compatibility_info.target_version);
-        println!("  Platform: {}", compatibility_info.platform);
-        println!("  Architecture: {}", compatibility_info.architecture);
-        println!("  Compatibility Level: {:?}", compatibility_info.compatibility_level);
-        println!("  Min Memory Required: {} MB", compatibility_info.system_requirements.min_memory_mb);
-        println!("  Min Disk Space: {} MB", compatibility_info.system_requirements.min_disk_space_mb);
+        // println!("Compatibility Analysis Results:");
+        // println!("  Current Version: {}", compatibility_info.current_version);
+        // println!("  Target Version: {}", compatibility_info.target_version);
+        // println!("  Platform: {}", compatibility_info.platform);
+        // println!("  Architecture: {}", compatibility_info.architecture);
+        // println!("  Compatibility Level: {:?}", compatibility_info.compatibility_level);
+        // println!("  Min Memory Required: {} MB", compatibility_info.system_requirements.min_memory_mb);
+        // println!("  Min Disk Space: {} MB", compatibility_info.system_requirements.min_disk_space_mb);
         
-        println!("✓ Compatibility analysis test completed");
+        // println!("✓ Compatibility analysis test completed");
     }
 
     /// Test 7: Dependency Validation
     #[test]
     fn test_dependency_validation() {
-        println!("\n=== Test 7: Dependency Validation ===");
+        // println!("\n=== Test 7: Dependency Validation ===");
         
         let validator = UpdateValidator::init_with_defaults().unwrap();
         
@@ -185,25 +187,25 @@ mod comprehensive_tests {
         
         let dependencies = dependency_result.unwrap();
         
-        println!("Dependency Validation Results:");
-        println!("  Number of Dependencies: {}", dependencies.len());
+        // println!("Dependency Validation Results:");
+        // println!("  Number of Dependencies: {}", dependencies.len());
         
         for (i, dep) in dependencies.iter().enumerate() {
-            println!("  Dependency {}:", i + 1);
-            println!("    Name: {}", dep.dependency_name);
-            println!("    Required Version: {}", dep.required_version);
-            println!("    Available: {}", dep.is_available);
-            println!("    Compatible: {}", dep.is_compatible);
-            println!("    Priority: {:?}", dep.priority);
+            // println!("  Dependency {}:", i + 1);
+            // println!("    Name: {}", dep.dependency_name);
+            // println!("    Required Version: {}", dep.required_version);
+            // println!("    Available: {}", dep.is_available);
+            // println!("    Compatible: {}", dep.is_compatible);
+            // println!("    Priority: {:?}", dep.priority);
         }
         
-        println!("✓ Dependency validation test completed");
+        // println!("✓ Dependency validation test completed");
     }
 
     /// Test 8: Rollback Compatibility
     #[test]
     fn test_rollback_compatibility() {
-        println!("\n=== Test 8: Rollback Compatibility ===");
+        // println!("\n=== Test 8: Rollback Compatibility ===");
         
         let validator = UpdateValidator::init_with_defaults().unwrap();
         
@@ -214,28 +216,28 @@ mod comprehensive_tests {
         
         let rollback_info = rollback_result.unwrap();
         
-        println!("Rollback Compatibility Results:");
-        println!("  Supported: {}", rollback_info.is_supported);
-        println!("  Data Available: {}", rollback_info.rollback_data_available);
-        println!("  Data Integrity: {}", rollback_info.rollback_data_integrity);
-        println!("  Safety Level: {:?}", rollback_info.rollback_safety);
-        println!("  Recovery Points: {}", rollback_info.recovery_points.len());
+        // println!("Rollback Compatibility Results:");
+        // println!("  Supported: {}", rollback_info.is_supported);
+        // println!("  Data Available: {}", rollback_info.rollback_data_available);
+        // println!("  Data Integrity: {}", rollback_info.rollback_data_integrity);
+        // println!("  Safety Level: {:?}", rollback_info.rollback_safety);
+        // println!("  Recovery Points: {}", rollback_info.recovery_points.len());
         
         for (i, point) in rollback_info.recovery_points.iter().enumerate() {
-            println!("  Recovery Point {}:", i + 1);
-            println!("    ID: {}", point.id);
-            println!("    Version: {}", point.version);
-            println!("    Description: {}", point.description);
-            println!("    Data Integrity: {}", point.data_integrity);
+            // println!("  Recovery Point {}:", i + 1);
+            // println!("    ID: {}", point.id);
+            // println!("    Version: {}", point.version);
+            // println!("    Description: {}", point.description);
+            // println!("    Data Integrity: {}", point.data_integrity);
         }
         
-        println!("✓ Rollback compatibility test completed");
+        // println!("✓ Rollback compatibility test completed");
     }
 
     /// Test 9: Safety Analysis
     #[test]
     fn test_safety_analysis() {
-        println!("\n=== Test 9: Safety Analysis ===");
+        // println!("\n=== Test 9: Safety Analysis ===");
         
         let validator = UpdateValidator::init_with_defaults().unwrap();
         
@@ -269,37 +271,37 @@ mod comprehensive_tests {
         
         let safety_analysis = safety_result.unwrap();
         
-        println!("Safety Analysis Results:");
-        println!("  Overall Safety: {:?}", safety_analysis.overall_safety);
-        println!("  Safety Score: {} (0-100)", safety_analysis.safety_score);
-        println!("  Recommendation: {:?}", safety_analysis.recommended_action);
-        println!("  Risk Factors: {}", safety_analysis.risk_factors.len());
-        println!("  Warnings: {}", safety_analysis.warnings.len());
+        // println!("Safety Analysis Results:");
+        // println!("  Overall Safety: {:?}", safety_analysis.overall_safety);
+        // println!("  Safety Score: {} (0-100)", safety_analysis.safety_score);
+        // println!("  Recommendation: {:?}", safety_analysis.recommended_action);
+        // println!("  Risk Factors: {}", safety_analysis.risk_factors.len());
+        // println!("  Warnings: {}", safety_analysis.warnings.len());
         
         for (i, risk) in safety_analysis.risk_factors.iter().enumerate() {
-            println!("  Risk Factor {}:", i + 1);
-            println!("    Type: {:?}", risk.factor_type);
-            println!("    Severity: {:?}", risk.severity);
-            println!("    Description: {}", risk.description);
+            // println!("  Risk Factor {}:", i + 1);
+            // println!("    Type: {:?}", risk.factor_type);
+            // println!("    Severity: {:?}", risk.severity);
+            // println!("    Description: {}", risk.description);
             if let Some(ref mitigation) = risk.mitigation {
-                println!("    Mitigation: {}", mitigation);
+                // println!("    Mitigation: {}", mitigation);
             }
         }
         
         for (i, warning) in safety_analysis.warnings.iter().enumerate() {
-            println!("  Warning {}:", i + 1);
-            println!("    Level: {:?}", warning.level);
-            println!("    Code: {}", warning.code);
-            println!("    Message: {}", warning.message);
+            // println!("  Warning {}:", i + 1);
+            // println!("    Level: {:?}", warning.level);
+            // println!("    Code: {}", warning.code);
+            // println!("    Message: {}", warning.message);
         }
         
-        println!("✓ Safety analysis test completed");
+        // println!("✓ Safety analysis test completed");
     }
 
     /// Test 10: Comprehensive Integration Test
     #[test]
     fn test_comprehensive_integration() {
-        println!("\n=== Test 10: Comprehensive Integration Test ===");
+        // println!("\n=== Test 10: Comprehensive Integration Test ===");
         
         // Initialize secure update system
         let secure_init_result = init_secure_update_system();
@@ -320,22 +322,22 @@ mod comprehensive_tests {
         assert!(pre_install_result.is_ok(), "Pre-installation validation should succeed");
         
         let validation_passed = pre_install_result.unwrap();
-        println!("Pre-installation validation: {}", if validation_passed { "PASSED" } else { "FAILED" });
+        // println!("Pre-installation validation: {}", if validation_passed { "PASSED" } else { "FAILED" });
         
         // Get system statistics
         let stats = get_update_system_stats();
-        println!("System Statistics:");
-        println!("  Total Updates Validated: {}", stats.total_updates_validated);
-        println!("  Security Checks Passed: {}", stats.security_checks_passed);
-        println!("  Security Checks Failed: {}", stats.security_checks_failed);
+        // println!("System Statistics:");
+        // println!("  Total Updates Validated: {}", stats.total_updates_validated);
+        // println!("  Security Checks Passed: {}", stats.security_checks_passed);
+        // println!("  Security Checks Failed: {}", stats.security_checks_failed);
         
-        println!("✓ Comprehensive integration test completed successfully");
+        // println!("✓ Comprehensive integration test completed successfully");
     }
 
     /// Test 11: Security Policy Enforcement
     #[test]
     fn test_security_policy_enforcement() {
-        println!("\n=== Test 11: Security Policy Enforcement ===");
+        // println!("\n=== Test 11: Security Policy Enforcement ===");
         
         // Test with strict security configuration
         let strict_config = ValidationConfig {
@@ -380,13 +382,13 @@ mod comprehensive_tests {
         let lenient_validator = UpdateValidator::new(lenient_config);
         assert!(lenient_validator.is_ok(), "Lenient validator should initialize");
         
-        println!("✓ Security policy enforcement test completed");
+        // println!("✓ Security policy enforcement test completed");
     }
 
     /// Test 12: Error Handling and Edge Cases
     #[test]
     fn test_error_handling_edge_cases() {
-        println!("\n=== Test 12: Error Handling and Edge Cases ===");
+        // println!("\n=== Test 12: Error Handling and Edge Cases ===");
         
         let validator = UpdateValidator::init_with_defaults().unwrap();
         
@@ -424,7 +426,7 @@ mod comprehensive_tests {
         
         let empty_result = validator.validate_update(&empty_package);
         // This might fail, which is expected for an invalid package
-        println!("Empty package validation result: {:?}", empty_result.is_ok());
+        // println!("Empty package validation result: {:?}", empty_result.is_ok());
         
         // Test with malicious-looking update
         let malicious_package = UpdatePackage {
@@ -459,22 +461,22 @@ mod comprehensive_tests {
         };
         
         let malicious_result = validator.validate_update(&malicious_package);
-        println!("Malicious package validation result: {:?}", malicious_result.is_ok());
+        // println!("Malicious package validation result: {:?}", malicious_result.is_ok());
         
         if let Ok(result) = malicious_result {
-            println!("Malicious package validation details:");
-            println!("  Valid: {}", result.is_valid);
-            println!("  Safety Score: {}", result.total_risk_score);
-            println!("  Recommendation: {:?}", result.safety_analysis.recommended_action);
+            // println!("Malicious package validation details:");
+            // println!("  Valid: {}", result.is_valid);
+            // println!("  Safety Score: {}", result.total_risk_score);
+            // println!("  Recommendation: {:?}", result.safety_analysis.recommended_action);
         }
         
-        println!("✓ Error handling and edge cases test completed");
+        // println!("✓ Error handling and edge cases test completed");
     }
 
     /// Test 13: Performance and Scalability
     #[test]
     fn test_performance_scalability() {
-        println!("\n=== Test 13: Performance and Scalability ===");
+        // println!("\n=== Test 13: Performance and Scalability ===");
         
         let validator = UpdateValidator::init_with_defaults().unwrap();
         
@@ -489,7 +491,7 @@ mod comprehensive_tests {
             packages.push(package);
         }
         
-        println!("Created {} test packages for performance testing", package_count);
+        // println!("Created {} test packages for performance testing", package_count);
         
         // Test sequential validation
         let start_time = std::time::Instant::now();
@@ -498,21 +500,21 @@ mod comprehensive_tests {
             assert!(result.is_ok(), "Validation should succeed");
         }
         let elapsed = start_time.elapsed();
-        println!("Sequential validation time: {:?}", elapsed);
+        // println!("Sequential validation time: {:?}", elapsed);
         
-        println!("✓ Performance and scalability test completed");
+        // println!("✓ Performance and scalability test completed");
     }
 
     /// Test 14: Integration with Security Framework
     #[test]
     fn test_security_framework_integration() {
-        println!("\n=== Test 14: Security Framework Integration ===");
+        // println!("\n=== Test 14: Security Framework Integration ===");
         
         // Test integration points with security framework
         // Note: This is a demonstration of the integration interface
         
         // 1. Signature verification using encryption framework
-        println!("Testing signature verification integration...");
+        // println!("Testing signature verification integration...");
         let signature_test = validator::PublicKeyManager::validate_certificate(
             &Certificate {
                 subject: String::from("Test Certificate"),
@@ -523,10 +525,10 @@ mod comprehensive_tests {
                 extensions: Vec::new(),
             }
         );
-        println!("Certificate validation result: {:?}", signature_test.is_ok());
+        // println!("Certificate validation result: {:?}", signature_test.is_ok());
         
         // 2. Integrity checking using hash functions
-        println!("Testing integrity checking integration...");
+        // println!("Testing integrity checking integration...");
         let integrity_checker = IntegrityChecker {
             hash_functions: validator::HashFunctions,
         };
@@ -536,19 +538,19 @@ mod comprehensive_tests {
             test_data,
             HashAlgorithm::SHA256
         );
-        println!("Hash calculation result: {:?}", hash_result.is_ok());
+        // println!("Hash calculation result: {:?}", hash_result.is_ok());
         
         if let Ok(hash) = hash_result {
-            println!("Generated hash length: {} bytes", hash.len());
+            // println!("Generated hash length: {} bytes", hash.len());
         }
         
-        println!("✓ Security framework integration test completed");
+        // println!("✓ Security framework integration test completed");
     }
 
     /// Test 15: Complete System Validation Report
     #[test]
     fn test_complete_system_validation_report() {
-        println!("\n=== Test 15: Complete System Validation Report ===");
+        // println!("\n=== Test 15: Complete System Validation Report ===");
         
         // Initialize system
         init_secure_update_system().unwrap();
@@ -560,56 +562,56 @@ mod comprehensive_tests {
         let validation_result = validate_update_secure(&test_package).unwrap();
         
         // Generate comprehensive report
-        println!("\n=== COMPREHENSIVE UPDATE VALIDATION REPORT ===");
-        println!("Update Package: {}", test_package.id);
-        println!("Version: {}", test_package.version);
-        println!("Size: {} MB", test_package.size / (1024 * 1024));
-        println!("Description: {}", test_package.description);
+        // println!("\n=== COMPREHENSIVE UPDATE VALIDATION REPORT ===");
+        // println!("Update Package: {}", test_package.id);
+        // println!("Version: {}", test_package.version);
+        // println!("Size: {} MB", test_package.size / (1024 * 1024));
+        // println!("Description: {}", test_package.description);
         
-        println!("\n--- SIGNATURE VERIFICATION ---");
-        println!("Valid Signature: {}", validation_result.signature_verification.is_valid);
-        println!("Signature Algorithm: {:?}", validation_result.signature_verification.signature_algorithm);
-        println!("Trust Level: {:?}", validation_result.signature_verification.trust_level);
-        println!("Signer: {}", validation_result.signature_verification.signer_id);
+        // println!("\n--- SIGNATURE VERIFICATION ---");
+        // println!("Valid Signature: {}", validation_result.signature_verification.is_valid);
+        // println!("Signature Algorithm: {:?}", validation_result.signature_verification.signature_algorithm);
+        // println!("Trust Level: {:?}", validation_result.signature_verification.trust_level);
+        // println!("Signer: {}", validation_result.signature_verification.signer_id);
         
-        println!("\n--- INTEGRITY VALIDATION ---");
-        println!("Valid Checksum: {}", validation_result.checksum_validation.is_valid);
-        println!("Hash Algorithm: {:?}", validation_result.checksum_validation.algorithm);
-        println!("File Size Verified: {}", validation_result.checksum_validation.is_valid);
+        // println!("\n--- INTEGRITY VALIDATION ---");
+        // println!("Valid Checksum: {}", validation_result.checksum_validation.is_valid);
+        // println!("Hash Algorithm: {:?}", validation_result.checksum_validation.algorithm);
+        // println!("File Size Verified: {}", validation_result.checksum_validation.is_valid);
         
-        println!("\n--- COMPATIBILITY ANALYSIS ---");
-        println!("Compatibility Level: {:?}", validation_result.compatibility_info.compatibility_level);
-        println!("Current Version: {}", validation_result.compatibility_info.current_version);
-        println!("Target Version: {}", validation_result.compatibility_info.target_version);
-        println!("Platform: {}", validation_result.compatibility_info.platform);
+        // println!("\n--- COMPATIBILITY ANALYSIS ---");
+        // println!("Compatibility Level: {:?}", validation_result.compatibility_info.compatibility_level);
+        // println!("Current Version: {}", validation_result.compatibility_info.current_version);
+        // println!("Target Version: {}", validation_result.compatibility_info.target_version);
+        // println!("Platform: {}", validation_result.compatibility_info.platform);
         
-        println!("\n--- DEPENDENCY CHECK ---");
-        println!("Dependencies Checked: {}", validation_result.dependencies.len());
+        // println!("\n--- DEPENDENCY CHECK ---");
+        // println!("Dependencies Checked: {}", validation_result.dependencies.len());
         let critical_deps = validation_result.dependencies.iter()
             .filter(|d| d.priority == DependencyPriority::Critical)
             .count();
-        println!("Critical Dependencies: {}", critical_deps);
+        // println!("Critical Dependencies: {}", critical_deps);
         let missing_deps = validation_result.dependencies.iter()
             .filter(|d| !d.is_available || !d.is_compatible)
             .count();
-        println!("Missing/Incompatible Dependencies: {}", missing_deps);
+        // println!("Missing/Incompatible Dependencies: {}", missing_deps);
         
-        println!("\n--- ROLLBACK SUPPORT ---");
-        println!("Rollback Supported: {}", validation_result.rollback_compatibility.is_supported);
-        println!("Rollback Safety: {:?}", validation_result.rollback_compatibility.rollback_safety);
-        println!("Recovery Points: {}", validation_result.rollback_compatibility.recovery_points.len());
+        // println!("\n--- ROLLBACK SUPPORT ---");
+        // println!("Rollback Supported: {}", validation_result.rollback_compatibility.is_supported);
+        // println!("Rollback Safety: {:?}", validation_result.rollback_compatibility.rollback_safety);
+        // println!("Recovery Points: {}", validation_result.rollback_compatibility.recovery_points.len());
         
-        println!("\n--- SAFETY ANALYSIS ---");
-        println!("Overall Safety: {:?}", validation_result.safety_analysis.overall_safety);
-        println!("Safety Score: {}/100", validation_result.safety_analysis.safety_score);
-        println!("Risk Factors: {}", validation_result.risk_factors.len());
-        println!("Warnings: {}", validation_result.safety_analysis.warnings.len());
-        println!("Recommendation: {:?}", validation_result.safety_analysis.recommended_action);
+        // println!("\n--- SAFETY ANALYSIS ---");
+        // println!("Overall Safety: {:?}", validation_result.safety_analysis.overall_safety);
+        // println!("Safety Score: {}/100", validation_result.safety_analysis.safety_score);
+        // println!("Risk Factors: {}", validation_result.risk_factors.len());
+        // println!("Warnings: {}", validation_result.safety_analysis.warnings.len());
+        // println!("Recommendation: {:?}", validation_result.safety_analysis.recommended_action);
         
-        println!("\n--- FINAL ASSESSMENT ---");
-        println!("VALIDATION RESULT: {}", if validation_result.is_valid { "✓ PASSED" } else { "✗ FAILED" });
-        println!("OVERALL RISK SCORE: {}/100 (Lower is better)", validation_result.total_risk_score);
-        println!("SECURITY LEVEL: {}", if validation_result.total_risk_score < 30 { "HIGH" } else if validation_result.total_risk_score < 70 { "MEDIUM" } else { "LOW" });
+        // println!("\n--- FINAL ASSESSMENT ---");
+        // println!("VALIDATION RESULT: {}", if validation_result.is_valid { "✓ PASSED" } else { "✗ FAILED" });
+        // println!("OVERALL RISK SCORE: {}/100 (Lower is better)", validation_result.total_risk_score);
+        // println!("SECURITY LEVEL: {}", if validation_result.total_risk_score < 30 { "HIGH" } else if validation_result.total_risk_score < 70 { "MEDIUM" } else { "LOW" });
         
         let recommendation = match validation_result.safety_analysis.recommended_action {
             SafetyRecommendation::Proceed => "✓ SAFE TO INSTALL",
@@ -617,12 +619,12 @@ mod comprehensive_tests {
             SafetyRecommendation::ReviewRequired => "⚠ REQUIRES HUMAN REVIEW",
             SafetyRecommendation::DoNotProceed => "✗ DO NOT INSTALL",
         };
-        println!("RECOMMENDATION: {}", recommendation);
+        // println!("RECOMMENDATION: {}", recommendation);
         
-        println!("\n=== END OF VALIDATION REPORT ===");
+        // println!("\n=== END OF VALIDATION REPORT ===");
         
         assert!(validation_result.is_valid, "Test package should pass validation");
-        println!("\n✓ Complete system validation report generated successfully");
+        // println!("\n✓ Complete system validation report generated successfully");
     }
 }
 
@@ -634,12 +636,12 @@ mod run_all_tests {
     /// Run all validation system tests
     #[test]
     fn run_all_validation_tests() {
-        println!("\n");
-        println!("╔═══════════════════════════════════════════════════════════════════╗");
-        println!("║       MULTIOS UPDATE VALIDATION & INTEGRITY SYSTEM TESTS          ║");
-        println!("╚═══════════════════════════════════════════════════════════════════╝");
+        // println!("\n");
+        // println!("╔═══════════════════════════════════════════════════════════════════╗");
+        // println!("║       MULTIOS UPDATE VALIDATION & INTEGRITY SYSTEM TESTS          ║");
+        // println!("╚═══════════════════════════════════════════════════════════════════╝");
         
-        println!("\nStarting comprehensive test suite for update validation system...\n");
+        // println!("\nStarting comprehensive test suite for update validation system...\n");
         
         // Run tests in sequence
         test_update_validator_initialization();
@@ -658,11 +660,11 @@ mod run_all_tests {
         test_security_framework_integration();
         test_complete_system_validation_report();
         
-        println!("\n");
-        println!("╔═══════════════════════════════════════════════════════════════════╗");
-        println!("║                    ALL TESTS COMPLETED                            ║");
-        println!("║         Update Validation & Integrity System: PASSED              ║");
-        println!("╚═══════════════════════════════════════════════════════════════════╝");
+        // println!("\n");
+        // println!("╔═══════════════════════════════════════════════════════════════════╗");
+        // println!("║                    ALL TESTS COMPLETED                            ║");
+        // println!("║         Update Validation & Integrity System: PASSED              ║");
+        // println!("╚═══════════════════════════════════════════════════════════════════╝");
     }
 }//! System Update Module Tests
 //! 
@@ -1048,7 +1050,7 @@ mod integration_tests {
         assert_eq!(rollback_manager.max_snapshots, 10);
         // CompatibilityChecker doesn't have a direct state to test
         
-        println!("Integration test: All update system components initialized successfully");
+        // println!("Integration test: All update system components initialized successfully");
     }
 
     /// Test system state preservation during update simulation
@@ -1078,13 +1080,14 @@ mod integration_tests {
         // Note: In real implementation, rollback would require actual system state to restore
         // This test verifies the interface works correctly
         
-        println!("System state preservation test completed successfully");
+        // println!("System state preservation test completed successfully");
     }
 
     /// Test update dependency resolution
     #[test]
     fn test_update_dependency_resolution() {
         use crate::update::package_integration::{PackageManager, Package, PackageDependency, VersionConstraint};
+use alloc::string::ToString;
         
         let package_manager = PackageManager::new();
         
@@ -1136,6 +1139,6 @@ mod integration_tests {
         assert_eq!(runtime_dep.name, "runtime-z");
         assert!(runtime_dep.optional);
         
-        println!("Update dependency resolution test completed successfully");
+        // println!("Update dependency resolution test completed successfully");
     }
 }

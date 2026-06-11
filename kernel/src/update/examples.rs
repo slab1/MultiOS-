@@ -4,6 +4,8 @@
 
 use super::*;
 use alloc::sync::Arc;
+use alloc::vec;
+use alloc::format;
 use spin::Mutex;
 
 /// Example: Initialize the update scheduler with basic configuration
@@ -48,11 +50,11 @@ pub fn security_update_example() -> Result<(), &'static str> {
     // Schedule the update
     match scheduler.lock().schedule_update(task) {
         ScheduleResult::Scheduled(id) => {
-            println!("Security update scheduled with ID: {}", id);
+            // println!("Security update scheduled with ID: {}", id);
             Ok(())
         },
         ScheduleResult::Rejected(reason) => {
-            println!("Security update rejected: {}", reason);
+            // println!("Security update rejected: {}", reason);
             Err("Update rejected")
         },
         _ => Err("Unexpected scheduling result"),
@@ -79,11 +81,11 @@ pub fn kernel_update_example() -> Result<(), &'static str> {
     
     match scheduler.lock().schedule_update(task) {
         ScheduleResult::Scheduled(id) => {
-            println!("Kernel update scheduled with ID: {}", id);
+            // println!("Kernel update scheduled with ID: {}", id);
             Ok(())
         },
         ScheduleResult::RequiresApproval => {
-            println!("Kernel update requires user approval");
+            // println!("Kernel update requires user approval");
             Ok(())
         },
         _ => Err("Unexpected scheduling result"),
@@ -103,7 +105,7 @@ pub fn server_configuration_example() -> Result<(), &'static str> {
     // Update global scheduler configuration if available
     if let Some(scheduler) = get_global_scheduler() {
         scheduler.lock().update_config(server_config)?;
-        println!("Server configuration applied");
+        // println!("Server configuration applied");
     }
     
     Ok(())
@@ -117,22 +119,22 @@ pub fn desktop_configuration_example() -> Result<(), &'static str> {
     let notification_callback = |notification: &NotificationInfo| {
         match notification.notification_type {
             NotificationType::UpdateAvailable => {
-                println!("Update available: {}", notification.message);
+                // println!("Update available: {}", notification.message);
             },
             NotificationType::RequiresApproval => {
-                println!("User approval required: {}", notification.message);
+                // println!("User approval required: {}", notification.message);
             },
             NotificationType::WillStart => {
-                println!("Update starting: {}", notification.message);
+                // println!("Update starting: {}", notification.message);
             },
             NotificationType::Completed => {
-                println!("Update completed: {}", notification.message);
+                // println!("Update completed: {}", notification.message);
             },
             NotificationType::Failed => {
-                println!("Update failed: {}", notification.message);
+                // println!("Update failed: {}", notification.message);
             },
             NotificationType::MaintenanceStart => {
-                println!("Maintenance starting: {}", notification.message);
+                // println!("Maintenance starting: {}", notification.message);
             },
         }
     };
@@ -153,8 +155,8 @@ pub fn emergency_maintenance_example() -> Result<(), &'static str> {
     // Force all pending updates to execute immediately
     scheduler.lock().force_maintenance_mode()?;
     
-    println!("Emergency maintenance mode activated");
-    println!("All pending updates will be executed as soon as possible");
+    // println!("Emergency maintenance mode activated");
+    // println!("All pending updates will be executed as soon as possible");
     
     Ok(())
 }
@@ -166,19 +168,19 @@ pub fn status_monitoring_example() -> Result<(), &'static str> {
     
     let status = scheduler.lock().get_status();
     
-    println!("=== Update Scheduler Status ===");
-    println!("Running: {}", status.is_running);
-    println!("Pending Updates: {}", status.pending_updates);
-    println!("Scheduled Updates: {}", status.scheduled_updates);
-    println!("Running Updates: {}", status.running_updates);
-    println!("CPU Usage: {:.1}%", status.system_metrics.cpu_usage * 100.0);
-    println!("Memory Usage: {:.1}%", status.system_metrics.memory_usage * 100.0);
-    println!("Active Sessions: {}", status.system_metrics.active_sessions);
+    // println!("=== Update Scheduler Status ===");
+    // println!("Running: {}", status.is_running);
+    // println!("Pending Updates: {}", status.pending_updates);
+    // println!("Scheduled Updates: {}", status.scheduled_updates);
+    // println!("Running Updates: {}", status.running_updates);
+    // println!("CPU Usage: {:.1}%", status.system_metrics.cpu_usage * 100.0);
+    // println!("Memory Usage: {:.1}%", status.system_metrics.memory_usage * 100.0);
+    // println!("Active Sessions: {}", status.system_metrics.active_sessions);
     
     if let Some(next_time) = status.next_scheduled_time {
-        println!("Next Scheduled Update: {}", next_time);
+        // println!("Next Scheduled Update: {}", next_time);
     } else {
-        println!("No updates scheduled");
+        // println!("No updates scheduled");
     }
     
     Ok(())
@@ -239,24 +241,24 @@ pub fn batch_update_example() -> Result<(), &'static str> {
         match scheduler.lock().schedule_update(update) {
             ScheduleResult::Scheduled(id) => {
                 scheduled_ids.push(id);
-                println!("Scheduled update ID: {}", id);
+                // println!("Scheduled update ID: {}", id);
             },
             ScheduleResult::RequiresApproval => {
-                println!("Update requires approval");
+                // println!("Update requires approval");
             },
             ScheduleResult::Rejected(reason) => {
-                println!("Update rejected: {}", reason);
+                // println!("Update rejected: {}", reason);
             },
             ScheduleResult::ScheduleFailed(reason) => {
-                println!("Scheduling failed: {}", reason);
+                // println!("Scheduling failed: {}", reason);
             },
             _ => {
-                println!("Unexpected result for update scheduling");
+                // println!("Unexpected result for update scheduling");
             }
         }
     }
     
-    println!("Batch scheduling complete. {} updates scheduled.", scheduled_ids.len());
+    // println!("Batch scheduling complete. {} updates scheduled.", scheduled_ids.len());
     
     Ok(())
 }
@@ -286,7 +288,7 @@ pub fn iot_device_example() -> Result<(), &'static str> {
         
         match scheduler.lock().schedule_update(task) {
             ScheduleResult::Scheduled(id) => {
-                println!("IoT firmware update scheduled with ID: {}", id);
+                // println!("IoT firmware update scheduled with ID: {}", id);
                 Ok(())
             },
             _ => Err("Failed to schedule IoT update"),
@@ -303,19 +305,19 @@ pub fn usage_pattern_analysis_example() -> Result<(), &'static str> {
     
     let queue_status = scheduler.lock().get_queue_status();
     
-    println!("=== Usage Pattern Analysis ===");
-    println!("Total Updates in System: {}", queue_status.total_count);
-    println!("Pending Queue: {}", queue_status.pending_count);
-    println!("Scheduled Queue: {}", queue_status.scheduled_count);
-    println!("Running Updates: {}", queue_status.running_count);
+    // println!("=== Usage Pattern Analysis ===");
+    // println!("Total Updates in System: {}", queue_status.total_count);
+    // println!("Pending Queue: {}", queue_status.pending_count);
+    // println!("Scheduled Queue: {}", queue_status.scheduled_count);
+    // println!("Running Updates: {}", queue_status.running_count);
     
     // Analyze queue composition
     if queue_status.pending_count > 0 {
-        println!("Recommendation: System has pending updates that could be scheduled");
+        // println!("Recommendation: System has pending updates that could be scheduled");
     }
     
     if queue_status.running_count == 0 && queue_status.total_count > 0 {
-        println!("Recommendation: No updates currently running - good time for maintenance");
+        // println!("Recommendation: No updates currently running - good time for maintenance");
     }
     
     Ok(())
@@ -335,29 +337,29 @@ pub fn system_integration_example() -> Result<(), &'static str> {
         // Adjust scheduling based on system load
         if metrics.cpu_usage > 0.8 {
             // High CPU usage - postpone non-critical updates
-            println!("High CPU usage detected - postponing non-critical updates");
+            // println!("High CPU usage detected - postponing non-critical updates");
         }
         
         if metrics.memory_usage > 0.9 {
             // High memory usage - be conservative with updates
-            println!("High memory usage detected - reducing concurrent updates");
+            // println!("High memory usage detected - reducing concurrent updates");
         }
         
         if metrics.active_sessions > 50 {
             // Many active users - postpone updates
-            println!("High user activity detected - postponing updates");
+            // println!("High user activity detected - postponing updates");
         }
     };
     
     // In real implementation, this would be registered with the monitoring service
-    println!("System integration callback configured");
+    // println!("System integration callback configured");
     
     Ok(())
 }
-//! System Update Examples
-//! 
-//! Practical examples demonstrating how to use the system update mechanisms
-//! for various update scenarios and operations.
+/// System Update Examples
+/// 
+/// Practical examples demonstrating how to use the system update mechanisms
+/// for various update scenarios and operations.
 
 /// Basic system update example
 /// 
@@ -415,7 +417,7 @@ pub fn example_basic_kernel_update() {
     let compatibility_result = compatibility_checker.check_update_compatibility(&requirements);
     
     if !compatibility_result.compatible {
-        println!("Compatibility check failed: {:?}", compatibility_result.issues);
+        // println!("Compatibility check failed: {:?}", compatibility_result.issues);
         return;
     }
 
@@ -431,13 +433,13 @@ pub fn example_basic_kernel_update() {
     let process_result = updater.process_updates();
     
     match process_result {
-        Ok(_) => println!("Kernel update completed successfully: {}", update_id),
+        // Ok(_) => println!("Kernel update completed successfully: {}", update_id),
         Err(e) => {
-            println!("Kernel update failed: {:?}. Initiating rollback...", e);
+            // println!("Kernel update failed: {:?}. Initiating rollback...", e);
             let rollback_result = rollback_manager.rollback_to_snapshot(&snapshot_id);
             match rollback_result {
-                Ok(_) => println!("Rollback completed successfully"),
-                Err(rb_e) => println!("Rollback failed: {:?}", rb_e),
+                // Ok(_) => println!("Rollback completed successfully"),
+                // Err(rb_e) => println!("Rollback failed: {:?}", rb_e),
             }
         }
     }
@@ -523,12 +525,12 @@ pub fn example_security_patch_update() {
     
     match install_result {
         Ok(_) => {
-            println!("Security patch {} installed successfully", update_id);
+            // println!("Security patch {} installed successfully", update_id);
             // Verify the fix is applied
             // In real implementation, would run security validation tests
         }
         Err(e) => {
-            println!("Security patch installation failed: {:?}", e);
+            // println!("Security patch installation failed: {:?}", e);
             // For critical security patches, escalation might be needed
         }
     }
@@ -644,11 +646,11 @@ pub fn example_service_update_coordination() {
     
     match sequence_result {
         Ok(_) => {
-            println!("Service update sequence completed successfully");
-            println!("Update scheduled for: {}", schedule_id);
+            // println!("Service update sequence completed successfully");
+            // println!("Update scheduled for: {}", schedule_id);
         }
         Err(e) => {
-            println!("Service update sequence failed: {:?}", e);
+            // println!("Service update sequence failed: {:?}", e);
             // Automatic rollback would be triggered by the sequence manager
         }
     }
@@ -702,9 +704,9 @@ pub fn example_configuration_update() {
     let update_id = updater.queue_update(config_update)
         .expect("Failed to queue configuration update");
 
-    println!("Configuration update queued: {}", update_id);
-    println!("Backup snapshot created: {}", config_snapshot_id);
-    println!("Manual confirmation required for configuration changes");
+    // println!("Configuration update queued: {}", update_id);
+    // println!("Backup snapshot created: {}", config_snapshot_id);
+    // println!("Manual confirmation required for configuration changes");
 
     // 5. Simulate user confirmation process
     let user_confirmed = true; // In real implementation, would prompt user
@@ -714,42 +716,42 @@ pub fn example_configuration_update() {
         
         match process_result {
             Ok(_) => {
-                println!("Configuration update completed: {}", update_id);
-                println!("New configuration applied successfully");
+                // println!("Configuration update completed: {}", update_id);
+                // println!("New configuration applied successfully");
                 
                 // Verify configuration
                 let verify_result = verify_network_configuration();
                 match verify_result {
-                    Ok(_) => println!("Configuration verification passed"),
+                    // Ok(_) => println!("Configuration verification passed"),
                     Err(e) => {
-                        println!("Configuration verification failed: {:?}", e);
-                        println!("Rolling back to snapshot: {}", config_snapshot_id);
+                        // println!("Configuration verification failed: {:?}", e);
+                        // println!("Rolling back to snapshot: {}", config_snapshot_id);
                         
                         let rollback_result = rollback_manager.rollback_to_snapshot(&config_snapshot_id);
                         match rollback_result {
-                            Ok(_) => println!("Configuration rollback successful"),
-                            Err(rb_e) => println!("Configuration rollback failed: {:?}", rb_e),
+                            // Ok(_) => println!("Configuration rollback successful"),
+                            // Err(rb_e) => println!("Configuration rollback failed: {:?}", rb_e),
                         }
                     }
                 }
             }
             Err(e) => {
-                println!("Configuration update failed: {:?}", e);
-                println!("Rolling back to snapshot: {}", config_snapshot_id);
+                // println!("Configuration update failed: {:?}", e);
+                // println!("Rolling back to snapshot: {}", config_snapshot_id);
                 
                 let rollback_result = rollback_manager.rollback_to_snapshot(&config_snapshot_id);
                 match rollback_result {
-                    Ok(_) => println!("Configuration rollback successful"),
-                    Err(rb_e) => println!("Configuration rollback failed: {:?}", rb_e),
+                    // Ok(_) => println!("Configuration rollback successful"),
+                    // Err(rb_e) => println!("Configuration rollback failed: {:?}", rb_e),
                 }
             }
         }
     } else {
-        println!("Configuration update cancelled by user");
+        // println!("Configuration update cancelled by user");
         // Clean up the backup snapshot as it's no longer needed
         let cleanup_result = rollback_manager.delete_snapshot(&config_snapshot_id);
         if cleanup_result.is_ok() {
-            println!("Backup snapshot cleaned up");
+            // println!("Backup snapshot cleaned up");
         }
     }
 }
@@ -804,8 +806,8 @@ pub fn example_emergency_update() {
     for service in &conflicting_services {
         let restart_result = service_manager.force_restart_service(service);
         match restart_result {
-            Ok(operation_id) => println!("Emergency restart initiated for {}: {}", service, operation_id),
-            Err(e) => println!("Failed to restart {} during emergency: {:?}", service, e),
+            // Ok(operation_id) => println!("Emergency restart initiated for {}: {}", service, operation_id),
+            // Err(e) => println!("Failed to restart {} during emergency: {:?}", service, e),
         }
     }
 
@@ -813,32 +815,32 @@ pub fn example_emergency_update() {
     let update_id = updater.queue_update(emergency_patch)
         .expect("Failed to queue emergency patch");
 
-    println!("EMERGENCY UPDATE IN PROGRESS: {}", update_id);
-    println!("Safety snapshot: {}", minimal_snapshot_id);
+    // println!("EMERGENCY UPDATE IN PROGRESS: {}", update_id);
+    // println!("Safety snapshot: {}", minimal_snapshot_id);
     
     let emergency_result = updater.process_updates();
     
     match emergency_result {
         Ok(_) => {
-            println!("EMERGENCY UPDATE COMPLETED SUCCESSFULLY: {}", update_id);
-            println!("System patched and operational");
+            // println!("EMERGENCY UPDATE COMPLETED SUCCESSFULLY: {}", update_id);
+            // println!("System patched and operational");
             
             // Perform post-emergency cleanup
             perform_post_emergency_cleanup(&conflicting_services);
         }
         Err(e) => {
-            println!("EMERGENCY UPDATE FAILED: {:?}", e);
-            println!("Attempting immediate rollback...");
+            // println!("EMERGENCY UPDATE FAILED: {:?}", e);
+            // println!("Attempting immediate rollback...");
             
             let rollback_result = rollback_manager.rollback_to_snapshot(&minimal_snapshot_id);
             match rollback_result {
                 Ok(_) => {
-                    println!("Emergency rollback successful");
-                    println!("System restored to pre-emergency state");
+                    // println!("Emergency rollback successful");
+                    // println!("System restored to pre-emergency state");
                 }
                 Err(rb_e) => {
-                    println!("EMERGENCY ROLLBACK FAILED: {:?}", rb_e);
-                    println!("MANUAL INTERVENTION REQUIRED");
+                    // println!("EMERGENCY ROLLBACK FAILED: {:?}", rb_e);
+                    // println!("MANUAL INTERVENTION REQUIRED");
                     // In real implementation, would trigger alerts and manual intervention
                 }
             }
@@ -850,7 +852,7 @@ pub fn example_emergency_update() {
 fn verify_network_configuration() -> Result<(), String> {
     // Mock configuration verification
     // In real implementation, would check actual network configuration
-    println!("Verifying network configuration...");
+    // println!("Verifying network configuration...");
     
     // Simulate verification process
     if true {
@@ -862,14 +864,14 @@ fn verify_network_configuration() -> Result<(), String> {
 
 /// Utility function for post-emergency cleanup
 fn perform_post_emergency_cleanup(services: &[&str]) {
-    println!("Performing post-emergency cleanup...");
+    // println!("Performing post-emergency cleanup...");
     
     for service in services {
-        println!("Cleaning up after emergency restart: {}", service);
+        // println!("Cleaning up after emergency restart: {}", service);
         // In real implementation, would perform service health checks and cleanup
     }
     
-    println!("Post-emergency cleanup completed");
+    // println!("Post-emergency cleanup completed");
 }
 
 /// Rolling update example for load-balanced services
@@ -945,16 +947,16 @@ pub fn example_rolling_update() {
             .expect("Failed to add rolling update operation");
     }
 
-    println!("Starting rolling update across {} instances", instances.len());
-    println!("This will maintain service availability throughout the update");
+    // println!("Starting rolling update across {} instances", instances.len());
+    // println!("This will maintain service availability throughout the update");
 
     // 3. Execute the rolling update sequence
     let sequence_result = rolling_sequence.execute();
     
     match sequence_result {
         Ok(_) => {
-            println!("Rolling update completed successfully!");
-            println!("All {} instances updated without service interruption", instances.len());
+            // println!("Rolling update completed successfully!");
+            // println!("All {} instances updated without service interruption", instances.len());
             
             // Verify all instances are healthy
             for instance in &instances {
@@ -962,18 +964,18 @@ pub fn example_rolling_update() {
                 match service_state {
                     Some(state) => {
                         if state.status == crate::update::service_management::ServiceStatus::Running {
-                            println!("{}: HEALTHY", instance);
+                            // println!("{}: HEALTHY", instance);
                         } else {
-                            println!("{}: STATUS={:?}", instance, state.status);
+                            // println!("{}: STATUS={:?}", instance, state.status);
                         }
                     }
-                    None => println!("{}: STATE UNKNOWN", instance),
+                    // None => println!("{}: STATE UNKNOWN", instance),
                 }
             }
         }
         Err(e) => {
-            println!("Rolling update failed: {:?}", e);
-            println!("Cluster may be in mixed state - manual intervention recommended");
+            // println!("Rolling update failed: {:?}", e);
+            // println!("Cluster may be in mixed state - manual intervention recommended");
             
             // In real implementation, would implement partial rollback logic
         }

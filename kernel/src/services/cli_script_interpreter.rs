@@ -10,12 +10,14 @@
 //! - Integration with system services and configuration
 
 use crate::{KernelError, Result};
-use crate::log::{info, warn, error};
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
+use alloc::string::ToString;
 use alloc::collections::{HashMap, VecDeque, BTreeSet};
 use alloc::sync::Arc;
+use alloc::vec;
+use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
 
 /// Script Interpreter Result

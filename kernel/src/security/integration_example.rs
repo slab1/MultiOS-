@@ -3,7 +3,9 @@
 //! This module demonstrates how to integrate and use the secure boot
 //! verification and network security features in the MultiOS kernel.
 
+use alloc::vec;
 use crate::security::{
+use alloc::string::ToString;
     self, BootImageInfo, BootChainElement, BootComponentType,
     FirewallRule, FirewallRuleType, NetworkProtocol, NetworkPacket,
     VpnTunnel, VpnEncryption, VpnAuth, VpnStatus,
@@ -13,7 +15,6 @@ use crate::security::{
     get_security_stats, perform_security_audit, SecurityAuditReport,
 };
 
-use log::{info, warn, error, debug};
 
 /// Integration example demonstrating boot verification
 pub fn boot_verification_example() {

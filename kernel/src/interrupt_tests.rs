@@ -69,6 +69,7 @@ mod syscall_validation_tests {
 #[cfg(test)]
 mod integration_tests {
     use super::*;
+use alloc::string::ToString;
     
     #[test]
     fn test_kernel_state_with_interrupt_stats() {

@@ -6,6 +6,8 @@
 
 #![no_std]
 
+use alloc::vec;
+use alloc::format;
 use kernel::security::encryption::{
     EncryptionManager, EncryptionAlgorithm, SymmetricKey, AsymmetricKey,
     EncryptionError, EncryptionResult,
@@ -226,6 +228,7 @@ fn test_encryption_statistics() {
 #[test]
 fn test_random_number_generator() {
     use kernel::security::encryption::RandomNumberGenerator;
+use alloc::string::ToString;
     
     let rng = RandomNumberGenerator::new();
     
@@ -238,45 +241,45 @@ fn test_random_number_generator() {
 
 /// Run all integration tests
 pub fn run_integration_tests() {
-    println!("Running encryption utilities integration tests...");
+    // println!("Running encryption utilities integration tests...");
     
     test_encryption_initialization();
-    println!("✓ Encryption initialization test passed");
+    // println!("✓ Encryption initialization test passed");
     
     test_algorithm_enumeration();
-    println!("✓ Algorithm enumeration test passed");
+    // println!("✓ Algorithm enumeration test passed");
     
     test_encryption_errors();
-    println!("✓ Error type test passed");
+    // println!("✓ Error type test passed");
     
     test_symmetric_key_structure();
-    println!("✓ Symmetric key structure test passed");
+    // println!("✓ Symmetric key structure test passed");
     
     test_asymmetric_key_structure();
-    println!("✓ Asymmetric key structure test passed");
+    // println!("✓ Asymmetric key structure test passed");
     
     test_encryption_result();
-    println!("✓ Result type test passed");
+    // println!("✓ Result type test passed");
     
     test_api_functions_exist();
-    println!("✓ API functions test passed");
+    // println!("✓ API functions test passed");
     
     test_integration_scenario();
-    println!("✓ Integration scenario test passed");
+    // println!("✓ Integration scenario test passed");
     
     test_secure_container();
-    println!("✓ Secure container test passed");
+    // println!("✓ Secure container test passed");
     
     test_secure_channel();
-    println!("✓ Secure channel test passed");
+    // println!("✓ Secure channel test passed");
     
     test_encryption_statistics();
-    println!("✓ Statistics structure test passed");
+    // println!("✓ Statistics structure test passed");
     
     test_random_number_generator();
-    println!("✓ Random number generator test passed");
+    // println!("✓ Random number generator test passed");
     
-    println!("All integration tests passed successfully!");
+    // println!("All integration tests passed successfully!");
 }
 
 // =============================================================================
@@ -878,80 +881,80 @@ fn test_complex_network_scenario() {
 
 /// Run all security tests
 pub fn run_security_tests() {
-    println!("Running comprehensive security tests...");
+    // println!("Running comprehensive security tests...");
     
     // Boot verification tests
     test_boot_verify_initialization();
-    println!("✓ Boot verification initialization test passed");
+    // println!("✓ Boot verification initialization test passed");
     
     test_boot_chain_elements();
-    println!("✓ Boot chain elements test passed");
+    // println!("✓ Boot chain elements test passed");
     
     test_boot_image_verification();
-    println!("✓ Boot image verification test passed");
+    // println!("✓ Boot image verification test passed");
     
     // Network security tests
     test_network_security_initialization();
-    println!("✓ Network security initialization test passed");
+    // println!("✓ Network security initialization test passed");
     
     test_firewall_rule_creation();
-    println!("✓ Firewall rule creation test passed");
+    // println!("✓ Firewall rule creation test passed");
     
     test_network_packet_processing();
-    println!("✓ Network packet processing test passed");
+    // println!("✓ Network packet processing test passed");
     
     test_firewall_rule_management();
-    println!("✓ Firewall rule management test passed");
+    // println!("✓ Firewall rule management test passed");
     
     test_vpn_tunnel_creation();
-    println!("✓ VPN tunnel creation test passed");
+    // println!("✓ VPN tunnel creation test passed");
     
     test_intrusion_detection();
-    println!("✓ Intrusion detection test passed");
+    // println!("✓ Intrusion detection test passed");
     
     test_comprehensive_security_initialization();
-    println!("✓ Comprehensive security initialization test passed");
+    // println!("✓ Comprehensive security initialization test passed");
     
     // Enum tests
     test_network_protocol_enum();
-    println!("✓ Network protocol enum test passed");
+    // println!("✓ Network protocol enum test passed");
     
     test_firewall_rule_type_enum();
-    println!("✓ Firewall rule type enum test passed");
+    // println!("✓ Firewall rule type enum test passed");
     
     test_vpn_encryption_enum();
-    println!("✓ VPN encryption enum test passed");
+    // println!("✓ VPN encryption enum test passed");
     
     test_intrusion_severity_enum();
-    println!("✓ Intrusion severity enum test passed");
+    // println!("✓ Intrusion severity enum test passed");
     
     // Display tests
     test_boot_verify_result_display();
-    println!("✓ Boot verify result display test passed");
+    // println!("✓ Boot verify result display test passed");
     
     test_network_security_result_display();
-    println!("✓ Network security result display test passed");
+    // println!("✓ Network security result display test passed");
     
     // Statistics tests
     test_rule_statistics();
-    println!("✓ Rule statistics test passed");
+    // println!("✓ Rule statistics test passed");
     
     test_network_security_statistics();
-    println!("✓ Network security statistics test passed");
+    // println!("✓ Network security statistics test passed");
     
     // Configuration tests
     test_interface_security_configuration();
-    println!("✓ Interface security configuration test passed");
+    // println!("✓ Interface security configuration test passed");
     
     test_multiple_firewall_rules();
-    println!("✓ Multiple firewall rules test passed");
+    // println!("✓ Multiple firewall rules test passed");
     
     // Advanced features
     test_measured_boot_attestation();
-    println!("✓ Measured boot attestation test passed");
+    // println!("✓ Measured boot attestation test passed");
     
     test_complex_network_scenario();
-    println!("✓ Complex network scenario test passed");
+    // println!("✓ Complex network scenario test passed");
     
-    println!("All security tests passed successfully!");
+    // println!("All security tests passed successfully!");
 }

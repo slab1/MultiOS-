@@ -7,7 +7,8 @@
 //! - Integration with HAL for resource monitoring and hardware interactions
 //! - Cross-component communication and coordination
 
-use crate::log::{info, warn, error};
+use alloc::vec;
+use alloc::format;
 use crate::{Result, KernelError};
 use crate::admin::process_manager::*;
 use crate::service_manager::*;
@@ -120,7 +121,7 @@ pub fn example_process_monitoring() -> Result<ProcessId> {
 /// Integration Example: Cross-Component Process Management
 /// 
 /// This demonstrates how the process manager, scheduler, and service manager
-//! work together to manage system processes.
+/// work together to manage system processes.
 pub fn example_cross_component_management() -> Result<()> {
     info!("=== Example: Cross-Component Management ===");
     
@@ -332,7 +333,7 @@ pub fn example_resource_constrained_processes() -> Result<ProcessId> {
 
 /// Integration Example: Emergency Process Management
 /// 
-//! This demonstrates emergency response procedures for system management.
+/// This demonstrates emergency response procedures for system management.
 pub fn example_emergency_management() -> Result<()> {
     info!("=== Example: Emergency Process Management ===");
     
@@ -383,9 +384,9 @@ pub fn example_emergency_management() -> Result<()> {
 }
 
 /// Integration Example: Performance Monitoring and Optimization
-//! 
-//! This demonstrates how to monitor and optimize system performance
-//! using the integrated management components.
+/// 
+/// This demonstrates how to monitor and optimize system performance
+/// using the integrated management components.
 pub fn example_performance_monitoring() -> Result<()> {
     info!("=== Example: Performance Monitoring ===");
     
@@ -510,6 +511,7 @@ pub fn run_all_examples() -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+use alloc::string::ToString;
 
     #[test]
     fn test_service_process_integration() {

@@ -16,25 +16,30 @@
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::String;
+use alloc::string::ToString;
 use alloc::collections::HashMap;
+use alloc::vec;
+use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
 
 // Re-export key types and modules
-pub mod schema;
-pub mod policy;
-pub mod persistence;
-pub mod validation;
-pub mod backup;
-pub mod audit;
-pub mod propagation;
+// TODO: These submodule files need to be created:
+// pub mod schema;
+// pub mod policy;
+// pub mod persistence;
+// pub mod validation;
+// pub mod backup;
+// pub mod audit;
+// pub mod propagation;
 
-use schema::ConfigSchema;
-use policy::PolicyManager;
-use persistence::ConfigStorage;
-use validation::ConfigValidator;
-use backup::BackupManager;
-use audit::AuditLogger;
-use propagation::ConfigPropagator;
+// Types from the above modules - stubbed as () for now
+type ConfigSchema = ();
+type PolicyManager = ();
+type ConfigStorage = ();
+type ConfigValidator = ();
+type BackupManager = ();
+type AuditLogger = ();
+type ConfigPropagator = ();
 
 /// Global configuration manager instance
 pub static CONFIG_MANAGER: Mutex<Option<ConfigManager>> = Mutex::new(None);
@@ -177,13 +182,13 @@ pub struct ConfigStats {
 /// Main configuration manager
 pub struct ConfigManager {
     config_data: RwLock<HashMap<ConfigKey, ConfigEntry>>,
-    schema_manager: ConfigSchema,
-    policy_manager: PolicyManager,
-    storage: ConfigStorage,
-    validator: ConfigValidator,
-    backup_manager: BackupManager,
-    audit_logger: AuditLogger,
-    propagator: ConfigPropagator,
+    pub schema_manager: ConfigSchema,
+    pub policy_manager: PolicyManager,
+    pub storage: ConfigStorage,
+    pub validator: ConfigValidator,
+    pub backup_manager: BackupManager,
+    pub audit_logger: AuditLogger,
+    pub propagator: ConfigPropagator,
     change_history: RwLock<Vec<ConfigChange>>,
     next_version: AtomicU64,
     stats: ConfigStats,
@@ -194,13 +199,13 @@ impl ConfigManager {
     pub fn new() -> Self {
         ConfigManager {
             config_data: RwLock::new(HashMap::new()),
-            schema_manager: ConfigSchema::new(),
-            policy_manager: PolicyManager::new(),
-            storage: ConfigStorage::new(),
-            validator: ConfigValidator::new(),
-            backup_manager: BackupManager::new(),
-            audit_logger: AuditLogger::new(),
-            propagator: ConfigPropagator::new(),
+            schema_manager: (),
+            policy_manager: (),
+            storage: (),
+            validator: (),
+            backup_manager: (),
+            audit_logger: (),
+            propagator: (),
             change_history: RwLock::new(Vec::new()),
             next_version: AtomicU64::new(1),
             stats: ConfigStats {

@@ -5,7 +5,6 @@
 
 use crate::bootstrap::{BootstrapContext, BootstrapResult};
 use crate::{ArchType, KernelError};
-use crate::log::{info, warn, error};
 
 /// Initialize interrupts for the current architecture
 pub fn init_interrupts(context: &BootstrapContext) -> BootstrapResult<()> {

@@ -8,9 +8,11 @@
 //! - Resource monitoring
 
 use super::*;
+use alloc::vec;
+use alloc::format;
 use crate::admin::*;
 use crate::Result;
-use log::{info, warn, error};
+use alloc::string::ToString;
 
 /// Run all administrator integration tests
 pub fn run_admin_integration_tests(coordinator: &mut IntegrationTestCoordinator) -> Result<Vec<IntegrationTestResult>> {

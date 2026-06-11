@@ -14,6 +14,7 @@ pub mod test_suite;
 
 use crate::{KernelError, ArchType, memory::MemoryManager};
 use core::fmt::Write;
+use alloc::format;
 
 /// Bootstrap configuration and parameters
 #[derive(Debug, Clone)]

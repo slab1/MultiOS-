@@ -3,7 +3,7 @@
 //! This module provides build configurations, target definitions, and
 //! testing utilities for RISC-V IoT devices.
 
-use crate::log::{info, warn, error, debug};
+use alloc::format;
 use crate::KernelError;
 
 /// RISC-V IoT target device configurations
@@ -388,6 +388,7 @@ pub mod testing {
 /// IoT benchmarking utilities
 pub mod benchmarking {
     use super::*;
+use alloc::string::ToString;
     
     /// Benchmark IoT device performance
     pub fn benchmark_iot_performance(config: &IoTBuildConfig) -> IoTBenchmarkResults {

@@ -5,7 +5,6 @@
 //! It integrates with the comprehensive MultiOS memory manager library.
 
 use crate::bootstrap::BootstrapContext;
-use crate::log::{info, warn, error};
 use crate::{KernelError, MemoryType};
 
 // Re-export from memory manager for compatibility

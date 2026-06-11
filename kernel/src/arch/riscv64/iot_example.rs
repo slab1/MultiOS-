@@ -3,9 +3,11 @@
 //! This example demonstrates the complete RISC-V IoT device support including
 //! sensor reading, actuator control, networking, and power management.
 
-use crate::log::{info, warn, error, debug};
+use alloc::vec;
+use alloc::format;
 use crate::KernelError;
 use crate::arch::riscv64::{
+use alloc::string::ToString;
     iot::{*, power_management::*, realtime::*, memory::*, networking::*, drivers::*},
     iot_drivers::*,
     iot_bootloader::*,

@@ -3,6 +3,7 @@
 //! This module provides integration tests for the graphics driver and
 //! framebuffer management system.
 
+use alloc::vec;
 use crate::drivers::graphics::*;
 use crate::drivers::framebuffer::*;
 use crate::drivers::bitmap_font::*;

@@ -3,6 +3,8 @@
 //! This module provides practical examples of how to integrate and use the
 //! update validation and integrity checking system in the MultiOS kernel.
 
+use alloc::vec;
+use alloc::format;
 use crate::update::{
     validator::*,
     init_secure_update_system,
@@ -20,19 +22,19 @@ use crate::security::{init_security, init_comprehensive_security};
 /// This example shows how to initialize the secure update system
 /// with default security settings for production use.
 pub fn example_1_basic_setup() -> Result<(), Box<dyn core::fmt::Display>> {
-    println!("=== Example 1: Basic Update System Setup ===");
+    // println!("=== Example 1: Basic Update System Setup ===");
     
     // Initialize comprehensive security framework first
     init_comprehensive_security()?;
-    println!("✓ Security framework initialized");
+    // println!("✓ Security framework initialized");
     
     // Initialize secure update system
     init_secure_update_system()?;
-    println!("✓ Secure update system initialized");
+    // println!("✓ Secure update system initialized");
     
     // Check if system is ready
     if is_secure_update_ready() {
-        println!("✓ Update system is ready for validation");
+        // println!("✓ Update system is ready for validation");
     } else {
         return Err("Update system not ready".into());
     }
@@ -45,7 +47,7 @@ pub fn example_1_basic_setup() -> Result<(), Box<dyn core::fmt::Display>> {
 /// This example demonstrates creating a custom validator with
 /// strict security requirements for high-security environments.
 pub fn example_2_custom_security_config() -> Result<(), Box<dyn core::fmt::Display>> {
-    println!("\n=== Example 2: Custom Security Configuration ===");
+    // println!("\n=== Example 2: Custom Security Configuration ===");
     
     // Create custom validation configuration with strict requirements
     let strict_config = ValidationConfig {
@@ -69,7 +71,7 @@ pub fn example_2_custom_security_config() -> Result<(), Box<dyn core::fmt::Displ
     };
     
     let validator = UpdateValidator::new(strict_config)?;
-    println!("✓ Strict security validator created");
+    // println!("✓ Strict security validator created");
     
     // Configure update system with custom settings
     let custom_system_config = UpdateSystemConfig {
@@ -83,11 +85,11 @@ pub fn example_2_custom_security_config() -> Result<(), Box<dyn core::fmt::Displ
         validation_cache_size: 100, // Smaller cache for security
     };
     
-    println!("✓ Custom security configuration applied");
-    println!("  - Minimum trust level: {:?}", TrustLevel::High);
-    println!("  - Max acceptable risk: {}", 30);
-    println!("  - Strong algorithms only: ✓");
-    println!("  - Rollback required: ✓");
+    // println!("✓ Custom security configuration applied");
+    // println!("  - Minimum trust level: {:?}", TrustLevel::High);
+    // println!("  - Max acceptable risk: {}", 30);
+    // println!("  - Strong algorithms only: ✓");
+    // println!("  - Rollback required: ✓");
     
     Ok(())
 }
@@ -97,7 +99,7 @@ pub fn example_2_custom_security_config() -> Result<(), Box<dyn core::fmt::Displ
 /// This example shows a complete workflow for validating an update
 /// package before installation, including detailed reporting.
 pub fn example_3_validation_workflow() -> Result<(), Box<dyn core::fmt::Display>> {
-    println!("\n=== Example 3: Complete Validation Workflow ===");
+    // println!("\n=== Example 3: Complete Validation Workflow ===");
     
     // Initialize system
     init_secure_update_system()?;
@@ -105,55 +107,55 @@ pub fn example_3_validation_workflow() -> Result<(), Box<dyn core::fmt::Display>
     // Create a test update package
     let update_package = create_test_update_package();
     
-    println!("Validating update package: {}", update_package.id);
-    println!("Version: {}", update_package.version);
-    println!("Size: {} MB", update_package.size / (1024 * 1024));
+    // println!("Validating update package: {}", update_package.id);
+    // println!("Version: {}", update_package.version);
+    // println!("Size: {} MB", update_package.size / (1024 * 1024));
     
     // Perform comprehensive validation
     let validation_result = validate_update_secure(&update_package)?;
     
     // Check overall validity
     if validation_result.is_valid {
-        println!("✓ Update validation PASSED");
+        // println!("✓ Update validation PASSED");
     } else {
-        println!("✗ Update validation FAILED");
-        println!("Validation errors:");
+        // println!("✗ Update validation FAILED");
+        // println!("Validation errors:");
         for error in &validation_result.validation_errors {
-            println!("  - {:?}", error);
+            // println!("  - {:?}", error);
         }
         return Ok(()); // Continue with analysis even if failed
     }
     
     // Detailed validation reporting
-    println!("\n--- Validation Details ---");
+    // println!("\n--- Validation Details ---");
     
     // Signature verification
-    println!("Signature Verification:");
-    println!("  ✓ Valid: {}", validation_result.signature_verification.is_valid);
-    println!("  ✓ Algorithm: {:?}", validation_result.signature_verification.signature_algorithm);
-    println!("  ✓ Trust Level: {:?}", validation_result.signature_verification.trust_level);
+    // println!("Signature Verification:");
+    // println!("  ✓ Valid: {}", validation_result.signature_verification.is_valid);
+    // println!("  ✓ Algorithm: {:?}", validation_result.signature_verification.signature_algorithm);
+    // println!("  ✓ Trust Level: {:?}", validation_result.signature_verification.trust_level);
     
     // Integrity checking
-    println!("\nIntegrity Verification:");
-    println!("  ✓ Checksum Valid: {}", validation_result.checksum_validation.is_valid);
-    println!("  ✓ Algorithm: {:?}", validation_result.checksum_validation.algorithm);
+    // println!("\nIntegrity Verification:");
+    // println!("  ✓ Checksum Valid: {}", validation_result.checksum_validation.is_valid);
+    // println!("  ✓ Algorithm: {:?}", validation_result.checksum_validation.algorithm);
     
     // Compatibility analysis
-    println!("\nCompatibility Analysis:");
-    println!("  ✓ Level: {:?}", validation_result.compatibility_info.compatibility_level);
-    println!("  ✓ Platform: {}", validation_result.compatibility_info.platform);
+    // println!("\nCompatibility Analysis:");
+    // println!("  ✓ Level: {:?}", validation_result.compatibility_info.compatibility_level);
+    // println!("  ✓ Platform: {}", validation_result.compatibility_info.platform);
     
     // Safety assessment
-    println!("\nSafety Assessment:");
-    println!("  ✓ Safety Score: {}/100", validation_result.total_risk_score);
-    println!("  ✓ Overall Safety: {:?}", validation_result.safety_analysis.overall_safety);
-    println!("  ✓ Recommendation: {:?}", validation_result.safety_analysis.recommended_action);
+    // println!("\nSafety Assessment:");
+    // println!("  ✓ Safety Score: {}/100", validation_result.total_risk_score);
+    // println!("  ✓ Overall Safety: {:?}", validation_result.safety_analysis.overall_safety);
+    // println!("  ✓ Recommendation: {:?}", validation_result.safety_analysis.recommended_action);
     
     // Risk factors
     if !validation_result.safety_analysis.risk_factors.is_empty() {
-        println!("\nRisk Factors:");
+        // println!("\nRisk Factors:");
         for risk in &validation_result.safety_analysis.risk_factors {
-            println!("  - {:?} ({:?}): {}", 
+            // println!("  - {:?} ({:?}): {}", 
                 risk.factor_type, 
                 risk.severity, 
                 risk.description
@@ -163,9 +165,9 @@ pub fn example_3_validation_workflow() -> Result<(), Box<dyn core::fmt::Display>
     
     // Warnings
     if !validation_result.safety_analysis.warnings.is_empty() {
-        println!("\nWarnings:");
+        // println!("\nWarnings:");
         for warning in &validation_result.safety_analysis.warnings {
-            println!("  [{}] {}: {}", 
+            // println!("  [{}] {}: {}", 
                 warning.level as u8, 
                 warning.code, 
                 warning.message
@@ -173,7 +175,7 @@ pub fn example_3_validation_workflow() -> Result<(), Box<dyn core::fmt::Display>
         }
     }
     
-    println!("✓ Validation workflow completed");
+    // println!("✓ Validation workflow completed");
     Ok(())
 }
 
@@ -182,7 +184,7 @@ pub fn example_3_validation_workflow() -> Result<(), Box<dyn core::fmt::Display>
 /// This example demonstrates a pre-installation safety check
 /// that provides a simple yes/no decision for update installation.
 pub fn example_4_pre_installation_check() -> Result<(), Box<dyn core::fmt::Display>> {
-    println!("\n=== Example 4: Pre-Installation Safety Check ===");
+    // println!("\n=== Example 4: Pre-Installation Safety Check ===");
     
     init_secure_update_system()?;
     
@@ -191,25 +193,25 @@ pub fn example_4_pre_installation_check() -> Result<(), Box<dyn core::fmt::Displ
     // Perform pre-installation validation
     let safety_check = pre_install_validation(&update_package)?;
     
-    println!("Pre-installation Safety Check Results:");
-    println!("  Package: {}", update_package.id);
+    // println!("Pre-installation Safety Check Results:");
+    // println!("  Package: {}", update_package.id);
     
     if safety_check {
-        println!("  Decision: ✓ SAFE TO INSTALL");
-        println!("  Action: Proceed with update installation");
+        // println!("  Decision: ✓ SAFE TO INSTALL");
+        // println!("  Action: Proceed with update installation");
         
         // In a real system, you would proceed with installation here
         // install_update(&update_package)?;
         
     } else {
-        println!("  Decision: ✗ DO NOT INSTALL");
-        println!("  Action: Block update installation");
+        // println!("  Decision: ✗ DO NOT INSTALL");
+        // println!("  Action: Block update installation");
         
         // In a real system, you would prevent installation here
         // return Err("Update failed safety checks".into());
     }
     
-    println!("✓ Pre-installation check completed");
+    // println!("✓ Pre-installation check completed");
     Ok(())
 }
 
@@ -218,7 +220,7 @@ pub fn example_4_pre_installation_check() -> Result<(), Box<dyn core::fmt::Displ
 /// This example shows how to validate multiple update packages
 /// concurrently for efficient processing.
 pub fn example_5_batch_validation() -> Result<(), Box<dyn core::fmt::Display>> {
-    println!("\n=== Example 5: Batch Update Validation ===");
+    // println!("\n=== Example 5: Batch Update Validation ===");
     
     init_secure_update_system()?;
     
@@ -233,7 +235,7 @@ pub fn example_5_batch_validation() -> Result<(), Box<dyn core::fmt::Display>> {
         packages.push(package);
     }
     
-    println!("Validating {} update packages concurrently...", packages.len());
+    // println!("Validating {} update packages concurrently...", packages.len());
     
     // In a real implementation, this would use async/await or threading
     // For this example, we'll validate sequentially
@@ -245,27 +247,27 @@ pub fn example_5_batch_validation() -> Result<(), Box<dyn core::fmt::Display>> {
             Ok(result) => {
                 if result.is_valid && result.total_risk_score <= 70 {
                     valid_packages.push(package.id);
-                    println!("  ✓ {} - VALID (Risk: {}/100)", package.id, result.total_risk_score);
+                    // println!("  ✓ {} - VALID (Risk: {}/100)", package.id, result.total_risk_score);
                 } else {
                     invalid_packages.push(package.id);
-                    println!("  ✗ {} - INVALID or HIGH RISK (Risk: {}/100)", 
+                    // println!("  ✗ {} - INVALID or HIGH RISK (Risk: {}/100)", 
                         package.id, result.total_risk_score);
                 }
             },
             Err(e) => {
                 invalid_packages.push(package.id);
-                println!("  ✗ {} - VALIDATION ERROR: {:?}", package.id, e);
+                // println!("  ✗ {} - VALIDATION ERROR: {:?}", package.id, e);
             }
         }
     }
     
-    println!("\nBatch Validation Summary:");
-    println!("  Valid packages: {}", valid_packages.len());
-    println!("  Invalid packages: {}", invalid_packages.len());
-    println!("  Success rate: {:.1}%", 
+    // println!("\nBatch Validation Summary:");
+    // println!("  Valid packages: {}", valid_packages.len());
+    // println!("  Invalid packages: {}", invalid_packages.len());
+    // println!("  Success rate: {:.1}%", 
         (valid_packages.len() as f64 / 5.0) * 100.0);
     
-    println!("✓ Batch validation completed");
+    // println!("✓ Batch validation completed");
     Ok(())
 }
 
@@ -274,14 +276,14 @@ pub fn example_5_batch_validation() -> Result<(), Box<dyn core::fmt::Display>> {
 /// This example shows how to integrate the validation system
 /// with existing security policies and frameworks.
 pub fn example_6_security_policy_integration() -> Result<(), Box<dyn core::fmt::Display>> {
-    println!("\n=== Example 6: Security Policy Integration ===");
+    // println!("\n=== Example 6: Security Policy Integration ===");
     
     // Initialize security framework with specific policies
     let security_result = init_comprehensive_security();
     match security_result {
-        Ok(_) => println!("✓ Security framework initialized"),
+        // Ok(_) => println!("✓ Security framework initialized"),
         Err(e) => {
-            println!("⚠ Security framework initialization failed: {:?}", e);
+            // println!("⚠ Security framework initialization failed: {:?}", e);
             // Continue without full security framework
         }
     }
@@ -294,26 +296,26 @@ pub fn example_6_security_policy_integration() -> Result<(), Box<dyn core::fmt::
     let validator_guard = validator.lock();
     
     if let Some(ref validator_instance) = *validator_guard {
-        println!("✓ Update validator available");
-        println!("  Security features enabled:");
-        println!("    - Signature verification: {}", validator_instance.config.enable_signature_verification);
-        println!("    - Strong signatures required: {}", validator_instance.config.require_strong_signature);
-        println!("    - Integrity checking: {}", validator_instance.config.enable_checksum_validation);
-        println!("    - Safety analysis: {}", validator_instance.config.enable_safety_analysis);
-        println!("    - Rollback support required: {}", validator_instance.config.require_rollback_support);
-        println!("    - Minimum trust level: {:?}", validator_instance.config.minimum_trust_level);
-        println!("    - Max acceptable risk: {}", validator_instance.config.max_acceptable_risk_score);
+        // println!("✓ Update validator available");
+        // println!("  Security features enabled:");
+        // println!("    - Signature verification: {}", validator_instance.config.enable_signature_verification);
+        // println!("    - Strong signatures required: {}", validator_instance.config.require_strong_signature);
+        // println!("    - Integrity checking: {}", validator_instance.config.enable_checksum_validation);
+        // println!("    - Safety analysis: {}", validator_instance.config.enable_safety_analysis);
+        // println!("    - Rollback support required: {}", validator_instance.config.require_rollback_support);
+        // println!("    - Minimum trust level: {:?}", validator_instance.config.minimum_trust_level);
+        // println!("    - Max acceptable risk: {}", validator_instance.config.max_acceptable_risk_score);
     }
     
     // Demonstrate policy enforcement
-    println!("\nPolicy Enforcement Rules:");
-    println!("  1. All updates must be digitally signed");
-    println!("  2. Signatures must be from trusted sources (Level >= {:?})", TrustLevel::Medium);
-    println!("  3. File integrity must be verified via checksums");
-    println!("  4. Updates with risk score > 70 are rejected");
-    println!("  5. Core system updates require rollback capability");
+    // println!("\nPolicy Enforcement Rules:");
+    // println!("  1. All updates must be digitally signed");
+    // println!("  2. Signatures must be from trusted sources (Level >= {:?})", TrustLevel::Medium);
+    // println!("  3. File integrity must be verified via checksums");
+    // println!("  4. Updates with risk score > 70 are rejected");
+    // println!("  5. Core system updates require rollback capability");
     
-    println!("✓ Security policy integration completed");
+    // println!("✓ Security policy integration completed");
     Ok(())
 }
 
@@ -322,7 +324,7 @@ pub fn example_6_security_policy_integration() -> Result<(), Box<dyn core::fmt::
 /// This example demonstrates proper error handling and recovery
 /// mechanisms for update validation failures.
 pub fn example_7_error_handling_recovery() -> Result<(), Box<dyn core::fmt::Display>> {
-    println!("\n=== Example 7: Error Handling and Recovery ===");
+    // println!("\n=== Example 7: Error Handling and Recovery ===");
     
     init_secure_update_system()?;
     
@@ -358,24 +360,24 @@ pub fn example_7_error_handling_recovery() -> Result<(), Box<dyn core::fmt::Disp
         certificate_chain: Vec::new(), // No certificates
     };
     
-    println!("Testing error handling with problematic update package...");
+    // println!("Testing error handling with problematic update package...");
     
     match validate_update_secure(&problematic_package) {
         Ok(result) => {
-            println!("✗ Unexpected success in validation (should have failed)");
-            println!("  Result: Valid={}, Risk Score={}", result.is_valid, result.total_risk_score);
+            // println!("✗ Unexpected success in validation (should have failed)");
+            // println!("  Result: Valid={}, Risk Score={}", result.is_valid, result.total_risk_score);
         },
         Err(e) => {
-            println!("✓ Validation failed as expected: {:?}", e);
-            println!("  Error properly caught and handled");
+            // println!("✓ Validation failed as expected: {:?}", e);
+            // println!("  Error properly caught and handled");
             
             // Demonstrate recovery strategies
-            println!("\nRecovery Strategies:");
-            println!("  1. ✓ Retry with network source validation");
-            println!("  2. ✓ Check for alternative update sources");
-            println!("  3. ✓ Request manual review");
-            println!("  4. ✓ Schedule for offline validation");
-            println!("  5. ✓ Log security incident");
+            // println!("\nRecovery Strategies:");
+            // println!("  1. ✓ Retry with network source validation");
+            // println!("  2. ✓ Check for alternative update sources");
+            // println!("  3. ✓ Request manual review");
+            // println!("  4. ✓ Schedule for offline validation");
+            // println!("  5. ✓ Log security incident");
         }
     }
     
@@ -384,21 +386,21 @@ pub fn example_7_error_handling_recovery() -> Result<(), Box<dyn core::fmt::Disp
     match validate_update_secure(&warning_package) {
         Ok(result) => {
             if !result.safety_analysis.warnings.is_empty() {
-                println!("\nHandling validation warnings:");
+                // println!("\nHandling validation warnings:");
                 for warning in &result.safety_analysis.warnings {
                     match warning.level {
-                        RiskSeverity::Low => println!("  ℹ INFO: {}", warning.message),
-                        RiskSeverity::Medium => println!("  ⚠ WARNING: {}", warning.message),
-                        RiskSeverity::High => println!("  🚨 HIGH WARNING: {}", warning.message),
-                        RiskSeverity::Critical => println!("  🔥 CRITICAL: {}", warning.message),
+                        // RiskSeverity::Low => println!("  ℹ INFO: {}", warning.message),
+                        // RiskSeverity::Medium => println!("  ⚠ WARNING: {}", warning.message),
+                        // RiskSeverity::High => println!("  🚨 HIGH WARNING: {}", warning.message),
+                        // RiskSeverity::Critical => println!("  🔥 CRITICAL: {}", warning.message),
                     }
                 }
             }
         },
-        Err(_) => println!("Unexpected validation error"),
+        // Err(_) => println!("Unexpected validation error"),
     }
     
-    println!("✓ Error handling and recovery demonstration completed");
+    // println!("✓ Error handling and recovery demonstration completed");
     Ok(())
 }
 
@@ -407,26 +409,26 @@ pub fn example_7_error_handling_recovery() -> Result<(), Box<dyn core::fmt::Disp
 /// This example shows how to monitor validation performance
 /// and gather metrics for system optimization.
 pub fn example_8_performance_monitoring() -> Result<(), Box<dyn core::fmt::Display>> {
-    println!("\n=== Example 8: Performance Monitoring and Metrics ===");
+    // println!("\n=== Example 8: Performance Monitoring and Metrics ===");
     
     init_secure_update_system()?;
     
     // Gather system statistics
     let stats = crate::update::get_update_system_stats();
     
-    println!("System Performance Metrics:");
-    println!("  Total updates validated: {}", stats.total_updates_validated);
-    println!("  Failed validations: {}", stats.failed_validations);
-    println!("  Success rate: {:.2}%", 
+    // println!("System Performance Metrics:");
+    // println!("  Total updates validated: {}", stats.total_updates_validated);
+    // println!("  Failed validations: {}", stats.failed_validations);
+    // println!("  Success rate: {:.2}%", 
         if stats.total_updates_validated > 0 {
             ((stats.successful_installations as f64 / stats.total_updates_validated as f64) * 100.0)
         } else {
             0.0
         });
-    println!("  Average validation time: {} ms", stats.average_validation_time_ms);
-    println!("  Security checks passed: {}", stats.security_checks_passed);
-    println!("  Security checks failed: {}", stats.security_checks_failed);
-    println!("  Security success rate: {:.2}%",
+    // println!("  Average validation time: {} ms", stats.average_validation_time_ms);
+    // println!("  Security checks passed: {}", stats.security_checks_passed);
+    // println!("  Security checks failed: {}", stats.security_checks_failed);
+    // println!("  Security success rate: {:.2}%",
         if stats.security_checks_passed + stats.security_checks_failed > 0 {
             ((stats.security_checks_passed as f64 / 
               (stats.security_checks_passed + stats.security_checks_failed) as f64) * 100.0)
@@ -435,7 +437,7 @@ pub fn example_8_performance_monitoring() -> Result<(), Box<dyn core::fmt::Displ
         });
     
     // Simulate performance testing
-    println!("\nSimulating validation performance test...");
+    // println!("\nSimulating validation performance test...");
     
     let test_packages = (1..=3).map(|i| {
         let mut pkg = create_test_update_package();
@@ -448,26 +450,26 @@ pub fn example_8_performance_monitoring() -> Result<(), Box<dyn core::fmt::Displ
     for package in test_packages {
         match validate_update_secure(&package) {
             Ok(result) => {
-                println!("  ✓ {} validated in {} ms (Risk: {}/100)", 
+                // println!("  ✓ {} validated in {} ms (Risk: {}/100)", 
                     package.id, 
                     0, // Mock timing
                     result.total_risk_score
                 );
             },
             Err(e) => {
-                println!("  ✗ {} validation failed: {:?}", package.id, e);
+                // println!("  ✗ {} validation failed: {:?}", package.id, e);
             }
         }
     }
     
     let elapsed = start_time.elapsed();
-    println!("\nPerformance Test Results:");
-    println!("  Total time: {:?}", elapsed);
-    println!("  Average time per package: {:?}", elapsed / 3);
-    println!("  Validation throughput: {:.2} packages/second", 
+    // println!("\nPerformance Test Results:");
+    // println!("  Total time: {:?}", elapsed);
+    // println!("  Average time per package: {:?}", elapsed / 3);
+    // println!("  Validation throughput: {:.2} packages/second", 
         3.0 / (elapsed.as_secs_f64()));
     
-    println!("✓ Performance monitoring example completed");
+    // println!("✓ Performance monitoring example completed");
     Ok(())
 }
 
@@ -476,11 +478,11 @@ pub fn example_8_performance_monitoring() -> Result<(), Box<dyn core::fmt::Displ
 /// This function runs all integration examples to demonstrate
 /// the complete functionality of the update validation system.
 pub fn run_all_integration_examples() -> Result<(), Box<dyn core::fmt::Display>> {
-    println!("\n");
-    println!("╔══════════════════════════════════════════════════════════════════════╗");
-    println!("║        MULTIOS UPDATE VALIDATION & INTEGRITY SYSTEM                  ║");
-    println!("║                  INTEGRATION EXAMPLES                                ║");
-    println!("╚══════════════════════════════════════════════════════════════════════╝");
+    // println!("\n");
+    // println!("╔══════════════════════════════════════════════════════════════════════╗");
+    // println!("║        MULTIOS UPDATE VALIDATION & INTEGRITY SYSTEM                  ║");
+    // println!("║                  INTEGRATION EXAMPLES                                ║");
+    // println!("╚══════════════════════════════════════════════════════════════════════╝");
     
     // Run all examples
     example_1_basic_setup()?;
@@ -492,11 +494,11 @@ pub fn run_all_integration_examples() -> Result<(), Box<dyn core::fmt::Display>>
     example_7_error_handling_recovery()?;
     example_8_performance_monitoring()?;
     
-    println!("\n");
-    println!("╔══════════════════════════════════════════════════════════════════════╗");
-    println!("║                 ALL INTEGRATION EXAMPLES COMPLETED                   ║");
-    println!("║         Update Validation & Integrity System: FULLY FUNCTIONAL      ║");
-    println!("╚══════════════════════════════════════════════════════════════════════╝");
+    // println!("\n");
+    // println!("╔══════════════════════════════════════════════════════════════════════╗");
+    // println!("║                 ALL INTEGRATION EXAMPLES COMPLETED                   ║");
+    // println!("║         Update Validation & Integrity System: FULLY FUNCTIONAL      ║");
+    // println!("╚══════════════════════════════════════════════════════════════════════╝");
     
     Ok(())
 }

@@ -4,19 +4,21 @@
 //! It provides practical examples and validation of the performance monitoring,
 //! error handling, and assembly interface functionality.
 
+use alloc::vec;
 use crate::syscall::*;
 use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
+use alloc::string::ToString;
 
 /// Example demonstrating performance monitoring usage
 pub fn performance_monitoring_example() {
-    println!("\n=== Performance Monitoring Example ===");
+    // println!("\n=== Performance Monitoring Example ===");
     
     // Initialize performance monitor
     let performance_monitor = Arc::new(Mutex::new(SyscallPerformanceMonitor::new()));
     
-    println!("📊 Simulating syscall performance tracking...");
+    // println!("📊 Simulating syscall performance tracking...");
     
     // Simulate various syscalls with different performance characteristics
     let syscall_scenarios = vec![
@@ -28,7 +30,7 @@ pub fn performance_monitoring_example() {
     ];
     
     for (i, &(syscall_num, name, duration)) in syscall_scenarios.iter().enumerate() {
-        println!("  Processing {} (syscall {})...", name, syscall_num);
+        // println!("  Processing {} (syscall {})...", name, syscall_num);
         
         // Record syscall start
         {
@@ -58,46 +60,46 @@ pub fn performance_monitoring_example() {
             );
             
             if let Some(statistics) = stats {
-                println!("    ✅ Completed: {} calls, avg latency: {} ns", 
+                // println!("    ✅ Completed: {} calls, avg latency: {} ns", 
                         statistics.total_calls, statistics.average_latency_ns);
             }
         }
         
         // Log error if occurred
         if let Some(err) = error {
-            println!("    ❌ Error occurred: {:?}", err);
+            // println!("    ❌ Error occurred: {:?}", err);
         }
     }
     
     // Get and display performance statistics
     let perf_stats = performance_monitor.lock().unwrap().get_performance_statistics();
-    println!("\n📈 Performance Summary:");
-    println!("  Total syscalls: {}", perf_stats.total_syscalls);
-    println!("  Average latency: {} ns", perf_stats.average_latency_ns);
-    println!("  Peak latency: {} ns", perf_stats.peak_latency_ns);
-    println!("  Cache hit rate: {:.1}%", perf_stats.cache_hit_rate * 100.0);
+    // println!("\n📈 Performance Summary:");
+    // println!("  Total syscalls: {}", perf_stats.total_syscalls);
+    // println!("  Average latency: {} ns", perf_stats.average_latency_ns);
+    // println!("  Peak latency: {} ns", perf_stats.peak_latency_ns);
+    // println!("  Cache hit rate: {:.1}%", perf_stats.cache_hit_rate * 100.0);
     
     // Get optimization recommendations
     let recommendations = performance_monitor.lock().unwrap().get_optimization_recommendations();
-    println!("\n💡 Optimization Recommendations:");
+    // println!("\n💡 Optimization Recommendations:");
     for recommendation in recommendations {
-        println!("  • {}", recommendation);
+        // println!("  • {}", recommendation);
     }
 }
 
 /// Example demonstrating error handling usage
 pub fn error_handling_example() {
-    println!("\n=== Error Handling Example ===");
+    // println!("\n=== Error Handling Example ===");
     
     // Initialize error handler
     let error_handler = Arc::new(Mutex::new(SyscallErrorHandler::new()));
     
-    println!("🚨 Simulating comprehensive error handling...");
+    // println!("🚨 Simulating comprehensive error handling...");
     
     // Create error contexts for different processes
     for i in 0..3 {
         let context = error_handler.lock().unwrap().create_error_context(2000 + i as u64);
-        println!("  Created error context for process {}: {}", 2000 + i, context.is_some());
+        // println!("  Created error context for process {}: {}", 2000 + i, context.is_some());
     }
     
     // Simulate various error scenarios
@@ -110,7 +112,7 @@ pub fn error_handling_example() {
     ];
     
     for (i, &(error_type, description)) in error_scenarios.iter().enumerate() {
-        println!("\n  Scenario {}: {}", i + 1, description);
+        // println!("\n  Scenario {}: {}", i + 1, description);
         
         // Log the error
         error_handler.lock().unwrap().log_error(
@@ -121,7 +123,7 @@ pub fn error_handling_example() {
         
         // Get recovery strategy
         let recovery_strategy = error_handler.lock().unwrap().get_recovery_strategy(error_type);
-        println!("    Recovery strategy: {:?}", recovery_strategy);
+        // println!("    Recovery strategy: {:?}", recovery_strategy);
         
         // Execute recovery
         let mut recovery_params = HashMap::new();
@@ -135,49 +137,49 @@ pub fn error_handling_example() {
         );
         
         match recovery_result {
-            Ok(action) => println!("    ✅ Recovery successful: {:?}", action),
-            Err(err) => println!("    ❌ Recovery failed: {:?}", err),
+            // Ok(action) => println!("    ✅ Recovery successful: {:?}", action),
+            // Err(err) => println!("    ❌ Recovery failed: {:?}", err),
         }
     }
     
     // Get error statistics
     let error_stats = error_handler.lock().unwrap().get_error_statistics();
-    println!("\n📊 Error Statistics:");
-    println!("  Total errors: {}", error_stats.total_errors);
-    println!("  Unique error types: {}", error_stats.error_counts.len());
+    // println!("\n📊 Error Statistics:");
+    // println!("  Total errors: {}", error_stats.total_errors);
+    // println!("  Unique error types: {}", error_stats.error_counts.len());
     
     for (error_type, count) in &error_stats.error_counts {
-        println!("    {:?}: {} occurrences", error_type, count);
+        // println!("    {:?}: {} occurrences", error_type, count);
     }
     
     // Generate detailed error report
     let detailed_report = error_handler.lock().unwrap().generate_detailed_error_report();
-    println!("\n📝 Detailed Error Report Preview:");
+    // println!("\n📝 Detailed Error Report Preview:");
     let report_lines: Vec<&str> = detailed_report.lines().collect();
     for line in report_lines.iter().take(5) {
-        println!("    {}", line);
+        // println!("    {}", line);
     }
     if detailed_report.lines().count() > 5 {
-        println!("    ... ({} more lines)", detailed_report.lines().count() - 5);
+        // println!("    ... ({} more lines)", detailed_report.lines().count() - 5);
     }
     
     // Test user-friendly error messages
-    println!("\n💬 User-Friendly Error Messages:");
+    // println!("\n💬 User-Friendly Error Messages:");
     for (error_type, _) in error_scenarios.iter().take(3) {
         let message = error_handler.lock().unwrap().get_user_friendly_message(*error_type);
-        println!("  {:?}: {}", error_type, message);
+        // println!("  {:?}: {}", error_type, message);
     }
 }
 
 /// Example demonstrating syscall number registry usage
 pub fn syscall_registry_example() {
-    println!("\n=== Syscall Registry Example ===");
+    // println!("\n=== Syscall Registry Example ===");
     
-    println!("🔍 Exploring available syscalls...");
+    // println!("🔍 Exploring available syscalls...");
     
     // Get all syscalls
     let all_syscalls = syscall_numbers::get_all_syscalls();
-    println!("  Total syscalls defined: {}", all_syscalls.len());
+    // println!("  Total syscalls defined: {}", all_syscalls.len());
     
     // Show some example syscalls by category
     let categories = vec![
@@ -208,41 +210,41 @@ pub fn syscall_registry_example() {
     ];
     
     for (category_name, syscall_list) in categories {
-        println!("\n  {}:", category_name);
+        // println!("\n  {}:", category_name);
         for &syscall_num in &syscall_list {
             if let Some(info) = syscall_numbers::get_syscall_info(syscall_num) {
-                println!("    {:3}: {} - {}", syscall_num, info.name, info.description);
+                // println!("    {:3}: {} - {}", syscall_num, info.name, info.description);
             } else {
-                println!("    {:3}: <unknown syscall>", syscall_num);
+                // println!("    {:3}: <unknown syscall>", syscall_num);
             }
         }
     }
     
     // Search syscalls by name
-    println!("\n🔎 Searching syscalls containing 'file':");
+    // println!("\n🔎 Searching syscalls containing 'file':");
     let file_syscalls = syscall_numbers::search_syscalls("file");
     for syscall in file_syscalls.iter().take(5) {
-        println!("  {:3}: {}", syscall.number, syscall.name);
+        // println!("  {:3}: {}", syscall.number, syscall.name);
     }
     
     // Get syscall statistics
-    println!("\n📈 Syscall Statistics:");
+    // println!("\n📈 Syscall Statistics:");
     let stats = syscall_numbers::get_syscall_statistics();
-    println!("  Total defined syscalls: {}", stats.total_syscalls);
-    println!("  Categories: {}", stats.categories.len());
+    // println!("  Total defined syscalls: {}", stats.total_syscalls);
+    // println!("  Categories: {}", stats.categories.len());
     for (category, count) in &stats.categories {
-        println!("    {}: {} syscalls", category, count);
+        // println!("    {}: {} syscalls", category, count);
     }
 }
 
 /// Example demonstrating assembly interface usage
 pub fn assembly_interface_example() {
-    println!("\n=== Assembly Interface Example ===");
+    // println!("\n=== Assembly Interface Example ===");
     
     // Initialize assembly interface
     let assembly_interface = Arc::new(Mutex::new(AssemblySyscallInterface::new()));
     
-    println!("🔧 Demonstrating x86_64 assembly interface...");
+    // println!("🔧 Demonstrating x86_64 assembly interface...");
     
     // Test x86_64 specific features
     {
@@ -250,76 +252,76 @@ pub fn assembly_interface_example() {
         
         // Get syscall entry point
         let entry_point = asm.get_syscall_entry_point(crate::arch::ArchType::X86_64);
-        println!("  Syscall entry point: {:?}", entry_point);
+        // println!("  Syscall entry point: {:?}", entry_point);
         
         // Generate syscall instruction
         let instruction = asm.generate_syscall_instruction(
             crate::arch::ArchType::X86_64,
             syscall_numbers::FILE_OPEN
         );
-        println!("  Syscall instruction: {}", instruction);
+        // println!("  Syscall instruction: {}", instruction);
         
         // Show register mappings
-        println!("\n  Register Mappings:");
+        // println!("\n  Register Mappings:");
         let param_regs = asm.get_parameter_registers();
         for (param, reg) in param_regs.iter().take(6) {
-            println!("    {} -> {}", param, reg);
+            // println!("    {} -> {}", param, reg);
         }
-        println!("    return -> {}", asm.get_return_register());
+        // println!("    return -> {}", asm.get_return_register());
         
         // Show optimization settings
-        println!("\n  Optimization Settings:");
+        // println!("\n  Optimization Settings:");
         let optimizations = asm.get_optimization_settings();
-        println!("    Fast path enabled: {}", optimizations.enable_fast_path);
-        println!("    Branch prediction: {}", optimizations.enable_branch_prediction);
-        println!("    Instruction cache optimization: {}", optimizations.enable_instruction_cache_optimization);
+        // println!("    Fast path enabled: {}", optimizations.enable_fast_path);
+        // println!("    Branch prediction: {}", optimizations.enable_branch_prediction);
+        // println!("    Instruction cache optimization: {}", optimizations.enable_instruction_cache_optimization);
         
         // Show hot paths
         let hot_paths = asm.get_hot_paths();
-        println!("\n  Hot Paths (frequently called syscalls):");
+        // println!("\n  Hot Paths (frequently called syscalls):");
         for path in hot_paths.iter().take(5) {
-            println!("    {}", path);
+            // println!("    {}", path);
         }
     }
     
     // Test fast path caching
-    println!("\n  Fast Path Cache Test:");
+    // println!("\n  Fast Path Cache Test:");
     {
         let asm = assembly_interface.lock().unwrap();
         for i in 0..5 {
             let fast_path = asm.get_fast_path(syscall_numbers::FILE_OPEN + i);
-            println!("    Syscall {} fast path: {}", syscall_numbers::FILE_OPEN + i, fast_path.is_some());
+            // println!("    Syscall {} fast path: {}", syscall_numbers::FILE_OPEN + i, fast_path.is_some());
         }
     }
     
     // Test context switching
-    println!("\n  Context Switching Test:");
+    // println!("\n  Context Switching Test:");
     {
         let asm = assembly_interface.lock().unwrap();
         let context_size = asm.get_context_save_size();
-        println!("    Context save size: {} bytes", context_size);
+        // println!("    Context save size: {} bytes", context_size);
         
         let stack_offset = asm.get_stack_pointer_offset();
-        println!("    Stack pointer offset: {}", stack_offset);
+        // println!("    Stack pointer offset: {}", stack_offset);
         
         let privilege_transition = asm.requires_privilege_transition(
             crate::arch::PrivilegeLevel::Ring3,
             crate::arch::PrivilegeLevel::Ring0
         );
-        println!("    Ring3 -> Ring0 transition required: {}", privilege_transition);
+        // println!("    Ring3 -> Ring0 transition required: {}", privilege_transition);
     }
 }
 
 /// Example demonstrating integrated system usage
 pub fn integrated_system_example() {
-    println!("\n=== Integrated System Example ===");
+    // println!("\n=== Integrated System Example ===");
     
     // Initialize all components
     let performance_monitor = Arc::new(Mutex::new(SyscallPerformanceMonitor::new()));
     let error_handler = Arc::new(Mutex::new(SyscallErrorHandler::new()));
     let assembly_interface = Arc::new(Mutex::new(AssemblySyscallInterface::new()));
     
-    println!("🔄 Simulating complete syscall workflow...");
+    // println!("🔄 Simulating complete syscall workflow...");
     
     let start_time = Instant::now();
     let mut total_syscalls = 0;
@@ -338,7 +340,7 @@ pub fn integrated_system_example() {
         
         // Get syscall info
         let syscall_info = syscall_numbers::get_syscall_info(syscall_num);
-        println!("  Processing {} ({})...", 
+        // println!("  Processing {} ({})...", 
                 syscall_info.map(|s| s.name).unwrap_or("unknown"),
                 syscall_num);
         
@@ -355,7 +357,7 @@ pub fn integrated_system_example() {
         };
         
         if use_fast_path {
-            println!("    ⚡ Using fast path");
+            // println!("    ⚡ Using fast path");
         }
         
         // Simulate processing
@@ -387,14 +389,14 @@ pub fn integrated_system_example() {
             );
             
             if let Some(statistics) = stats {
-                println!("    📊 Stats: {} calls, {} ns avg", 
+                // println!("    📊 Stats: {} calls, {} ns avg", 
                         statistics.total_calls, statistics.average_latency_ns);
             }
         }
         
         // Handle error if occurred
         if let Some(err) = error {
-            println!("    ❌ Error: {:?}", err);
+            // println!("    ❌ Error: {:?}", err);
             
             // Log error
             error_handler.lock().unwrap().log_error(
@@ -411,11 +413,11 @@ pub fn integrated_system_example() {
             );
             
             match recovery_result {
-                Ok(action) => println!("    🔄 Recovery: {:?}", action),
-                Err(rec_err) => println!("    💥 Recovery failed: {:?}", rec_err),
+                // Ok(action) => println!("    🔄 Recovery: {:?}", action),
+                // Err(rec_err) => println!("    💥 Recovery failed: {:?}", rec_err),
             }
         } else {
-            println!("    ✅ Success");
+            // println!("    ✅ Success");
         }
         
         total_syscalls += 1;
@@ -425,31 +427,31 @@ pub fn integrated_system_example() {
     let throughput = total_syscalls as f64 / total_time.as_secs_f64();
     
     // Final statistics
-    println!("\n📊 Integrated System Results:");
-    println!("  Total syscalls: {}", total_syscalls);
-    println!("  Total errors: {}", total_errors);
-    println!("  Success rate: {:.1}%", ((total_syscalls - total_errors) as f64 / total_syscalls as f64) * 100.0);
-    println!("  Throughput: {:.2} syscalls/second", throughput);
-    println!("  Total time: {:?}", total_time);
+    // println!("\n📊 Integrated System Results:");
+    // println!("  Total syscalls: {}", total_syscalls);
+    // println!("  Total errors: {}", total_errors);
+    // println!("  Success rate: {:.1}%", ((total_syscalls - total_errors) as f64 / total_syscalls as f64) * 100.0);
+    // println!("  Throughput: {:.2} syscalls/second", throughput);
+    // println!("  Total time: {:?}", total_time);
     
     // Get final statistics
     let perf_stats = performance_monitor.lock().unwrap().get_performance_statistics();
     let error_stats = error_handler.lock().unwrap().get_error_statistics();
     
-    println!("\n🎯 Final System State:");
-    println!("  Performance monitor active: {}", performance_monitor.lock().unwrap().is_active());
-    println!("  Error handler operational: {}", error_handler.lock().unwrap().is_operational());
-    println!("  Assembly interface initialized: {}", assembly_interface.lock().unwrap().is_initialized());
+    // println!("\n🎯 Final System State:");
+    // println!("  Performance monitor active: {}", performance_monitor.lock().unwrap().is_active());
+    // println!("  Error handler operational: {}", error_handler.lock().unwrap().is_operational());
+    // println!("  Assembly interface initialized: {}", assembly_interface.lock().unwrap().is_initialized());
     
-    println!("  Performance stats: {} total calls, {} ns avg latency", 
+    // println!("  Performance stats: {} total calls, {} ns avg latency", 
             perf_stats.total_syscalls, perf_stats.average_latency_ns);
-    println!("  Error stats: {} total errors", error_stats.total_errors);
+    // println!("  Error stats: {} total errors", error_stats.total_errors);
 }
 
 /// Main example function that runs all examples
 pub fn run_all_examples() {
-    println!("🚀 MultiOS System Call Enhancement Modules - Examples");
-    println!("=====================================================");
+    // println!("🚀 MultiOS System Call Enhancement Modules - Examples");
+    // println!("=====================================================");
     
     performance_monitoring_example();
     error_handling_example();
@@ -457,6 +459,6 @@ pub fn run_all_examples() {
     assembly_interface_example();
     integrated_system_example();
     
-    println!("\n🎉 All examples completed successfully!");
-    println!("   The syscall enhancement modules are ready for production use.");
+    // println!("\n🎉 All examples completed successfully!");
+    // println!("   The syscall enhancement modules are ready for production use.");
 }

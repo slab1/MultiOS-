@@ -3,7 +3,7 @@
 //! Provides support for SATA, NVMe, and other storage devices
 //! including AHCI controllers and NVMe SSDs
 
-use crate::log::{info, warn, error};
+use alloc::format;
 use crate::KernelError;
 
 use super::{PciManager, StorageDeviceInfo, StorageDeviceType, ControllerType};

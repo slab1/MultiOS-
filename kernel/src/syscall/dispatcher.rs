@@ -3,7 +3,7 @@
 //! This module provides the core system call dispatcher that routes system calls
 //! to appropriate handlers with comprehensive validation and security checks.
 
-use crate::log::{info, warn, error, debug};
+use alloc::vec;
 use crate::arch::interrupts::*;
 use crate::arch::PrivilegeLevel;
 use crate::memory::{self, MemoryRegion};

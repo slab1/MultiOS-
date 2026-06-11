@@ -3,10 +3,11 @@
 //! Handles CPU detection, initialization, multi-core coordination,
 //! and instruction set optimizations
 
-use crate::log::{info, warn, error};
+use alloc::format;
 use crate::KernelError;
 
 use super::SupportedFeatures;
+use alloc::string::ToString;
 
 /// CPU information
 #[derive(Debug, Clone)]

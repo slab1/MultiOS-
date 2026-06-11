@@ -4,7 +4,6 @@
 //! exception handlers, and system call support.
 
 use crate::arch::interrupts::*;
-use crate::log::{info, warn, error};
 use crate::KernelError;
 
 const IDT_ENTRIES: usize = 256;

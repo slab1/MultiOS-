@@ -3,7 +3,6 @@
 //! This module provides comprehensive interrupt handling for multiple architectures,
 //! including interrupt descriptor tables, interrupt handlers, and system call support.
 
-use crate::log::{info, warn, error, debug};
 use crate::ArchType;
 use crate::KernelError;
 

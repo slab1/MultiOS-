@@ -20,6 +20,9 @@ use crate::memory;
 use crate::arch::performance::*;
 use alloc::collections::HashMap;
 use alloc::string::{String, ToString};
+use alloc::string::ToString;
+use alloc::vec;
+use alloc::format;
 use spin::Mutex;
 use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
 

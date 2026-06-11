@@ -3,9 +3,11 @@
 //! Minimal networking stack optimized for resource-constrained IoT devices
 //! supporting IEEE 802.15.4, Thread, Bluetooth LE, and basic TCP/IP protocols.
 
-use crate::log::{info, warn, error, debug};
+use alloc::vec;
+use alloc::format;
 use crate::KernelError;
 use crate::arch::riscv64::iot::NetworkProtocol;
+use alloc::string::ToString;
 
 /// MAC address for IoT devices
 #[derive(Debug, Clone, Copy)]

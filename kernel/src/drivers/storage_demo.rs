@@ -15,8 +15,8 @@ use crate::drivers::sd_card::{SdCardDriver, SdCardType, SdInterfaceMode};
 use crate::drivers::error_recovery::{ErrorRecoveryManager, RecoveryStrategy};
 use crate::drivers::block_device_interface::{BlockDeviceInterface, BlockDeviceManager, BlockDeviceWrapper};
 
-use log::{info, warn, error};
 use alloc::{sync::Arc, vec::Vec};
+use alloc::vec;
 use core::time::Duration;
 
 /// Example demonstrating the complete storage device drivers system
@@ -406,6 +406,7 @@ pub fn run_storage_system_demo() {
 #[cfg(test)]
 mod tests {
     use super::*;
+use alloc::string::ToString;
 
     #[test]
     fn test_storage_system_overview() {

@@ -4,7 +4,6 @@
 //! fast system call instructions (syscall, svc, ecall) with optimized parameter passing
 //! and minimal overhead.
 
-use crate::log::{info, warn, error, debug};
 use crate::arch::{ArchType, PrivilegeLevel};
 use crate::arch::interrupts::*;
 use crate::syscall_numbers;

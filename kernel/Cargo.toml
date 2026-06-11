@@ -10,7 +10,6 @@ authors = ["MultiOS Team"]
 # Core kernel dependencies - use workspace deps consistently
 spin = "0.9"
 bitflags.workspace = true
-log = "0.4"
 x86_64 = "0.15"          # Fixed: was 0.14, now matches workspace
 pic8259 = "0.10"
 linked_list_allocator = "0.10"
