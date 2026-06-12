@@ -11,7 +11,6 @@ use alloc::vec;
 use alloc::format;
 use spin::Mutex;
 use core::time::Duration;
-use crate::{KernelResult, KernelError, log::{info, warn, error}};
 
 /// Service dependency information
 #[derive(Debug, Clone)]

@@ -7,7 +7,7 @@ use spin::{Mutex, RwLock};
 use alloc::string::String;
 use alloc::string::ToString;
 use alloc::vec::Vec;
-use alloc::collections::{BTreeMap, HashSet};
+use alloc::collections::{BTreeMap, BTreeSet};
 use alloc::format;
 use core::sync::atomic::{AtomicU64, Ordering};
 
@@ -22,9 +22,9 @@ fn get_current_time() -> u64 {
 /// Service Registry - Central registry for all services
 pub struct ServiceRegistry {
     entries: RwLock<BTreeMap<ServiceId, ServiceRegistryEntry>>,
-    name_index: RwLock<BTreeMap<String, HashSet<ServiceId>>>,
-    tag_index: RwLock<BTreeMap<String, HashSet<ServiceId>>>,
-    type_index: RwLock<BTreeMap<super::service::ServiceType, HashSet<ServiceId>>>,
+    name_index: RwLock<BTreeMap<String, BTreeSet<ServiceId>>>,
+    tag_index: RwLock<BTreeMap<String, BTreeSet<ServiceId>>>,
+    type_index: RwLock<BTreeMap<super::service::ServiceType, BTreeSet<ServiceId>>>,
     endpoint_index: RwLock<BTreeMap<String, ServiceId>>,
     next_entry_id: AtomicU64,
 }
@@ -290,19 +290,19 @@ impl ServiceRegistry {
     fn update_indexes(&self, service_id: ServiceId, name: &str, tags: &Vec<String>, service_type: super::service::ServiceType) -> ServiceResult<()> {
         // Update name index
         let mut name_index = self.name_index.write();
-        let service_set = name_index.entry(name.to_string()).or_insert_with(HashSet::new);
+        let service_set = name_index.entry(name.to_string()).or_insert_with(BTreeSet::new);
         service_set.insert(service_id);
 
         // Update tag index
         let mut tag_index = self.tag_index.write();
         for tag in tags {
-            let tag_set = tag_index.entry(tag.clone()).or_insert_with(HashSet::new);
+            let tag_set = tag_index.entry(tag.clone()).or_insert_with(BTreeSet::new);
             tag_set.insert(service_id);
         }
 
         // Update type index
         let mut type_index = self.type_index.write();
-        let type_set = type_index.entry(service_type).or_insert_with(HashSet::new);
+        let type_set = type_index.entry(service_type).or_insert_with(BTreeSet::new);
         type_set.insert(service_id);
 
         Ok(())

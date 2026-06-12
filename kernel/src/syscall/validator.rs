@@ -3,7 +3,6 @@
 //! This module provides comprehensive parameter validation for system calls,
 //! including pointer validation, buffer bounds checking, and security checks.
 
-use crate::{warn, error, debug};
 use crate::arch::interrupts::*;
 use crate::memory::{self, MemoryRegion};
 use crate::ArchType;

@@ -77,10 +77,10 @@ pub fn init_bootstrap(config: BootstrapConfig, boot_info: super::BootInfo) -> Bo
     };
     
     // Log bootstrap start
-    crate::log::info!("=== MultiOS Bootstrap Starting ===");
-    crate::log::info!("Architecture: {:?}", context.config.architecture);
-    crate::log::info!("Boot Method: {:?}", context.config.boot_method);
-    crate::log::info!("Debug Mode: {}", context.config.enable_debug);
+    info!("=== MultiOS Bootstrap Starting ===");
+    info!("Architecture: {:?}", context.config.architecture);
+    info!("Boot Method: {:?}", context.config.boot_method);
+    info!("Debug Mode: {}", context.config.enable_debug);
     
     Ok(context)
 }
@@ -93,7 +93,7 @@ pub fn execute_bootstrap(mut context: BootstrapContext) -> BootstrapResult<()> {
     
     // Stage 2: Memory initialization
     context.push_stage(BootstrapStage::MemoryInit);
-    crate::log::info!("Initializing memory subsystem...");
+    info!("Initializing memory subsystem...");
     MemoryManager::bootstrap_init(&context)?;
     
     // Stage 3: Interrupt initialization
@@ -118,7 +118,7 @@ pub fn execute_bootstrap(mut context: BootstrapContext) -> BootstrapResult<()> {
     
     // Complete bootstrap
     context.push_stage(BootstrapStage::Complete);
-    crate::log::info!("=== Bootstrap Complete ===");
+    info!("=== Bootstrap Complete ===");
     
     Ok(())
 }
@@ -133,7 +133,7 @@ impl BootstrapContext {
     pub fn record_error(&mut self, error: KernelError) {
         self.error_count = self.error_count.checked_add(1).unwrap_or(u32::MAX);
         
-        crate::log::error!("Bootstrap Error at stage {:?}: {:?}", self.current_stage, error);
+        error!("Bootstrap Error at stage {:?}: {:?}", self.current_stage, error);
         
         if self.config.recovery_mode && self.error_count < 3 {
             // Try to recover from the error
@@ -142,7 +142,7 @@ impl BootstrapContext {
     }
     
     fn recover_from_error(&mut self, _error: KernelError) {
-        crate::log::warn!("Attempting to recover from bootstrap error");
+        warn!("Attempting to recover from bootstrap error");
         
         // Simple recovery: skip the current stage and continue
         // In a real implementation, this would be more sophisticated

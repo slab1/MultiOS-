@@ -439,7 +439,6 @@ pub struct RegisteredService {
 use alloc::collections::BTreeMap;
 use alloc::vec;
 use alloc::format;
-use crate::{KernelResult, KernelError, log::{info, warn, error}};
 
 /// Package information structure
 #[derive(Debug, Clone)]

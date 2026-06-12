@@ -27,24 +27,16 @@ pub fn init() -> Result<(), crate::KernelError> {
 }
 
 /// Graphics driver module
-pub mod graphics {
-    pub use super::graphics::*;
-}
+pub mod graphics;
 
 /// Framebuffer management module
-pub mod framebuffer {
-    pub use super::framebuffer::*;
-}
+pub mod framebuffer;
 
 /// Bitmap font and text rendering module
-pub mod bitmap_font {
-    pub use super::bitmap_font::*;
-}
+pub mod bitmap_font;
 
 /// Graphics utilities and advanced operations module
-pub mod graphics_utils {
-    pub use super::graphics_utils::*;
-}
+pub mod graphics_utils;
 
 /// Driver types
 #[derive(Debug, Clone, Copy)]

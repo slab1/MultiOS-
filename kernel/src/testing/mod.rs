@@ -335,38 +335,38 @@ pub fn init_all_testing_frameworks() -> Result<()> {
     // Initialize security testing framework (existing)
     security_tests::init_security_tests()
         .map_err(|e| {
-            crate::log::error!("Failed to initialize security testing framework: {:?}", e);
+            error!("Failed to initialize security testing framework: {:?}", e);
             KernelError::InitializationFailed
         })?;
     
     // Initialize UAT framework (existing)
     uat_tests::init_uat_framework()
         .map_err(|e| {
-            crate::log::error!("Failed to initialize UAT framework: {:?}", e);
+            error!("Failed to initialize UAT framework: {:?}", e);
             KernelError::InitializationFailed
         })?;
     
     // Initialize performance testing framework (existing)
     init_performance_testing()
         .map_err(|e| {
-            crate::log::error!("Failed to initialize performance testing framework");
+            error!("Failed to initialize performance testing framework");
             KernelError::InitializationFailed
         })?;
     
     // Initialize integration testing framework (new)
     setup_dev_testing()
         .map_err(|e| {
-            crate::log::error!("Failed to initialize integration testing framework: {:?}", e);
+            error!("Failed to initialize integration testing framework: {:?}", e);
             KernelError::InitializationFailed
         })?;
     
-    crate::log::info!("All testing frameworks initialized successfully");
+    info!("All testing frameworks initialized successfully");
     Ok(())
 }
 
 /// Run complete test suite including all framework tests
 pub fn run_all_comprehensive_tests() -> Result<ComprehensiveTestReport> {
-    crate::log::info!("Starting comprehensive test suite...");
+    info!("Starting comprehensive test suite...");
     
     // Run existing test suites
     let (security_report, uat_metrics, performance_results) = run_all_tests()?;
@@ -374,7 +374,7 @@ pub fn run_all_comprehensive_tests() -> Result<ComprehensiveTestReport> {
     // Run integration tests
     let integration_results = run_quick_integration_tests()
         .map_err(|e| {
-            crate::log::error!("Integration tests failed: {:?}", e);
+            error!("Integration tests failed: {:?}", e);
             KernelError::TestFailed
         })?;
     

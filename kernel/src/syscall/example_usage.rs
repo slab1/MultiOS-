@@ -6,9 +6,20 @@
 
 use alloc::vec;
 use crate::syscall::*;
-use std::collections::BTreeMap;
-use std::sync::Arc;
-use std::time::{Duration, Instant};
+use alloc::collections::BTreeMap;
+use alloc::sync::Arc;
+use core::time::Duration;
+
+/// Minimal no_std Instant stub for test timing
+struct Instant(u64);
+impl Instant {
+    fn now() -> Self { Self(unsafe { core::arch::x86_64::_rdtsc() as u64 }) }
+    fn elapsed(&self) -> Duration {
+        let now = unsafe { core::arch::x86_64::_rdtsc() as u64 };
+        let cycles = now.saturating_sub(self.0);
+        Duration::from_nanos(cycles / 3)
+    }
+}
 use alloc::string::ToString;
 
 /// Example demonstrating performance monitoring usage

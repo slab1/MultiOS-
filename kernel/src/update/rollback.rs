@@ -1977,7 +1977,6 @@ mod tests {
 use alloc::vec;
 use alloc::format;
 use core::time::Duration;
-use crate::{KernelResult, KernelError, log::{info, warn, error}};
 
 /// System state representation for snapshots and recovery
 #[derive(Debug, Clone)]

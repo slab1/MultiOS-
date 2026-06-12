@@ -16,7 +16,7 @@ extern crate alloc;
 use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::String;
-use alloc::collections::{BTreeMap, HashSet};
+use alloc::collections::{BTreeMap, BTreeSet};
 use core::sync::atomic::{AtomicU64, Ordering};
 use alloc::format;
 
@@ -444,11 +444,11 @@ impl ServiceManager {
         
         // Perform topological sort
         let mut startup_order = Vec::new();
-        let mut visited = HashSet::new();
-        let mut temp_visited = HashSet::new();
+        let mut visited = BTreeSet::new();
+        let mut temp_visited = BTreeSet::new();
         
         fn dfs(node: ServiceId, graph: &BTreeMap<ServiceId, Vec<ServiceId>>, 
-               visited: &mut HashSet<ServiceId>, temp_visited: &mut HashSet<ServiceId>, 
+               visited: &mut BTreeSet<ServiceId>, temp_visited: &mut BTreeSet<ServiceId>, 
                order: &mut Vec<ServiceId>) -> ServiceResult<()> {
             if temp_visited.contains(&node) {
                 return Err(ServiceError::CircularDependency);

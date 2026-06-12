@@ -14,12 +14,25 @@
 
 use alloc::vec;
 use alloc::format;
+
+/// Minimal no_std Instant stub for test timing
+struct Instant(u64);
+impl Instant {
+    fn now() -> Self { Self(unsafe { core::arch::x86_64::_rdtsc() as u64 }) }
+    fn elapsed(&self) -> Duration {
+        let now = unsafe { core::arch::x86_64::_rdtsc() as u64 };
+        let cycles = now.saturating_sub(self.0);
+        Duration::from_nanos(cycles / 3)
+    }
+}
+
 #[cfg(test)]
 mod integration_tests {
     use super::*;
-    use std::sync::{Arc, Mutex};
-    use std::collections::BTreeMap;
-    use std::time::{Duration, Instant};
+    use alloc::sync::Arc;
+    use spin::Mutex;
+    use alloc::collections::BTreeMap;
+    use core::time::Duration;
 
     // Test constants
     const PERFORMANCE_OVERHEAD_THRESHOLD: f64 = 0.05; // 5% overhead threshold

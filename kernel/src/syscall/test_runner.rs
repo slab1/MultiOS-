@@ -7,7 +7,19 @@
 use alloc::vec;
 use alloc::format;
 use crate::syscall::*;
-use std::time::{Duration, Instant};
+use core::time::Duration;
+use alloc::sync::Arc;
+
+/// Minimal no_std Instant stub for test timing
+struct Instant(u64);
+impl Instant {
+    fn now() -> Self { Self(unsafe { core::arch::x86_64::_rdtsc() as u64 }) }
+    fn elapsed(&self) -> Duration {
+        let now = unsafe { core::arch::x86_64::_rdtsc() as u64 };
+        let cycles = now.saturating_sub(self.0);
+        Duration::from_nanos(cycles / 3) // rough estimate at ~3GHz
+    }
+}
 
 /// Comprehensive test runner for syscall modules
 pub struct SyscallTestRunner {

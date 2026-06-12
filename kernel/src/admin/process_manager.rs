@@ -14,7 +14,7 @@ use spin::{Mutex, RwLock};
 use alloc::vec::Vec;
 use alloc::string::String;
 use alloc::string::ToString;
-use alloc::collections::{BTreeMap, HashSet};
+use alloc::collections::{BTreeMap, BTreeSet};
 use alloc::vec;
 use core::sync::atomic::{AtomicU64, AtomicU32, AtomicUsize, AtomicBool, Ordering};
 use bitflags::bitflags;
@@ -157,8 +157,8 @@ pub struct ProcessControlBlock {
     pub resource_usage: ProcessResourceUsage,
     pub service_id: Option<ServiceId>,
     pub signal_handlers: BTreeMap<Signal, SignalHandler>,
-    pub children: HashSet<ProcessId>,
-    pub threads: HashSet<ThreadId>,
+    pub children: BTreeSet<ProcessId>,
+    pub threads: BTreeSet<ThreadId>,
 }
 
 /// Signal Types
@@ -202,7 +202,7 @@ pub enum SignalAction {
 pub struct SignalHandler {
     pub action: SignalAction,
     pub handler_address: Option<usize>,
-    pub mask: HashSet<Signal>,
+    pub mask: BTreeSet<Signal>,
 }
 
 /// Service Process Manager
@@ -216,7 +216,7 @@ pub struct ServiceProcess {
     pub restart_count: u32,
     pub max_restarts: u32,
     pub last_start_time_ms: u64,
-    pub dependencies: HashSet<ServiceId>,
+    pub dependencies: BTreeSet<ServiceId>,
     pub resource_quota: Option<ProcessResourceLimits>,
 }
 
@@ -262,7 +262,7 @@ pub struct ProcessManager {
     processes: RwLock<BTreeMap<ProcessId, ProcessControlBlock>>,
     service_processes: RwLock<BTreeMap<ServiceId, ServiceProcess>>,
     signal_handlers: RwLock<BTreeMap<Signal, BTreeMap<ProcessId, SignalHandler>>>,
-    process_tree: RwLock<BTreeMap<ProcessId, HashSet<ProcessId>>>,
+    process_tree: RwLock<BTreeMap<ProcessId, BTreeSet<ProcessId>>>,
     config: ProcessManagerConfig,
     stats: RwLock<ProcessManagerStats>,
     initialized: AtomicBool,
@@ -380,14 +380,14 @@ impl ProcessManager {
             resource_usage: ProcessResourceUsage::default(),
             service_id: None,
             signal_handlers: self.create_default_signal_handlers(),
-            children: HashSet::new(),
-            threads: HashSet::new(),
+            children: BTreeSet::new(),
+            threads: BTreeSet::new(),
         };
 
         // Add to process tree if parent exists
         if let Some(parent_pid) = parent_id {
             let mut tree = self.process_tree.write();
-            let parent_children = tree.entry(parent_pid).or_insert_with(HashSet::new);
+            let parent_children = tree.entry(parent_pid).or_insert_with(BTreeSet::new);
             parent_children.insert(process_id);
         }
 
@@ -569,7 +569,7 @@ impl ProcessManager {
             restart_count: 0,
             max_restarts,
             last_start_time_ms: crate::hal::get_current_time(),
-            dependencies: HashSet::new(),
+            dependencies: BTreeSet::new(),
             resource_quota: None,
         };
 
@@ -713,19 +713,19 @@ impl ProcessManager {
         handlers.insert(Signal::SIGTERM, SignalHandler {
             action: SignalAction::Default,
             handler_address: None,
-            mask: HashSet::new(),
+            mask: BTreeSet::new(),
         });
         
         handlers.insert(Signal::SIGKILL, SignalHandler {
             action: SignalAction::Terminate,
             handler_address: None,
-            mask: HashSet::new(),
+            mask: BTreeSet::new(),
         });
         
         handlers.insert(Signal::SIGINT, SignalHandler {
             action: SignalAction::Default,
             handler_address: None,
-            mask: HashSet::new(),
+            mask: BTreeSet::new(),
         });
         
         handlers
