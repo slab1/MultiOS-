@@ -36,12 +36,12 @@ pub mod integration_tests;
 #[cfg(test)]
 pub mod example_services;
 
-use service::{ServiceId, ServiceHandle, ServiceDescriptor, ServiceState};
-use config::{ServiceConfigManager, ServiceConfig};
-use discovery::{ServiceRegistry, ServiceDiscovery};
-use monitoring::{ServiceMonitor, HealthChecker};
-use load_balancer::{LoadBalancer, BalancingStrategy};
-use fault_tolerance::{FaultDetector, RecoveryManager};
+pub use service::{ServiceId, ServiceHandle, ServiceDescriptor, ServiceState};
+pub use config::{ServiceConfigManager, ServiceConfig};
+pub use discovery::{ServiceRegistry, ServiceDiscovery};
+pub use monitoring::{ServiceMonitor, HealthChecker};
+pub use load_balancer::{LoadBalancer, BalancingStrategy};
+pub use fault_tolerance::{FaultDetector, RecoveryManager};
 
 /// Get current system time (in milliseconds since boot)
 fn get_current_time() -> u64 {
@@ -50,14 +50,6 @@ fn get_current_time() -> u64 {
     #[cfg(not(feature = "hal_timers"))]
     { 0 }
 }
-
-// Re-export key types
-pub use service::{ServiceHandle, ServiceId, ServiceState, ServiceType};
-pub use config::{ServiceConfigManager};
-pub use discovery::{ServiceRegistry};
-pub use monitoring::{ServiceMonitor, HealthChecker};
-pub use load_balancer::{LoadBalancer, BalancingStrategy};
-pub use fault_tolerance::{FaultDetector, RecoveryManager};
 
 /// Service Management Result
 pub type ServiceResult<T> = Result<T, ServiceError>;

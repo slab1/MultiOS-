@@ -6,7 +6,7 @@
 
 use crate::arch::{ArchType, PrivilegeLevel};
 use crate::arch::interrupts::*;
-use crate::syscall_numbers;
+use crate::syscall::syscall_numbers;
 use crate::syscall::{dispatcher, performance, error_handling};
 use core::sync::atomic::{AtomicU64, Ordering};
 

@@ -33,7 +33,7 @@ use spin::Mutex;
 
 // Re-export main types for external use
 pub use crate::syscall::dispatcher::SyscallDispatcher;
-pub use crate::syscall::validator::{SyscallValidator, MemoryRegion, ValidatedBuffer};
+pub use crate::syscall::validator::{MemoryRegion, ValidatedBuffer};
 pub use crate::syscall::fast_interface::FastSyscallInterface;
 pub use crate::syscall::testing::SyscallTestFramework;
 pub use crate::syscall::performance::{SyscallPerformanceManager, SyscallPerformanceStats};

@@ -4,7 +4,7 @@
 //! including security, filesystem, and system management.
 
 use super::package_manager::{
-    PackageManager, PackageConfig, PackageMetadata, PackageResult,
+    CorePackageManager, PackageConfig, PackageMetadata, PackageResult,
     PackageError, Version, RepositoryInfo, Dependency, PackageConflict
 };
 
@@ -14,7 +14,7 @@ use alloc::string::ToString;
 
 /// Integration layer between package manager and MultiOS systems
 pub struct PackageManagerIntegration {
-    package_manager: PackageManager,
+    package_manager: CorePackageManager,
     security_integration: SecurityIntegration,
     filesystem_integration: FilesystemIntegration,
     service_integration: ServiceIntegration,
@@ -23,7 +23,7 @@ pub struct PackageManagerIntegration {
 impl PackageManagerIntegration {
     /// Create new integrated package manager
     pub fn new(config: PackageConfig) -> Self {
-        let package_manager = PackageManager::new(config);
+        let package_manager = CorePackageManager::new(config);
         
         Self {
             package_manager,

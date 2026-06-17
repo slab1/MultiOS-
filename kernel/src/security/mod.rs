@@ -95,7 +95,7 @@ pub use permission_inheritance::{
 pub use delegation::{
     DelegationManager, PermissionDelegation, DelegationConstraints, DelegationChain,
     DelegationConflict, DelegationScope, DelegationOperation, DelegationResolution,
-    DelegationAuditEntry, delegation,
+    DelegationAuditEntry,
 };
 
 /// Security subsystem initialization

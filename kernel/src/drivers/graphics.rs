@@ -1080,7 +1080,7 @@ impl GraphicsPrimitive for VesaGraphics {
 pub struct GraphicsManager {
     pub vga_driver: Option<VgaGraphics>,
     pub vesa_driver: Option<VesaGraphics>,
-    pub current_driver: Option<&'static dyn GraphicsPrimitive + Send + Sync>,
+    pub current_driver: Option<&'static (dyn GraphicsPrimitive + Send + Sync)>,
     pub framebuffer_devices: Vec<FramebufferDevice>,
     pub primary_display: Option<u32>,
 }
@@ -1171,7 +1171,7 @@ impl GraphicsManager {
         match driver_type {
             GraphicsMode::Vga => {
                 if let Some(ref driver) = self.vga_driver {
-                    self.current_driver = Some(unsafe { core::mem::transmute::<&VgaGraphics, &'static dyn GraphicsPrimitive + Send + Sync>(driver) });
+                    self.current_driver = Some(unsafe { core::mem::transmute::<&VgaGraphics, &'static (dyn GraphicsPrimitive + Send + Sync)>(driver) });
                     info!("Set VGA as current graphics driver");
                 } else {
                     return Err(crate::KernelError::DeviceNotFound);
@@ -1179,7 +1179,7 @@ impl GraphicsManager {
             }
             GraphicsMode::Vesa => {
                 if let Some(ref driver) = self.vesa_driver {
-                    self.current_driver = Some(unsafe { core::mem::transmute::<&VesaGraphics, &'static dyn GraphicsPrimitive + Send + Sync>(driver) });
+                    self.current_driver = Some(unsafe { core::mem::transmute::<&VesaGraphics, &'static (dyn GraphicsPrimitive + Send + Sync)>(driver) });
                     info!("Set VESA as current graphics driver");
                 } else {
                     return Err(crate::KernelError::DeviceNotFound);
@@ -1191,7 +1191,7 @@ impl GraphicsManager {
     }
     
     /// Get current graphics driver
-    pub fn get_current_driver(&self) -> Option<&dyn GraphicsPrimitive + Send + Sync> {
+    pub fn get_current_driver(&self) -> Option<&(dyn GraphicsPrimitive + Send + Sync)> {
         self.current_driver.map(|driver| *driver)
     }
     

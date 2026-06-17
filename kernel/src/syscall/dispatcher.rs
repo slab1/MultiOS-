@@ -924,7 +924,7 @@ impl SecurityManager {
     }
 }
 
-use crate::syscall_numbers;
+use crate::syscall::syscall_numbers;
 
 /// Global system call dispatcher
 use spin::Mutex;

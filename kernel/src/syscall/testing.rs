@@ -8,7 +8,7 @@ use alloc::format;
 use crate::arch::{ArchType, PrivilegeLevel};
 use crate::arch::interrupts::*;
 use crate::syscall::{self, dispatcher, validator, fast_interface};
-use crate::syscall_numbers;
+use crate::syscall::syscall_numbers;
 use crate::KernelError;
 use alloc::vec;
 

@@ -4,7 +4,7 @@
 //! including pointer validation, buffer bounds checking, and security checks.
 
 use crate::arch::interrupts::*;
-use crate::memory::{self, MemoryRegion};
+use crate::memory;
 use crate::ArchType;
 
 type SyscallResult<T> = Result<T, SyscallError>;

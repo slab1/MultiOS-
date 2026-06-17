@@ -38,7 +38,7 @@ pub use validator::{
     ChecksumValidation, HashAlgorithm, IntegrityManager,
     
     // Compatibility checking
-    CompatibilityInfo, CompatibilityLevel, SystemRequirements,
+    CompatibilityInfo, CompatibilityLevel, ValidatorSystemRequirements as SystemRequirements,
     HardwareRequirements, DependencyInfo, DependencyPriority,
     
     // Rollback support
@@ -72,8 +72,8 @@ pub use rollback::{
 };
 
 pub use package_integration::{
-    PackageManager, Package, DependencyResolver, PackageUpdate,
-    RepositoryManager, UpdateSource
+    IntegrationPackageManager, Package, DependencyResolver, PackageUpdate,
+    IntegrationRepositoryManager, UpdateSource
 };
 
 // pub use service_management::{
@@ -89,7 +89,7 @@ pub use package_manager::{
 };
 
 pub use scheduler::{
-    UpdateScheduler, UpdateTask, UpdatePriority, UpdateType, UpdateStatus,
+    UpdateScheduler, UpdateTask, UpdatePriority,
     UpdateFrequency, MaintenanceWindow, ScheduleConfig, UsagePattern,
     ScheduleResult, ExecutionResult, SystemMetrics, NotificationInfo,
     NotificationType, RetryConfig, SchedulerStatus, QueueStatus
@@ -97,7 +97,7 @@ pub use scheduler::{
 
 pub use repository::{
     RepositoryManager, Repository, RepositoryConfig, RepositoryType,
-    RepositoryStatus, PackageMetadata, DeltaVersion, RepositoryError,
+    RepositoryStatus, DeltaVersion, RepositoryError,
     RepositoryStatistics, RepositoryCredentials
 };
 
@@ -107,9 +107,9 @@ pub use delta::{
 };
 
 pub use {
-    UpdateSystem, UpdateSystemConfig, UpdateSystemStatistics,
+    UpdateSystem, UpdateSystemStatistics,
     SecurityConfig, NetworkConfig, SchedulingConfig, UpdateSystemState,
-    AvailableUpdate, UpdateResult, UpdateError
+    AvailableUpdate
 };
 
 use alloc::vec::Vec;

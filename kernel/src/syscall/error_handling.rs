@@ -7,7 +7,7 @@
 use alloc::vec;
 use alloc::format;
 use crate::arch::interrupts::*;
-use crate::syscall_numbers;
+use crate::syscall::syscall_numbers;
 use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
 use spin::Mutex;
 
